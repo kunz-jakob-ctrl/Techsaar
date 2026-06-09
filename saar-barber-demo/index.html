@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saar Barber Co. — Premium Barbershop im Saarland</title>
+  <meta name="description" content="Saar Barber Co. – Dein Premium Barbershop. Herren- & Damenschnitt, Bartpflege. Termin online in unter 60 Sekunden buchen." />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base:    '#0C0A09',
+            surface: '#1C1917',
+            surface2:'#242020',
+            line:    '#3A3531',
+            gold:    '#CA8A04',
+            goldlt:  '#E7C66B',
+            cream:   '#FAFAF9',
+            muted:   '#A8A29E',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            cond: ['Oswald', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            gold: '0 8px 30px -8px rgba(202,138,4,0.45)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { color-scheme: dark; }
+    body { background:#0C0A09; }
+    ::selection { background:#CA8A04; color:#0C0A09; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background:#1C1917; }
+    ::-webkit-scrollbar-thumb { background:#3A3531; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background:#CA8A04; }
+
+    .gold-text {
+      background: linear-gradient(110deg,#E7C66B 0%,#CA8A04 45%,#E7C66B 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .gold-line { background: linear-gradient(90deg, transparent, #CA8A04, transparent); }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Hero entrance */
+    @keyframes fadeUp { from { opacity:0; transform: translateY(24px);} to {opacity:1; transform:none;} }
+    .anim-up { animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) both; }
+
+    /* Soft shimmer for the gold rule under headings */
+    @keyframes shimmer { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+    .shimmer { background: linear-gradient(90deg,#CA8A04 0%,#E7C66B 50%,#CA8A04 100%); background-size:200% 100%; animation: shimmer 4s linear infinite; }
+
+    /* Booking step transition */
+    .step { display:none; }
+    .step.active { display:block; animation: fadeUp .45s cubic-bezier(.2,.7,.2,1) both; }
+
+    .grain:before{
+      content:""; position:absolute; inset:0; pointer-events:none; opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Slow rotating vintage badge */
+    @keyframes slowspin { to { transform: rotate(360deg); } }
+    .slowspin { animation: slowspin 38s linear infinite; }
+
+    /* Bebas headlines breathe better with a touch of tracking */
+    .font-display { letter-spacing: .01em; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+      .reveal { opacity:1; transform:none; }
+    }
+  </style>
+</head>
+
+<body class="bg-base text-cream font-sans antialiased selection:bg-gold">
+
+  <!-- ====================== NAVBAR ====================== -->
+  <header id="nav" class="fixed top-0 inset-x-0 z-40 transition-all duration-300">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div id="navbar" class="mt-3 flex items-center justify-between rounded-2xl border border-line/60 bg-surface/70 px-4 py-3 backdrop-blur-md transition-all duration-300">
+        <!-- Logo -->
+        <a href="#top" class="flex items-center gap-3 group">
+          <span class="grid h-10 w-10 place-items-center rounded-xl border border-gold/40 bg-base">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/></svg>
+          </span>
+          <span class="leading-tight">
+            <span class="block font-display text-lg font-semibold tracking-wide"><span data-biz="brand">Saar Barber</span><span class="text-gold">.</span></span>
+            <span class="block text-[10px] uppercase tracking-[0.25em] text-muted" data-biz="estLine">Est. 2014 · Saarbrücken</span>
+          </span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden items-center gap-8 lg:flex">
+          <a href="#leistungen" class="font-cond text-sm uppercase tracking-wider text-muted transition-colors hover:text-cream">Leistungen</a>
+          <a href="#team"       class="font-cond text-sm uppercase tracking-wider text-muted transition-colors hover:text-cream">Team</a>
+          <a href="#galerie"    class="font-cond text-sm uppercase tracking-wider text-muted transition-colors hover:text-cream">Galerie</a>
+          <a href="#zeiten"     class="font-cond text-sm uppercase tracking-wider text-muted transition-colors hover:text-cream">Öffnungszeiten</a>
+          <a href="#kontakt"    class="font-cond text-sm uppercase tracking-wider text-muted transition-colors hover:text-cream">Kontakt</a>
+        </nav>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a href="tel:+4968112345678" class="hidden items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-sm text-cream transition-colors hover:border-gold hover:text-gold sm:flex">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span class="font-medium" data-biz="phoneDisplay">0681 123 456 78</span>
+          </a>
+          <a href="#buchen" class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-goldlt to-gold px-4 py-2.5 text-sm font-semibold text-base shadow-gold transition-transform duration-200 hover:brightness-110 active:scale-95">
+            Termin buchen
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================== HERO ====================== -->
+  <section id="top" class="relative isolate grain overflow-hidden">
+    <!-- background -->
+    <div class="absolute inset-0 -z-10">
+      <img data-biz-src="heroImage" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=1600&auto=format&fit=crop"
+           alt="Innenansicht des Barbershops mit warmem Licht"
+           class="h-full w-full object-cover"
+           onerror="this.style.display='none'" loading="eager" />
+      <div class="absolute inset-0 bg-gradient-to-b from-base/85 via-base/80 to-base"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-base/90 to-transparent"></div>
+    </div>
+
+    <!-- Vintage emblem -->
+    <div class="anim-up pointer-events-none absolute bottom-10 right-8 hidden h-44 w-44 lg:block" style="animation-delay:.5s">
+      <div class="slowspin h-full w-full">
+        <svg viewBox="0 0 200 200" class="h-full w-full">
+          <defs>
+            <path id="badgePath" d="M 100,100 m -72,0 a 72,72 0 1,1 144,0 a 72,72 0 1,1 -144,0" fill="none"/>
+          </defs>
+          <circle cx="100" cy="100" r="94" fill="none" stroke="#CA8A04" stroke-opacity=".45" stroke-width="1"/>
+          <circle cx="100" cy="100" r="58" fill="none" stroke="#CA8A04" stroke-opacity=".3" stroke-width="1"/>
+          <text fill="#E7C66B" style="font-family:Oswald,sans-serif;font-size:12px;font-weight:500;letter-spacing:4.5px;">
+            <textPath href="#badgePath" startOffset="0" data-biz="emblemText">SAAR BARBER CO. · PREMIUM CUTS · </textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="absolute inset-0 grid place-items-center text-center text-gold">
+        <div>
+          <svg viewBox="0 0 24 24" class="mx-auto h-9 w-9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/></svg>
+          <p class="mt-1 font-cond text-[10px] uppercase tracking-[0.3em] text-goldlt" data-biz="estShort">Est · 2014</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-4 pb-16 pt-32 sm:px-6">
+      <div class="max-w-2xl">
+        <div class="anim-up mb-6 flex flex-wrap items-center gap-4" style="animation-delay:.05s">
+          <span class="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3.5 py-1.5 text-xs font-medium text-goldlt">
+            <span id="status-dot" class="h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span id="status-text">Heute geöffnet</span>
+          </span>
+          <span class="font-cond text-xs uppercase tracking-[0.35em] text-muted" data-biz="estLine">Est. 2014 · Saarbrücken</span>
+        </div>
+
+        <h1 class="anim-up font-display text-7xl uppercase leading-[0.9] sm:text-8xl lg:text-[8.5rem]" style="animation-delay:.12s">
+          <span data-biz="heroLine1">Dein Look.</span><br>
+          <span class="gold-text" data-biz="heroLine2">Perfekt geschnitten.</span>
+        </h1>
+
+        <div class="anim-up mt-6 flex items-center gap-4" style="animation-delay:.18s">
+          <span class="h-px w-10 bg-gold sm:w-14"></span>
+          <span class="font-cond text-sm uppercase tracking-[0.3em] text-goldlt" data-biz="heroDivider">Cut · Shave · Style</span>
+          <span class="h-px flex-1 bg-gradient-to-r from-gold/50 to-transparent"></span>
+        </div>
+
+        <p class="anim-up mt-6 max-w-xl text-lg leading-relaxed text-muted" style="animation-delay:.2s" data-biz="heroSubtitle">
+          Premium Barbershop im Herzen des Saarlandes. Für Ihn & für Sie – klassische Schnitte, Bartpflege und Styling. Termin online in unter einer Minute.
+        </p>
+
+        <div class="anim-up mt-9 flex flex-col gap-3 sm:flex-row" style="animation-delay:.28s">
+          <a href="#buchen" class="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-goldlt to-gold px-7 py-4 text-base font-semibold text-base shadow-gold transition-transform duration-200 hover:brightness-110 active:scale-95">
+            Termin buchen
+            <svg viewBox="0 0 24 24" class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="tel:+4968112345678" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gold/50 bg-gold/10 px-7 py-4 text-base font-medium text-goldlt backdrop-blur transition-colors hover:border-gold hover:bg-gold/20 hover:text-goldlt">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Anrufen
+          </a>
+        </div>
+
+        <!-- trust row -->
+        <div class="anim-up mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-sm text-muted" style="animation-delay:.36s">
+          <div class="flex items-center gap-2">
+            <div class="flex text-gold">
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+            </div>
+            <span><strong class="text-cream" data-biz="reviewRating">4,9</strong> · <span data-biz="reviewCount">320+</span> Google-Bewertungen</span>
+          </div>
+          <div class="hidden h-4 w-px bg-line sm:block"></div>
+          <div class="flex items-center gap-2">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>Termine auch ohne Anruf · 7 Tage online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== QUICK INFO BAR ====================== -->
+  <section class="relative z-10 -mt-px border-y border-line bg-surface">
+    <div class="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <!-- Öffnungszeiten -->
+      <div class="flex items-center gap-4 px-6 py-6">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <div>
+          <p class="text-xs uppercase tracking-wider text-muted">Heute</p>
+          <p id="today-hours" class="font-medium">Mo–Fr 09:00 – 19:00 Uhr</p>
+        </div>
+      </div>
+      <!-- Telefon -->
+      <a href="tel:+4968112345678" class="group flex items-center gap-4 px-6 py-6 transition-colors hover:bg-surface2">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <div>
+          <p class="text-xs uppercase tracking-wider text-muted">Direkt anrufen</p>
+          <p class="font-medium transition-colors group-hover:text-gold" data-biz="phoneDisplay">0681 123 456 78</p>
+        </div>
+      </a>
+      <!-- Adresse -->
+      <a href="#kontakt" class="group flex items-center gap-4 px-6 py-6 transition-colors hover:bg-surface2">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </span>
+        <div>
+          <p class="text-xs uppercase tracking-wider text-muted">Standort</p>
+          <p class="font-medium transition-colors group-hover:text-gold" data-biz="addressOneLine">Bahnhofstraße 42, 66111 Saarbrücken</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ====================== BOOKING (HERZSTÜCK) ====================== -->
+  <section id="buchen" class="relative scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto max-w-4xl">
+      <div class="reveal mb-10 text-center">
+        <p class="mb-3 font-cond text-sm uppercase tracking-[0.35em] text-gold">Online Terminbuchung</p>
+        <h2 class="font-display text-5xl uppercase tracking-wide sm:text-6xl">In 4 Schritten zum Termin</h2>
+        <div class="mx-auto mt-5 h-px w-24 shimmer rounded-full"></div>
+        <p class="mx-auto mt-5 max-w-lg text-muted">Wähle Leistung, Friseur:in und Wunschzeit. Du siehst sofort, wer wann frei hat.</p>
+      </div>
+
+      <div class="reveal overflow-hidden rounded-3xl border border-line bg-surface shadow-2xl">
+        <!-- progress -->
+        <div class="border-b border-line bg-surface2/60 px-5 py-4 sm:px-8">
+          <div id="steps-bar" class="flex items-center justify-between gap-2 text-xs sm:text-sm">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <div class="p-5 sm:p-8">
+
+          <!-- STEP 1: Service -->
+          <div class="step active" data-step="1">
+            <h3 class="mb-1 font-display text-2xl">Welche Leistung?</h3>
+            <p class="mb-6 text-sm text-muted">Preise & Dauer sind Richtwerte.</p>
+            <div id="service-grid" class="grid gap-3 sm:grid-cols-2"></div>
+          </div>
+
+          <!-- STEP 2: Barber -->
+          <div class="step" data-step="2">
+            <h3 class="mb-1 font-display text-2xl">Bei wem?</h3>
+            <p class="mb-6 text-sm text-muted">Verfügbarkeit für <strong class="text-cream" id="today-name">heute</strong> wird live angezeigt.</p>
+            <div id="barber-grid" class="grid gap-3 sm:grid-cols-2"></div>
+          </div>
+
+          <!-- STEP 3: Date + Time -->
+          <div class="step" data-step="3">
+            <h3 class="mb-1 font-display text-2xl">Wann passt es dir?</h3>
+            <p class="mb-5 text-sm text-muted">Graue Tage = <span id="barber-name-hint" class="text-cream">dein:e Friseur:in</span> ist nicht im Haus.</p>
+            <div id="day-strip" class="mb-7 flex gap-2 overflow-x-auto pb-2"></div>
+            <p class="mb-3 text-sm font-medium text-muted">Freie Uhrzeiten</p>
+            <div id="time-grid" class="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5"></div>
+          </div>
+
+          <!-- STEP 4: Details -->
+          <div class="step" data-step="4">
+            <h3 class="mb-1 font-display text-2xl">Fast geschafft</h3>
+            <p class="mb-6 text-sm text-muted">Wir senden dir eine Bestätigung per E-Mail.</p>
+            <form id="contact-form" class="grid gap-4 sm:grid-cols-2" novalidate>
+              <div class="sm:col-span-1">
+                <label for="f-name" class="mb-1.5 block text-sm text-muted">Vor- & Nachname *</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required
+                  class="w-full rounded-xl border border-line bg-base px-4 py-3 text-cream outline-none transition-colors placeholder:text-muted/60 focus:border-gold" placeholder="Max Mustermann" />
+              </div>
+              <div class="sm:col-span-1">
+                <label for="f-phone" class="mb-1.5 block text-sm text-muted">Telefon *</label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel" required
+                  class="w-full rounded-xl border border-line bg-base px-4 py-3 text-cream outline-none transition-colors placeholder:text-muted/60 focus:border-gold" placeholder="0151 234 567 89" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="f-email" class="mb-1.5 block text-sm text-muted">E-Mail *</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required
+                  class="w-full rounded-xl border border-line bg-base px-4 py-3 text-cream outline-none transition-colors placeholder:text-muted/60 focus:border-gold" placeholder="max@beispiel.de" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="f-note" class="mb-1.5 block text-sm text-muted">Anmerkung (optional)</label>
+                <textarea id="f-note" name="note" rows="2"
+                  class="w-full resize-none rounded-xl border border-line bg-base px-4 py-3 text-cream outline-none transition-colors placeholder:text-muted/60 focus:border-gold" placeholder="z. B. Wunsch zur Frisur"></textarea>
+              </div>
+              <p id="form-error" class="hidden sm:col-span-2 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2.5 text-sm text-red-300"></p>
+            </form>
+          </div>
+
+          <!-- STEP 5: Confirmation -->
+          <div class="step" data-step="5">
+            <div class="py-4 text-center">
+              <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full border border-emerald-400/40 bg-emerald-400/10">
+                <svg viewBox="0 0 24 24" class="h-8 w-8 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </div>
+              <h3 class="font-display text-3xl">Termin angefragt!</h3>
+              <p class="mx-auto mt-3 max-w-md text-muted">Eine Bestätigung wurde an <strong id="conf-email" class="text-cream">deine E-Mail</strong> gesendet. Wir freuen uns auf dich.</p>
+
+              <div class="mx-auto mt-7 max-w-md rounded-2xl border border-line bg-base p-5 text-left">
+                <div id="conf-summary" class="space-y-3 text-sm"></div>
+              </div>
+
+              <button onclick="resetBooking()" class="mt-7 inline-flex cursor-pointer items-center gap-2 rounded-xl border border-line px-5 py-3 text-sm text-cream transition-colors hover:border-gold hover:text-gold">
+                Weiteren Termin buchen
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- nav buttons -->
+        <div id="booking-nav" class="flex items-center justify-between gap-3 border-t border-line bg-surface2/60 px-5 py-4 sm:px-8">
+          <button id="btn-back" onclick="prevStep()" class="cursor-pointer rounded-xl border border-line px-5 py-3 text-sm text-muted transition-colors hover:text-cream disabled:cursor-not-allowed disabled:opacity-30" disabled>Zurück</button>
+          <div id="nav-hint" class="hidden text-center text-xs text-muted sm:block"></div>
+          <button id="btn-next" onclick="nextStep()" class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-goldlt to-gold px-6 py-3 text-sm font-semibold text-base shadow-gold transition-transform duration-200 hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none">
+            Weiter
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="mt-4 text-center text-xs text-muted">Demo-Buchung · es werden keine echten Termine oder E-Mails versendet.</p>
+    </div>
+  </section>
+
+  <!-- ====================== TEAM ====================== -->
+  <section id="team" class="scroll-mt-24 border-t border-line bg-surface px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="reveal mb-12 max-w-2xl">
+        <p class="mb-3 font-cond text-sm uppercase tracking-[0.35em] text-gold">Unser Team</p>
+        <h2 class="font-display text-5xl uppercase tracking-wide sm:text-6xl">Die Hände hinter dem Schnitt</h2>
+        <p class="mt-4 text-muted">Für Herren, Damen & Kids – jede:r mit eigenem Schwerpunkt. Die aktuelle Verfügbarkeit siehst du direkt bei der Buchung.</p>
+      </div>
+      <div id="team-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"></div>
+    </div>
+  </section>
+
+  <!-- ====================== GALERIE ====================== -->
+  <section id="galerie" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="reveal mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div class="max-w-xl">
+          <p class="mb-3 font-cond text-sm uppercase tracking-[0.35em] text-gold">Galerie</p>
+          <h2 class="font-display text-5xl uppercase tracking-wide sm:text-6xl">Unsere Arbeit</h2>
+        </div>
+        <p class="max-w-sm text-muted sm:text-right">Schärfe, Präzision und Charakter – ein Blick auf das, was bei uns täglich unter Schere und Klinge entsteht.</p>
+      </div>
+
+      <div class="reveal grid grid-cols-2 gap-3 sm:grid-cols-4 [grid-auto-rows:150px] lg:[grid-auto-rows:190px]">
+        <figure class="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl border border-line">
+          <img data-biz-src="gallery0" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop" alt="Stilvolles Interieur des Barbershops" loading="lazy" onerror="this.style.opacity=0" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-base/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-30"></div>
+          <figcaption class="absolute bottom-4 left-4 font-cond text-sm uppercase tracking-[0.2em] text-goldlt">Der Shop</figcaption>
+        </figure>
+        <figure class="group relative overflow-hidden rounded-2xl border border-line">
+          <img data-biz-src="gallery1" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Barber bei der Arbeit" loading="lazy" onerror="this.style.opacity=0" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-base/20 transition-colors duration-300 group-hover:bg-base/0"></div>
+        </figure>
+        <figure class="group relative overflow-hidden rounded-2xl border border-line">
+          <img data-biz-src="gallery2" src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=600&auto=format&fit=crop" alt="Frischer Haarschnitt" loading="lazy" onerror="this.style.opacity=0" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-base/20 transition-colors duration-300 group-hover:bg-base/0"></div>
+        </figure>
+        <figure class="group relative overflow-hidden rounded-2xl border border-line">
+          <img data-biz-src="gallery3" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=600&auto=format&fit=crop" alt="Bartpflege im Detail" loading="lazy" onerror="this.style.opacity=0" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-base/20 transition-colors duration-300 group-hover:bg-base/0"></div>
+        </figure>
+        <figure class="group relative overflow-hidden rounded-2xl border border-line">
+          <img data-biz-src="gallery4" src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=600&auto=format&fit=crop" alt="Barber-Werkzeuge" loading="lazy" onerror="this.style.opacity=0" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-base/20 transition-colors duration-300 group-hover:bg-base/0"></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== LEISTUNGEN / PREISE ====================== -->
+  <section id="leistungen" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto max-w-5xl">
+      <div class="reveal mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div class="max-w-xl">
+          <p class="mb-3 font-cond text-sm uppercase tracking-[0.35em] text-gold">Leistungen & Preise</p>
+          <h2 class="font-display text-5xl uppercase tracking-wide sm:text-6xl">Klar & ehrlich</h2>
+        </div>
+        <a href="#buchen" class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-line px-5 py-3 text-sm transition-colors hover:border-gold hover:text-gold">Jetzt buchen</a>
+      </div>
+
+      <div class="reveal grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="mb-4 flex items-center gap-2 font-display text-xl text-goldlt">Für Ihn</h3>
+          <ul id="price-men" class="divide-y divide-line rounded-2xl border border-line bg-surface"></ul>
+        </div>
+        <div>
+          <h3 class="mb-4 flex items-center gap-2 font-display text-xl text-goldlt">Für Sie & Kids</h3>
+          <ul id="price-women" class="divide-y divide-line rounded-2xl border border-line bg-surface"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ÖFFNUNGSZEITEN ====================== -->
+  <section id="zeiten" class="scroll-mt-24 border-t border-line bg-surface px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="reveal">
+        <p class="mb-3 font-cond text-sm uppercase tracking-[0.35em] text-gold">Öffnungszeiten</p>
+        <h2 class="font-display text-5xl uppercase tracking-wide sm:text-6xl">Immer für dich da</h2>
+        <p class="mt-4 max-w-md text-muted">Komm vorbei oder buche bequem online. An Feiertagen können die Zeiten abweichen.</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#buchen" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-goldlt to-gold px-6 py-3.5 text-sm font-semibold text-base shadow-gold transition-transform hover:brightness-110 active:scale-95">Termin buchen</a>
+          <a href="tel:+4968112345678" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gold/50 bg-gold/10 px-6 py-3.5 text-sm font-medium text-goldlt transition-colors hover:border-gold hover:bg-gold/20">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Anrufen
+          </a>
+        </div>
+      </div>
+      <div class="reveal rounded-3xl border border-line bg-base p-2">
+        <ul id="hours-list" class="divide-y divide-line"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== KONTAKT / FOOTER ====================== -->
+  <footer id="kontakt" class="scroll-mt-24 border-t border-line bg-base px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-12 lg:grid-cols-3">
+        <div class="lg:col-span-1">
+          <div class="flex items-center gap-3">
+            <span class="grid h-10 w-10 place-items-center rounded-xl border border-gold/40 bg-surface">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/></svg>
+            </span>
+            <span class="font-display text-lg font-semibold" data-biz="name">Saar Barber Co.</span>
+          </div>
+          <p class="mt-4 max-w-xs text-sm text-muted" data-biz="footerDesc">Premium Barbershop für Herren & Damen im Saarland. Tradition trifft modernen Style.</p>
+          <div class="mt-5 flex gap-3">
+            <a href="#" data-biz-href="instagram" aria-label="Instagram" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted transition-colors hover:border-gold hover:text-gold">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" data-biz-href="facebook" aria-label="Facebook" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted transition-colors hover:border-gold hover:text-gold">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M14 9h3l.5-3H14V4.5c0-.9.3-1.5 1.6-1.5H18V.2C17.6.1 16.4 0 15.1 0 12.3 0 10.5 1.7 10.5 4.7V6H8v3h2.5v9H14V9z"/></svg>
+            </a>
+            <a href="https://wa.me/4968112345678" aria-label="WhatsApp" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted transition-colors hover:border-gold hover:text-gold">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.9.9-.9 2.2-.1 3.4a9 9 0 0 0 3.7 3.3c1.3.6 1.8.6 2.5.5.4 0 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-2">
+          <div>
+            <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider text-cream">Kontakt</h4>
+            <ul class="space-y-3 text-sm text-muted">
+              <li><a href="tel:+4968112345678" class="transition-colors hover:text-gold" data-biz="phoneDisplay">0681 123 456 78</a></li>
+              <li><a href="mailto:hallo@saarbarber.de" class="transition-colors hover:text-gold" data-biz="email">hallo@saarbarber.de</a></li>
+              <li><span data-biz="addressStreet">Bahnhofstraße 42</span><br><span data-biz="addressCity">66111 Saarbrücken</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider text-cream">Seiten</h4>
+            <ul class="space-y-3 text-sm text-muted">
+              <li><a href="#buchen" class="transition-colors hover:text-gold">Termin buchen</a></li>
+              <li><a href="#leistungen" class="transition-colors hover:text-gold">Leistungen</a></li>
+              <li><a href="#team" class="transition-colors hover:text-gold">Team</a></li>
+              <li><a href="#zeiten" class="transition-colors hover:text-gold">Öffnungszeiten</a></li>
+            </ul>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider text-cream">Öffnungszeiten</h4>
+            <ul class="space-y-2 text-sm text-muted">
+              <li class="flex justify-between gap-4"><span>Mo – Fr</span><span class="text-cream">09 – 19 Uhr</span></li>
+              <li class="flex justify-between gap-4"><span>Samstag</span><span class="text-cream">09 – 16 Uhr</span></li>
+              <li class="flex justify-between gap-4"><span>Sonntag</span><span>geschlossen</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row">
+        <p>© <span id="year"></span> <span data-biz="name">Saar Barber Co.</span> · Demo-Website</p>
+        <p class="flex gap-5">
+          <a href="#" class="transition-colors hover:text-gold">Impressum</a>
+          <a href="#" class="transition-colors hover:text-gold">Datenschutz</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====================== SCRIPT ====================== -->
+  <script>
+  /* =========================================================================
+     ⚙️  HIER ALLES ANPASSEN
+     Nur dieser BUSINESS-Block muss pro Kunde geändert werden.
+     Alles darunter (Design, Buchung) bleibt unverändert.
+     ========================================================================= */
+  const BUSINESS = {
+    /* — Name & Marke — */
+    brand:    "Saar Barber",        // Logo oben (ohne Punkt)
+    name:     "Saar Barber Co.",    // Voller Name (Footer / Copyright)
+    tagline:  "Premium Cuts",       // Text im runden Emblem
+    estYear:  "2014",               // Gründungsjahr
+    city:     "Saarbrücken",        // Ort
+
+    /* — Kontakt — */
+    phoneDisplay: "0681 123 456 78",   // angezeigte Nummer
+    phoneTel:     "+4968112345678",    // Anruf-Link (mit +49, keine Leerzeichen)
+    email:        "hallo@saarbarber.de",
+    whatsapp:     "4968112345678",     // WhatsApp-Link (nur Ziffern, mit Ländercode)
+    addressStreet:"Bahnhofstraße 42",
+    addressCity:  "66111 Saarbrücken",
+
+    /* — Social (volle URLs) — */
+    instagram: "https://instagram.com/",
+    facebook:  "https://facebook.com/",
+
+    /* — Bewertungen (Google) — */
+    reviewRating: "4,9",
+    reviewCount:  "320+",
+
+    /* — Hero-Texte (Startbildschirm) — */
+    heroLine1:    "Dein Look.",
+    heroLine2:    "Perfekt geschnitten.",   // wird golden dargestellt
+    heroDivider:  "Cut · Shave · Style",
+    heroSubtitle: "Premium Barbershop im Herzen von Saarbrücken. Für Ihn & für Sie – klassische Schnitte, Bartpflege und Styling. Termin online in unter einer Minute.",
+    footerDesc:   "Premium Barbershop für Herren & Damen in Saarbrücken. Tradition trifft modernen Style.",
+
+    /* — Bilder (Web-URL oder lokaler Pfad, z. B. "bilder/hero.jpg") — */
+    heroImage: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=1600&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=600&auto=format&fit=crop",
+    ],
+
+    /* — Öffnungszeiten —  [Start, Ende] in Stunden  oder  null = geschlossen
+         Reihenfolge: 0=So, 1=Mo, 2=Di, 3=Mi, 4=Do, 5=Fr, 6=Sa — */
+    hours: { 0:null, 1:[9,19], 2:[9,19], 3:[9,19], 4:[9,19], 5:[9,19], 6:[9,16] },
+
+    /* — Leistungen —  cat:'m' = "Für Ihn"  ·  cat:'w' = "Für Sie & Kids" — */
+    services: [
+      { id:'herren',   name:'Herrenschnitt',         price:'28 €', dur:'30 Min', cat:'m' },
+      { id:'maschine', name:'Maschinenschnitt',      price:'20 €', dur:'20 Min', cat:'m' },
+      { id:'bart',     name:'Bart & Konturen',       price:'18 €', dur:'20 Min', cat:'m' },
+      { id:'komplett', name:'Haare & Bart Komplett', price:'42 €', dur:'45 Min', cat:'m' },
+      { id:'damen',    name:'Damenschnitt & Styling',price:'48 €', dur:'60 Min', cat:'w' },
+      { id:'kind',     name:'Kinderschnitt (bis 12)',price:'16 €', dur:'20 Min', cat:'w' },
+    ],
+
+    /* — Team —
+         services: welche Leistungs-IDs (siehe oben) bietet die Person an
+         workdays: Arbeitstage  1=Mo … 6=Sa  (0=So) — */
+    team: [
+      { id:'marco',  name:'Marco',  role:'Inhaber & Master Barber',  tag:'Herren · Bart',
+        services:['herren','maschine','bart','komplett','kind'], workdays:[1,2,3,4,5,6],
+        img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop' },
+      { id:'luca',   name:'Luca',   role:'Barber',                   tag:'Fades · Styling',
+        services:['herren','maschine','bart','komplett','kind'], workdays:[2,3,4,5,6],
+        img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop' },
+      { id:'ahmed',  name:'Ahmed',  role:'Barber & Bart-Spezialist', tag:'Bart · Rasur',
+        services:['herren','maschine','bart','komplett'], workdays:[1,2,4,5,6],
+        img:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop' },
+      { id:'sophie', name:'Sophie', role:'Stylistin · nur Damen & Kids', tag:'Damen · Kids',
+        services:['damen','kind'], workdays:[2,4,5,6],
+        img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop' },
+    ],
+  };
+
+  /* =========================================================================
+     Ableitungen & Verteilung — ab hier nichts mehr ändern.
+     ========================================================================= */
+  const WEEKDAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const WEEKDAYS_LONG = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const HOURS    = BUSINESS.hours;
+  const services = BUSINESS.services;
+  const barbers  = BUSINESS.team;
+
+  // Schreibt alle BUSINESS-Werte in die Seite (Texte, Links, Bilder).
+  function applyBusinessConfig(){
+    const B = BUSINESS;
+    const d = Object.assign({}, B, {
+      estLine:        `Est. ${B.estYear} · ${B.city}`,
+      estShort:       `Est · ${B.estYear}`,
+      emblemText:     `${B.name} · ${B.tagline} · `.toUpperCase(),
+      addressOneLine: `${B.addressStreet}, ${B.addressCity}`,
+    });
+    (B.gallery||[]).forEach((u,i)=> d['gallery'+i] = u);
+
+    document.querySelectorAll('[data-biz]').forEach(el=>{ const k=el.getAttribute('data-biz'); if(d[k]!=null) el.textContent=d[k]; });
+    document.querySelectorAll('[data-biz-href]').forEach(el=>{ const k=el.getAttribute('data-biz-href'); if(d[k]!=null) el.setAttribute('href',d[k]); });
+    document.querySelectorAll('[data-biz-src]').forEach(el=>{ const k=el.getAttribute('data-biz-src'); if(d[k]!=null) el.setAttribute('src',d[k]); });
+    document.querySelectorAll('a[href^="tel:"]').forEach(a=> a.href='tel:'+B.phoneTel);
+    document.querySelectorAll('a[href^="mailto:"]').forEach(a=> a.href='mailto:'+B.email);
+    document.querySelectorAll('a[href*="wa.me"]').forEach(a=> a.href='https://wa.me/'+B.whatsapp);
+    document.title = `${B.name} — Premium Barbershop in ${B.city}`;
+    const md=document.querySelector('meta[name="description"]'); if(md) md.setAttribute('content', `${B.name} – Premium Barbershop in ${B.city}. Herren- & Damenschnitt, Bartpflege. Termin online buchen.`);
+  }
+
+  /* ---------- DETERMINISTIC "AVAILABILITY" ---------- */
+  // pseudo-random but stable per barber+date+time so the demo looks consistent
+  function hash(str){ let h=2166136261; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+
+  function slotsForDay(barberId, date){
+    const wd = date.getDay();
+    const h = HOURS[wd];
+    const barber = barbers.find(b=>b.id===barberId);
+    if(!h || !barber || !barber.workdays.includes(wd)) return [];
+    const out=[];
+    const dateKey = date.toISOString().slice(0,10);
+    const now = new Date();
+    const isToday = date.toDateString()===now.toDateString();
+    for(let t=h[0]; t<h[1]; t++){
+      for(const m of [0,30]){
+        if(t===h[1]-0 && m>0) continue;
+        const label = String(t).padStart(2,'0')+':'+String(m).padStart(2,'0');
+        // skip past times today
+        if(isToday && (t < now.getHours() || (t===now.getHours() && m<=now.getMinutes()))) continue;
+        const taken = hash(barberId+dateKey+label) % 10 < 4; // ~40% booked
+        if(!taken) out.push(label);
+      }
+    }
+    return out;
+  }
+
+  // free slots today across a barber (for status badge)
+  function freeToday(barberId){
+    return slotsForDay(barberId, new Date()).length;
+  }
+
+  /* ---------- STATE ---------- */
+  const state = { step:1, service:null, barber:null, date:null, time:null, contact:{} };
+  const TOTAL_FORM_STEPS = 4;
+
+  /* ---------- RENDER: STEPS BAR ---------- */
+  const STEP_LABELS = ['Leistung','Friseur:in','Termin','Deine Daten'];
+  function renderStepsBar(){
+    const bar = document.getElementById('steps-bar');
+    bar.innerHTML = STEP_LABELS.map((l,i)=>{
+      const n=i+1;
+      const done = state.step>n;
+      const cur = state.step===n;
+      const cls = cur ? 'border-gold bg-gold text-base' : done ? 'border-gold bg-gold/15 text-gold' : 'border-line text-muted';
+      const txt = cur ? 'text-cream' : done ? 'text-gold' : 'text-muted';
+      const check = done ? '<svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : n;
+      return `<div class="flex flex-1 items-center gap-2 ${i<STEP_LABELS.length-1?'':''}">
+          <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border text-xs font-semibold ${cls}">${check}</span>
+          <span class="hidden font-medium ${txt} sm:inline">${l}</span>
+          ${i<STEP_LABELS.length-1?'<span class="mx-1 hidden h-px flex-1 bg-line sm:block"></span>':''}
+        </div>`;
+    }).join('');
+  }
+
+  /* ---------- RENDER: SERVICES ---------- */
+  function renderServices(){
+    const grid = document.getElementById('service-grid');
+    grid.innerHTML = services.map(s=>{
+      const sel = state.service===s.id;
+      return `<button type="button" onclick="selectService('${s.id}')"
+        class="group flex cursor-pointer items-center justify-between gap-3 rounded-2xl border p-4 text-left transition-all duration-200 ${sel?'border-gold bg-gold/10 shadow-gold':'border-line bg-base hover:border-gold/50'}">
+        <div>
+          <p class="font-medium">${s.name}</p>
+          <p class="mt-0.5 text-xs text-muted">${s.dur} · ${s.cat==='w'?'Damen / Kids':'Herren'}</p>
+        </div>
+        <span class="font-display text-lg ${sel?'text-gold':'text-cream'}">${s.price}</span>
+      </button>`;
+    }).join('');
+  }
+
+  function selectService(id){
+    state.service = id;
+    // reset downstream if barber no longer offers it
+    if(state.barber){
+      const b = barbers.find(x=>x.id===state.barber);
+      if(b && !b.services.includes(id) && state.barber!=='any'){ state.barber=null; state.date=null; state.time=null; }
+    }
+    renderServices();
+    updateNav();
+  }
+
+  /* ---------- RENDER: BARBERS ---------- */
+  function renderBarbers(){
+    const grid = document.getElementById('barber-grid');
+    const eligible = barbers.filter(b=> b.services.includes(state.service));
+    let html = '';
+
+    // "Egal" option
+    const anySel = state.barber==='any';
+    html += `<button type="button" onclick="selectBarber('any')"
+      class="group flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-200 ${anySel?'border-gold bg-gold/10 shadow-gold':'border-line bg-base hover:border-gold/50'} sm:col-span-2">
+      <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold">
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      </span>
+      <div class="flex-1">
+        <p class="font-medium">Egal – erste:r Verfügbare:r</p>
+        <p class="mt-0.5 text-xs text-muted">Schnellster freier Termin</p>
+      </div>
+    </button>`;
+
+    html += eligible.map(b=>{
+      const sel = state.barber===b.id;
+      const wd = new Date().getDay();
+      const worksToday = b.workdays.includes(wd) && HOURS[wd];
+      const free = worksToday ? freeToday(b.id) : 0;
+      let badge;
+      if(!worksToday) badge = `<span class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface2 px-2.5 py-1 text-[11px] text-muted"><span class="h-1.5 w-1.5 rounded-full bg-muted"></span>Heute nicht im Haus</span>`;
+      else if(free===0) badge = `<span class="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] text-red-300"><span class="h-1.5 w-1.5 rounded-full bg-red-400"></span>Heute ausgebucht</span>`;
+      else badge = `<span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[11px] text-emerald-300"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Heute ${free} frei</span>`;
+
+      return `<button type="button" onclick="selectBarber('${b.id}')"
+        class="group flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-200 ${sel?'border-gold bg-gold/10 shadow-gold':'border-line bg-base hover:border-gold/50'}">
+        <img src="${b.img}" alt="Portrait von ${b.name}" loading="lazy" onerror="this.style.background='#242020';this.removeAttribute('src')"
+             class="h-14 w-14 shrink-0 rounded-full border border-line object-cover" />
+        <div class="flex-1">
+          <p class="font-medium">${b.name}</p>
+          <p class="mt-0.5 text-xs text-muted">${b.role}</p>
+          <div class="mt-2">${badge}</div>
+        </div>
+      </button>`;
+    }).join('');
+
+    grid.innerHTML = html;
+    document.getElementById('today-name').textContent = WEEKDAYS_LONG[new Date().getDay()];
+  }
+
+  function selectBarber(id){
+    state.barber = id;
+    state.date = null; state.time = null;
+    renderBarbers();
+    updateNav();
+  }
+
+  /* ---------- RENDER: DATE + TIME ---------- */
+  function barberWorksOn(date){
+    if(state.barber==='any'){
+      return barbers.some(b=> b.services.includes(state.service) && b.workdays.includes(date.getDay()) && HOURS[date.getDay()]);
+    }
+    const b = barbers.find(x=>x.id===state.barber);
+    return b && b.workdays.includes(date.getDay()) && HOURS[date.getDay()];
+  }
+
+  function slotsForSelection(date){
+    if(state.barber==='any'){
+      const set = new Set();
+      barbers.filter(b=>b.services.includes(state.service)).forEach(b=> slotsForDay(b.id,date).forEach(s=>set.add(s)));
+      return [...set].sort();
+    }
+    return slotsForDay(state.barber, date);
+  }
+
+  function renderDays(){
+    const strip = document.getElementById('day-strip');
+    const hintName = state.barber==='any' ? 'kein:e Friseur:in' : (barbers.find(b=>b.id===state.barber)||{}).name;
+    document.getElementById('barber-name-hint').textContent = hintName;
+
+    let html='';
+    const today = new Date(); today.setHours(0,0,0,0);
+    for(let i=0;i<14;i++){
+      const d = new Date(today); d.setDate(today.getDate()+i);
+      const works = barberWorksOn(d);
+      const isSel = state.date && d.toDateString()===new Date(state.date).toDateString();
+      const dateKey = d.toISOString().slice(0,10);
+      const label = i===0?'Heute': i===1?'Morgen': WEEKDAYS[d.getDay()];
+      const base = works ? 'cursor-pointer border-line bg-base hover:border-gold/60' : 'cursor-not-allowed border-line/40 bg-surface2/40 text-muted/40';
+      const selCls = isSel ? 'border-gold bg-gold/15 text-gold shadow-gold' : base;
+      html += `<button type="button" ${works?`onclick="selectDate('${dateKey}')"`:'disabled'}
+        class="flex min-w-[64px] shrink-0 flex-col items-center gap-0.5 rounded-xl border px-3 py-2.5 text-center transition-all duration-200 ${selCls}">
+        <span class="text-[11px] uppercase tracking-wide ${isSel?'text-gold':'text-muted'}">${label}</span>
+        <span class="font-display text-lg leading-none">${d.getDate()}</span>
+        <span class="text-[10px] ${works?'text-muted':''}">${WEEKDAYS[d.getDay()]}</span>
+      </button>`;
+    }
+    strip.innerHTML = html;
+  }
+
+  function selectDate(key){
+    state.date = key; state.time=null;
+    renderDays(); renderTimes(); updateNav();
+  }
+
+  function renderTimes(){
+    const grid = document.getElementById('time-grid');
+    if(!state.date){ grid.innerHTML = `<p class="col-span-full text-sm text-muted">Bitte zuerst einen Tag wählen.</p>`; return; }
+    const d = new Date(state.date);
+    const slots = slotsForSelection(d);
+    if(slots.length===0){ grid.innerHTML = `<p class="col-span-full rounded-xl border border-line bg-base px-4 py-4 text-sm text-muted">An diesem Tag sind leider keine Termine mehr frei. Wähle einen anderen Tag.</p>`; return; }
+    grid.innerHTML = slots.map(t=>{
+      const sel = state.time===t;
+      return `<button type="button" onclick="selectTime('${t}')"
+        class="cursor-pointer rounded-xl border px-2 py-2.5 text-sm font-medium transition-all duration-200 ${sel?'border-gold bg-gold/15 text-gold shadow-gold':'border-line bg-base hover:border-gold/60'}">${t}</button>`;
+    }).join('');
+  }
+
+  function selectTime(t){ state.time=t; renderTimes(); updateNav(); }
+
+  /* ---------- NAV / STEP CONTROL ---------- */
+  function showStep(n){
+    state.step = n;
+    document.querySelectorAll('.step').forEach(el=> el.classList.toggle('active', +el.dataset.step===n));
+    renderStepsBar();
+    if(n===2) renderBarbers();
+    if(n===3){ renderDays(); renderTimes(); }
+    if(n===5){ renderConfirmation(); }
+    updateNav();
+    // scroll booking into view on step change
+    const sec = document.getElementById('buchen');
+    if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function canProceed(){
+    if(state.step===1) return !!state.service;
+    if(state.step===2) return !!state.barber;
+    if(state.step===3) return !!state.date && !!state.time;
+    if(state.step===4) return true; // validated on click
+    return false;
+  }
+
+  function updateNav(){
+    const back = document.getElementById('btn-back');
+    const next = document.getElementById('btn-next');
+    const nav  = document.getElementById('booking-nav');
+    const hint = document.getElementById('nav-hint');
+
+    if(state.step===5){ nav.style.display='none'; return; }
+    nav.style.display='flex';
+    back.disabled = state.step===1;
+    next.disabled = !canProceed();
+    next.querySelector('svg')?.classList.toggle('hidden', state.step===4);
+    next.childNodes[0].nodeValue = state.step===4 ? 'Termin bestätigen ' : 'Weiter ';
+
+    const hints = {1:'Wähle eine Leistung', 2:'Wähle eine:n Friseur:in', 3:'Wähle Tag & Uhrzeit', 4:'Fülle deine Kontaktdaten aus'};
+    hint.textContent = hints[state.step]||'';
+  }
+
+  function nextStep(){
+    if(state.step===4){ submitBooking(); return; }
+    if(!canProceed()) return;
+    showStep(state.step+1);
+  }
+  function prevStep(){ if(state.step>1) showStep(state.step-1); }
+
+  /* ---------- SUBMIT ---------- */
+  function submitBooking(){
+    const name=document.getElementById('f-name');
+    const phone=document.getElementById('f-phone');
+    const email=document.getElementById('f-email');
+    const note=document.getElementById('f-note');
+    const err=document.getElementById('form-error');
+    const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+
+    let problem='';
+    if(!name.value.trim()) problem='Bitte gib deinen Namen ein.';
+    else if(!phone.value.trim()) problem='Bitte gib deine Telefonnummer ein.';
+    else if(!emailOk) problem='Bitte gib eine gültige E-Mail-Adresse ein.';
+
+    [name,phone,email].forEach(f=>f.classList.remove('border-red-500'));
+    if(problem){
+      err.textContent=problem; err.classList.remove('hidden');
+      if(!name.value.trim()) name.classList.add('border-red-500');
+      else if(!phone.value.trim()) phone.classList.add('border-red-500');
+      else email.classList.add('border-red-500');
+      return;
+    }
+    err.classList.add('hidden');
+    state.contact={ name:name.value.trim(), phone:phone.value.trim(), email:email.value.trim(), note:note.value.trim() };
+    showStep(5);
+  }
+
+  function renderConfirmation(){
+    const c=state.contact;
+    document.getElementById('conf-email').textContent=c.email||'deine E-Mail';
+    const svc=services.find(s=>s.id===state.service)||{};
+    let barberName = state.barber==='any' ? 'Erste:r Verfügbare:r' : (barbers.find(b=>b.id===state.barber)||{}).name;
+    const d=new Date(state.date);
+    const dateStr=`${WEEKDAYS_LONG[d.getDay()]}, ${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`;
+    const row=(l,v)=>`<div class="flex items-center justify-between gap-4 border-b border-line pb-3 last:border-0 last:pb-0"><span class="text-muted">${l}</span><span class="text-right font-medium">${v}</span></div>`;
+    document.getElementById('conf-summary').innerHTML =
+      row('Leistung', `${svc.name} · ${svc.price}`) +
+      row('Friseur:in', barberName) +
+      row('Datum', dateStr) +
+      row('Uhrzeit', state.time+' Uhr') +
+      row('Name', c.name);
+  }
+
+  function resetBooking(){
+    Object.assign(state,{step:1,service:null,barber:null,date:null,time:null,contact:{}});
+    ['f-name','f-phone','f-email','f-note'].forEach(id=>{const e=document.getElementById(id); if(e)e.value='';});
+    document.getElementById('form-error').classList.add('hidden');
+    renderServices();
+    showStep(1);
+  }
+
+  /* ---------- TEAM / PRICES / HOURS RENDER ---------- */
+  function renderTeam(){
+    document.getElementById('team-grid').innerHTML = barbers.map(b=>`
+      <div class="reveal group overflow-hidden rounded-2xl border border-line bg-base transition-colors hover:border-gold/50">
+        <div class="relative aspect-[4/5] overflow-hidden">
+          <img src="${b.img}" alt="Portrait von ${b.name}, ${b.role}" loading="lazy" onerror="this.style.display='none'"
+               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-base via-base/20 to-transparent"></div>
+          <span class="absolute left-3 top-3 rounded-full border border-gold/40 bg-base/70 px-3 py-1 text-[11px] text-goldlt backdrop-blur">${b.tag}</span>
+        </div>
+        <div class="p-5">
+          <p class="font-display text-xl">${b.name}</p>
+          <p class="mt-1 text-sm text-muted">${b.role}</p>
+          <p class="mt-3 text-xs text-muted">Arbeitstage: ${b.workdays.map(w=>WEEKDAYS[w]).join(' · ')}</p>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderPrices(){
+    const men=services.filter(s=>s.cat==='m');
+    const women=services.filter(s=>s.cat==='w');
+    const li=s=>`<li class="px-5 py-4">
+        <div class="flex items-baseline gap-3">
+          <span class="font-cond text-lg uppercase tracking-wide text-cream">${s.name}</span>
+          <span class="flex-1 -translate-y-1 border-b border-dotted border-line"></span>
+          <span class="font-display text-2xl tracking-wide text-gold">${s.price}</span>
+        </div>
+        <p class="mt-0.5 text-xs text-muted">${s.dur}</p></li>`;
+    document.getElementById('price-men').innerHTML=men.map(li).join('');
+    document.getElementById('price-women').innerHTML=women.map(li).join('');
+  }
+
+  function renderHours(){
+    const list=document.getElementById('hours-list');
+    const todayIdx=new Date().getDay();
+    const rows=[1,2,3,4,5,6,0];
+    list.innerHTML=rows.map(i=>{
+      const h=HOURS[i];
+      const isToday=i===todayIdx;
+      const val=h?`${String(h[0]).padStart(2,'0')}:00 – ${String(h[1]).padStart(2,'0')}:00 Uhr`:'geschlossen';
+      return `<li class="flex items-center justify-between gap-4 rounded-xl px-5 py-4 ${isToday?'bg-gold/10':''}">
+        <span class="flex items-center gap-2 ${isToday?'text-gold':''}">${isToday?'<span class="h-1.5 w-1.5 rounded-full bg-gold"></span>':''}${WEEKDAYS_LONG[i]}</span>
+        <span class="font-medium ${h?'':'text-muted'}">${val}</span></li>`;
+    }).join('');
+  }
+
+  /* ---------- OPEN/CLOSED STATUS ---------- */
+  function renderStatus(){
+    const now=new Date(); const wd=now.getDay(); const h=HOURS[wd];
+    const dot=document.getElementById('status-dot'); const txt=document.getElementById('status-text');
+    const todayHours=document.getElementById('today-hours');
+    let open=false;
+    if(h){ const cur=now.getHours()+now.getMinutes()/60; open = cur>=h[0] && cur<h[1]; }
+    if(open){ dot.className='h-2 w-2 rounded-full bg-emerald-400'; txt.textContent=`Jetzt geöffnet · bis ${h[1]}:00 Uhr`; }
+    else { dot.className='h-2 w-2 rounded-full bg-red-400'; txt.textContent='Gerade geschlossen'; }
+    todayHours.textContent = h ? `Heute ${WEEKDAYS_LONG[wd]} · ${String(h[0]).padStart(2,'0')}:00 – ${String(h[1]).padStart(2,'0')}:00 Uhr` : `Heute ${WEEKDAYS_LONG[wd]} · geschlossen`;
+  }
+
+  /* ---------- NAVBAR SCROLL + REVEAL ---------- */
+  function initScrollFx(){
+    const navbar=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>{
+      const s=window.scrollY>20;
+      navbar.classList.toggle('bg-surface/95', s);
+      navbar.classList.toggle('shadow-xl', s);
+      navbar.classList.toggle('bg-surface/70', !s);
+    },{passive:true});
+
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  }
+
+  /* ---------- INIT ---------- */
+  document.getElementById('year').textContent=new Date().getFullYear();
+  applyBusinessConfig();
+  renderServices(); renderStepsBar(); renderTeam(); renderPrices(); renderHours(); renderStatus(); updateNav();
+  // observe team cards added after initial reveal scan
+  document.addEventListener('DOMContentLoaded', initScrollFx);
+  initScrollFx();
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+BILDER FÜR DIE EISDIELEN-DEMO
+=============================
+
+Optional — die Seite funktioniert auch ohne eigene Fotos (dann werden schöne
+Platzhalter aus dem Netz genutzt). Für deine eigenen Bilder lege sie hier ab,
+GENAU mit diesen Dateinamen (.jpg):
+
+  gelateria.jpg   -> Das große runde Bild oben im Hero (z. B. dein Eisladen-Foto)
+  laden.jpg       -> Das Bild im Abschnitt "Ein Ort zum Wohlfühlen"
+
+Tipp: Handy-Fotos im .HEIC-Format vorher in .JPG umwandeln.
+Quadratische bzw. liegende Fotos sehen am besten aus (Hero = rund, Laden = 4:3).

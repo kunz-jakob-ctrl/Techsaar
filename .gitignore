@@ -1,0 +1,12 @@
+# Privat / intern – NICHT auf GitHub teilen
+studium/
+agentur/
+.claude/
+PROJEKT-HANDOFF.md
+
+# System / Build
+.DS_Store
+Thumbs.db
+node_modules/
+__pycache__/
+*.pyc
