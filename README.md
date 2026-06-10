@@ -11,7 +11,10 @@ mobiloptimiert. Es sind reine Front-End-Demos (HTML + Tailwind), keine echten Ba
 | [`saar-barber-demo/`](saar-barber-demo/) | Barbershop / Friseur | Dunkel & Gold, Vintage (Bebas), rotierendes Emblem, Online-Terminbuchung mit Friseur-Verfügbarkeit |
 | [`techsaar/`](techsaar/) | Web-Agentur (wir selbst) | Hell/Pastell, Cursor-Spotlight, Bento, Leistungen & Arbeiten |
 | [`doener-demo/`](doener-demo/) | Dönerladen | Hell „Frischemarkt", Tomatenrot/Grün, Online-Bestellung mit Warenkorb & Anpassung |
+| [`doener-keko/`](doener-keko/) | Döner / Bistro · St. Wendel | „Keko Bistro" — von Jakob gebaut. Döner, Pizza, Pasta & mehr |
 | [`gelateria-demo/`](gelateria-demo/) | Eisdiele | Premium Gelateria, Serifenschrift, runde Eiskugel-Motive, Google-Maps, Sorten-Highlights |
+
+> Die Datei [`index.html`](index.html) im Root ist eine **Übersichtsseite**, die alle Demos verlinkt (ideal als ein Sammel-Link).
 
 ## Ansehen
 
