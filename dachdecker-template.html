@@ -236,28 +236,30 @@ header.scrolled { box-shadow: var(--shadow); }
 .trust-item .stars { display: inline-flex; gap: 1px; }
 .trust-item .stars svg { width: 16px; height: 16px; fill: var(--gold); stroke: none; }
 
-/* ── LEISTUNGEN ── */
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2.75rem; }
-.card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 1.75rem; transition: transform .18s, box-shadow .18s, border-color .18s;
+/* ── LEISTUNGEN (border-grouped list statt identischer Karten) ── */
+.svc-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 3rem;
+  margin-top: 2.5rem; border-top: 1px solid var(--line);
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: transparent; }
-.card-icon {
-  width: 52px; height: 52px; border-radius: 12px; background: var(--surface-2);
-  display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem;
+.svc {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  padding: 1.65rem .25rem; border-bottom: 1px solid var(--line);
 }
-.card-icon svg { width: 28px; height: 28px; stroke: var(--accent); }
-.card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .5rem; }
-.card p { color: var(--ink-mute); font-size: .96rem; }
+.svc-icon { width: 30px; height: 30px; flex-shrink: 0; margin-top: 3px; }
+.svc-icon svg { width: 30px; height: 30px; stroke: var(--accent); }
+.svc h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: .3rem; }
+.svc p { color: var(--ink-mute); font-size: .95rem; }
+@media (max-width: 768px) { .svc-grid { grid-template-columns: 1fr; column-gap: 0; } }
 
-/* ── REFERENZEN ── */
+/* ── REFERENZEN (Bento mit Rhythmus) ── */
 #referenzen { background: var(--surface-2); }
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.75rem; }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 188px; gap: 1rem; margin-top: 2.75rem; }
 .shot {
-  position: relative; aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden;
+  position: relative; border-radius: var(--radius); overflow: hidden;
   background: var(--surface-3); border: 1px solid var(--line);
 }
+.shot.feature { grid-column: span 2; grid-row: span 2; }
+.shot.tall { grid-row: span 2; }
 .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .shot:hover img { transform: scale(1.05); }
 .shot .ph {
@@ -274,9 +276,7 @@ header.scrolled { box-shadow: var(--shadow); }
 
 /* ── ÜBER UNS ── */
 .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; align-items: center; }
-.about-photo { aspect-ratio: 1/1; border-radius: var(--radius); background: var(--surface-3); border: 1px solid var(--line); }
-.about-photo.photo-ph { color: var(--ink-mute); border: 2px dashed var(--line); }
-.about-photo.photo-ph svg { width: 50px; height: 50px; }
+.about-photo { aspect-ratio: 1/1; border-radius: var(--radius); background: var(--surface-3); border: 1px solid var(--line); object-fit: cover; width: 100%; }
 .about h2 { margin-bottom: .9rem; }
 .about p { color: var(--ink-soft); margin-bottom: 1rem; }
 .team { display: flex; gap: 1.5rem; margin-top: 1.75rem; flex-wrap: wrap; }
@@ -386,7 +386,7 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
   .about-grid { grid-template-columns: 1fr; gap: 2rem; }
   .about-photo { max-width: 420px; }
   .contact-grid { grid-template-columns: 1fr; }
-  .cards, .reviews { grid-template-columns: repeat(2, 1fr); }
+  .reviews { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .gallery { grid-template-columns: repeat(2, 1fr); }
 }
@@ -412,7 +412,9 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
 }
 @media (max-width: 560px) {
   section { padding: 3.25rem 0; }
-  .cards, .reviews, .steps, .gallery { grid-template-columns: 1fr; }
+  .reviews, .steps, .gallery { grid-template-columns: 1fr; }
+  .shot.feature, .shot.tall { grid-column: auto; grid-row: auto; }
+  .gallery { grid-auto-rows: 200px; }
   .hero-actions { flex-direction: column; }
   .hero-actions .btn { width: 100%; }
 }
@@ -479,12 +481,9 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
       </div>
     </div>
     <div class="hero-media">
-      <!-- ANPASSEN: FOTO ersetzen. Beispiel:
-           <img class="hero-photo" src="bilder/dach-referenz.jpg" alt="Frisch eingedecktes Steildach in St. Wendel" width="800" height="600"> -->
-      <div class="hero-photo photo-ph" role="img" aria-label="Platzhalter für Projektfoto">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        Hero-Foto einfügen
-      </div>
+      <!-- ANPASSEN: FOTO ersetzen – src durch echtes Projektbild (z.B. bilder/dach-referenz.jpg).
+           Aktuell Demo-Platzhalter über picsum.photos. -->
+      <img class="hero-photo" src="https://picsum.photos/seed/dachdecker-hero-wendel/900/680" alt="Frisch eingedecktes Steildach in St. Wendel" width="900" height="680">
     </div>
   </div>
 </section>
@@ -529,37 +528,31 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
       <h2 class="section-title">Alles rund ums Dach – aus einer Hand</h2>
       <p class="section-intro">Vom Neubau bis zur Sanierung: Wir übernehmen Planung, Material und Ausführung für Sie.</p>
     </div>
-    <div class="cards">
+    <div class="svc-grid">
       <!-- ANPASSEN: Leistungen (Icon + Titel + ein Satz) -->
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
-        <h3>Steildach</h3>
-        <p>Neueindeckung und Reparatur mit Ziegeln, Schiefer oder Blech – fachgerecht und wetterfest.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+        <div><h3>Steildach</h3><p>Neueindeckung und Reparatur mit Ziegeln, Schiefer oder Blech – fachgerecht und wetterfest.</p></div>
       </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M3 12h18"/></svg></div>
-        <h3>Flachdach</h3>
-        <p>Abdichtung mit Bitumen oder Kunststoffbahnen – inklusive Begrünung und Entwässerung.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M3 12h18"/></svg></span>
+        <div><h3>Flachdach</h3><p>Abdichtung mit Bitumen oder Kunststoffbahnen – inklusive Begrünung und Entwässerung.</p></div>
       </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/></svg></div>
-        <h3>Dachfenster</h3>
-        <p>Einbau und Austausch von Velux & Roto – für mehr Licht und Wohnkomfort unterm Dach.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/></svg></span>
+        <div><h3>Dachfenster</h3><p>Einbau und Austausch von Velux & Roto – für mehr Licht und Wohnkomfort unterm Dach.</p></div>
       </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2"/></svg></div>
-        <h3>Dämmung & Energie</h3>
-        <p>Energetische Dachdämmung nach GEG – senkt Heizkosten und ist förderfähig.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2"/></svg></span>
+        <div><h3>Dämmung & Energie</h3><p>Energetische Dachdämmung nach GEG – senkt Heizkosten und ist förderfähig.</p></div>
       </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 18 7a4 4 0 0 1 0 11H7z"/><path d="M12 13v5M9.5 15.5L12 13l2.5 2.5"/></svg></div>
-        <h3>Dachrinnen</h3>
-        <p>Montage, Reinigung und Reparatur von Regenrinnen und Fallrohren aus Zink oder Kupfer.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 18 7a4 4 0 0 1 0 11H7z"/><path d="M12 13v5M9.5 15.5L12 13l2.5 2.5"/></svg></span>
+        <div><h3>Dachrinnen</h3><p>Montage, Reinigung und Reparatur von Regenrinnen und Fallrohren aus Zink oder Kupfer.</p></div>
       </div>
-      <div class="card reveal">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
-        <h3>24h-Notdienst</h3>
-        <p>Sturmschaden oder undichtes Dach? Wir sichern schnell und sind rund um die Uhr erreichbar.</p>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></span>
+        <div><h3>24h-Notdienst</h3><p>Sturmschaden oder undichtes Dach? Wir sichern schnell und sind rund um die Uhr erreichbar.</p></div>
       </div>
     </div>
   </div>
@@ -569,19 +562,18 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
 <section id="referenzen">
   <div class="container">
     <div class="reveal">
-      <p class="eyebrow">Referenzen</p>
       <h2 class="section-title">Projekte, die für sich sprechen</h2>
       <p class="section-intro">Ein Auszug aus unseren letzten Arbeiten in St. Wendel und Umgebung.</p>
     </div>
     <div class="gallery">
-      <!-- ANPASSEN: FOTO je Projekt. Beispiel Vorher/Nachher als Tag.
-           <div class="shot"><img src="bilder/projekt1.jpg" alt="Sanierung Steildach Tholey"><span class="tag">Nachher</span></div> -->
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Steildach</span></div>
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Flachdach</span></div>
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Dachfenster</span></div>
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Vorher</span></div>
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Nachher</span></div>
-      <div class="shot reveal"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projektfoto</div><span class="tag">Dämmung</span></div>
+      <!-- ANPASSEN: FOTO je Projekt – src durch echte Bilder ersetzen (z.B. bilder/projekt1.jpg).
+           Aktuell Demo-Platzhalter über picsum.photos. .feature = großes Tile, .tall = hohes Tile. -->
+      <div class="shot feature reveal"><img src="https://picsum.photos/seed/dach-steildach-wendel/900/720" alt="Saniertes Steildach mit roten Ziegeln" loading="lazy"><span class="tag">Steildach</span></div>
+      <div class="shot reveal"><img src="https://picsum.photos/seed/dach-flachdach/480/360" alt="Abgedichtetes Flachdach" loading="lazy"><span class="tag">Flachdach</span></div>
+      <div class="shot tall reveal"><img src="https://picsum.photos/seed/dach-dachfenster/480/720" alt="Neue Dachfenster im Steildach" loading="lazy"><span class="tag">Dachfenster</span></div>
+      <div class="shot reveal"><img src="https://picsum.photos/seed/dach-vorher/480/360" alt="Dach vor der Sanierung" loading="lazy"><span class="tag">Vorher</span></div>
+      <div class="shot reveal"><img src="https://picsum.photos/seed/dach-nachher/480/360" alt="Dach nach der Sanierung" loading="lazy"><span class="tag">Nachher</span></div>
+      <div class="shot reveal"><img src="https://picsum.photos/seed/dach-daemmung/480/360" alt="Energetische Dachdämmung" loading="lazy"><span class="tag">Dämmung</span></div>
     </div>
   </div>
 </section>
@@ -589,13 +581,9 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
 <!-- ════════════ 6 · ÜBER UNS / TEAM ════════════ -->
 <section id="ueber-uns">
   <div class="container about-grid">
-    <!-- ANPASSEN: FOTO Team / Chef -->
-    <div class="about-photo photo-ph reveal" role="img" aria-label="Platzhalter Team-Foto">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
-      Team-Foto einfügen
-    </div>
+    <!-- ANPASSEN: FOTO Team / Chef – src durch echtes Team-Foto ersetzen. Aktuell Demo über picsum.photos. -->
+    <img class="about-photo reveal" src="https://picsum.photos/seed/dachdecker-team/700/700" alt="Das Team von Mustermann Bedachungen" loading="lazy">
     <div class="about reveal">
-      <p class="eyebrow">Über uns</p>
       <h2 class="section-title">Ein Familienbetrieb aus der Region</h2>
       <p>Seit 1998 sind wir Ihr Ansprechpartner rund ums Dach im Landkreis St. Wendel. Was als kleiner Familienbetrieb begann, ist heute ein eingespieltes Team aus erfahrenen Gesellen und Meistern – mit dem gleichen Anspruch wie am ersten Tag: saubere Arbeit, faire Preise und ein Handschlag, der zählt.</p>
       <p>Wir kennen die Region, das Wetter und die Bausubstanz hier genau – und beraten Sie ehrlich, auch wenn die kleinere Lösung manchmal die bessere ist.</p>
@@ -647,8 +635,7 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
 <section id="ablauf">
   <div class="container">
     <div class="reveal">
-      <p class="eyebrow">So arbeiten wir</p>
-      <h2 class="section-title">In 4 Schritten zum neuen Dach</h2>
+      <h2 class="section-title">So arbeiten wir: In 4 Schritten zum neuen Dach</h2>
       <p class="section-intro">Transparent von der ersten Anfrage bis zur Abnahme – ohne böse Überraschungen.</p>
     </div>
     <div class="steps">
@@ -664,8 +651,7 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
 <section id="faq">
   <div class="container">
     <div class="reveal" style="text-align:center">
-      <p class="eyebrow">Häufige Fragen</p>
-      <h2 class="section-title">Gut zu wissen</h2>
+      <h2 class="section-title">Häufige Fragen</h2>
     </div>
     <div class="faq-list">
       <!-- ANPASSEN: Fragen & Antworten (zusätzlich gut für SEO) -->
