@@ -260,6 +260,7 @@ header.scrolled { box-shadow: var(--shadow); }
 }
 .shot.feature { grid-column: span 2; grid-row: span 2; }
 .shot.tall { grid-row: span 2; }
+.shot.wide { grid-column: span 3; }
 .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .shot:hover img { transform: scale(1.05); }
 .shot .ph {
@@ -567,13 +568,11 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
     </div>
     <div class="gallery">
       <!-- ANPASSEN: FOTO je Projekt – src durch echte Bilder ersetzen (z.B. bilder/projekt1.jpg).
-           Aktuell Demo-Platzhalter über picsum.photos. .feature = großes Tile, .tall = hohes Tile. -->
+           Aktuell Demo-Fotos über Unsplash. .feature = großes Tile, .wide = breites Tile. -->
       <div class="shot feature reveal"><img src="https://images.unsplash.com/photo-1600612707884-c424a2ba812e?auto=format&fit=crop&w=900&h=720&q=80" alt="Saniertes Steildach mit braunen Ziegeln vor grüner Baumkulisse" loading="lazy"><span class="tag">Steildach</span></div>
       <div class="shot reveal"><img src="https://images.unsplash.com/photo-1768677432858-b9a8608dd849?auto=format&fit=crop&w=480&h=360&q=80" alt="Flachdächer moderner Gebäude aus der Vogelperspektive" loading="lazy"><span class="tag">Flachdach</span></div>
-      <div class="shot tall reveal"><img src="https://images.unsplash.com/photo-1776624384012-ecb2fccf75f3?auto=format&fit=crop&w=480&h=720&q=80" alt="Zwei eingebaute Dachfenster im Holzdachstuhl" loading="lazy"><span class="tag">Dachfenster</span></div>
-      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1678020706579-de8ce9e33ca8?auto=format&fit=crop&w=480&h=360&q=80" alt="Vermoostes Ziegeldach vor der Sanierung" loading="lazy"><span class="tag">Vorher</span></div>
-      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1504241932178-447c4c934e98?auto=format&fit=crop&w=480&h=360&q=80" alt="Frisch saniertes Terrakotta-Ziegeldach" loading="lazy"><span class="tag">Nachher</span></div>
-      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1752852381113-7d93abc9d7ea?auto=format&fit=crop&w=480&h=360&q=80" alt="Dachboden mit neu eingebrachter Mineralwolle-Dämmung" loading="lazy"><span class="tag">Dämmung</span></div>
+      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1776624384012-ecb2fccf75f3?auto=format&fit=crop&w=480&h=360&q=80" alt="Zwei eingebaute Dachfenster im Holzdachstuhl" loading="lazy"><span class="tag">Dachfenster</span></div>
+      <div class="shot wide reveal"><img src="https://images.unsplash.com/photo-1752852381113-7d93abc9d7ea?auto=format&fit=crop&w=960&h=360&q=80" alt="Dachboden mit neu eingebrachter Mineralwolle-Dämmung" loading="lazy"><span class="tag">Dämmung</span></div>
     </div>
   </div>
 </section>
