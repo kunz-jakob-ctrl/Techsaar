@@ -77,78 +77,78 @@
 
 <body class="bg-cream font-sans text-ink antialiased">
 
-  <!-- ===================== HEADER (statisch) ===================== -->
-  <header class="absolute inset-x-0 top-0 z-30">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
-      <a href="#top" class="flex items-center gap-2.5">
-        <span class="grid h-11 w-11 place-items-center rounded-full bg-tomato text-white">
-          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M8 16h8M10 20h4"/></svg>
+  <!-- ===================== HERO (Aura-Look: randlose Foto-Karte) ===================== -->
+  <section id="top" class="px-3 pt-3 sm:px-4 sm:pt-4">
+    <div class="relative flex min-h-[94vh] flex-col overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]" style="background:radial-gradient(120% 120% at 70% 15%, #3a2418, #160c06 72%)">
+      <!-- Hero-Foto (Unsplash; bei Fehler bleibt der warme Verlauf) -->
+      <img src="https://images.unsplash.com/photo-1596995804697-27d11d43652e?q=80&w=1900&auto=format&fit=crop" alt="Frisch geschnittener Döner vom Drehspieß" class="absolute inset-0 h-full w-full object-cover" loading="eager" onerror="this.remove()" />
+      <!-- Verläufe für Lesbarkeit -->
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(16,9,4,.94) 0%, rgba(16,9,4,.30) 45%, rgba(16,9,4,.55) 100%)"></div>
+
+      <!-- NAV über dem Foto -->
+      <header class="relative z-10">
+        <div class="flex items-center justify-between px-5 py-5 sm:px-8">
+          <a href="#top" class="flex items-center gap-2.5">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-tomato text-white">
+              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M8 16h8M10 20h4"/></svg>
+            </span>
+            <span class="text-2xl font-extrabold leading-none text-white" data-cfg="name">Saar Döner</span>
+          </a>
+          <nav class="hidden items-center gap-8 md:flex">
+            <a href="#beliebt"  class="text-base font-semibold text-white/75 transition-colors hover:text-white">Beliebt</a>
+            <a href="#menu"     class="text-base font-semibold text-white/75 transition-colors hover:text-white">Speisekarte</a>
+            <a href="#zeiten"   class="text-base font-semibold text-white/75 transition-colors hover:text-white">Öffnungszeiten</a>
+            <a href="#kontakt"  class="text-base font-semibold text-white/75 transition-colors hover:text-white">Kontakt</a>
+          </nav>
+          <a href="tel:+4968100000000" class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-white/20">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span data-cfg="phoneDisplay">0681 000 000</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Obere Glas-Pills -->
+      <div class="relative z-10 flex items-start justify-between px-5 pt-1 sm:px-8">
+        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur" style="animation-delay:.05s">
+          <span class="h-2 w-2 rounded-full bg-tomato"></span>Saarbrücken · Innenstadt
         </span>
-        <span class="font-display text-2xl font-extrabold leading-none" data-cfg="name">Saar Döner</span>
-      </a>
-      <nav class="hidden items-center gap-8 md:flex">
-        <a href="#beliebt"  class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Beliebt</a>
-        <a href="#menu"     class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Speisekarte</a>
-        <a href="#zeiten"   class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Öffnungszeiten</a>
-        <a href="#kontakt"  class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Kontakt</a>
-      </nav>
-      <a href="tel:+4968100000000" class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-cream transition-transform hover:-translate-y-0.5">
-        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span data-cfg="phoneDisplay">0681 000 000</span>
-      </a>
-    </div>
-  </header>
-
-  <!-- ===================== HERO ===================== -->
-  <section id="top" class="relative overflow-hidden bg-soft px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-40">
-    <div class="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-honey/20 blur-3xl"></div>
-    <div class="pointer-events-none absolute -bottom-10 left-1/4 h-80 w-80 rounded-full bg-leaf/10 blur-3xl"></div>
-
-    <div class="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
-      <!-- LEFT -->
-      <div>
-        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-leaf/15 px-3.5 py-1.5 text-sm font-semibold text-leafd" style="animation-delay:.05s">
-          <span id="open-dot" class="h-2 w-2 rounded-full bg-leaf"></span>
-          <span id="open-text">Jetzt geöffnet</span>
+        <span class="anim-up hidden items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur sm:inline-flex" style="animation-delay:.1s">
+          Frisch vom Drehspieß
         </span>
+      </div>
 
-        <h1 class="anim-up mt-5 font-display text-6xl font-extrabold leading-[0.98] sm:text-7xl" style="animation-delay:.12s">
-          Döner,<br>wie er <span class="text-tomato">sein soll.</span>
+      <!-- Hero-Inhalt unten -->
+      <div class="relative z-10 mt-auto px-5 pb-10 sm:px-8 sm:pb-12">
+        <div class="anim-up mb-6 flex flex-wrap gap-2.5" style="animation-delay:.15s">
+          <span class="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-tomato" fill="currentColor"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg>100% Halal
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur">
+            <span id="open-dot" class="h-2 w-2 rounded-full bg-leaf"></span><span id="open-text">Jetzt geöffnet</span>
+          </span>
+        </div>
+
+        <h1 class="anim-up max-w-3xl text-6xl font-light leading-[0.94] tracking-tight text-white sm:text-7xl lg:text-[6rem]" style="animation-delay:.2s">
+          Döner, wie er<br>sein soll.
         </h1>
 
-        <p class="anim-up mt-6 max-w-md text-lg leading-relaxed text-muted" style="animation-delay:.2s">
+        <p class="anim-up mt-6 max-w-lg text-lg leading-relaxed text-white/80" style="animation-delay:.28s">
           Saftiges Fleisch vom Drehspieß, knackiges Gemüse, hausgemachte Soßen. Täglich frisch gemacht — mitten in Saarbrücken.
         </p>
 
-        <div class="anim-up mt-8 flex flex-wrap gap-3" style="animation-delay:.28s">
-          <a href="#menu" class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-tomato px-7 py-4 text-base font-bold text-white shadow-tomato transition-transform duration-200 hover:-translate-y-0.5">
+        <div class="anim-up mt-8 flex flex-wrap items-center gap-3" style="animation-delay:.34s">
+          <a href="#menu" class="group inline-flex items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-base font-semibold text-ink transition-transform duration-200 hover:-translate-y-0.5">
             Speisekarte ansehen
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="grid h-9 w-9 place-items-center rounded-full bg-ink text-white transition-transform duration-200 group-hover:rotate-45">
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+            </span>
           </a>
-          <a href="tel:+4968100000000" class="inline-flex cursor-pointer items-center gap-2 rounded-full border-2 border-ink/15 px-7 py-4 text-base font-bold text-ink transition-colors hover:border-tomato hover:text-tomato">
+          <a href="tel:+4968100000000" class="group inline-flex items-center gap-3 rounded-full bg-white/10 py-2 pl-6 pr-2 text-base font-semibold text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-white/20">
             Anrufen
+            <span class="grid h-9 w-9 place-items-center rounded-full bg-white/15">
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
           </a>
-        </div>
-
-        <div class="anim-up mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted" style="animation-delay:.36s">
-          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>100% Halal</span>
-          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Täglich frisch</span>
-          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vegetarische Optionen</span>
-        </div>
-      </div>
-
-      <!-- RIGHT -->
-      <div class="anim-up relative mx-auto w-full max-w-sm lg:max-w-none" style="animation-delay:.2s">
-        <div class="imgfall relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-card shadow-soft">
-          <img data-cfg-src="heroImage" src="bilder/hero.jpg" alt="Frisch zubereiteter Döner" class="h-full w-full object-cover" onerror="this.remove()" />
-        </div>
-        <div class="absolute -left-4 top-8 flex items-center gap-2 rounded-full bg-card px-4 py-2.5 shadow-soft sm:-left-6">
-          <span class="grid h-7 w-7 place-items-center rounded-full bg-leaf/15 text-leafd"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg></span>
-          <span class="text-sm font-bold">Frische Zutaten</span>
-        </div>
-        <div class="absolute -bottom-4 right-6 flex items-center gap-2 rounded-full bg-card px-4 py-2.5 shadow-soft">
-          <span class="grid h-7 w-7 place-items-center rounded-full bg-tomato/15 text-tomato"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-          <span class="text-sm font-bold">Hausgemachte Soßen</span>
         </div>
       </div>
     </div>
