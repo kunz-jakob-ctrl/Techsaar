@@ -29,7 +29,7 @@
             honey:  '#F2A63C',
           },
           fontFamily: {
-            display: ['"Baloo 2"', 'system-ui', 'sans-serif'],
+            display: ['Inter', 'system-ui', 'sans-serif'],
             sans: ['Inter', 'system-ui', 'sans-serif'],
           },
           boxShadow: {
@@ -75,7 +75,7 @@
   </style>
 </head>
 
-<body class="bg-cream font-sans text-ink antialiased">
+<body class="bg-[#14100c] font-sans text-ink antialiased">
 
   <!-- ===================== HERO (Aura-Look: randlose Foto-Karte) ===================== -->
   <section id="top" class="px-3 pt-3 sm:px-4 sm:pt-4">
@@ -100,19 +100,32 @@
             <a href="#zeiten"   class="text-base font-semibold text-white/75 transition-colors hover:text-white">Öffnungszeiten</a>
             <a href="#kontakt"  class="text-base font-semibold text-white/75 transition-colors hover:text-white">Kontakt</a>
           </nav>
-          <a href="tel:+4968100000000" class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-white/20">
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span data-cfg="phoneDisplay">0681 000 000</span>
-          </a>
+          <div class="flex items-center gap-2">
+            <a href="tel:+4968100000000" class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-white/20">
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span class="hidden sm:inline" data-cfg="phoneDisplay">0681 000 000</span>
+            </a>
+            <button type="button" id="m-burger" aria-label="Menü öffnen" aria-expanded="false" onclick="const m=document.getElementById('m-menu');const hidden=m.classList.toggle('hidden');this.setAttribute('aria-expanded',String(!hidden));" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-white/20 md:hidden">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobiles Menü -->
+        <div id="m-menu" class="absolute inset-x-3 top-[4.75rem] z-30 hidden rounded-2xl bg-black/70 p-2 ring-1 ring-white/15 backdrop-blur-xl md:hidden">
+          <a href="#beliebt"  onclick="document.getElementById('m-menu').classList.add('hidden')" class="block rounded-xl px-4 py-3 font-semibold text-white/85 transition-colors hover:bg-white/10">Beliebt</a>
+          <a href="#menu"     onclick="document.getElementById('m-menu').classList.add('hidden')" class="block rounded-xl px-4 py-3 font-semibold text-white/85 transition-colors hover:bg-white/10">Speisekarte</a>
+          <a href="#zeiten"   onclick="document.getElementById('m-menu').classList.add('hidden')" class="block rounded-xl px-4 py-3 font-semibold text-white/85 transition-colors hover:bg-white/10">Öffnungszeiten</a>
+          <a href="#kontakt"  onclick="document.getElementById('m-menu').classList.add('hidden')" class="block rounded-xl px-4 py-3 font-semibold text-white/85 transition-colors hover:bg-white/10">Kontakt</a>
         </div>
       </header>
 
       <!-- Obere Glas-Pills -->
       <div class="relative z-10 flex items-start justify-between px-5 pt-1 sm:px-8">
-        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur" style="animation-delay:.05s">
+        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-black/45 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur" style="animation-delay:.05s">
           <span class="h-2 w-2 rounded-full bg-tomato"></span>Saarbrücken · Innenstadt
         </span>
-        <span class="anim-up hidden items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur sm:inline-flex" style="animation-delay:.1s">
+        <span class="anim-up hidden items-center gap-2 rounded-full bg-black/45 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur sm:inline-flex" style="animation-delay:.1s">
           Frisch vom Drehspieß
         </span>
       </div>
@@ -120,10 +133,10 @@
       <!-- Hero-Inhalt unten -->
       <div class="relative z-10 mt-auto px-5 pb-10 sm:px-8 sm:pb-12">
         <div class="anim-up mb-6 flex flex-wrap gap-2.5" style="animation-delay:.15s">
-          <span class="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink">
+          <span class="inline-flex items-center gap-2 rounded-full bg-black/45 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur">
             <svg viewBox="0 0 24 24" class="h-4 w-4 text-tomato" fill="currentColor"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg>100% Halal
           </span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-black/35 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur">
+          <span class="inline-flex items-center gap-2 rounded-full bg-black/45 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15 backdrop-blur">
             <span id="open-dot" class="h-2 w-2 rounded-full bg-leaf"></span><span id="open-text">Jetzt geöffnet</span>
           </span>
         </div>
@@ -158,7 +171,7 @@
   <section id="beliebt" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-20">
     <div class="mx-auto max-w-7xl">
       <div class="reveal mb-9 flex items-end justify-between gap-4">
-        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Beliebte <span class="text-tomato">Gerichte</span></h2>
+        <h2 class="font-display text-4xl font-extrabold text-cream sm:text-5xl">Beliebte <span class="text-tomato">Gerichte</span></h2>
         <a href="#menu" class="hidden shrink-0 cursor-pointer items-center gap-1.5 font-display font-bold text-tomato hover:underline sm:inline-flex">Ganze Karte
           <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -189,10 +202,10 @@
   <section id="menu" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-20">
     <div class="mx-auto max-w-5xl">
       <div class="reveal mb-6">
-        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Unsere <span class="text-tomato">Speisekarte</span></h2>
+        <h2 class="font-display text-4xl font-extrabold text-cream sm:text-5xl">Unsere <span class="text-tomato">Speisekarte</span></h2>
       </div>
 
-      <div class="sticky top-3 z-20 -mx-5 mb-8 bg-cream/90 px-5 py-3 backdrop-blur sm:mx-0 sm:rounded-2xl sm:px-3">
+      <div class="sticky top-3 z-20 -mx-5 mb-8 bg-[#14100c]/85 px-5 py-3 backdrop-blur ring-1 ring-white/5 sm:mx-0 sm:rounded-2xl sm:px-3">
         <div id="cat-tabs" class="flex gap-2 overflow-x-auto"></div>
       </div>
 
@@ -201,14 +214,14 @@
   </section>
 
   <!-- ===================== ÖFFNUNGSZEITEN / KONTAKT ===================== -->
-  <section id="zeiten" class="scroll-mt-24 bg-soft px-5 py-16 sm:px-8 lg:py-20">
+  <section id="zeiten" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-20">
     <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
       <div class="reveal">
-        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Öffnungs<span class="text-tomato">zeiten</span></h2>
+        <h2 class="font-display text-4xl font-extrabold text-cream sm:text-5xl">Öffnungs<span class="text-tomato">zeiten</span></h2>
         <ul id="hours-list" class="mt-6 divide-y divide-line overflow-hidden rounded-3xl border border-line bg-card shadow-soft"></ul>
       </div>
       <div id="kontakt" class="reveal scroll-mt-24">
-        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Komm <span class="text-tomato">vorbei</span></h2>
+        <h2 class="font-display text-4xl font-extrabold text-cream sm:text-5xl">Komm <span class="text-tomato">vorbei</span></h2>
         <div class="mt-6 space-y-4">
           <a href="#" data-cfg-href="mapsUrl" class="flex items-start gap-4 rounded-3xl border border-line bg-card p-5 shadow-soft transition-colors hover:border-tomato">
             <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-tomato/12 text-tomato"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
@@ -436,7 +449,7 @@
 
     document.getElementById('menu-list').innerHTML = CONFIG.menu.map(c=>`
       <div class="menu-cat scroll-mt-40" id="cat-${c.id}" data-cat="${c.id}">
-        <h3 class="reveal mb-4 font-display text-2xl font-extrabold">${c.name}</h3>
+        <h3 class="reveal mb-4 font-display text-2xl font-extrabold text-cream">${c.name}</h3>
         <div class="reveal divide-y divide-line overflow-hidden rounded-3xl border border-line bg-card shadow-soft">
           ${c.items.map(i=>`
             <div class="flex items-center gap-4 p-4">
