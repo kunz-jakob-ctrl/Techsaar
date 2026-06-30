@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  HANDWERKER-WEBSITE TEMPLATE  ·  Beispiel: Dachdecker-Meisterbetrieb
+  ============================================================================
+  Alle anpassbaren Stellen sind mit  ANPASSEN:  markiert.
+  Suche im Editor nach "ANPASSEN", um alle Platzhalter zu finden.
+
+  Wichtigste Stellen zum Ausfuellen:
+   1. Title + meta description             (SEO – Ort & Leistung)
+   2. JSON-LD Block (schema.org)           (Name, Adresse, Tel, Zeiten)
+   3. Telefonnummer  -> Suche: 06851
+   4. WhatsApp-Nummer -> Suche: wa.me
+   5. Web3Forms access_key -> Suche: DEIN-ACCESS-KEY
+   6. Bilder (Hero + Galerie) -> Suche: FOTO
+  ============================================================================
+-->
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ANPASSEN: Title & Description = wichtigster SEO-Hebel. Schema: Leistung + Ort -->
+<title>Dachdecker-Meisterbetrieb in St. Wendel | Mustermann Bedachungen</title>
+<meta name="description" content="Ihr Dachdecker-Meisterbetrieb in St. Wendel & Umgebung. Steildach, Flachdach, Dachfenster & 24h-Notdienst. Festpreis-Angebot kostenlos anfragen.">
+
+<!-- Open Graph (Vorschau bei Facebook/WhatsApp-Links) -->
+<meta property="og:title" content="Dachdecker-Meisterbetrieb in St. Wendel | Mustermann Bedachungen">
+<meta property="og:description" content="Steildach, Flachdach, Dachfenster & 24h-Notdienst – Festpreis-Angebot kostenlos anfragen.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+
+<!-- ANPASSEN: schema.org LocalBusiness — Pflicht-Hebel für lokale Google-Suche -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RoofingContractor",
+  "name": "Mustermann Bedachungen GmbH",
+  "image": "https://www.ihre-domain.de/logo.png",
+  "@id": "https://www.ihre-domain.de",
+  "url": "https://www.ihre-domain.de",
+  "telephone": "+4968511234567",
+  "priceRange": "€€",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Musterstraße 12",
+    "addressLocality": "St. Wendel",
+    "postalCode": "66606",
+    "addressCountry": "DE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 49.4670,
+    "longitude": 7.1680
+  },
+  "areaServed": ["St. Wendel", "Tholey", "Marpingen", "Oberthal", "Nohfelden", "Freisen", "Namborn", "Nonnweiler"],
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:30","closes":"17:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"12:00"}
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── ANPASSEN: Markenfarben ── */
+  --ink:        #1a2230;   /* Anthrazit / Schiefer */
+  --ink-soft:   #2c3850;
+  --ink-mute:   #5a6478;
+  --accent:     #e0451f;   /* Ziegelrot-Orange (CTA) */
+  --accent-dk:  #c23a18;
+  --surface:    #ffffff;
+  --surface-2:  #f4f6f9;
+  --surface-3:  #eaeef3;
+  --line:       #dde3ea;
+  --green:      #1f9d55;   /* Vertrauen / Häkchen */
+  --gold:       #f5a623;   /* Sterne */
+  --on-dark:    #f4f6f9;
+  --on-dark-mu: #9aa6bb;
+
+  --radius:     10px;
+  --radius-sm:  6px;
+  --shadow:     0 4px 18px rgba(26,34,48,0.08);
+  --shadow-lg:  0 12px 40px rgba(26,34,48,0.16);
+  --maxw:       1140px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1,h2,h3 { font-family: 'Archivo', sans-serif; line-height: 1.08; letter-spacing: -0.01em; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+section { padding: 4.5rem 0; }
+
+/* ── REVEAL ANIMATION ── */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1rem;
+  padding: .85rem 1.6rem; border-radius: var(--radius-sm); border: 2px solid transparent;
+  cursor: pointer; text-decoration: none; min-height: 48px;
+  transition: background .18s, transform .12s, border-color .18s, color .18s;
+}
+.btn svg { width: 19px; height: 19px; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dk); transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--ink); background: var(--surface-2); }
+.btn-light { background: #fff; color: var(--ink); }
+.btn-light:hover { background: var(--surface-2); transform: translateY(-2px); }
+.btn-outline-light { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.btn-outline-light:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+
+.eyebrow {
+  font-family: 'Archivo', sans-serif; font-weight: 700; font-size: .8rem;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: .6rem;
+}
+.section-title { font-weight: 800; font-size: clamp(1.9rem, 4.5vw, 2.8rem); color: var(--ink); }
+.section-intro { color: var(--ink-mute); font-size: 1.08rem; max-width: 620px; margin-top: .85rem; }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line); transition: box-shadow .25s;
+}
+header.scrolled { box-shadow: var(--shadow); }
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+}
+.brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
+.brand-mark {
+  width: 40px; height: 40px; border-radius: 8px; background: var(--ink);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.brand-mark svg { width: 24px; height: 24px; stroke: var(--accent); }
+.brand-text strong { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--ink); display: block; line-height: 1.1; }
+.brand-text span { font-size: .72rem; color: var(--ink-mute); letter-spacing: .04em; }
+
+.nav-right { display: flex; align-items: center; gap: 1.75rem; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-family: 'Archivo', sans-serif; font-weight: 600; font-size: .95rem;
+  color: var(--ink-soft); text-decoration: none; transition: color .18s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-phone {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: 'Archivo', sans-serif; font-weight: 700; color: var(--ink);
+  text-decoration: none; white-space: nowrap;
+}
+.nav-phone svg { width: 18px; height: 18px; stroke: var(--accent); }
+.nav-phone:hover { color: var(--accent); }
+
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 10px; }
+.burger span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform .25s, opacity .2s; }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; flex-direction: column; background: #fff;
+  border-bottom: 1px solid var(--line); padding: 0 1.25rem;
+  max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease;
+}
+.mobile-menu.open { max-height: 420px; padding: .5rem 1.25rem 1.25rem; }
+.mobile-menu a {
+  font-family: 'Archivo', sans-serif; font-weight: 600; color: var(--ink);
+  text-decoration: none; padding: .9rem 0; border-bottom: 1px solid var(--surface-3);
+}
+.mobile-menu .btn { margin-top: 1rem; width: 100%; }
+
+/* ── HERO ── */
+.hero { position: relative; background: var(--ink); color: var(--on-dark); overflow: hidden; padding: 0; }
+.hero-inner {
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: 3rem; align-items: center;
+  min-height: 540px; padding: 4rem 0;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; opacity: .5; pointer-events: none;
+  background-image:
+    linear-gradient(135deg, transparent 0%, transparent 49.5%, rgba(255,255,255,.04) 49.5%, rgba(255,255,255,.04) 50.5%, transparent 50.5%);
+  background-size: 26px 26px;
+}
+.hero-content { position: relative; }
+.hero h1 { font-weight: 900; font-size: clamp(2.1rem, 5vw, 3.4rem); color: #fff; }
+.hero h1 .hl { color: var(--accent); }
+.hero p.lead { color: var(--on-dark-mu); font-size: 1.15rem; margin: 1.1rem 0 1.9rem; max-width: 30rem; }
+.hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; }
+.hero-media { position: relative; }
+.hero-photo {
+  width: 100%; aspect-ratio: 4/3; border-radius: var(--radius); object-fit: cover;
+  background: var(--ink-soft); box-shadow: var(--shadow-lg);
+}
+/* Foto-Platzhalter, falls noch kein Bild eingesetzt */
+.photo-ph {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7rem;
+  color: var(--on-dark-mu); border: 2px dashed rgba(255,255,255,.18);
+  font-family: 'Archivo', sans-serif; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase;
+}
+.photo-ph svg { width: 46px; height: 46px; opacity: .5; }
+
+/* ── TRUST BAR ── */
+.trust { background: var(--surface-2); border-bottom: 1px solid var(--line); padding: 0; }
+.trust-inner {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem 0;
+}
+.trust-item { display: flex; align-items: center; gap: .6rem; font-size: .92rem; font-weight: 500; color: var(--ink-soft); }
+.trust-item svg { width: 22px; height: 22px; stroke: var(--accent); flex-shrink: 0; }
+.trust-item .stars { display: inline-flex; gap: 1px; }
+.trust-item .stars svg { width: 16px; height: 16px; fill: var(--gold); stroke: none; }
+
+/* ── LEISTUNGEN (border-grouped list statt identischer Karten) ── */
+.svc-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 3rem;
+  margin-top: 2.5rem; border-top: 1px solid var(--line);
+}
+.svc {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  padding: 1.65rem .25rem; border-bottom: 1px solid var(--line);
+}
+.svc-icon { width: 30px; height: 30px; flex-shrink: 0; margin-top: 3px; }
+.svc-icon svg { width: 30px; height: 30px; stroke: var(--accent); }
+.svc h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: .3rem; }
+.svc p { color: var(--ink-mute); font-size: .95rem; }
+@media (max-width: 768px) { .svc-grid { grid-template-columns: 1fr; column-gap: 0; } }
+
+/* ── REFERENZEN (Bento mit Rhythmus) ── */
+#referenzen { background: var(--surface-2); }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 188px; gap: 1rem; margin-top: 2.75rem; }
+.shot {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  background: var(--surface-3); border: 1px solid var(--line);
+}
+.shot.feature { grid-column: span 2; grid-row: span 2; }
+.shot.tall { grid-row: span 2; }
+.shot.wide { grid-column: span 3; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.shot:hover img { transform: scale(1.05); }
+.shot .ph {
+  width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: .5rem; color: var(--ink-mute);
+  font-family: 'Archivo', sans-serif; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase;
+}
+.shot .ph svg { width: 38px; height: 38px; opacity: .4; }
+.shot .tag {
+  position: absolute; top: .7rem; left: .7rem; background: rgba(26,34,48,.85); color: #fff;
+  font-family: 'Archivo', sans-serif; font-weight: 600; font-size: .72rem; letter-spacing: .05em;
+  padding: .3rem .65rem; border-radius: 4px; text-transform: uppercase;
+}
+
+/* ── ÜBER UNS ── */
+.about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; align-items: center; }
+.about-photo { aspect-ratio: 1/1; border-radius: var(--radius); background: var(--surface-3); border: 1px solid var(--line); object-fit: cover; width: 100%; }
+.about h2 { margin-bottom: .9rem; }
+.about p { color: var(--ink-soft); margin-bottom: 1rem; }
+.team { display: flex; gap: 1.5rem; margin-top: 1.75rem; flex-wrap: wrap; }
+.member { display: flex; align-items: center; gap: .8rem; }
+.member .avatar {
+  width: 54px; height: 54px; border-radius: 50%; background: var(--surface-3); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; color: var(--ink-mute);
+}
+.member .avatar svg { width: 26px; height: 26px; stroke: var(--ink-mute); }
+.member strong { display: block; font-family: 'Archivo', sans-serif; font-size: .98rem; }
+.member span { font-size: .85rem; color: var(--ink-mute); }
+
+/* ── BEWERTUNGEN ── */
+#bewertungen { background: var(--ink); color: var(--on-dark); }
+#bewertungen .section-title { color: #fff; }
+#bewertungen .section-intro { color: var(--on-dark-mu); }
+.reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2.75rem; }
+.review {
+  background: var(--ink-soft); border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius); padding: 1.6rem;
+}
+.review .stars { display: flex; gap: 2px; margin-bottom: .9rem; }
+.review .stars svg { width: 18px; height: 18px; fill: var(--gold); }
+.review p { color: var(--on-dark); font-size: .98rem; font-style: italic; margin-bottom: 1.1rem; }
+.review .who { display: flex; align-items: center; gap: .6rem; }
+.review .who .g { width: 22px; height: 22px; }
+.review .who strong { font-family: 'Archivo', sans-serif; font-size: .9rem; color: #fff; display: block; }
+.review .who span { font-size: .8rem; color: var(--on-dark-mu); }
+
+/* ── ABLAUF ── */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 2.75rem; counter-reset: step; }
+.step { position: relative; padding: 1.6rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.step .num {
+  counter-increment: step; font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 2rem;
+  color: #fff; background: var(--accent); width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
+}
+.step .num::before { content: counter(step); }
+.step h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: .4rem; }
+.step p { color: var(--ink-mute); font-size: .92rem; }
+
+/* ── FAQ ── */
+#faq { background: var(--surface-2); }
+.faq-list { max-width: 760px; margin: 2.5rem auto 0; }
+.faq-item { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); margin-bottom: .75rem; overflow: hidden; }
+.faq-item summary {
+  list-style: none; cursor: pointer; padding: 1.15rem 1.3rem;
+  font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1.04rem;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary .chev { width: 20px; height: 20px; stroke: var(--accent); flex-shrink: 0; transition: transform .25s; }
+.faq-item[open] summary .chev { transform: rotate(180deg); }
+.faq-item .answer { padding: 0 1.3rem 1.2rem; color: var(--ink-soft); }
+
+/* ── KONTAKT ── */
+.contact-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem; margin-top: 2.75rem; }
+.form-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.9rem; box-shadow: var(--shadow); }
+.field { margin-bottom: 1.05rem; }
+.field label { display: block; font-family: 'Archivo', sans-serif; font-weight: 600; font-size: .9rem; margin-bottom: .4rem; }
+.field label .req { color: var(--accent); }
+.field input, .field textarea, .field select {
+  width: 100%; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--ink);
+  padding: .8rem .9rem; border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--surface-2); min-height: 48px; transition: border-color .18s, background .18s;
+}
+.field textarea { min-height: 120px; resize: vertical; }
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none; border-color: var(--accent); background: #fff;
+}
+.form-note { font-size: .82rem; color: var(--ink-mute); margin-top: .5rem; }
+.form-success { display: none; background: rgba(31,157,85,.1); border: 1px solid var(--green); color: #14713c; padding: 1rem; border-radius: var(--radius-sm); margin-top: 1rem; font-weight: 600; }
+
+.contact-info { display: flex; flex-direction: column; gap: 1.1rem; }
+.info-row { display: flex; gap: .85rem; align-items: flex-start; }
+.info-row .ico { width: 42px; height: 42px; border-radius: 10px; background: var(--surface-2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.info-row .ico svg { width: 21px; height: 21px; stroke: var(--accent); }
+.info-row .lbl { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); }
+.info-row a, .info-row p { color: var(--ink); text-decoration: none; font-size: 1.02rem; }
+.info-row a:hover { color: var(--accent); }
+.wa-btn { background: #25D366; color: #fff; }
+.wa-btn:hover { background: #1eb858; transform: translateY(-2px); }
+.wa-btn svg { fill: #fff; width: 20px; height: 20px; }
+.map-embed { margin-top: 1.25rem; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16/9; }
+.map-embed iframe { width: 100%; height: 100%; border: 0; }
+
+/* ── FOOTER ── */
+footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.5rem; }
+.footer-col h4 { font-family: 'Archivo', sans-serif; font-weight: 700; color: #fff; font-size: .95rem; margin-bottom: 1rem; letter-spacing: .04em; }
+.footer-col p, .footer-col a { font-size: .92rem; color: var(--on-dark-mu); text-decoration: none; }
+.footer-col a { display: block; padding: .25rem 0; transition: color .18s; }
+.footer-col a:hover { color: #fff; }
+.footer-area { line-height: 1.8; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); margin-top: 2.5rem; padding-top: 1.25rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: .82rem; }
+.footer-bottom a { color: var(--on-dark-mu); text-decoration: none; }
+.footer-bottom a:hover { color: #fff; }
+
+/* ── MOBILE STICKY CALL BAR ── */
+.mobile-bar { display: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 980px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2rem; min-height: 0; padding: 3rem 0; }
+  .hero-media { order: -1; }
+  .hero-photo { aspect-ratio: 16/10; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .about-photo { max-width: 420px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .reviews { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-phone { display: none; }
+  .burger { display: flex; }
+  .mobile-menu { display: flex; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  /* Platz für sticky Call-Bar schaffen */
+  body { padding-bottom: 64px; }
+  .mobile-bar {
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+    border-top: 1px solid var(--line); box-shadow: 0 -4px 18px rgba(0,0,0,.1);
+  }
+  .mobile-bar a {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: 1rem 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1rem;
+    text-decoration: none; color: #fff;
+  }
+  .mobile-bar a svg { width: 20px; height: 20px; }
+  .mobile-bar .mb-call { background: var(--accent); }
+  .mobile-bar .mb-wa { background: #25D366; }
+}
+@media (max-width: 560px) {
+  section { padding: 3.25rem 0; }
+  .reviews, .steps, .gallery { grid-template-columns: 1fr; }
+  .shot.feature, .shot.tall { grid-column: auto; grid-row: auto; }
+  .gallery { grid-auto-rows: 200px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ 1 · STICKY HEADER ════════════ -->
+<header id="top">
+  <div class="container nav">
+    <!-- ANPASSEN: Logo / Firmenname -->
+    <a href="#top" class="brand" aria-label="Startseite">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 21v-6h6v6"/></svg>
+      </span>
+      <span class="brand-text">
+        <strong>Mustermann Bedachungen</strong>
+        <span>Dachdecker-Meisterbetrieb</span>
+      </span>
+    </a>
+
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#referenzen">Referenzen</a></li>
+        <li><a href="#bewertungen">Bewertungen</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <!-- ANPASSEN: Telefonnummer (tel: ohne Leerzeichen) -->
+      <a href="tel:+4968511234567" class="nav-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        06851 123 45 67
+      </a>
+      <a href="#kontakt" class="btn btn-primary">Angebot anfragen</a>
+    </div>
+
+    <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobilnavigation">
+    <a href="#leistungen" onclick="closeMenu()">Leistungen</a>
+    <a href="#referenzen" onclick="closeMenu()">Referenzen</a>
+    <a href="#bewertungen" onclick="closeMenu()">Bewertungen</a>
+    <a href="#kontakt" onclick="closeMenu()">Kontakt</a>
+    <a href="#kontakt" class="btn btn-primary" onclick="closeMenu()">Angebot anfragen</a>
+  </nav>
+</header>
+
+<!-- ════════════ 2 · HERO ════════════ -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <!-- ANPASSEN: Leistung + Ort = das Wichtigste -->
+      <h1>Dachdecker-Meisterbetrieb in <span class="hl">St. Wendel</span></h1>
+      <p class="lead">Steildach, Flachdach, Dachfenster & 24h-Notdienst – sauber, termintreu und zum garantierten Festpreis. Seit über 25 Jahren für die ganze Region.</p>
+      <div class="hero-actions">
+        <a href="tel:+4968511234567" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Jetzt anrufen
+        </a>
+        <a href="#kontakt" class="btn btn-outline-light">Kostenlos anfragen</a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <!-- ANPASSEN: FOTO ersetzen – src durch echtes Projektbild (z.B. bilder/dach-referenz.jpg).
+           Aktuell Demo-Platzhalter über picsum.photos. -->
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1763665814538-8ba04597286c?auto=format&fit=crop&w=900&h=680&q=80" alt="Dachdecker verlegen Ziegel auf einem Neubau" width="900" height="680">
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 3 · TRUST-LEISTE ════════════ -->
+<div class="trust">
+  <div class="container trust-inner">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.32L12 14.5l-4.78 2.51.91-5.32L4.27 7.62l5.34-.78z"/></svg>
+      Meisterbetrieb
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Seit über 25 Jahren
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      Festpreis-Garantie
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Dachdecker-Innung
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+      24h-Notdienst
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 4 · LEISTUNGEN ════════════ -->
+<section id="leistungen">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Unsere Leistungen</p>
+      <h2 class="section-title">Alles rund ums Dach – aus einer Hand</h2>
+      <p class="section-intro">Vom Neubau bis zur Sanierung: Wir übernehmen Planung, Material und Ausführung für Sie.</p>
+    </div>
+    <div class="svc-grid">
+      <!-- ANPASSEN: Leistungen (Icon + Titel + ein Satz) -->
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+        <div><h3>Steildach</h3><p>Neueindeckung und Reparatur mit Ziegeln, Schiefer oder Blech – fachgerecht und wetterfest.</p></div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M3 12h18"/></svg></span>
+        <div><h3>Flachdach</h3><p>Abdichtung mit Bitumen oder Kunststoffbahnen – inklusive Begrünung und Entwässerung.</p></div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/></svg></span>
+        <div><h3>Dachfenster</h3><p>Einbau und Austausch von Velux & Roto – für mehr Licht und Wohnkomfort unterm Dach.</p></div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2"/></svg></span>
+        <div><h3>Dämmung & Energie</h3><p>Energetische Dachdämmung nach GEG – senkt Heizkosten und ist förderfähig.</p></div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 18 7a4 4 0 0 1 0 11H7z"/><path d="M12 13v5M9.5 15.5L12 13l2.5 2.5"/></svg></span>
+        <div><h3>Dachrinnen</h3><p>Montage, Reinigung und Reparatur von Regenrinnen und Fallrohren aus Zink oder Kupfer.</p></div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></span>
+        <div><h3>24h-Notdienst</h3><p>Sturmschaden oder undichtes Dach? Wir sichern schnell und sind rund um die Uhr erreichbar.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 5 · REFERENZEN ════════════ -->
+<section id="referenzen">
+  <div class="container">
+    <div class="reveal">
+      <h2 class="section-title">Projekte, die für sich sprechen</h2>
+      <p class="section-intro">Ein Auszug aus unseren letzten Arbeiten in St. Wendel und Umgebung.</p>
+    </div>
+    <div class="gallery">
+      <!-- ANPASSEN: FOTO je Projekt – src durch echte Bilder ersetzen (z.B. bilder/projekt1.jpg).
+           Aktuell Demo-Fotos über Unsplash. .feature = großes Tile, .wide = breites Tile. -->
+      <div class="shot feature reveal"><img src="https://images.unsplash.com/photo-1600612707884-c424a2ba812e?auto=format&fit=crop&w=900&h=720&q=80" alt="Saniertes Steildach mit braunen Ziegeln vor grüner Baumkulisse" loading="lazy"><span class="tag">Steildach</span></div>
+      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1768677432858-b9a8608dd849?auto=format&fit=crop&w=480&h=360&q=80" alt="Flachdächer moderner Gebäude aus der Vogelperspektive" loading="lazy"><span class="tag">Flachdach</span></div>
+      <div class="shot reveal"><img src="https://images.unsplash.com/photo-1776624384012-ecb2fccf75f3?auto=format&fit=crop&w=480&h=360&q=80" alt="Zwei eingebaute Dachfenster im Holzdachstuhl" loading="lazy"><span class="tag">Dachfenster</span></div>
+      <div class="shot wide reveal"><img src="https://images.unsplash.com/photo-1752852381113-7d93abc9d7ea?auto=format&fit=crop&w=960&h=360&q=80" alt="Dachboden mit neu eingebrachter Mineralwolle-Dämmung" loading="lazy"><span class="tag">Dämmung</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 6 · ÜBER UNS / TEAM ════════════ -->
+<section id="ueber-uns">
+  <div class="container about-grid">
+    <!-- ANPASSEN: FOTO Team / Chef – src durch echtes Team-Foto ersetzen. Aktuell Demo über picsum.photos. -->
+    <img class="about-photo reveal" src="https://images.unsplash.com/photo-1633759593085-1eaeb724fc88?auto=format&fit=crop&w=700&h=700&q=80" alt="Dachdeckermeister bei der Arbeit auf dem Dach" loading="lazy">
+    <div class="about reveal">
+      <h2 class="section-title">Ein Familienbetrieb aus der Region</h2>
+      <p>Seit 1998 sind wir Ihr Ansprechpartner rund ums Dach im Landkreis St. Wendel. Was als kleiner Familienbetrieb begann, ist heute ein eingespieltes Team aus erfahrenen Gesellen und Meistern – mit dem gleichen Anspruch wie am ersten Tag: saubere Arbeit, faire Preise und ein Handschlag, der zählt.</p>
+      <p>Wir kennen die Region, das Wetter und die Bausubstanz hier genau – und beraten Sie ehrlich, auch wenn die kleinere Lösung manchmal die bessere ist.</p>
+      <div class="team">
+        <!-- ANPASSEN: Namen, Funktionen, Fotos -->
+        <div class="member">
+          <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg></span>
+          <div><strong>Thomas Mustermann</strong><span>Dachdecker­meister · Inhaber</span></div>
+        </div>
+        <div class="member">
+          <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg></span>
+          <div><strong>Markus Klein</strong><span>Vorarbeiter · Geselle</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 7 · BEWERTUNGEN ════════════ -->
+<section id="bewertungen">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Bewertungen</p>
+      <h2 class="section-title">Das sagen unsere Kunden</h2>
+      <p class="section-intro">Echte Google-Rezensionen aus der Region.</p>
+    </div>
+    <div class="reviews">
+      <!-- ANPASSEN: Google-Rezensionen (Text, Name, Ort) -->
+      <div class="review reveal">
+        <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+        <p>„Nach dem Sturm war unser Dach undicht – das Team war noch am selben Tag da und hat alles gesichert. Festpreis-Angebot kam transparent, Ausführung top sauber."</p>
+        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>Familie Becker</strong><span>St. Wendel</span></div></div>
+      </div>
+      <div class="review reveal">
+        <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+        <p>„Komplette Neueindeckung inklusive Dämmung. Termine wurden exakt eingehalten, die Baustelle war jeden Abend besenrein. Absolute Empfehlung!"</p>
+        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>M. Schneider</strong><span>Tholey</span></div></div>
+      </div>
+      <div class="review reveal">
+        <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+        <p>„Faire Beratung – man hat uns von der teuren Komplettsanierung abgeraten und nur das Nötige gemacht. So etwas findet man selten. Danke!"</p>
+        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>J. Wagner</strong><span>Marpingen</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 8 · ABLAUF ════════════ -->
+<section id="ablauf">
+  <div class="container">
+    <div class="reveal">
+      <h2 class="section-title">So arbeiten wir: In 4 Schritten zum neuen Dach</h2>
+      <p class="section-intro">Transparent von der ersten Anfrage bis zur Abnahme – ohne böse Überraschungen.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num"></div><h3>Anfrage</h3><p>Sie melden sich per Telefon, WhatsApp oder Formular. Wir antworten innerhalb von 24 Stunden.</p></div>
+      <div class="step reveal"><div class="num"></div><h3>Termin vor Ort</h3><p>Wir kommen vorbei, schauen uns Ihr Dach an und besprechen die beste Lösung – kostenlos.</p></div>
+      <div class="step reveal"><div class="num"></div><h3>Festpreis-Angebot</h3><p>Sie erhalten ein schriftliches, verbindliches Angebot. Der Preis steht – garantiert.</p></div>
+      <div class="step reveal"><div class="num"></div><h3>Ausführung</h3><p>Termintreue Umsetzung durch unser eigenes Team. Saubere Baustelle, pünktliche Abnahme.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 9 · FAQ ════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <h2 class="section-title">Häufige Fragen</h2>
+    </div>
+    <div class="faq-list">
+      <!-- ANPASSEN: Fragen & Antworten (zusätzlich gut für SEO) -->
+      <details class="faq-item reveal">
+        <summary>Was kostet eine neue Dacheindeckung?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="answer">Das hängt von Dachfläche, Material und Zustand ab. Nach einem kostenlosen Vor-Ort-Termin erhalten Sie ein verbindliches Festpreis-Angebot – ohne versteckte Kosten.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>In welchem Umkreis arbeiten Sie?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="answer">Wir sind im gesamten Landkreis St. Wendel und Umgebung tätig – u. a. Tholey, Marpingen, Oberthal, Nohfelden, Freisen, Namborn und Nonnweiler. Fragen Sie einfach an.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Bieten Sie einen Notdienst an?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="answer">Ja. Bei Sturmschäden oder akuten Undichtigkeiten sind wir 24 Stunden erreichbar und sichern Ihr Dach schnellstmöglich. Rufen Sie uns direkt an.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Welche Garantie geben Sie?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="answer">Auf unsere Arbeit gewähren wir die volle gesetzliche Gewährleistung. Auf viele Materialien gibt es zusätzlich Herstellergarantien, die wir gerne mit Ihnen besprechen.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 10 · KONTAKT / ANFRAGE ════════════ -->
+<section id="kontakt">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Kontakt</p>
+      <h2 class="section-title">Kostenloses Angebot anfragen</h2>
+      <p class="section-intro">Schreiben Sie uns kurz, worum es geht – wir melden uns innerhalb von 24 Stunden.</p>
+    </div>
+    <div class="contact-grid">
+      <!-- FORMULAR (Web3Forms – kein Server nötig) -->
+      <div class="form-card reveal">
+        <!-- ANPASSEN: access_key auf https://web3forms.com kostenlos erstellen und hier eintragen -->
+        <form id="anfrageForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="DEIN-ACCESS-KEY">
+          <input type="hidden" name="subject" value="Neue Anfrage über die Website">
+          <input type="hidden" name="from_name" value="Mustermann Bedachungen Website">
+          <!-- Honeypot gegen Spam -->
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="field">
+            <label for="name">Name <span class="req">*</span></label>
+            <input type="text" id="name" name="name" required autocomplete="name" placeholder="Ihr Name">
+          </div>
+          <div class="field">
+            <label for="tel">Telefon <span class="req">*</span></label>
+            <input type="tel" id="tel" name="telefon" required autocomplete="tel" placeholder="Für schnellen Rückruf">
+          </div>
+          <div class="field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="optional">
+          </div>
+          <div class="field">
+            <label for="anliegen">Ihr Anliegen <span class="req">*</span></label>
+            <textarea id="anliegen" name="anliegen" required placeholder="z. B. undichtes Dach, neue Eindeckung, Dachfenster …"></textarea>
+          </div>
+          <div class="field">
+            <label for="foto">Foto anhängen (optional)</label>
+            <input type="file" id="foto" name="foto" accept="image/*">
+            <p class="form-note">Ein Bild des Schadens hilft uns, schneller einzuschätzen.</p>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Anfrage senden</button>
+          <p class="form-note">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß Datenschutzerklärung zu.</p>
+          <div class="form-success" id="formSuccess">✓ Vielen Dank! Ihre Anfrage ist eingegangen – wir melden uns schnellstmöglich.</div>
+        </form>
+      </div>
+
+      <!-- KONTAKT-INFOS + KLICK-AKTIONEN -->
+      <div class="contact-info reveal">
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <div><div class="lbl">Telefon</div><a href="tel:+4968511234567">06851 123 45 67</a></div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span>
+          <div><div class="lbl">E-Mail</div><a href="mailto:info@ihre-domain.de">info@ihre-domain.de</a></div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><div class="lbl">Adresse</div><a href="https://maps.google.com/?q=Musterstraße+12,+66606+St.+Wendel" target="_blank" rel="noopener">Musterstraße 12<br>66606 St. Wendel</a></div>
+        </div>
+        <div class="info-row">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <div><div class="lbl">Öffnungszeiten</div><p>Mo–Fr 7:30–17:00 Uhr<br>Sa 9:00–12:00 Uhr</p></div>
+        </div>
+
+        <!-- ANPASSEN: WhatsApp-Nummer (internationales Format ohne + und ohne führende 0) -->
+        <a href="https://wa.me/4968511234567" target="_blank" rel="noopener" class="btn wa-btn" style="width:100%">
+          <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.43 9.88-9.88 9.88M20.46 3.49A11.78 11.78 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.49-8.42"/></svg>
+          Direkt per WhatsApp schreiben
+        </a>
+
+        <!-- ANPASSEN: Google-Maps-Embed (Einbettungs-Code von Google Maps -> Teilen -> Karte einbetten) -->
+        <div class="map-embed">
+          <iframe title="Standort auf Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=St.+Wendel&output=embed"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 11 · FOOTER ════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Mustermann Bedachungen GmbH</h4>
+        <p>Ihr Dachdecker-Meisterbetrieb in St. Wendel. Steildach, Flachdach, Dachfenster, Dämmung und 24h-Notdienst – sauber, termintreu und zum Festpreis.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Einzugsgebiet</h4>
+        <!-- Ausgeschriebene Orte = gut für lokale SEO -->
+        <p class="footer-area">St. Wendel · Tholey · Marpingen · Oberthal · Nohfelden · Freisen · Namborn · Nonnweiler · Baltersweiler · Urweiler</p>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <a href="tel:+4968511234567">06851 123 45 67</a>
+        <a href="mailto:info@ihre-domain.de">info@ihre-domain.de</a>
+        <a href="https://wa.me/4968511234567" target="_blank" rel="noopener">WhatsApp</a>
+        <!-- ANPASSEN: Social-Links -->
+        <a href="#" target="_blank" rel="noopener">Facebook</a>
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Mustermann Bedachungen GmbH</span>
+      <span>
+        <!-- PFLICHT in Deutschland – sonst Abmahngefahr! Eigene Seiten verlinken. -->
+        <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY CALL-BAR (nur auf Handy sichtbar) -->
+<div class="mobile-bar">
+  <a href="tel:+4968511234567" class="mb-call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Anrufen
+  </a>
+  <a href="https://wa.me/4968511234567" target="_blank" rel="noopener" class="mb-wa">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.43 9.88-9.88 9.88M20.46 3.49A11.78 11.78 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.49-8.42"/></svg>
+    WhatsApp
+  </a>
+</div>
+
+<script>
+// ── Mobile-Menü ──
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+  burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+});
+function closeMenu() {
+  mobileMenu.classList.remove('open');
+  burger.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+}
+window.addEventListener('resize', () => { if (innerWidth > 768) closeMenu(); });
+
+// ── Header-Schatten beim Scrollen ──
+const header = document.getElementById('top');
+addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+// ── Reveal beim Scrollen ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ── Formular per AJAX an Web3Forms (kein Seitenneuladen) ──
+const form = document.getElementById('anfrageForm');
+form.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const btn = form.querySelector('button[type=submit]');
+  const original = btn.textContent;
+  btn.textContent = 'Wird gesendet …';
+  btn.disabled = true;
+  try {
+    const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+    if (res.ok) {
+      form.reset();
+      document.getElementById('formSuccess').style.display = 'block';
+      btn.textContent = '✓ Gesendet';
+    } else { throw new Error(); }
+  } catch {
+    btn.textContent = original;
+    btn.disabled = false;
+    alert('Senden fehlgeschlagen. Bitte rufen Sie uns an: 06851 123 45 67');
+  }
+});
+</script>
+</body>
+</html>

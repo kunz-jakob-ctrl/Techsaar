@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saar Döner — Frisch gemacht in Saarbrücken</title>
+  <meta name="description" content="Saar Döner – frische Döner, Dürüm & Teller, täglich frisch zubereitet. Online vorbestellen und abholen." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:  '#FBF6EC',
+            card:   '#FFFFFF',
+            soft:   '#F4ECDD',
+            line:   '#EBE1D0',
+            ink:    '#26201A',
+            muted:  '#857A6B',
+            tomato: '#E1492E',
+            tomatod:'#C23D26',
+            leaf:   '#4FA45A',
+            leafd:  '#3C8A48',
+            honey:  '#F2A63C',
+          },
+          fontFamily: {
+            display: ['"Baloo 2"', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 14px 40px -16px rgba(60,40,20,0.25)',
+            tomato: '0 12px 30px -10px rgba(225,73,46,0.5)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body { background:#FBF6EC; }
+    ::selection { background:#E1492E; color:#fff; }
+    ::-webkit-scrollbar { width:10px; height:10px; }
+    ::-webkit-scrollbar-track { background:#F4ECDD; }
+    ::-webkit-scrollbar-thumb { background:#E4D8C2; border-radius:10px; }
+    ::-webkit-scrollbar-thumb:hover { background:#E1492E; }
+
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity:1; transform:none; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+    .anim-up { animation: fadeUp .85s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.35)} 100%{transform:scale(1)} }
+    .pop { animation: pop .4s ease; }
+
+    /* organic wavy bottom edge on hero */
+    .wave-b { clip-path: ellipse(140% 100% at 50% 0%); }
+
+    .drawer { transform: translateX(100%); transition: transform .38s cubic-bezier(.2,.7,.2,1); }
+    .drawer.open { transform: none; }
+    .overlay { opacity:0; visibility:hidden; transition:opacity .3s, visibility .3s; }
+    .overlay.open { opacity:1; visibility:visible; }
+    .modal-card { transform: translateY(16px) scale(.98); opacity:0; transition: all .3s cubic-bezier(.2,.7,.2,1); }
+    .overlay.open .modal-card { transform:none; opacity:1; }
+
+    .imgfall { background:linear-gradient(135deg,#F7E9CF,#F4ECDD 60%); }
+
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{ animation:none !important; transition-duration:.001ms !important; }
+      .reveal{opacity:1;transform:none} .drawer{transition:none}
+    }
+  </style>
+</head>
+
+<body class="bg-cream font-sans text-ink antialiased">
+
+  <!-- ===================== HEADER (statisch) ===================== -->
+  <header class="absolute inset-x-0 top-0 z-30">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+      <a href="#top" class="flex items-center gap-2.5">
+        <span class="grid h-11 w-11 place-items-center rounded-full bg-tomato text-white">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M8 16h8M10 20h4"/></svg>
+        </span>
+        <span class="font-display text-2xl font-extrabold leading-none" data-cfg="name">Saar Döner</span>
+      </a>
+      <nav class="hidden items-center gap-8 md:flex">
+        <a href="#beliebt"  class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Beliebt</a>
+        <a href="#menu"     class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Speisekarte</a>
+        <a href="#zeiten"   class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Öffnungszeiten</a>
+        <a href="#kontakt"  class="font-display text-base font-semibold text-ink/70 transition-colors hover:text-tomato">Kontakt</a>
+      </nav>
+      <a href="tel:+4968100000000" class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-cream transition-transform hover:-translate-y-0.5">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-cfg="phoneDisplay">0681 000 000</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="top" class="relative overflow-hidden bg-soft px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-40">
+    <div class="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-honey/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-10 left-1/4 h-80 w-80 rounded-full bg-leaf/10 blur-3xl"></div>
+
+    <div class="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+      <!-- LEFT -->
+      <div>
+        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-leaf/15 px-3.5 py-1.5 text-sm font-semibold text-leafd" style="animation-delay:.05s">
+          <span id="open-dot" class="h-2 w-2 rounded-full bg-leaf"></span>
+          <span id="open-text">Jetzt geöffnet</span>
+        </span>
+
+        <h1 class="anim-up mt-5 font-display text-6xl font-extrabold leading-[0.98] sm:text-7xl" style="animation-delay:.12s">
+          Döner,<br>wie er <span class="text-tomato">sein soll.</span>
+        </h1>
+
+        <p class="anim-up mt-6 max-w-md text-lg leading-relaxed text-muted" style="animation-delay:.2s">
+          Saftiges Fleisch vom Drehspieß, knackiges Gemüse, hausgemachte Soßen. Täglich frisch gemacht — mitten in Saarbrücken.
+        </p>
+
+        <div class="anim-up mt-8 flex flex-wrap gap-3" style="animation-delay:.28s">
+          <a href="#menu" class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-tomato px-7 py-4 text-base font-bold text-white shadow-tomato transition-transform duration-200 hover:-translate-y-0.5">
+            Speisekarte ansehen
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="tel:+4968100000000" class="inline-flex cursor-pointer items-center gap-2 rounded-full border-2 border-ink/15 px-7 py-4 text-base font-bold text-ink transition-colors hover:border-tomato hover:text-tomato">
+            Anrufen
+          </a>
+        </div>
+
+        <div class="anim-up mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted" style="animation-delay:.36s">
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>100% Halal</span>
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Täglich frisch</span>
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vegetarische Optionen</span>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="anim-up relative mx-auto w-full max-w-sm lg:max-w-none" style="animation-delay:.2s">
+        <div class="imgfall relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-card shadow-soft">
+          <img data-cfg-src="heroImage" src="bilder/hero.jpg" alt="Frisch zubereiteter Döner" class="h-full w-full object-cover" onerror="this.remove()" />
+        </div>
+        <div class="absolute -left-4 top-8 flex items-center gap-2 rounded-full bg-card px-4 py-2.5 shadow-soft sm:-left-6">
+          <span class="grid h-7 w-7 place-items-center rounded-full bg-leaf/15 text-leafd"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg></span>
+          <span class="text-sm font-bold">Frische Zutaten</span>
+        </div>
+        <div class="absolute -bottom-4 right-6 flex items-center gap-2 rounded-full bg-card px-4 py-2.5 shadow-soft">
+          <span class="grid h-7 w-7 place-items-center rounded-full bg-tomato/15 text-tomato"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="text-sm font-bold">Hausgemachte Soßen</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BELIEBT ===================== -->
+  <section id="beliebt" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-20">
+    <div class="mx-auto max-w-7xl">
+      <div class="reveal mb-9 flex items-end justify-between gap-4">
+        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Beliebte <span class="text-tomato">Gerichte</span></h2>
+        <a href="#menu" class="hidden shrink-0 cursor-pointer items-center gap-1.5 font-display font-bold text-tomato hover:underline sm:inline-flex">Ganze Karte
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div id="specials-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"></div>
+    </div>
+  </section>
+
+  <!-- ===================== FRISCHE-BAND ===================== -->
+  <section class="bg-ink px-5 py-10 text-cream sm:px-8">
+    <div class="mx-auto grid max-w-7xl gap-8 sm:grid-cols-3">
+      <div class="flex items-center gap-3">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <div><p class="font-display text-lg font-bold">Frische Zutaten</p><p class="text-sm text-cream/60">Salat &amp; Gemüse täglich neu</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-honey/20 text-honey"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg></span>
+        <div><p class="font-display text-lg font-bold">Halal &amp; hausgemacht</p><p class="text-sm text-cream/60">Soßen aus eigener Küche</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-tomato/20 text-tomato"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14l-1 9H6L5 3Z"/><path d="M3 3h2M6 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg></span>
+        <div><p class="font-display text-lg font-bold">Online vorbestellen</p><p class="text-sm text-cream/60">Bequem bestellen &amp; abholen</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SPEISEKARTE ===================== -->
+  <section id="menu" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-20">
+    <div class="mx-auto max-w-5xl">
+      <div class="reveal mb-6">
+        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Unsere <span class="text-tomato">Speisekarte</span></h2>
+      </div>
+
+      <div class="sticky top-3 z-20 -mx-5 mb-8 bg-cream/90 px-5 py-3 backdrop-blur sm:mx-0 sm:rounded-2xl sm:px-3">
+        <div id="cat-tabs" class="flex gap-2 overflow-x-auto"></div>
+      </div>
+
+      <div id="menu-list" class="space-y-12"></div>
+    </div>
+  </section>
+
+  <!-- ===================== ÖFFNUNGSZEITEN / KONTAKT ===================== -->
+  <section id="zeiten" class="scroll-mt-24 bg-soft px-5 py-16 sm:px-8 lg:py-20">
+    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+      <div class="reveal">
+        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Öffnungs<span class="text-tomato">zeiten</span></h2>
+        <ul id="hours-list" class="mt-6 divide-y divide-line overflow-hidden rounded-3xl border border-line bg-card shadow-soft"></ul>
+      </div>
+      <div id="kontakt" class="reveal scroll-mt-24">
+        <h2 class="font-display text-4xl font-extrabold sm:text-5xl">Komm <span class="text-tomato">vorbei</span></h2>
+        <div class="mt-6 space-y-4">
+          <a href="#" data-cfg-href="mapsUrl" class="flex items-start gap-4 rounded-3xl border border-line bg-card p-5 shadow-soft transition-colors hover:border-tomato">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-tomato/12 text-tomato"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <div><p class="font-display font-bold">Adresse</p><p class="text-muted" data-cfg="address">Bahnhofstraße 10, 66111 Saarbrücken</p></div>
+          </a>
+          <a href="tel:+4968100000000" class="flex items-start gap-4 rounded-3xl border border-line bg-card p-5 shadow-soft transition-colors hover:border-tomato">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-tomato/12 text-tomato"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <div><p class="font-display font-bold">Telefon</p><p class="text-muted" data-cfg="phoneDisplay">0681 000 000</p></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-ink px-5 py-12 text-cream sm:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
+      <div class="flex items-center gap-2.5">
+        <span class="grid h-11 w-11 place-items-center rounded-full bg-tomato text-white"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M8 16h8M10 20h4"/></svg></span>
+        <span><span class="block font-display text-xl font-extrabold leading-none" data-cfg="name">Saar Döner</span><span class="block text-xs text-cream/50">Frisch gemacht · Saarbrücken</span></span>
+      </div>
+      <p class="text-sm text-cream/60">© <span id="year"></span> <span data-cfg="name">Saar Döner</span> · Demo-Website</p>
+      <p class="flex gap-5 text-sm text-cream/60">
+        <a href="#" class="transition-colors hover:text-honey">Impressum</a>
+        <a href="#" class="transition-colors hover:text-honey">Datenschutz</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================== FLOATING CART ===================== -->
+  <button onclick="openCart()" class="fixed bottom-5 right-5 z-30 flex cursor-pointer items-center gap-2.5 rounded-full bg-tomato px-5 py-4 font-bold text-white shadow-tomato transition-transform duration-200 hover:-translate-y-0.5 active:scale-95" aria-label="Warenkorb öffnen">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+    <span class="hidden sm:inline">Warenkorb</span>
+    <span id="cart-badge" class="grid h-5 min-w-[20px] place-items-center rounded-full bg-white px-1 text-xs font-bold text-tomato">0</span>
+  </button>
+
+  <!-- ===================== OVERLAY ===================== -->
+  <div id="overlay" class="overlay fixed inset-0 z-50 bg-ink/50 backdrop-blur-sm" onclick="closeAll()"></div>
+
+  <!-- ===================== CART DRAWER ===================== -->
+  <aside id="drawer" class="drawer fixed right-0 top-0 z-[60] flex h-full w-full max-w-md flex-col bg-cream">
+    <div id="view-cart" class="flex h-full flex-col">
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <h3 class="font-display text-2xl font-extrabold">Warenkorb</h3>
+        <button onclick="closeAll()" class="grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-soft text-muted hover:text-ink" aria-label="Schließen"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div id="cart-items" class="flex-1 overflow-y-auto px-5 py-4"></div>
+      <div class="border-t border-line px-5 py-4">
+        <div class="mb-1 flex items-center justify-between text-sm text-muted"><span>Zwischensumme</span><span id="cart-sub">0,00 €</span></div>
+        <div class="mb-4 flex items-center justify-between font-display text-xl font-extrabold"><span>Gesamt</span><span id="cart-total" class="text-tomato">0,00 €</span></div>
+        <button id="to-checkout" onclick="goCheckout()" class="w-full cursor-pointer rounded-full bg-tomato px-6 py-3.5 font-bold text-white shadow-tomato transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none">Zur Kasse</button>
+      </div>
+    </div>
+
+    <div id="view-checkout" class="hidden h-full flex-col">
+      <div class="flex items-center gap-3 border-b border-line px-5 py-4">
+        <button onclick="backToCart()" class="grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-soft text-muted hover:text-ink" aria-label="Zurück"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <h3 class="font-display text-2xl font-extrabold">Zur Kasse</h3>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-4">
+        <p class="mb-2 text-sm font-semibold text-muted">Abholung</p>
+        <div class="mb-5 grid grid-cols-3 gap-2" id="pickup-times"></div>
+        <label class="mb-1.5 block text-sm font-semibold text-muted">Name *</label>
+        <input id="co-name" type="text" class="mb-4 w-full rounded-2xl border border-line bg-card px-4 py-3 outline-none placeholder:text-muted/60 focus:border-tomato" placeholder="Für wen ist die Bestellung?" />
+        <label class="mb-1.5 block text-sm font-semibold text-muted">Telefon *</label>
+        <input id="co-phone" type="tel" class="mb-5 w-full rounded-2xl border border-line bg-card px-4 py-3 outline-none placeholder:text-muted/60 focus:border-tomato" placeholder="Für Rückfragen" />
+        <p class="mb-2 text-sm font-semibold text-muted">Bezahlen</p>
+        <div class="grid grid-cols-3 gap-2" id="pay-methods"></div>
+        <p id="co-error" class="mt-4 hidden rounded-xl border border-tomato/40 bg-tomato/10 px-4 py-2.5 text-sm text-tomatod"></p>
+      </div>
+      <div class="border-t border-line px-5 py-4">
+        <div class="mb-4 flex items-center justify-between font-display text-xl font-extrabold"><span>Gesamt</span><span id="co-total" class="text-tomato">0,00 €</span></div>
+        <button onclick="placeOrder()" class="w-full cursor-pointer rounded-full bg-tomato px-6 py-3.5 font-bold text-white shadow-tomato transition-transform hover:-translate-y-0.5">Jetzt bestellen</button>
+        <p class="mt-2 text-center text-xs text-muted">Demo — es wird keine echte Zahlung ausgeführt.</p>
+      </div>
+    </div>
+
+    <div id="view-confirm" class="hidden h-full flex-col">
+      <div class="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center">
+        <div class="mb-5 grid h-20 w-20 place-items-center rounded-full bg-leaf/15">
+          <svg viewBox="0 0 24 24" class="h-10 w-10 text-leaf" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h3 class="font-display text-3xl font-extrabold">Bestellung eingegangen!</h3>
+        <p class="mt-2 text-muted">Bestellnummer <span id="order-no" class="font-bold text-ink">#000</span></p>
+        <div class="mt-6 w-full rounded-3xl border border-line bg-card p-5 text-left shadow-soft">
+          <p class="mb-4 font-semibold">Wir bereiten alles frisch für dich zu. 🧑‍🍳</p>
+          <div class="space-y-3" id="order-steps"></div>
+        </div>
+        <p class="mt-6 text-sm text-muted">Eine Bestätigung ginge per SMS/E-Mail an dich raus.</p>
+        <button onclick="newOrder()" class="mt-6 cursor-pointer rounded-full border-2 border-ink/15 px-5 py-3 font-bold text-ink transition-colors hover:border-tomato hover:text-tomato">Neue Bestellung</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================== CUSTOMIZE MODAL ===================== -->
+  <div id="modal" class="overlay fixed inset-0 z-[70] flex items-end justify-center p-0 sm:items-center sm:p-4">
+    <div class="modal-card flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-t-[2rem] bg-cream sm:rounded-[2rem]" onclick="event.stopPropagation()">
+      <div class="relative">
+        <div id="modal-img" class="imgfall h-36 w-full bg-cover bg-center"></div>
+        <button onclick="closeModal()" class="absolute right-3 top-3 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-card/90 text-ink shadow hover:text-tomato" aria-label="Schließen"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-4">
+        <h3 id="modal-name" class="font-display text-2xl font-extrabold">Gericht</h3>
+        <p id="modal-desc" class="mt-1 text-sm text-muted"></p>
+        <div id="modal-options" class="mt-5 space-y-6"></div>
+      </div>
+      <div class="border-t border-line px-5 py-4">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1 rounded-full border-2 border-line">
+            <button onclick="modalQty(-1)" class="grid h-11 w-11 cursor-pointer place-items-center text-xl text-muted hover:text-ink" aria-label="weniger">−</button>
+            <span id="modal-qty" class="w-6 text-center font-bold">1</span>
+            <button onclick="modalQty(1)" class="grid h-11 w-11 cursor-pointer place-items-center text-xl text-muted hover:text-ink" aria-label="mehr">+</button>
+          </div>
+          <button onclick="addFromModal()" class="flex flex-1 cursor-pointer items-center justify-between rounded-full bg-tomato px-5 py-3.5 font-bold text-white shadow-tomato transition-transform hover:-translate-y-0.5">
+            <span>Hinzufügen</span><span id="modal-price">0,00 €</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-[80] -translate-x-1/2 translate-y-4 rounded-full bg-leaf px-5 py-3 text-sm font-bold text-white opacity-0 shadow-lg transition-all duration-300"></div>
+
+  <!-- ===================== SCRIPT ===================== -->
+  <script>
+  /* =================== HIER ANPASSEN =================== */
+  const CONFIG = {
+    name: "Saar Döner",
+    phoneDisplay: "0681 000 000",
+    phoneTel: "+4968100000000",
+    address: "Bahnhofstraße 10, 66111 Saarbrücken",
+    mapsUrl: "https://maps.google.com",
+    heroImage: "bilder/hero.jpg",
+
+    // Öffnungszeiten: [open,close] Std oder null. 0=So..6=Sa
+    hours: { 0:[12,22], 1:[11,22], 2:[11,22], 3:[11,22], 4:[11,23], 5:[11,23], 6:[12,23] },
+
+    menu: [
+      { id:'doener', name:'Döner', items:[
+        { id:'d1', name:'Döner Kebab', desc:'Kalbfleisch, Salat, Soße im frischen Fladenbrot', price:6.50, custom:true, tags:['beliebt'], img:'bilder/doener-kebab.jpg', fit:'contain' },
+        { id:'d2', name:'Hähnchen Döner', desc:'Saftiges Hähnchenfleisch, Salat, Soße', price:6.50, custom:true, tags:[], img:'' },
+        { id:'d3', name:'Döner mit Weichkäse', desc:'Cremiger Weichkäse, frisch dazu', price:7.00, custom:true, tags:[], img:'' },
+        { id:'b3', name:'Lahmacun', desc:'Türkische Pizza, dünn & würzig', price:4.00, custom:false, tags:[], img:'' },
+      ]},
+      { id:'duerum', name:'Dürüm', items:[
+        { id:'u1', name:'Dürüm', desc:'Im gerollten Yufka-Teigfladen', price:7.50, custom:true, tags:['beliebt'], img:'https://images.unsplash.com/photo-1633321702518-7feccafb94d5?q=80&w=600&auto=format&fit=crop' },
+        { id:'u2', name:'Dürüm Hähnchen', desc:'Hähnchen gerollt mit Salat & Soße', price:7.50, custom:true, tags:[], img:'' },
+      ]},
+      { id:'teller', name:'Teller', items:[
+        { id:'t1', name:'Döner Teller', desc:'Salat & Soße, dazu Beilage nach Wahl', price:11.50, custom:true, sides:['Pommes','Reis'], tags:['beliebt'], img:'bilder/doener-teller.jpg', fit:'contain' },
+        { id:'t2', name:'Hähnchen Teller', desc:'Hähnchen, Salat & Soße, Beilage nach Wahl', price:11.50, custom:true, sides:['Pommes','Reis'], tags:[], img:'' },
+        { id:'t3', name:'Falafel Teller', desc:'Hausgemachte Falafel, vegetarisch', price:10.50, custom:true, sides:['Pommes','Reis'], tags:['veg'], img:'' },
+      ]},
+      { id:'veggie', name:'Vegetarisch', items:[
+        { id:'v1', name:'Falafel Döner', desc:'Knusprige Falafel im Fladenbrot', price:6.00, custom:true, tags:['beliebt','veg'], img:'bilder/falafel-doener.jpg', fit:'contain' },
+        { id:'v2', name:'Veggie Dürüm', desc:'Halloumi & gegrilltes Gemüse', price:7.00, custom:true, tags:['veg'], img:'' },
+      ]},
+      { id:'beilagen', name:'Beilagen & Snacks', items:[
+        { id:'b1', name:'Pommes', desc:'Knusprig, mit Ketchup oder Mayo', price:3.50, custom:false, tags:[], img:'' },
+        { id:'b2', name:'Pommes mit Käse', desc:'Mit Weichkäse', price:4.50, custom:false, tags:[], img:'' },
+      ]},
+      { id:'drinks', name:'Getränke', items:[
+        { id:'g1', name:'Ayran', desc:'0,25 l', price:2.00, custom:false, tags:[], img:'' },
+        { id:'g2', name:'Cola', desc:'0,33 l', price:2.50, custom:false, tags:[], img:'' },
+        { id:'g3', name:'Fanta', desc:'0,33 l', price:2.50, custom:false, tags:[], img:'' },
+        { id:'g4', name:'Wasser', desc:'0,5 l', price:2.00, custom:false, tags:[], img:'' },
+      ]},
+    ],
+  };
+  /* ==================================================== */
+
+  const SAUCES = ['Knoblauch','Kräuter','Joghurt','Scharfe Soße','Cocktail','Ketchup','Mayo'];
+  const SPICE  = ['Mild','Mittel','Scharf','Extra scharf'];
+  const EXTRAS = [{n:'Extra Fleisch',p:2.50},{n:'Extra Weichkäse',p:1.00},{n:'Extra Soße',p:0.50}];
+  const WITHOUT= ['ohne Zwiebeln','ohne Salat','ohne Tomaten','ohne Soße'];
+
+  const WD = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const euro = n => n.toFixed(2).replace('.',',')+' €';
+  const allItems = () => CONFIG.menu.flatMap(c=>c.items);
+  const findItem = id => allItems().find(i=>i.id===id);
+
+  let CART = [];
+  let modalState = null;
+
+  function applyConfig(){
+    const C=CONFIG;
+    document.querySelectorAll('[data-cfg]').forEach(e=>{const k=e.getAttribute('data-cfg'); if(C[k]!=null)e.textContent=C[k];});
+    document.querySelectorAll('[data-cfg-href]').forEach(e=>{const k=e.getAttribute('data-cfg-href'); if(C[k]!=null)e.setAttribute('href',C[k]);});
+    document.querySelectorAll('[data-cfg-src]').forEach(e=>{const k=e.getAttribute('data-cfg-src'); if(C[k]!=null)e.setAttribute('src',C[k]);});
+    document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+C.phoneTel);
+    document.title = `${C.name} — Frisch gemacht in Saarbrücken`;
+  }
+
+  function tagBadge(t){
+    if(t==='beliebt') return `<span class="inline-flex items-center gap-1 rounded-full bg-honey/20 px-2 py-0.5 text-[11px] font-bold text-honey">★ Beliebt</span>`;
+    if(t==='veg') return `<span class="inline-flex items-center gap-1 rounded-full bg-leaf/15 px-2 py-0.5 text-[11px] font-bold text-leafd">Vegetarisch</span>`;
+    return '';
+  }
+
+  function renderSpecials(){
+    const specials = allItems().filter(i=>i.tags.includes('beliebt')).slice(0,4);
+    document.getElementById('specials-grid').innerHTML = specials.map(i=>`
+      <article class="group overflow-hidden rounded-3xl border border-line bg-card shadow-soft transition-transform duration-200 hover:-translate-y-1">
+        <div class="imgfall relative h-48 overflow-hidden">
+          ${i.img?`<img src="${i.img}" alt="${i.name}" loading="lazy" onerror="this.remove()" class="h-full w-full object-${i.fit||'cover'} transition-transform duration-500 group-hover:scale-105" />`:''}
+          <div class="absolute left-3 top-3 flex gap-1.5">${i.tags.map(tagBadge).join('')}</div>
+        </div>
+        <div class="p-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-display text-lg font-extrabold leading-tight">${i.name}</h3>
+            <span class="font-display font-extrabold text-tomato">${euro(i.price)}</span>
+          </div>
+          <p class="mt-1 line-clamp-2 text-sm text-muted">${i.desc}</p>
+          <button onclick="addOrCustomize('${i.id}')" class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-soft px-4 py-2.5 text-sm font-bold text-ink transition-colors hover:bg-tomato hover:text-white">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Hinzufügen
+          </button>
+        </div>
+      </article>`).join('');
+  }
+
+  function renderMenu(){
+    document.getElementById('cat-tabs').innerHTML = CONFIG.menu.map((c,i)=>`
+      <button data-tab="${c.id}" onclick="goCat('${c.id}')" class="cat-tab shrink-0 cursor-pointer rounded-full px-4 py-2 font-display text-sm font-bold transition-colors ${i===0?'bg-tomato text-white':'bg-card text-muted hover:text-ink'}">${c.name}</button>`).join('');
+
+    document.getElementById('menu-list').innerHTML = CONFIG.menu.map(c=>`
+      <div class="menu-cat scroll-mt-40" id="cat-${c.id}" data-cat="${c.id}">
+        <h3 class="reveal mb-4 font-display text-2xl font-extrabold">${c.name}</h3>
+        <div class="reveal divide-y divide-line overflow-hidden rounded-3xl border border-line bg-card shadow-soft">
+          ${c.items.map(i=>`
+            <div class="flex items-center gap-4 p-4">
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <p class="font-display font-bold">${i.name}</p>
+                  ${i.tags.map(tagBadge).join('')}
+                </div>
+                <p class="mt-0.5 truncate text-sm text-muted">${i.desc}</p>
+              </div>
+              <span class="font-display font-extrabold text-tomato">${euro(i.price)}</span>
+              <button onclick="addOrCustomize('${i.id}')" class="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full bg-soft text-ink transition-colors hover:bg-tomato hover:text-white" aria-label="${i.name} hinzufügen">
+                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  function goCat(id){ document.getElementById('cat-'+id).scrollIntoView({behavior:'smooth', block:'start'}); }
+  function setActiveTab(id){
+    document.querySelectorAll('.cat-tab').forEach(t=>{
+      const on=t.dataset.tab===id;
+      t.classList.toggle('bg-tomato', on); t.classList.toggle('text-white', on);
+      t.classList.toggle('bg-card', !on); t.classList.toggle('text-muted', !on);
+    });
+  }
+
+  function addOrCustomize(id){
+    const item=findItem(id);
+    if(item.custom){ openModal(item); }
+    else { addToCart(item,{qty:1,price:item.price,optText:''}); toast(item.name+' hinzugefügt'); }
+  }
+
+  function openModal(item){
+    modalState={ item, qty:1, side: item.sides?item.sides[0]:null, sauces:new Set(['Knoblauch']), spice:'Mittel', extras:new Set(), without:new Set() };
+    document.getElementById('modal-name').textContent=item.name;
+    document.getElementById('modal-desc').textContent=item.desc;
+    document.getElementById('modal-img').style.backgroundImage = item.img?`url('${item.img}')`:'';
+    document.getElementById('modal-options').innerHTML = `
+      ${item.sides?optGroup('Beilage','side', item.sides.map(s=>({label:s})), true):''}
+      ${optGroup('Soßen','sauce', SAUCES.map(s=>({label:s})))}
+      ${optGroup('Schärfe','spice', SPICE.map(s=>({label:s})), true)}
+      ${optGroup('Extras','extra', EXTRAS.map(e=>({label:e.n, price:e.p})))}
+      ${optGroup('Wünsche','without', WITHOUT.map(w=>({label:w})))}`;
+    bindModalOptions(); updateModal(); openOverlay('modal');
+  }
+  function optGroup(title,type,opts,single=false){
+    return `<div>
+      <p class="mb-2 font-display font-bold">${title}${single?' <span class="font-sans text-sm font-normal text-muted">(eine Auswahl)</span>':''}</p>
+      <div class="flex flex-wrap gap-2">
+        ${opts.map(o=>`<button type="button" data-type="${type}" data-val="${o.label}" class="opt cursor-pointer rounded-full border-2 border-line px-3 py-2 text-sm font-semibold transition-colors hover:border-tomato">${o.label}${o.price?` <span class="text-tomato">+${euro(o.price)}</span>`:''}</button>`).join('')}
+      </div></div>`;
+  }
+  function bindModalOptions(){
+    document.querySelectorAll('#modal-options .opt').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const {type,val}=btn.dataset;
+        if(type==='spice'){ modalState.spice=val; }
+        else if(type==='side'){ modalState.side=val; }
+        else { const set=type==='sauce'?modalState.sauces:type==='extra'?modalState.extras:modalState.without; set.has(val)?set.delete(val):set.add(val); }
+        syncModalButtons(); updateModal();
+      });
+    });
+    syncModalButtons();
+  }
+  function syncModalButtons(){
+    document.querySelectorAll('#modal-options .opt').forEach(btn=>{
+      const {type,val}=btn.dataset; let on=false;
+      if(type==='spice') on=modalState.spice===val;
+      else if(type==='side') on=modalState.side===val;
+      else if(type==='sauce') on=modalState.sauces.has(val);
+      else if(type==='extra') on=modalState.extras.has(val);
+      else on=modalState.without.has(val);
+      btn.classList.toggle('border-tomato', on);
+      btn.classList.toggle('bg-tomato/10', on);
+      btn.classList.toggle('text-tomatod', on);
+    });
+  }
+  function modalQty(d){ modalState.qty=Math.max(1,modalState.qty+d); document.getElementById('modal-qty').textContent=modalState.qty; updateModal(); }
+  function modalUnitPrice(){ let p=modalState.item.price; EXTRAS.forEach(e=>{if(modalState.extras.has(e.n))p+=e.p;}); return p; }
+  function updateModal(){ document.getElementById('modal-price').textContent=euro(modalUnitPrice()*modalState.qty); }
+  function addFromModal(){
+    const m=modalState; const parts=[];
+    if(m.side) parts.push(m.side);
+    parts.push(m.spice);
+    if(m.sauces.size) parts.push([...m.sauces].join(', '));
+    if(m.extras.size) parts.push([...m.extras].map(x=>'+'+x).join(', '));
+    if(m.without.size) parts.push([...m.without].join(', '));
+    addToCart(m.item,{qty:m.qty, price:modalUnitPrice(), optText:parts.filter(Boolean).join(' · ')});
+    closeModal(); toast(m.item.name+' hinzugefügt');
+  }
+
+  function addToCart(item,{qty,price,optText}){ CART.push({uid:Date.now()+Math.random(), id:item.id, name:item.name, qty, price, optText}); renderCart(); bumpBadge(); }
+  function changeQty(uid,d){ const l=CART.find(x=>x.uid===uid); if(!l)return; l.qty+=d; if(l.qty<=0)CART=CART.filter(x=>x.uid!==uid); renderCart(); }
+  function cartCount(){ return CART.reduce((s,l)=>s+l.qty,0); }
+  function cartTotal(){ return CART.reduce((s,l)=>s+l.price*l.qty,0); }
+
+  function renderCart(){
+    document.getElementById('cart-badge').textContent=cartCount();
+    const wrap=document.getElementById('cart-items');
+    if(CART.length===0){
+      wrap.innerHTML=`<div class="flex h-full flex-col items-center justify-center py-16 text-center text-muted">
+        <svg viewBox="0 0 24 24" class="mb-3 h-12 w-12 opacity-30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        <p class="font-semibold">Dein Warenkorb ist leer.</p></div>`;
+      document.getElementById('to-checkout').disabled=true;
+    } else {
+      wrap.innerHTML=CART.map(l=>`
+        <div class="mb-3 flex gap-3 rounded-2xl border border-line bg-card p-3">
+          <div class="min-w-0 flex-1">
+            <p class="font-display font-bold">${l.name}</p>
+            ${l.optText?`<p class="mt-0.5 text-xs text-muted">${l.optText}</p>`:''}
+            <p class="mt-1 font-display text-sm font-extrabold text-tomato">${euro(l.price*l.qty)}</p>
+          </div>
+          <div class="flex flex-col items-end justify-between">
+            <button onclick="changeQty(${l.uid},-${l.qty})" class="text-xs text-muted hover:text-tomato" aria-label="entfernen">Entfernen</button>
+            <div class="flex items-center gap-1 rounded-full border border-line">
+              <button onclick="changeQty(${l.uid},-1)" class="grid h-7 w-7 cursor-pointer place-items-center text-muted hover:text-ink">−</button>
+              <span class="w-5 text-center text-sm font-bold">${l.qty}</span>
+              <button onclick="changeQty(${l.uid},1)" class="grid h-7 w-7 cursor-pointer place-items-center text-muted hover:text-ink">+</button>
+            </div>
+          </div>
+        </div>`).join('');
+      document.getElementById('to-checkout').disabled=false;
+    }
+    document.getElementById('cart-sub').textContent=euro(cartTotal());
+    document.getElementById('cart-total').textContent=euro(cartTotal());
+    document.getElementById('co-total').textContent=euro(cartTotal());
+  }
+  function bumpBadge(){ const b=document.getElementById('cart-badge'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+
+  function openOverlay(which){
+    document.getElementById('overlay').classList.add('open'); document.body.style.overflow='hidden';
+    if(which==='drawer') document.getElementById('drawer').classList.add('open');
+    if(which==='modal') document.getElementById('modal').classList.add('open');
+  }
+  function openCart(){ showView('cart'); openOverlay('drawer'); }
+  function closeAll(){
+    document.getElementById('overlay').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function closeModal(){ document.getElementById('modal').classList.remove('open'); if(!document.getElementById('drawer').classList.contains('open')){document.getElementById('overlay').classList.remove('open'); document.body.style.overflow='';} }
+
+  function showView(v){ ['cart','checkout','confirm'].forEach(x=>{ const el=document.getElementById('view-'+x); el.classList.toggle('hidden', x!==v); el.classList.toggle('flex', x===v); }); }
+  function goCheckout(){ if(CART.length===0)return; renderCheckout(); showView('checkout'); }
+  function backToCart(){ showView('cart'); }
+
+  function renderCheckout(){
+    const now=new Date();
+    const mk=add=>{const d=new Date(now.getTime()+add*60000);return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+' Uhr';};
+    const times=['So bald wie möglich', mk(30), mk(60)];
+    document.getElementById('pickup-times').innerHTML=times.map((t,i)=>`<button data-pt="${t}" onclick="selChip(this,'pt')" class="pt cursor-pointer rounded-2xl border-2 px-2 py-2.5 text-sm font-bold transition-colors ${i===0?'border-tomato bg-tomato/10 text-tomatod':'border-line hover:border-tomato'}">${t}</button>`).join('');
+    const pays=['Karte','PayPal','Vor Ort'];
+    document.getElementById('pay-methods').innerHTML=pays.map((p,i)=>`<button data-pm="${p}" onclick="selChip(this,'pm')" class="pm cursor-pointer rounded-2xl border-2 px-2 py-3 text-sm font-bold transition-colors ${i===0?'border-tomato bg-tomato/10 text-tomatod':'border-line hover:border-tomato'}">${p}</button>`).join('');
+  }
+  function selChip(el,cls){ document.querySelectorAll('.'+cls).forEach(b=>{b.classList.remove('border-tomato','bg-tomato/10','text-tomatod'); b.classList.add('border-line');}); el.classList.remove('border-line'); el.classList.add('border-tomato','bg-tomato/10','text-tomatod'); }
+
+  function placeOrder(){
+    const name=document.getElementById('co-name'), phone=document.getElementById('co-phone'), err=document.getElementById('co-error');
+    if(!name.value.trim()||!phone.value.trim()){ err.textContent='Bitte Name und Telefon angeben.'; err.classList.remove('hidden'); return; }
+    err.classList.add('hidden');
+    document.getElementById('order-no').textContent='#'+Math.floor(100+Math.random()*900);
+    renderOrderSteps(0); showView('confirm');
+    CART=[]; renderCart();
+    setTimeout(()=>renderOrderSteps(1), 2600);
+  }
+  function renderOrderSteps(active){
+    const steps=['Bestellung bestätigt','Wird frisch zubereitet','Abholbereit'];
+    document.getElementById('order-steps').innerHTML=steps.map((s,i)=>{
+      const done=i<active, cur=i===active;
+      const ic = (done||cur)
+        ? `<span class="grid h-6 w-6 place-items-center rounded-full ${cur?'bg-honey text-white':'bg-leaf text-white'}">${cur?'<span class=\"h-2 w-2 rounded-full bg-white\"></span>':'<svg viewBox=\"0 0 24 24\" class=\"h-3.5 w-3.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg>'}</span>`
+        : `<span class="grid h-6 w-6 place-items-center rounded-full border border-line text-xs text-muted">${i+1}</span>`;
+      return `<div class="flex items-center gap-3">${ic}<span class="${cur?'font-bold text-ink':done?'text-leafd':'text-muted'}">${s}</span></div>`;
+    }).join('');
+  }
+  function newOrder(){ showView('cart'); }
+
+  let toastT;
+  function toast(msg){ const t=document.getElementById('toast'); t.textContent='✓ '+msg; t.style.opacity='1'; t.style.transform='translate(-50%,0)'; clearTimeout(toastT); toastT=setTimeout(()=>{t.style.opacity='0'; t.style.transform='translate(-50%,16px)';},1800); }
+
+  function renderHours(){
+    const list=document.getElementById('hours-list'); const today=new Date().getDay(); const order=[1,2,3,4,5,6,0];
+    list.innerHTML=order.map(i=>{
+      const h=CONFIG.hours[i]; const isT=i===today;
+      const v=h?`${String(h[0]).padStart(2,'0')}:00 – ${String(h[1]).padStart(2,'0')}:00 Uhr`:'geschlossen';
+      return `<li class="flex items-center justify-between px-5 py-3.5 ${isT?'bg-tomato/8':''}"><span class="font-semibold ${isT?'text-tomato':''}">${WD[i]}</span><span class="${h?'font-bold':'text-muted'}">${v}</span></li>`;
+    }).join('');
+  }
+  function renderStatus(){
+    const now=new Date(); const h=CONFIG.hours[now.getDay()];
+    const dot=document.getElementById('open-dot'), txt=document.getElementById('open-text');
+    let open=false; if(h){const c=now.getHours()+now.getMinutes()/60; open=c>=h[0]&&c<h[1];}
+    if(open){ txt.textContent=`Jetzt geöffnet · bis ${h[1]}:00 Uhr`; }
+    else { dot.classList.remove('bg-leaf'); dot.classList.add('bg-tomato'); txt.parentElement.classList.remove('bg-leaf/15','text-leafd'); txt.parentElement.classList.add('bg-tomato/10','text-tomatod'); txt.textContent='Gerade geschlossen'; }
+  }
+
+  function initFx(){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    const spy=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting) setActiveTab(e.target.dataset.cat); });},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('.menu-cat').forEach(el=>spy.observe(el));
+  }
+
+  document.getElementById('year').textContent=new Date().getFullYear();
+  applyConfig(); renderSpecials(); renderMenu(); renderCart(); renderHours(); renderStatus(); initFx();
+  addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
+  </script>
+</body>
+</html>

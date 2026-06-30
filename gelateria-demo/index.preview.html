@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gelateria Luna — Handgemachtes Eis aus Saarbrücken</title>
+  <meta name="description" content="Gelateria Luna – handgemachtes Gelato, täglich frisch gerührt aus natürlichen Zutaten. Mitten in Saarbrücken." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush:  '#FCF2EE',
+            cream:  '#FFFDFA',
+            soft:   '#F7E9E1',
+            line:   '#EFDED4',
+            choco:  '#3B2A23',
+            muted:  '#8C7A70',
+            berry:  '#DB6188',
+            berryd: '#C44E72',
+            pist:   '#9CC078',
+            caramel:'#DDA15E',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 18px 50px -20px rgba(80,40,30,0.30)',
+            berry:'0 14px 32px -12px rgba(219,97,136,0.55)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body { background:#FCF2EE; }
+    ::selection { background:#DB6188; color:#fff; }
+    ::-webkit-scrollbar { width:10px; }
+    ::-webkit-scrollbar-track { background:#F7E9E1; }
+    ::-webkit-scrollbar-thumb { background:#E6CFC3; border-radius:10px; }
+    ::-webkit-scrollbar-thumb:hover { background:#DB6188; }
+
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity:1; transform:none; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    .anim-up { animation: fadeUp .95s cubic-bezier(.2,.7,.2,1) both; }
+
+    @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .floaty { animation: floaty 6s ease-in-out infinite; }
+
+    .imgfall { background:linear-gradient(135deg,#F7E0D6,#F7E9E1 60%); }
+
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{ animation:none !important; transition-duration:.001ms !important; }
+      .reveal{opacity:1;transform:none}
+    }
+  </style>
+</head>
+
+<body class="bg-blush font-sans text-choco antialiased">
+
+  <!-- ===================== HEADER ===================== -->
+  <header id="hdr" class="fixed inset-x-0 top-0 z-40 transition-all duration-300">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+      <a href="#top" class="flex items-center gap-2.5">
+        <span class="grid h-11 w-11 place-items-center rounded-full bg-berry text-white">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a4 4 0 0 1 8 0"/><path d="M7 8h10l-4.6 12.3a.5.5 0 0 1-.94 0L7 8Z"/></svg>
+        </span>
+        <span class="font-display text-2xl font-semibold leading-none" data-cfg="name">Gelateria Luna</span>
+      </a>
+      <nav class="hidden items-center gap-9 md:flex">
+        <a href="#sorten"  class="text-[15px] font-medium text-choco/70 transition-colors hover:text-berry">Sorten</a>
+        <a href="#story"   class="text-[15px] font-medium text-choco/70 transition-colors hover:text-berry">Über uns</a>
+        <a href="#laden"   class="text-[15px] font-medium text-choco/70 transition-colors hover:text-berry">Der Laden</a>
+        <a href="#standort"class="text-[15px] font-medium text-choco/70 transition-colors hover:text-berry">Standort</a>
+      </nav>
+      <a href="tel:+4968100000000" class="hidden items-center gap-2 rounded-full border border-choco/15 px-4 py-2.5 text-sm font-semibold transition-colors hover:border-berry hover:text-berry sm:inline-flex">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-cfg="phoneDisplay">0681 000 000</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="top" class="relative overflow-hidden bg-soft px-5 pt-32 sm:px-8 lg:pt-40">
+    <div class="relative mx-auto grid max-w-7xl items-center gap-12 pb-10 lg:grid-cols-2 lg:pb-16">
+      <!-- LEFT -->
+      <div>
+        <span class="anim-up inline-flex items-center gap-2 rounded-full bg-cream px-4 py-1.5 text-sm font-semibold text-berry shadow-sm" style="animation-delay:.05s">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Handgemacht in Saarbrücken
+        </span>
+
+        <h1 class="anim-up mt-6 font-display text-6xl font-semibold leading-[1.0] sm:text-7xl" style="animation-delay:.12s">
+          Handgemachtes<br>Gelato, <span class="italic text-berry">mit&nbsp;Liebe</span><br>gerührt.
+        </h1>
+
+        <p class="anim-up mt-6 max-w-md text-lg leading-relaxed text-muted" style="animation-delay:.2s">
+          Jeden Tag frisch gerührt aus natürlichen Zutaten — cremig, ehrlich und ohne Schnickschnack. So, wie Eis schmecken soll.
+        </p>
+
+        <div class="anim-up mt-8 flex flex-wrap gap-3" style="animation-delay:.28s">
+          <a href="#sorten" class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-berry px-7 py-4 text-base font-semibold text-white shadow-berry transition-transform duration-200 hover:-translate-y-0.5">
+            Sorten entdecken
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#standort" class="inline-flex cursor-pointer items-center gap-2 rounded-full border-2 border-choco/15 px-7 py-4 text-base font-semibold transition-colors hover:border-berry hover:text-berry">
+            Standort &amp; Zeiten
+          </a>
+        </div>
+
+        <div class="anim-up mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted" style="animation-delay:.36s">
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-caramel" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Täglich frisch gerührt</span>
+          <span class="hidden h-4 w-px bg-line sm:block"></span>
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-caramel" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Über 24 Sorten</span>
+          <span class="hidden h-4 w-px bg-line sm:block"></span>
+          <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 text-caramel" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vegane Optionen</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: round highlight image with 6 flavor scoops floating evenly around -->
+      <div class="anim-up relative mx-auto aspect-square w-full max-w-[30rem]" style="animation-delay:.2s">
+        <div class="imgfall absolute left-1/2 top-1/2 aspect-square w-[74%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-soft ring-[6px] ring-cream">
+          <img id="hero-img" src="bilder/gelateria.jpg" alt="Unsere Eisdiele" class="h-full w-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=900&auto=format&fit=crop';" />
+        </div>
+        <!-- Sorten-Kugeln, gleichmäßig im Kreis (12/2/4/6/8/10 Uhr) -->
+        <div class="floaty absolute left-1/2 top-0 grid h-[4.6rem] w-[4.6rem] -translate-x-1/2 place-items-center rounded-full bg-[#F3E2B3] text-choco shadow-soft" style="animation-delay:0s"><span class="font-display text-[13px] font-semibold">Vanille</span></div>
+        <div class="floaty absolute right-0 top-[14%] grid h-[4.6rem] w-[4.6rem] place-items-center rounded-full bg-berry text-white shadow-soft" style="animation-delay:-1.2s"><span class="font-display text-[13px] font-semibold">Erdbeere</span></div>
+        <div class="floaty absolute right-0 bottom-[14%] grid h-[4.6rem] w-[4.6rem] place-items-center rounded-full bg-[#5A3A2E] text-white shadow-soft" style="animation-delay:-2.4s"><span class="px-1 text-center font-display text-[12px] font-semibold leading-tight">Schoko&shy;lade</span></div>
+        <div class="floaty absolute left-1/2 bottom-0 grid h-[4.6rem] w-[4.6rem] -translate-x-1/2 place-items-center rounded-full bg-[#F4D03F] text-choco shadow-soft" style="animation-delay:-3s"><span class="font-display text-[13px] font-semibold">Zitrone</span></div>
+        <div class="floaty absolute left-0 bottom-[14%] grid h-[4.6rem] w-[4.6rem] place-items-center rounded-full text-choco shadow-soft" style="animation-delay:-1.8s;background:#FFFDF7;background-image:radial-gradient(#3B2A23 1.5px,transparent 1.7px);background-size:11px 11px"><span class="rounded bg-[#FFFDF7]/85 px-1 text-center font-display text-[11px] font-semibold leading-tight">Strac&shy;ciatella</span></div>
+        <div class="floaty absolute left-0 top-[14%] grid h-[4.6rem] w-[4.6rem] place-items-center rounded-full bg-pist text-white shadow-soft" style="animation-delay:-0.6s"><span class="font-display text-[13px] font-semibold">Pistazie</span></div>
+      </div>
+    </div>
+
+    <!-- soft wave divider -->
+    <div class="-mb-px">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" class="block h-[60px] w-full sm:h-[90px]"><path fill="#FCF2EE" d="M0,45 C300,95 560,5 840,35 C1080,60 1290,75 1440,45 L1440,90 L0,90 Z"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== STORY / WARUM ===================== -->
+  <section id="story" class="scroll-mt-24 px-5 py-14 sm:px-8 lg:py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal mx-auto mb-12 max-w-2xl text-center">
+        <p class="mb-3 font-display text-lg italic text-berry">mit Herz gemacht</p>
+        <h2 class="font-display text-4xl font-semibold sm:text-5xl">Warum unser Eis anders schmeckt</h2>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-3">
+        <div class="reveal text-center">
+          <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-pist/15 text-pist"><svg viewBox="0 0 24 24" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+          <h3 class="mt-4 font-display text-xl font-semibold">Natürliche Zutaten</h3>
+          <p class="mx-auto mt-2 max-w-xs text-muted">Echte Früchte, gute Milch, keine künstlichen Aromen. Punkt.</p>
+        </div>
+        <div class="reveal text-center">
+          <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-berry/12 text-berry"><svg viewBox="0 0 24 24" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 5 6 5c2 0 3.5 1.5 4 2.5C10.5 6.5 12 5 14 5c3.5 0 5.5 4 3.5 7.5C19 16.65 12 21 12 21Z"/></svg></span>
+          <h3 class="mt-4 font-display text-xl font-semibold">Täglich frisch gerührt</h3>
+          <p class="mx-auto mt-2 max-w-xs text-muted">Jeden Morgen neu in unserer Manufaktur — nie auf Vorrat.</p>
+        </div>
+        <div class="reveal text-center">
+          <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-caramel/15 text-caramel"><svg viewBox="0 0 24 24" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M5 8c0-1 3-2 7-2s7 1 7 2M5 8v9c0 1.5 3 3 7 3s7-1.5 7-3V8M5 12c0 1.5 3 3 7 3s7-1.5 7-3"/></svg></span>
+          <h3 class="mt-4 font-display text-xl font-semibold">Hausgemachte Rezepte</h3>
+          <p class="mx-auto mt-2 max-w-xs text-muted">Familienrezepte, über Jahre verfeinert — mit viel Geduld.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SORTEN ===================== -->
+  <section id="sorten" class="scroll-mt-24 px-5 py-14 sm:px-8 lg:py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal mb-12 flex flex-col items-center gap-3 text-center">
+        <p class="font-display text-lg italic text-berry">eine kleine Auswahl</p>
+        <h2 class="font-display text-4xl font-semibold sm:text-5xl">Unsere Lieblingssorten</h2>
+        <p class="max-w-lg text-muted">Über 24 Sorten warten in der Theke — hier ein paar, in die wir besonders verliebt sind.</p>
+      </div>
+      <div id="flavor-grid" class="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"></div>
+      <p class="reveal mt-12 text-center text-muted">…und viele mehr — saisonal wechselnd. <span class="font-semibold text-choco">Komm vorbei &amp; probier dich durch.</span></p>
+    </div>
+  </section>
+
+  <!-- ===================== LADEN (Highlight-Bild) ===================== -->
+  <section id="laden" class="scroll-mt-24 bg-soft px-5 py-16 sm:px-8 lg:py-24">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
+      <div class="reveal imgfall overflow-hidden rounded-[2rem] shadow-soft">
+        <img src="bilder/laden.jpg" alt="Unser Laden" class="aspect-[4/3] h-full w-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1629385701021-fcd568a743e8?q=80&w=1000&auto=format&fit=crop';" />
+      </div>
+      <div class="reveal">
+        <p class="font-display text-lg italic text-berry">unser kleines Reich</p>
+        <h2 class="mt-2 font-display text-4xl font-semibold sm:text-5xl">Ein Ort zum Wohlfühlen</h2>
+        <p class="mt-5 text-lg leading-relaxed text-muted">Knusprige Waffeln, der Duft von frischer Vanille und ein Lächeln hinter der Theke. Bei uns nimmst du dir Zeit — für den Moment, für den Genuss, für ein bisschen Glück am Stiel.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <span class="inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 text-sm font-semibold shadow-sm"><svg viewBox="0 0 24 24" class="h-4 w-4 text-berry" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a4 4 0 0 1 8 0"/><path d="M7 8h10l-4.6 12.3a.5.5 0 0 1-.94 0L7 8Z"/></svg>Hausgemachte Waffeln</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 text-sm font-semibold shadow-sm"><svg viewBox="0 0 24 24" class="h-4 w-4 text-caramel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>Kaffee &amp; Kuchen</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 text-sm font-semibold shadow-sm"><svg viewBox="0 0 24 24" class="h-4 w-4 text-pist" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>Vegane Sorten</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STANDORT + MAPS ===================== -->
+  <section id="standort" class="scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal mb-10 text-center">
+        <p class="font-display text-lg italic text-berry">komm vorbei</p>
+        <h2 class="font-display text-4xl font-semibold sm:text-5xl">Besuch uns</h2>
+      </div>
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div class="reveal overflow-hidden rounded-[2rem] border border-line shadow-soft">
+          <iframe id="map" title="Standort auf Google Maps" class="h-72 w-full lg:h-full" style="min-height:340px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src=""></iframe>
+        </div>
+        <div class="reveal space-y-4">
+          <div class="flex items-start gap-4 rounded-3xl border border-line bg-cream p-5 shadow-sm">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-berry/12 text-berry"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <div><p class="font-display text-lg font-semibold">Adresse</p><p class="text-muted" data-cfg="address">Bahnhofstraße 10, 66111 Saarbrücken</p>
+              <a href="#" data-cfg-href="mapsLink" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-berry hover:underline">Route planen →</a></div>
+          </div>
+          <div class="flex items-start gap-4 rounded-3xl border border-line bg-cream p-5 shadow-sm">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-pist/15 text-pist"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <div class="flex-1">
+              <p class="font-display text-lg font-semibold">Öffnungszeiten <span id="open-now" class="ml-1 align-middle text-xs font-semibold"></span></p>
+              <ul id="hours-list" class="mt-2 space-y-1 text-sm"></ul>
+            </div>
+          </div>
+          <a href="tel:+4968100000000" class="flex items-center gap-4 rounded-3xl border border-line bg-cream p-5 shadow-sm transition-colors hover:border-berry">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-caramel/15 text-caramel"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <div><p class="font-display text-lg font-semibold">Telefon</p><p class="text-muted" data-cfg="phoneDisplay">0681 000 000</p></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-choco px-5 py-12 text-blush sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+      <div class="flex items-center gap-2.5">
+        <span class="grid h-11 w-11 place-items-center rounded-full bg-berry text-white"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a4 4 0 0 1 8 0"/><path d="M7 8h10l-4.6 12.3a.5.5 0 0 1-.94 0L7 8Z"/></svg></span>
+        <span><span class="block font-display text-xl font-semibold leading-none" data-cfg="name">Gelateria Luna</span><span class="block text-xs text-blush/50">Handgemachtes Eis · Saarbrücken</span></span>
+      </div>
+      <p class="text-sm text-blush/60">© <span id="year"></span> <span data-cfg="name">Gelateria Luna</span> · Demo-Website</p>
+      <p class="flex gap-5 text-sm text-blush/60">
+        <a href="#" class="transition-colors hover:text-berry">Impressum</a>
+        <a href="#" class="transition-colors hover:text-berry">Datenschutz</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================== SCRIPT ===================== -->
+  <script>
+  /* =================== HIER ANPASSEN =================== */
+  const CONFIG = {
+    name: "Gelateria Luna",
+    phoneDisplay: "0681 000 000",
+    phoneTel: "+4968100000000",
+    address: "Bahnhofstraße 10, 66111 Saarbrücken",
+    mapsQuery: "Bahnhofstraße 10, 66111 Saarbrücken",
+
+    // Eigene Fotos: in den Ordner "bilder/" legen (hero -> gelateria.jpg, Laden -> laden.jpg).
+    // Solange sie fehlen, werden die Fallback-Bilder aus dem Netz genutzt.
+    heroImage:     "bilder/gelateria.jpg",
+    heroFallback:  "https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=900&auto=format&fit=crop",
+    ladenFallback: "https://images.unsplash.com/photo-1629385701021-fcd568a743e8?q=80&w=1000&auto=format&fit=crop",
+
+    // Öffnungszeiten: [open,close] oder null. 0=So..6=Sa
+    hours: { 0:[12,21], 1:null, 2:[11,21], 3:[11,21], 4:[11,21], 5:[11,22], 6:[11,22] },
+
+    // Ein paar Highlight-Sorten (nicht alle). color = Hintergrund der Kugel (falls Bild fehlt).
+    flavors: [
+      { name:'Pistazie',       note:'Sizilianische Pistazien, fein geröstet', color:'#9CC078', img:'https://images.unsplash.com/photo-1534706936160-d5ee67737249?q=80&w=500&auto=format&fit=crop' },
+      { name:'Stracciatella',  note:'Sahne mit zarten Schokosplittern',       color:'#EDE3D6', img:'https://images.unsplash.com/photo-1590080962330-747c6aba8028?q=80&w=500&auto=format&fit=crop' },
+      { name:'Erdbeere',       note:'Sonnengereifte Erdbeeren',               color:'#E86F92', img:'https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=500&auto=format&fit=crop' },
+      { name:'Dunkle Schokolade', note:'Intensiv & samtig, 70% Kakao',        color:'#5A3A2E', img:'https://images.unsplash.com/photo-1562790879-dfde82829db0?q=80&w=500&auto=format&fit=crop' },
+      { name:'Vanille',        note:'Cremige Bourbon-Vanille',                color:'#F3E2B3', img:'https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=500&auto=format&fit=crop' },
+      { name:'Mango-Sorbet',   note:'Fruchtig, vegan, erfrischend',           color:'#F2B84B', img:'https://images.unsplash.com/photo-1663904458920-f153c162fa79?q=80&w=500&auto=format&fit=crop' },
+    ],
+  };
+  /* ==================================================== */
+
+  const WD = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+
+  function applyConfig(){
+    const C=CONFIG;
+    const mapsLink = 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(C.mapsQuery);
+    const d = Object.assign({}, C, { mapsLink });
+    document.querySelectorAll('[data-cfg]').forEach(e=>{const k=e.getAttribute('data-cfg'); if(d[k]!=null)e.textContent=d[k];});
+    document.querySelectorAll('[data-cfg-href]').forEach(e=>{const k=e.getAttribute('data-cfg-href'); if(d[k]!=null)e.setAttribute('href',d[k]);});
+    document.querySelectorAll('[data-cfg-src]').forEach(e=>{const k=e.getAttribute('data-cfg-src'); if(d[k]!=null)e.setAttribute('src',d[k]);});
+    document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+C.phoneTel);
+    document.getElementById('map').src = 'https://www.google.com/maps?q='+encodeURIComponent(C.mapsQuery)+'&output=embed';
+    document.title = `${C.name} — Handgemachtes Eis aus Saarbrücken`;
+  }
+
+  function renderFlavors(){
+    document.getElementById('flavor-grid').innerHTML = CONFIG.flavors.map((f,idx)=>`
+      <article class="reveal group text-center" style="transition-delay:${idx*60}ms">
+        <div class="mx-auto h-44 w-44 overflow-hidden rounded-full bg-cover bg-center shadow-soft ring-4 ring-cream transition-all duration-300 group-hover:-translate-y-2 group-hover:ring-berry/40" style="background-color:${f.color};${f.img?`background-image:url('${f.img}')`:''}" role="img" aria-label="${f.name} Eis"></div>
+        <h3 class="mt-5 font-display text-2xl font-semibold">${f.name}</h3>
+        <p class="mx-auto mt-1 max-w-[16rem] text-muted">${f.note}</p>
+      </article>`).join('');
+  }
+
+  function renderHours(){
+    const list=document.getElementById('hours-list'); const today=new Date().getDay(); const order=[1,2,3,4,5,6,0];
+    list.innerHTML=order.map(i=>{
+      const h=CONFIG.hours[i]; const isT=i===today;
+      const v=h?`${String(h[0]).padStart(2,'0')}:00 – ${String(h[1]).padStart(2,'0')}:00 Uhr`:'Ruhetag';
+      return `<li class="flex items-center justify-between gap-4 ${isT?'font-bold text-berry':'text-muted'}"><span>${WD[i]}</span><span>${v}</span></li>`;
+    }).join('');
+    // open now badge
+    const now=new Date(); const h=CONFIG.hours[now.getDay()]; let open=false;
+    if(h){const c=now.getHours()+now.getMinutes()/60; open=c>=h[0]&&c<h[1];}
+    const b=document.getElementById('open-now');
+    if(open){ b.textContent='· jetzt geöffnet'; b.className='ml-1 align-middle text-xs font-semibold text-pist'; }
+    else { b.textContent='· gerade geschlossen'; b.className='ml-1 align-middle text-xs font-semibold text-berry'; }
+  }
+
+  function initFx(){
+    const hdr=document.getElementById('hdr');
+    const heroImg=document.getElementById('hero-img');
+    addEventListener('scroll',()=>{
+      const s=scrollY>24;
+      hdr.classList.toggle('bg-blush/85', s);
+      hdr.classList.toggle('backdrop-blur-md', s);
+      hdr.classList.toggle('shadow-[0_6px_24px_-12px_rgba(80,40,30,0.35)]', s);
+      // sanfter Parallax aufs Hero-Bild
+      if(heroImg) heroImg.style.transform = `translateY(${Math.min(scrollY*0.06,40)}px) scale(1.02)`;
+    },{passive:true});
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  }
+
+  document.getElementById('year').textContent=new Date().getFullYear();
+  applyConfig(); renderFlavors(); renderHours(); initFx();
+  </script>
+</body>
+</html>
