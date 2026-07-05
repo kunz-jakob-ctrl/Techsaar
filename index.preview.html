@@ -69,9 +69,33 @@
       filter: blur(20px);
     }
 
-    /* reveal on scroll */
-    .reveal { opacity:0; transform:translateY(26px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
-    .reveal.in { opacity:1; transform:none; }
+    /* Scroll-Einblendungen via Motion One + animations.js (Failsafe: nie unsichtbar hängen) */
+    [data-animate] { opacity:0; }
+
+    /* laufendes Raster (eine Zelle diagonal, nahtlose Schleife) */
+    .grid-anim { animation: gridMove 16s linear infinite; }
+    @keyframes gridMove { to { background-position: 32px 32px; } }
+
+    /* Scan-Linie, die durchs Hero wandert */
+    .scanline {
+      position:absolute; left:0; right:0; top:0; height:26%; pointer-events:none; z-index:0;
+      background: linear-gradient(to bottom, transparent, rgba(139,124,246,.09), transparent);
+      animation: scan 8s cubic-bezier(.45,0,.55,1) infinite;
+    }
+    @keyframes scan { 0% { transform:translateY(-60%); } 100% { transform:translateY(420%); } }
+
+    /* pulsierende Blueprint-Kreuze */
+    .plus-pulse { animation: plusPulse 4.5s ease-in-out infinite; }
+    @keyframes plusPulse { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.25); } }
+
+    /* schwebende Chips am Builder */
+    .chip-float  { animation: chipFloat 5.5s ease-in-out infinite; }
+    .chip-float2 { animation: chipFloat 7s ease-in-out infinite reverse; }
+    @keyframes chipFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-9px); } }
+
+    /* Builder-Themewechsel: weiche Farbübergänge per CSS (robuster als WAAPI-Farbanimation) */
+    #hb-screen, .hb-bar, .hb-sub, .hb-card, #hb-cta { transition: background-color .7s ease, border-color .7s ease, color .7s ease; }
+    #hb-url { transition: opacity .25s ease; }
 
     /* marquee */
     .marquee { display:flex; gap:0; width:max-content; animation: scroll 28s linear infinite; }
@@ -88,12 +112,16 @@
 
     @media (prefers-reduced-motion: reduce) {
       *,*::before,*::after { animation:none !important; transition-duration:.001ms !important; }
-      .reveal { opacity:1; transform:none; }
+      [data-animate] { opacity:1 !important; transform:none !important; }
     }
   </style>
+  <noscript><style>[data-animate]{opacity:1 !important}</style></noscript>
 </head>
 
 <body class="bg-white font-sans text-ink antialiased">
+
+  <!-- Scroll-Fortschritt (Lila-Haarlinie oben) -->
+  <div id="scroll-progress" class="fixed left-0 top-0 z-[60] h-[2.5px] w-full origin-left bg-lilac" style="transform:scaleX(0)"></div>
 
   <!-- ===================== NAV ===================== -->
   <header class="fixed inset-x-0 top-0 z-50 border-b border-line bg-white/80 backdrop-blur-md" id="navbar">
@@ -116,44 +144,93 @@
     </div>
   </header>
 
-  <!-- ===================== HERO ===================== -->
-  <section id="top" class="relative isolate overflow-hidden px-4 pb-20 pt-36 sm:px-6 lg:pb-28 lg:pt-44">
-    <div class="graph-grid absolute inset-0 -z-10"></div>
+  <!-- ===================== HERO (animiert) ===================== -->
+  <section id="top" class="relative isolate overflow-hidden px-4 pb-16 pt-32 sm:px-6 lg:pb-24 lg:pt-40">
+    <div class="graph-grid grid-anim absolute inset-0 -z-10"></div>
     <div class="halo -z-10"></div>
     <div class="spotlight" id="spotlight"></div>
+    <div class="scanline" aria-hidden="true"></div>
 
     <!-- Blueprint-Kreuze -->
-    <svg class="plus-mark left-[8%] top-32" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
-    <svg class="plus-mark right-[10%] top-52" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
-    <svg class="plus-mark bottom-24 left-[16%] hidden lg:block" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
+    <svg class="plus-mark plus-pulse left-[6%] top-32" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
+    <svg class="plus-mark plus-pulse right-[4%] top-64 hidden lg:block" style="animation-delay:1.6s" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
+    <svg class="plus-mark plus-pulse bottom-24 left-[42%] hidden lg:block" style="animation-delay:3s" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v12M3 9h12"/></svg>
 
-    <div class="relative z-10 mx-auto max-w-4xl text-center">
-      <div class="reveal mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-1.5 text-sm font-medium text-ink shadow-sm">
-        <svg viewBox="0 0 24 24" class="h-4 w-4 text-lilac" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Direkt aus dem Saarland — dein lokaler Ansprechpartner
+    <div class="relative z-10 mx-auto max-w-7xl">
+      <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+        <!-- Links: Text -->
+        <div class="text-left">
+          <div data-animate="fade-up" class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-1.5 text-sm font-medium text-ink shadow-sm">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-lilac" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Direkt aus dem Saarland — dein lokaler Ansprechpartner
+          </div>
+
+          <h1 id="hero-headline" class="mt-6 font-display text-6xl font-bold leading-[0.98] tracking-tight sm:text-7xl lg:text-8xl">
+            <span class="hw inline-block">Auffallen<span class="text-lilac">.</span></span><br>
+            <span class="hw inline-block">Lokal.</span>
+            <span class="hw inline-block">Digital.</span>
+          </h1>
+          <span id="hero-underline" class="mt-5 block h-[3px] w-44 origin-left rounded-full bg-gradient-to-r from-lilac to-transparent"></span>
+
+          <p data-animate="fade-up" data-animate-delay="0.55" class="mt-7 max-w-xl text-lg leading-relaxed text-muted">
+            Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> — zwei Studenten, die moderne Websites &amp; Apps
+            mit cleverer Technik und KI bauen. Persönlich, lokal, ohne Agentur-Blabla.
+          </p>
+
+          <div data-animate="fade-up" data-animate-delay="0.7" class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#kontakt" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-14px_rgba(139,124,246,.8)] sm:w-auto">
+              Kostenloses Erstgespräch
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#arbeiten" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-line bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:border-lilac hover:text-lilac sm:w-auto">
+              Arbeiten ansehen
+            </a>
+          </div>
+        </div>
+
+        <!-- Rechts: animierter Website-Builder (wechselt durch die 3 echten Demos) -->
+        <div id="hero-builder" data-animate="zoom" data-animate-delay="0.35" class="relative hidden lg:block">
+          <div class="overflow-hidden rounded-2xl border border-line bg-white shadow-[0_36px_90px_-46px_rgba(14,14,18,.4)]">
+            <div class="flex items-center gap-2 border-b border-line bg-ghost px-4 py-3">
+              <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
+              <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
+              <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
+              <span id="hb-url" class="ml-3 rounded-md bg-white px-3 py-1 text-xs text-muted">fasson-barbershop.de</span>
+            </div>
+            <div id="hb-screen" class="relative aspect-[4/3] p-7" style="background:#0B0B0A">
+              <div class="hb-el flex items-center justify-between">
+                <span class="hb-bar h-2.5 w-16 rounded-full" style="background:#F4F3F0"></span>
+                <span class="flex gap-2">
+                  <span class="hb-sub h-1.5 w-8 rounded-full" style="background:rgba(244,243,240,.4)"></span>
+                  <span class="hb-sub h-1.5 w-8 rounded-full" style="background:rgba(244,243,240,.4)"></span>
+                  <span class="hb-sub h-1.5 w-8 rounded-full" style="background:rgba(244,243,240,.4)"></span>
+                </span>
+              </div>
+              <div class="hb-el mt-12 space-y-3">
+                <span class="hb-bar block h-5 w-3/4 rounded" style="background:#F4F3F0"></span>
+                <span class="hb-bar block h-5 w-1/2 rounded" style="background:#F4F3F0"></span>
+                <span class="hb-sub mt-4 block h-2 w-2/3 rounded-full" style="background:rgba(244,243,240,.4)"></span>
+              </div>
+              <span id="hb-cta" class="hb-el mt-7 inline-block rounded-full border px-5 py-2 text-[10px] font-bold uppercase tracking-[0.18em]" style="border-color:#F4F3F0;color:#F4F3F0;background:transparent">Termin buchen</span>
+              <div class="hb-el mt-8 grid grid-cols-3 gap-3">
+                <span class="hb-card block h-14 rounded-lg" style="background:#211f1d"></span>
+                <span class="hb-card block h-14 rounded-lg" style="background:#211f1d"></span>
+                <span class="hb-card block h-14 rounded-lg" style="background:#211f1d"></span>
+              </div>
+            </div>
+          </div>
+          <!-- schwebende Chips -->
+          <div class="chip-float absolute -left-8 top-20 rounded-xl border border-line bg-white px-3.5 py-2 text-xs font-semibold shadow-lg">
+            <span class="text-lilac">100%</span> lokal aus dem Saarland
+          </div>
+          <div class="chip-float2 absolute -right-5 bottom-14 rounded-xl border border-line bg-white px-3.5 py-2 text-xs font-semibold shadow-lg">
+            <span class="text-lilac">KI</span> inklusive
+          </div>
+        </div>
       </div>
 
-      <h1 class="reveal font-display text-5xl font-bold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
-        Auffallen<span class="text-lilac">.</span><br>Lokal. Digital.
-      </h1>
-
-      <p class="reveal mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-        Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> — zwei Studenten, die moderne Websites &amp; Apps
-        mit cleverer Technik und KI bauen. Persönlich, lokal, ohne Agentur-Blabla.
-      </p>
-
-      <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a href="#kontakt" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-14px_rgba(139,124,246,.8)] sm:w-auto">
-          Kostenloses Erstgespräch
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a href="#arbeiten" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-line bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:border-lilac hover:text-lilac sm:w-auto">
-          Arbeiten ansehen
-        </a>
-      </div>
-
-      <!-- stat row: Haarlinien statt Glas-Kacheln -->
-      <div class="reveal mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-y-8 text-left sm:grid-cols-4">
+      <!-- stat row: Haarlinien -->
+      <div data-animate="fade-up" data-animate-delay="0.85" class="mt-16 grid grid-cols-2 gap-y-8 border-t border-line pt-8 text-left sm:grid-cols-4">
         <div class="border-l border-line pl-4">
           <p class="font-display text-3xl font-bold"><span data-count="100">0</span><span class="text-lilac">%</span></p>
           <p class="mt-1 text-xs font-medium text-muted">lokal aus dem Saarland</p>
@@ -199,15 +276,15 @@
   <!-- ===================== LEISTUNGEN (BENTO) ===================== -->
   <section id="leistungen" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
     <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
+      <div data-animate="fade-up" class="mb-12 max-w-2xl">
         <p class="sec-label mb-3"><span class="idx">[ 01 ]</span> Was wir machen</p>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Alles für deinen digitalen Auftritt</h2>
         <p class="mt-4 text-lg text-muted">Von der ersten Idee bis zur fertigen Seite, die Kunden bringt — wir kümmern uns um alles.</p>
       </div>
 
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div data-stagger class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <!-- big card -->
-        <article class="card reveal group relative col-span-1 overflow-hidden rounded-2xl border border-line bg-white p-7 md:col-span-2 md:row-span-2">
+        <article data-animate="fade-up" class="card group relative col-span-1 overflow-hidden rounded-2xl border border-line bg-white p-7 md:col-span-2 md:row-span-2">
           <div class="absolute -right-12 -top-12 h-52 w-52 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-60" style="background:radial-gradient(circle,#8B7CF6,transparent 70%)"></div>
           <div class="relative">
             <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
@@ -224,7 +301,7 @@
           </div>
         </article>
 
-        <article class="card reveal relative overflow-hidden rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card relative overflow-hidden rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg>
           </span>
@@ -232,7 +309,7 @@
           <p class="mt-2 text-sm text-muted">Kunden buchen rund um die Uhr selbst — inkl. Zeitfenstern pro Mitarbeiter und Bestätigungsmail.</p>
         </article>
 
-        <article class="card reveal relative overflow-hidden rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card relative overflow-hidden rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4M12 8a4 4 0 0 0-4 4v4a4 4 0 0 0 8 0v-4a4 4 0 0 0-4-4ZM5 12H3M21 12h-2M6.5 6.5 5 5M17.5 6.5 19 5"/></svg>
           </span>
@@ -240,7 +317,7 @@
           <p class="mt-2 text-sm text-muted">Chatbots, automatische Antworten, smarte Formulare — wir nehmen dir lästige Aufgaben ab.</p>
         </article>
 
-        <article class="card reveal relative overflow-hidden rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card relative overflow-hidden rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
@@ -248,7 +325,7 @@
           <p class="mt-2 text-sm text-muted">Damit dich Kunden bei Google &amp; Maps finden — optimiert für deine Region im Saarland.</p>
         </article>
 
-        <article class="card reveal relative overflow-hidden rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card relative overflow-hidden rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>
           </span>
@@ -256,7 +333,7 @@
           <p class="mt-2 text-sm text-muted">Hosting, Updates, Änderungen — ein fester Ansprechpartner, kein Callcenter.</p>
         </article>
 
-        <article class="card reveal relative overflow-hidden rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card relative overflow-hidden rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 18h.01"/></svg>
           </span>
@@ -270,15 +347,15 @@
   <!-- ===================== ANGEBOT: WEBSITE / APP / BEIDES ===================== -->
   <section id="angebot" class="scroll-mt-24 px-4 pb-20 sm:px-6 lg:pb-28">
     <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
+      <div data-animate="fade-up" class="mb-12 max-w-2xl">
         <p class="sec-label mb-3"><span class="idx">[ 02 ]</span> Website, App – oder beides?</p>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Was passt zu dir?</h2>
         <p class="mt-4 text-lg text-muted">Jedes Geschäft ist anders. Du entscheidest, was du brauchst — wir bauen beides aus einer Hand und perfekt verzahnt.</p>
       </div>
 
-      <div class="grid items-stretch gap-5 md:grid-cols-3">
+      <div data-stagger class="grid items-stretch gap-5 md:grid-cols-3">
         <!-- Website -->
-        <article class="card reveal flex flex-col rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card flex flex-col rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
           </span>
@@ -292,7 +369,7 @@
         </article>
 
         <!-- Beides (highlight) -->
-        <article class="card reveal relative flex flex-col rounded-2xl border border-lilac/50 bg-wash p-7 ring-1 ring-lilac/25">
+        <article data-animate="fade-up" class="card relative flex flex-col rounded-2xl border border-lilac/50 bg-wash p-7 ring-1 ring-lilac/25">
           <span class="absolute right-5 top-5 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">Beliebt</span>
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-white text-lilac shadow-sm">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"><path d="M12 2l2.2 5.8L20 10l-5.8 2.2L12 18l-2.2-5.8L4 10l5.8-2.2z"/></svg>
@@ -307,7 +384,7 @@
         </article>
 
         <!-- App -->
-        <article class="card reveal flex flex-col rounded-2xl border border-line bg-white p-7">
+        <article data-animate="fade-up" class="card flex flex-col rounded-2xl border border-line bg-white p-7">
           <span class="grid h-12 w-12 place-items-center rounded-xl bg-wash text-lilac">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 18h.01"/></svg>
           </span>
@@ -326,7 +403,7 @@
   <!-- ===================== ARBEITEN ===================== -->
   <section id="arbeiten" class="scroll-mt-24 border-y border-line bg-ghost px-4 py-20 sm:px-6 lg:py-28">
     <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+      <div data-animate="fade-up" class="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <div class="max-w-2xl">
           <p class="sec-label mb-3"><span class="idx">[ 03 ]</span> Eine kleine Vorschau</p>
           <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Unsere Arbeiten</h2>
@@ -334,9 +411,9 @@
         </div>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div data-stagger class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <!-- Barbershop preview (FASSON, monochromer Editorial-Look) -->
-        <article class="card reveal group overflow-hidden rounded-2xl border border-line bg-white">
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-line bg-white">
           <!-- browser chrome -->
           <div class="flex items-center gap-2 border-b border-line bg-ghost px-4 py-3">
             <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
@@ -374,7 +451,7 @@
         </article>
 
         <!-- Eisdiele preview -->
-        <article class="card reveal group overflow-hidden rounded-2xl border border-line bg-white">
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-line bg-white">
           <div class="flex items-center gap-2 border-b border-line bg-ghost px-4 py-3">
             <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
             <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
@@ -409,7 +486,7 @@
         </article>
 
         <!-- Döner preview (Saar Döner, dunkler Aura-Look) -->
-        <article class="card reveal group overflow-hidden rounded-2xl border border-line bg-white">
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-line bg-white">
           <div class="flex items-center gap-2 border-b border-line bg-ghost px-4 py-3">
             <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
             <span class="h-3 w-3 rounded-full border border-line bg-white"></span>
@@ -447,7 +524,7 @@
         </article>
       </div>
 
-      <p class="reveal mt-8 text-center text-muted">…und bald <span class="font-semibold text-ink">dein Projekt?</span>
+      <p data-animate="fade-up" class="mt-8 text-center text-muted">…und bald <span class="font-semibold text-ink">dein Projekt?</span>
         <a href="#kontakt" class="font-semibold text-ink underline underline-offset-4 transition-colors hover:text-lilac">Jetzt anfragen</a>
       </p>
     </div>
@@ -456,7 +533,7 @@
   <!-- ===================== ÜBER UNS ===================== -->
   <section id="team" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
     <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
-      <div class="reveal">
+      <div data-animate="fade-up">
         <p class="sec-label mb-3"><span class="idx">[ 04 ]</span> Wer wir sind</p>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Zwei Studenten,<br><span class="text-lilac">ein Anspruch</span>.</h2>
         <p class="mt-5 text-lg leading-relaxed text-muted">
@@ -481,7 +558,7 @@
       </div>
 
       <!-- founder cards -->
-      <div class="reveal grid grid-cols-2 gap-4">
+      <div data-animate="fade-up" class="grid grid-cols-2 gap-4">
         <div class="card rounded-2xl border border-line bg-white p-6 text-center">
           <div class="mx-auto grid h-24 w-24 place-items-center rounded-full border border-lilac/30 bg-wash font-display text-3xl font-bold text-lilac" data-cfg="founder1Initial">J</div>
           <h3 class="mt-4 font-display text-xl font-bold" data-cfg="founder1Name">Jakob</h3>
@@ -506,23 +583,23 @@
   <!-- ===================== PROZESS ===================== -->
   <section id="prozess" class="scroll-mt-24 border-y border-line bg-ghost px-4 py-20 sm:px-6 lg:py-28">
     <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-14 max-w-2xl">
+      <div data-animate="fade-up" class="mb-14 max-w-2xl">
         <p class="sec-label mb-3"><span class="idx">[ 05 ]</span> So läuft's ab</p>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">In 3 Schritten zur Website</h2>
         <p class="mt-4 text-lg text-muted">Unkompliziert, transparent und ohne Fachchinesisch.</p>
       </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        <div class="card reveal relative rounded-2xl border border-line bg-white p-7">
+      <div data-stagger class="grid gap-6 md:grid-cols-3">
+        <div data-animate="fade-up" class="card relative rounded-2xl border border-line bg-white p-7">
           <span class="font-display text-5xl font-bold text-lilac/25">01</span>
           <h3 class="mt-2 font-display text-xl font-bold">Kennenlernen</h3>
           <p class="mt-2 text-muted">Kostenloses Gespräch — bei einem Kaffee oder per Video. Wir hören zu und beraten ehrlich.</p>
         </div>
-        <div class="card reveal relative rounded-2xl border border-line bg-white p-7">
+        <div data-animate="fade-up" class="card relative rounded-2xl border border-line bg-white p-7">
           <span class="font-display text-5xl font-bold text-lilac/25">02</span>
           <h3 class="mt-2 font-display text-xl font-bold">Entwurf &amp; Umsetzung</h3>
           <p class="mt-2 text-muted">Du bekommst einen Entwurf, wir bauen deine Seite — mit Feedback-Runden, bis es passt.</p>
         </div>
-        <div class="card reveal relative rounded-2xl border border-line bg-white p-7">
+        <div data-animate="fade-up" class="card relative rounded-2xl border border-line bg-white p-7">
           <span class="font-display text-5xl font-bold text-lilac/25">03</span>
           <h3 class="mt-2 font-display text-xl font-bold">Online &amp; Betreuung</h3>
           <p class="mt-2 text-muted">Wir stellen alles online und kümmern uns weiter — du hast immer einen Ansprechpartner.</p>
@@ -534,13 +611,13 @@
   <!-- ===================== STIMMEN ===================== -->
   <section id="stimmen" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
     <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
+      <div data-animate="fade-up" class="mb-12 max-w-2xl">
         <p class="sec-label mb-3"><span class="idx">[ 06 ]</span> Stimmen</p>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Was Kunden sagen werden</h2>
         <p class="mt-4 text-lg text-muted">Wir starten gerade durch — hier landen bald echte Bewertungen unserer Kunden.</p>
       </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        <figure class="card reveal rounded-2xl border border-line bg-white p-7">
+      <div data-stagger class="grid gap-6 md:grid-cols-3">
+        <figure data-animate="fade-up" class="card rounded-2xl border border-line bg-white p-7">
           <div class="flex gap-1 text-lilac">
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
@@ -554,7 +631,7 @@
             <span><span class="block font-semibold text-ink">Dein:e Kund:in</span><span class="block text-sm text-muted">Betrieb · Ort</span></span>
           </figcaption>
         </figure>
-        <figure class="card reveal rounded-2xl border border-line bg-white p-7">
+        <figure data-animate="fade-up" class="card rounded-2xl border border-line bg-white p-7">
           <div class="flex gap-1 text-lilac">
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
@@ -568,7 +645,7 @@
             <span><span class="block font-semibold text-ink">Dein:e Kund:in</span><span class="block text-sm text-muted">Betrieb · Ort</span></span>
           </figcaption>
         </figure>
-        <figure class="card reveal rounded-2xl border border-lilac/30 bg-wash p-7">
+        <figure data-animate="fade-up" class="card rounded-2xl border border-lilac/30 bg-wash p-7">
           <p class="font-display text-2xl font-bold leading-tight">Werde unser<br>erstes Erfolgs-<span class="text-lilac">projekt</span>.</p>
           <p class="mt-3 text-muted">Sei einer der ersten Betriebe — und profitiere von extra viel Aufmerksamkeit und einem Top-Preis.</p>
           <a href="#kontakt" class="mt-5 inline-flex cursor-pointer items-center gap-2 font-semibold text-ink underline-offset-4 hover:underline">Jetzt anfragen
@@ -648,7 +725,19 @@
     </div>
   </footer>
 
-  <!-- ===================== SCRIPT ===================== -->
+  <!-- ===================== SCRIPTS ===================== -->
+  <!-- Stagger-Vorbereitung: Kinder von [data-stagger]-Rastern bekommen gestaffelte Delays -->
+  <script>
+    document.querySelectorAll('[data-stagger]').forEach(function(grid){
+      Array.prototype.forEach.call(grid.children, function(child, i){
+        if (child.hasAttribute('data-animate')) child.setAttribute('data-animate-delay', (i * 0.08).toFixed(2));
+      });
+    });
+  </script>
+  <!-- Motion One + wiederverwendbare Scroll-Animationen -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>
+  <script src="animations.js"></script>
+
   <script>
   /* ============ HIER ANPASSEN ============ */
   const CONFIG = {
@@ -704,17 +793,16 @@
     requestAnimationFrame(step);
   }
 
-  /* ---- reveal + counters ---- */
+  /* ---- Count-up beim Sichtbarwerden ---- */
   const io=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
-        e.target.classList.add('in');
-        e.target.querySelectorAll?.('[data-count]').forEach(c=>{ if(!c.dataset.done){c.dataset.done=1; countUp(c);} });
+        if(!e.target.dataset.done){ e.target.dataset.done=1; countUp(e.target); }
         io.unobserve(e.target);
       }
     });
-  },{threshold:0.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  },{threshold:0.6});
+  document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
 
   /* ---- navbar shadow on scroll ---- */
   const navbar=document.getElementById('navbar');
@@ -734,6 +822,71 @@
     status.classList.remove('hidden');
     form.querySelector('button').textContent='Gesendet ✓';
   });
+
+  /* ---- Hero-Motion: Headline, Builder, Theme-Wechsel, Scroll-Progress ---- */
+  (function(){
+    const M = window.Motion;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const EASE = [0.22, 1, 0.36, 1];
+
+    // Scroll-Fortschrittsbalken (Lila-Haarlinie oben)
+    const bar = document.getElementById('scroll-progress');
+    if (M && M.scroll && bar && !reduced) {
+      M.scroll(M.animate(bar, { scaleX: [0, 1] }, { ease: 'linear' }));
+    } else if (bar) { bar.style.display = 'none'; }
+
+    // Headline: Wort für Wort, unscharf → scharf
+    const words = document.querySelectorAll('#hero-headline .hw');
+    const underline = document.getElementById('hero-underline');
+    if (M && !reduced && words.length) {
+      words.forEach(w => { w.style.opacity = '0'; });
+      if (underline) underline.style.transform = 'scaleX(0)';
+      M.animate(words, { opacity: [0, 1], y: [30, 0], filter: ['blur(10px)', 'blur(0px)'] },
+        { duration: 0.75, delay: M.stagger(0.14, { startDelay: 0.1 }), ease: EASE });
+      // Endzustand festschreiben (WAAPI committet nicht selbst)
+      setTimeout(() => { words.forEach(w => { w.style.opacity='1'; w.style.transform='none'; w.style.filter='none'; }); }, 1700);
+      if (underline) {
+        M.animate(underline, { scaleX: [0, 1] }, { duration: 0.6, delay: 0.8, ease: EASE });
+        setTimeout(() => { underline.style.transform = 'scaleX(1)'; }, 1900);
+      }
+    }
+
+    // Builder: Skeleton gestaffelt aufbauen + sanft schweben
+    const builder = document.getElementById('hero-builder');
+    const els = document.querySelectorAll('#hb-screen .hb-el');
+    if (M && !reduced && builder && els.length) {
+      els.forEach(el => { el.style.opacity = '0'; });
+      M.animate(els, { opacity: [0, 1], y: [14, 0] }, { duration: 0.5, delay: M.stagger(0.12, { startDelay: 0.7 }), ease: EASE });
+      setTimeout(() => { els.forEach(el => { el.style.opacity='1'; el.style.transform='none'; }); }, 2400);
+      M.animate(builder, { y: [-6, 6] }, { duration: 4.5, direction: 'alternate', repeat: Infinity, ease: 'easeInOut' });
+    }
+
+    // Builder-Themes: wechselt durch die drei echten Demos
+    const THEMES = [
+      { url:'fasson-barbershop.de', cta:'Termin buchen',  screen:'#0B0B0A', bars:'#F4F3F0', sub:'rgba(244,243,240,.4)',  card:'#211f1d', ctaBg:'rgba(0,0,0,0)', ctaBorder:'#F4F3F0', ctaColor:'#F4F3F0' },
+      { url:'gelateria-luna.de',    cta:'Sorten ansehen', screen:'#FCF2EE', bars:'#3B2A23', sub:'rgba(59,42,35,.35)',   card:'#F3DCD4', ctaBg:'#DB6188',       ctaBorder:'#DB6188', ctaColor:'#FFFFFF' },
+      { url:'saar-doener.de',       cta:'Speisekarte',    screen:'#14100c', bars:'#FFF7ED', sub:'rgba(255,247,237,.4)', card:'#2a1e14', ctaBg:'#E1492E',       ctaBorder:'#E1492E', ctaColor:'#FFFFFF' },
+    ];
+    const screenEl = document.getElementById('hb-screen');
+    const urlEl = document.getElementById('hb-url');
+    const ctaEl = document.getElementById('hb-cta');
+    if (!reduced && screenEl && urlEl && ctaEl) {
+      let t = 0;
+      setInterval(() => {
+        if (document.hidden) return;
+        t = (t + 1) % THEMES.length;
+        const th = THEMES[t];
+        // Farbwechsel über CSS-Transitions (siehe <style>) — kein WAAPI-Commit-Problem
+        screenEl.style.backgroundColor = th.screen;
+        document.querySelectorAll('#hb-screen .hb-bar').forEach(el => { el.style.backgroundColor = th.bars; });
+        document.querySelectorAll('#hb-screen .hb-sub').forEach(el => { el.style.backgroundColor = th.sub; });
+        document.querySelectorAll('#hb-screen .hb-card').forEach(el => { el.style.backgroundColor = th.card; });
+        ctaEl.style.backgroundColor = th.ctaBg; ctaEl.style.borderColor = th.ctaBorder; ctaEl.style.color = th.ctaColor;
+        urlEl.style.opacity = '0';
+        setTimeout(() => { urlEl.textContent = th.url; ctaEl.textContent = th.cta; urlEl.style.opacity = '1'; }, 260);
+      }, 3400);
+    }
+  })();
 
   /* ---- init ---- */
   document.getElementById('year').textContent=new Date().getFullYear();
