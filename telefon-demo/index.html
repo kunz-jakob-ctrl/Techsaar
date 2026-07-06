@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KI-Telefonassistent für Praxen & Werkstätten — TechSaar Demo</title>
+<meta name="description" content="Der KI-Telefonassistent von TechSaar nimmt jeden Anruf an, vereinbart Termine und entlastet Ihr Team — 24/7, DSGVO-konform. Live-Demo ansehen." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      snow:   '#F6F8F7',
+      pine:   '#0D1F1B',
+      pine2:  '#122B25',
+      teal:   '#0E8A6D',
+      tealD:  '#0A6350',
+      tealL:  '#E3F2EC',
+      amber:  '#EFA928',
+      flame:  '#E4573D',
+      mist:   '#5F6F6A',
+      hair:   '#E2E8E5',
+    },
+    fontFamily: {
+      sans: ['Manrope','system-ui','sans-serif'],
+      mono: ['"IBM Plex Mono"','monospace'],
+    },
+  }}
+}
+</script>
+
+<style>
+  html,body{background:#F6F8F7}
+  ::selection{background:#0E8A6D;color:#fff}
+
+  /* ---- soundwave equalizer ---- */
+  .eq{display:inline-flex;align-items:center;gap:3px;height:1em}
+  .eq i{width:3px;border-radius:99px;background:currentColor;animation:eq 1s ease-in-out infinite}
+  .eq i:nth-child(1){height:35%;animation-delay:0s}
+  .eq i:nth-child(2){height:90%;animation-delay:.15s}
+  .eq i:nth-child(3){height:55%;animation-delay:.3s}
+  .eq i:nth-child(4){height:100%;animation-delay:.45s}
+  .eq i:nth-child(5){height:45%;animation-delay:.6s}
+  @keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+  .eq.still i{animation:none;transform:scaleY(.45)}
+
+  /* pulsing live dot */
+  .live{position:relative}
+  .live::after{content:"";position:absolute;inset:-4px;border-radius:99px;border:2px solid currentColor;opacity:0;animation:ping 1.8s ease-out infinite}
+  @keyframes ping{0%{transform:scale(.6);opacity:.7}80%,100%{transform:scale(1.5);opacity:0}}
+
+  /* transcript bubbles */
+  .bub{opacity:0;transform:translateY(10px);animation:bubIn .4s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes bubIn{to{opacity:1;transform:none}}
+  .typing i{width:5px;height:5px;border-radius:99px;background:currentColor;display:inline-block;animation:tp 1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes tp{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* result card pop */
+  .pop{animation:pop .5s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes pop{0%{opacity:0;transform:scale(.92) translateY(12px)}100%{opacity:1;transform:none}}
+
+  /* wave divider line running through page */
+  .waveline{mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+
+  /* marker underline */
+  .marker{background:linear-gradient(180deg,transparent 62%,rgba(239,169,40,.5) 62%,rgba(239,169,40,.5) 92%,transparent 92%)}
+
+  .phone-shadow{box-shadow:0 24px 70px -22px rgba(13,31,27,.45),0 6px 18px -8px rgba(13,31,27,.25)}
+
+  #transcript::-webkit-scrollbar{width:5px}
+  #transcript::-webkit-scrollbar-thumb{background:#2c463f;border-radius:99px}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition-duration:.001ms!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+
+<body class="font-sans text-pine antialiased">
+
+<!-- ===================== NAV (statisch, scrollt weg) ===================== -->
+<header class="absolute inset-x-0 top-0 z-40">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+    <a href="#" class="flex items-center gap-2.5">
+      <span class="grid h-9 w-9 place-items-center rounded-xl bg-pine text-snow">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </span>
+      <span class="leading-tight">
+        <span class="block text-base font-extrabold tracking-tight" data-cfg="company">TechSaar</span>
+        <span class="block font-mono text-[10px] uppercase tracking-[0.22em] text-mist">Telefonassistent</span>
+      </span>
+    </a>
+    <nav class="hidden items-center gap-8 md:flex">
+      <a href="#demo"      class="text-sm font-semibold text-mist hover:text-pine">Live-Demo</a>
+      <a href="#dashboard" class="text-sm font-semibold text-mist hover:text-pine">Für Ihr Team</a>
+      <a href="#vorteile"  class="text-sm font-semibold text-mist hover:text-pine">Vorteile</a>
+      <a href="#sicherheit" class="text-sm font-semibold text-mist hover:text-pine">Datenschutz</a>
+    </nav>
+    <a href="#kontakt" class="rounded-xl bg-teal px-4 py-2.5 text-sm font-bold text-white transition hover:bg-tealD">Gespräch anfragen</a>
+  </div>
+</header>
+
+<!-- ===================== HERO + PHONE-SIMULATION ===================== -->
+<section id="demo" class="relative overflow-hidden px-5 pb-16 pt-28 sm:px-8 lg:pt-36">
+  <!-- dezente Wellenlinie im Hintergrund -->
+  <svg class="waveline pointer-events-none absolute left-0 top-64 -z-10 w-full text-teal/15" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+    <path d="M0 60 Q 60 20 120 60 T 240 60 T 360 60 T 480 60 T 600 60 T 720 60 T 840 60 T 960 60 T 1080 60 T 1200 60 T 1320 60 T 1440 60" stroke="currentColor" stroke-width="2"/>
+  </svg>
+
+  <div class="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_.95fr]">
+    <!-- Copy -->
+    <div>
+      <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-hair bg-white px-4 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-tealD">
+        <span class="live inline-block h-2 w-2 rounded-full bg-teal text-teal"></span>
+        KI-Telefonassistent · für Praxen &amp; Werkstätten
+      </p>
+      <h1 class="text-[2.6rem] font-extrabold leading-[1.04] tracking-tight sm:text-6xl">
+        Ihr Telefon.<br />
+        <span class="inline-flex items-baseline gap-4">Immer <span class="marker px-1">besetzt.</span>
+          <span class="eq hidden text-teal sm:inline-flex" style="height:.72em" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </span>
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist">
+        Während Ihr Team behandelt, schraubt oder berät, nimmt unser Assistent jeden Anruf an —
+        vereinbart Termine, beantwortet Fragen und leitet Dringendes sofort weiter.
+        <strong class="text-pine">Kein Besetztzeichen. Keine Warteschleife. Kein verlorener Kunde.</strong>
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="#phone" class="rounded-xl bg-pine px-6 py-3.5 text-sm font-bold text-snow transition hover:bg-pine2" onclick="document.getElementById('btn-play')?.focus()">▶&nbsp; Anruf-Demo abspielen</a>
+        <a href="#vorteile" class="rounded-xl border border-hair bg-white px-6 py-3.5 text-sm font-bold text-pine transition hover:border-teal">Warum das rechnet sich →</a>
+      </div>
+      <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2 font-mono text-xs text-mist">
+        <li class="flex items-center gap-1.5"><span class="text-teal">✓</span> 24/7 erreichbar</li>
+        <li class="flex items-center gap-1.5"><span class="text-teal">✓</span> DSGVO-konform, Server in der EU</li>
+        <li class="flex items-center gap-1.5"><span class="text-teal">✓</span> stellt sich ehrlich als KI vor</li>
+        <li class="flex items-center gap-1.5"><span class="text-teal">✓</span> aus dem Saarland</li>
+      </ul>
+    </div>
+
+    <!-- Phone Simulation -->
+    <div id="phone" class="mx-auto w-full max-w-[400px] scroll-mt-28">
+      <!-- Branchen-Umschalter -->
+      <div class="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-hair bg-white p-1.5" role="tablist" aria-label="Branche wählen">
+        <button data-biztab="zahn" class="biztab rounded-xl px-4 py-2.5 text-sm font-bold transition" role="tab">🦷 Zahnarztpraxis</button>
+        <button data-biztab="werkstatt" class="biztab rounded-xl px-4 py-2.5 text-sm font-bold transition" role="tab">🔧 KFZ-Werkstatt</button>
+      </div>
+
+      <!-- Telefon -->
+      <div class="phone-shadow overflow-hidden rounded-[2.4rem] border border-pine2 bg-pine">
+        <!-- Statusleiste -->
+        <div class="flex items-center justify-between px-7 pb-1 pt-4 font-mono text-[11px] text-snow/60">
+          <span id="clock">09:41</span>
+          <span class="flex items-center gap-1.5">
+            <svg viewBox="0 0 16 12" class="h-2.5 w-4 fill-current"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="7" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity=".4"/></svg>
+            <svg viewBox="0 0 24 12" class="h-3 w-6 fill-current"><rect x="0" y="1" width="20" height="10" rx="3" fill="none" stroke="currentColor"/><rect x="2" y="3" width="14" height="6" rx="1.5"/><rect x="21" y="4" width="2" height="4" rx="1"/></svg>
+          </span>
+        </div>
+        <!-- Anruf-Kopf -->
+        <div class="flex items-center gap-3 border-b border-white/10 px-6 py-4">
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal/20 text-lg" id="call-avatar">🦷</span>
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-bold text-snow" id="call-name">Zahnarztpraxis Dr. Sommer</p>
+            <p class="font-mono text-[11px] text-snow/50" id="call-status">Bereit für Ihren Test-Anruf</p>
+          </div>
+          <span id="call-timer" class="hidden rounded-full bg-teal/15 px-2.5 py-1 font-mono text-[11px] font-semibold text-teal">0:00</span>
+        </div>
+
+        <!-- Szenario-Auswahl -->
+        <div id="scenario-pick" class="px-6 pb-2 pt-5">
+          <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-snow/40">Was möchte der Anrufer?</p>
+          <div class="space-y-2" id="scenario-buttons"><!-- JS --></div>
+        </div>
+
+        <!-- Transkript -->
+        <div id="transcript" class="hidden h-[340px] space-y-3 overflow-y-auto px-5 py-5"><!-- JS --></div>
+
+        <!-- Steuerung -->
+        <div class="border-t border-white/10 px-6 py-5">
+          <button id="btn-play" class="w-full rounded-2xl bg-teal py-3.5 text-sm font-bold text-white transition hover:bg-tealD disabled:cursor-not-allowed disabled:opacity-40">
+            📞&nbsp; Anruf starten
+          </button>
+          <button id="btn-reset" class="mt-2 hidden w-full rounded-2xl border border-white/15 py-2.5 text-xs font-semibold text-snow/70 transition hover:border-white/40">
+            ↺ Neues Gespräch wählen
+          </button>
+        </div>
+      </div>
+
+      <!-- Ergebnis-Karte (nach dem Anruf) -->
+      <div id="result" class="mt-4 hidden"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ZAHLEN, DIE WEH TUN ===================== -->
+<section class="border-y border-hair bg-white px-5 py-14 sm:px-8">
+  <div class="mx-auto grid max-w-6xl gap-10 text-center sm:grid-cols-3">
+    <div class="reveal">
+      <p class="font-mono text-5xl font-semibold text-teal">~30%</p>
+      <p class="mt-2 text-sm leading-relaxed text-mist">der Anrufe in Praxen &amp; Betrieben gehen in Stoßzeiten verloren — Besetztzeichen, Warteschleife, aufgelegt.*</p>
+    </div>
+    <div class="reveal">
+      <p class="font-mono text-5xl font-semibold text-teal">0</p>
+      <p class="mt-2 text-sm leading-relaxed text-mist">verpasste Anrufe mit Assistent — auch mittags, nach Feierabend und wenn das ganze Team im Behandlungszimmer steht.</p>
+    </div>
+    <div class="reveal">
+      <p class="font-mono text-5xl font-semibold text-teal">24/7</p>
+      <p class="mt-2 text-sm leading-relaxed text-mist">erreichbar — unabhängig von Urlaub, Krankheit und Personalmangel. Ihr Empfang hat endlich Ruhe für die Menschen vor Ort.</p>
+    </div>
+  </div>
+  <p class="mx-auto mt-8 max-w-6xl text-center font-mono text-[10px] text-mist/60">*Erfahrungswert aus Branchenberichten — beim Erstgespräch messen wir Ihre echte Anrufsituation.</p>
+</section>
+
+<!-- ===================== DASHBOARD / WAS IHR TEAM SIEHT ===================== -->
+<section id="dashboard" class="scroll-mt-24 bg-pine px-5 py-20 text-snow sm:px-8 lg:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mb-10 max-w-2xl">
+      <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-teal">Volle Kontrolle statt Blackbox</p>
+      <h2 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Was Ihr Team morgens sieht.</h2>
+      <p class="mt-4 text-lg text-snow/70">Jeder Anruf wird sauber dokumentiert: Wer hat angerufen, worum ging es, was wurde vereinbart. Termine landen direkt im Kalender — Rückrufwünsche als fertige Liste.</p>
+    </div>
+
+    <!-- Stat-Zeile -->
+    <div class="reveal mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="rounded-2xl border border-white/10 bg-pine2 p-5">
+        <p class="font-mono text-3xl font-semibold text-snow" id="stat-calls">14</p>
+        <p class="mt-1 text-xs text-snow/60">Anrufe seit gestern</p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-pine2 p-5">
+        <p class="font-mono text-3xl font-semibold text-amber">5</p>
+        <p class="mt-1 text-xs text-snow/60">davon außerhalb der Öffnungszeiten</p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-pine2 p-5">
+        <p class="font-mono text-3xl font-semibold text-teal" id="stat-appts">9</p>
+        <p class="mt-1 text-xs text-snow/60">Termine vereinbart</p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-pine2 p-5">
+        <p class="font-mono text-3xl font-semibold text-snow">2</p>
+        <p class="mt-1 text-xs text-snow/60">Rückrufe fürs Team notiert</p>
+      </div>
+    </div>
+
+    <!-- Anrufprotokoll -->
+    <div class="reveal overflow-hidden rounded-2xl border border-white/10 bg-pine2">
+      <div class="flex items-center justify-between border-b border-white/10 px-5 py-3.5">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-snow/50">Anrufprotokoll</p>
+        <span class="flex items-center gap-2 font-mono text-[11px] text-teal"><span class="live inline-block h-1.5 w-1.5 rounded-full bg-teal text-teal"></span>live</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[640px] text-left font-mono text-[12px]">
+          <thead>
+            <tr class="border-b border-white/10 text-snow/40">
+              <th class="px-5 py-3 font-medium">Zeit</th>
+              <th class="px-5 py-3 font-medium">Anrufer</th>
+              <th class="px-5 py-3 font-medium">Anliegen</th>
+              <th class="px-5 py-3 font-medium">Ergebnis</th>
+            </tr>
+          </thead>
+          <tbody id="log-body" class="divide-y divide-white/5 text-snow/85">
+            <tr><td class="px-5 py-3 text-snow/50">23:41</td><td class="px-5 py-3">+49 171 ••• 402</td><td class="px-5 py-3">Termin Zahnreinigung</td><td class="px-5 py-3"><span class="rounded-full bg-teal/15 px-2.5 py-0.5 text-teal">✓ Termin gebucht</span> <span class="ml-1 text-amber">nachts!</span></td></tr>
+            <tr><td class="px-5 py-3 text-snow/50">18:22</td><td class="px-5 py-3">+49 6821 ••• 88</td><td class="px-5 py-3">Öffnungszeiten &amp; Anfahrt</td><td class="px-5 py-3"><span class="rounded-full bg-white/10 px-2.5 py-0.5">beantwortet</span></td></tr>
+            <tr><td class="px-5 py-3 text-snow/50">12:15</td><td class="px-5 py-3">Frau Backes</td><td class="px-5 py-3">starke Schmerzen</td><td class="px-5 py-3"><span class="rounded-full bg-flame/20 px-2.5 py-0.5 text-[#FF9B8A]">⚡ Schmerztermin heute</span></td></tr>
+            <tr><td class="px-5 py-3 text-snow/50">11:48</td><td class="px-5 py-3">Herr Weber</td><td class="px-5 py-3">Frage zur Rechnung</td><td class="px-5 py-3"><span class="rounded-full bg-amber/20 px-2.5 py-0.5 text-amber">→ Rückruf notiert</span></td></tr>
+            <tr><td class="px-5 py-3 text-snow/50">09:03</td><td class="px-5 py-3">Frau Meyer</td><td class="px-5 py-3">Termin verschieben</td><td class="px-5 py-3"><span class="rounded-full bg-teal/15 px-2.5 py-0.5 text-teal">✓ umgebucht</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="reveal mt-4 font-mono text-[11px] text-snow/40">Demo-Daten. Im echten Betrieb: täglich per E-Mail als Zusammenfassung oder live im Web-Dashboard — Sie entscheiden.</p>
+  </div>
+</section>
+
+<!-- ===================== VORTEILE ===================== -->
+<section id="vorteile" class="scroll-mt-24 px-5 py-20 sm:px-8 lg:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mb-12 max-w-2xl">
+      <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-tealD">Der Unterschied im Alltag</p>
+      <h2 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Nie wieder auf Personal <span class="marker px-1">angewiesen</span> sein, um ans Telefon zu gehen.</h2>
+      <p class="mt-4 text-lg text-mist">Ihr Team ist für Menschen da — nicht für die Warteschleife. Der Assistent übernimmt das Klingeln, damit vorne niemand mehr zwischen Patient und Telefon zerrissen wird.</p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-tealL text-xl">🕐</span>
+        <h3 class="mt-4 text-lg font-extrabold">Immer erreichbar</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Mittagspause, Feierabend, Wochenende, alle Leitungen belegt — der Assistent nimmt trotzdem ab. Ein Anruf um 23 Uhr wird zum Termin um 9 Uhr.</p>
+      </article>
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-tealL text-xl">🧘</span>
+        <h3 class="mt-4 text-lg font-extrabold">Team entlastet</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Empfang &amp; Meister werden nicht mehr alle 90 Sekunden unterbrochen. Krankheit oder Urlaub am Empfang? Das Telefon läuft trotzdem weiter.</p>
+      </article>
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-tealL text-xl">📅</span>
+        <h3 class="mt-4 text-lg font-extrabold">Bucht Termine selbst</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Der Assistent kennt Ihren Kalender, schlägt freie Zeiten vor, trägt ein, verschiebt und bestätigt per SMS — ohne dass jemand tippen muss.</p>
+      </article>
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-flame/10 text-xl">🚨</span>
+        <h3 class="mt-4 text-lg font-extrabold">Erkennt Dringendes</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Starke Schmerzen? Panne auf der Autobahn? Der Assistent priorisiert, vergibt Notfalltermine oder stellt sofort zu einem Menschen durch.</p>
+      </article>
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-tealL text-xl">🧾</span>
+        <h3 class="mt-4 text-lg font-extrabold">Alles dokumentiert</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Kein Zettelchaos: Jeder Anruf mit Anliegen und Ergebnis im Protokoll. Rückrufwünsche als fertige Liste — nichts geht mehr unter.</p>
+      </article>
+      <article class="reveal rounded-3xl border border-hair bg-white p-7">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-amber/15 text-xl">💶</span>
+        <h3 class="mt-4 text-lg font-extrabold">Rechnet sich</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Ein einziger nicht verlorener Patient oder Reparaturauftrag zahlt den Monat. Der Assistent kostet einen Bruchteil einer Aushilfe — und hat nie frei.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SO FUNKTIONIERT'S ===================== -->
+<section class="border-y border-hair bg-white px-5 py-20 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mb-12 max-w-2xl">
+      <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-tealD">Start in unter einer Woche</p>
+      <h2 class="text-4xl font-extrabold tracking-tight sm:text-5xl">So kommt der Assistent zu Ihnen.</h2>
+    </div>
+    <ol class="grid gap-4 md:grid-cols-3">
+      <li class="reveal rounded-3xl bg-snow p-7">
+        <span class="font-mono text-sm font-semibold text-teal">01</span>
+        <h3 class="mt-3 text-lg font-extrabold">Wir lernen Ihren Betrieb</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Öffnungszeiten, Leistungen, typische Anliegen, Ihre Regeln („Notfälle immer durchstellen"). Daraus entsteht Ihr persönlicher Assistent — mit Ihrem Wortlaut.</p>
+      </li>
+      <li class="reveal rounded-3xl bg-snow p-7">
+        <span class="font-mono text-sm font-semibold text-teal">02</span>
+        <h3 class="mt-3 text-lg font-extrabold">Telefon &amp; Kalender verbinden</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Ihre Nummer bleibt! Anrufe werden weitergeleitet — komplett, nur bei besetzt oder nur nach Feierabend. Kalender wird angebunden, fertig.</p>
+      </li>
+      <li class="reveal rounded-3xl bg-snow p-7">
+        <span class="font-mono text-sm font-semibold text-teal">03</span>
+        <h3 class="mt-3 text-lg font-extrabold">Testen, feinschleifen, läuft</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-mist">Sie rufen selbst an und testen. Wir passen Formulierungen an, bis es sich nach Ihrem Haus anhört. Danach: laufende Betreuung von uns — lokal, persönlich.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== DATENSCHUTZ / EHRLICHKEIT ===================== -->
+<section id="sicherheit" class="scroll-mt-24 px-5 py-20 sm:px-8 lg:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr]">
+      <div class="reveal">
+        <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-tealD">Gerade bei Praxen: Vertrauenssache</p>
+        <h2 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Ehrlich. Sicher.<br />DSGVO-konform.</h2>
+        <p class="mt-4 text-lg leading-relaxed text-mist">Ein Telefonassistent, der mit Patientendaten arbeitet, muss höchste Ansprüche erfüllen. Deshalb bauen wir Datenschutz von Anfang an ein — nicht hinterher.</p>
+      </div>
+      <ul class="reveal space-y-4">
+        <li class="flex gap-4 rounded-2xl border border-hair bg-white p-5">
+          <span class="mt-0.5 text-xl">🗣️</span>
+          <div><h3 class="font-extrabold">Der Assistent sagt, dass er eine KI ist</h3>
+          <p class="mt-1 text-sm text-mist">Jedes Gespräch beginnt transparent. Wer lieber mit einem Menschen sprechen will, wird verbunden oder bekommt einen Rückruf. Keine Täuschung — das ist auch gesetzlich so vorgesehen.</p></div>
+        </li>
+        <li class="flex gap-4 rounded-2xl border border-hair bg-white p-5">
+          <span class="mt-0.5 text-xl">🇪🇺</span>
+          <div><h3 class="font-extrabold">Verarbeitung in der EU + AV-Vertrag</h3>
+          <p class="mt-1 text-sm text-mist">Server in der EU, Auftragsverarbeitungsvertrag (Art. 28 DSGVO) mit Ihnen, klar geregelte Löschfristen. Sie bleiben Herr Ihrer Daten.</p></div>
+        </li>
+        <li class="flex gap-4 rounded-2xl border border-hair bg-white p-5">
+          <span class="mt-0.5 text-xl">🩺</span>
+          <div><h3 class="font-extrabold">Datensparsamkeit bei Gesundheitsdaten</h3>
+          <p class="mt-1 text-sm text-mist">Für einen Termin braucht es Name, Nummer und Anliegen — keine Diagnosen. Der Assistent fragt nur ab, was nötig ist, und speichert nicht mehr als vereinbart.</p></div>
+        </li>
+        <li class="flex gap-4 rounded-2xl border border-hair bg-white p-5">
+          <span class="mt-0.5 text-xl">🤝</span>
+          <div><h3 class="font-extrabold">Gemeinsam mit Ihrem Datenschutz eingeführt</h3>
+          <p class="mt-1 text-sm text-mist">Wir liefern die Unterlagen für Ihre Datenschutz-Dokumentation gleich mit und stimmen die Einführung mit Ihrem Datenschutzbeauftragten ab.</p></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA / KONTAKT ===================== -->
+<section id="kontakt" class="scroll-mt-24 px-5 pb-24 sm:px-8">
+  <div class="reveal mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-pine px-8 py-16 text-center text-snow sm:px-16">
+    <span class="eq mx-auto mb-6 flex justify-center text-teal" style="height:28px"><i></i><i></i><i></i><i></i><i></i></span>
+    <h2 class="mx-auto max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">Hören Sie es sich einfach an.</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-snow/70">Wir richten Ihnen unverbindlich eine Testnummer mit Ihren Öffnungszeiten und Leistungen ein — rufen Sie Ihren eigenen Assistenten an, bevor Sie sich entscheiden.</p>
+    <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+      <a data-cfg-href="mailHref" href="#" class="rounded-xl bg-teal px-7 py-4 text-sm font-bold text-white transition hover:bg-tealD">Kostenloses Erstgespräch</a>
+      <a data-cfg-href="waHref" href="#" target="_blank" rel="noopener" class="rounded-xl border border-white/20 px-7 py-4 text-sm font-bold text-snow transition hover:border-white/50">WhatsApp schreiben</a>
+    </div>
+    <p class="mt-8 font-mono text-xs text-snow/40"><span data-cfg="company">TechSaar</span> · <span data-cfg="city">Saarland</span> · <span data-cfg="email">hallo@techsaar.de</span></p>
+  </div>
+</section>
+
+<footer class="border-t border-hair px-5 py-8 text-center font-mono text-xs text-mist sm:px-8">
+  <p>© <span id="year"></span> <span data-cfg="company">TechSaar</span> — Demo-Seite. Alle Gespräche auf dieser Seite sind simuliert.</p>
+</footer>
+
+<script>
+/* ================= KONFIGURATION =================
+   Hier anpassen: Firma, Kontakt, Demo-Inhalte      */
+const CONFIG = {
+  company: "TechSaar",
+  city:    "Saarland",
+  email:   "hallo@techsaar.de",        // <-- echte Adresse eintragen
+  whatsapp:"490000000000",             // nur Ziffern mit Ländercode
+};
+/* ================================================ */
+
+/* ---------- Gesprächs-Szenarien ---------- */
+const BIZ = {
+  zahn: {
+    label: "Zahnarztpraxis Dr. Sommer",
+    avatar: "🦷",
+    greeting: "Zahnarztpraxis Dr. Sommer, guten Tag! Hier spricht der digitale Assistent der Praxis — ich kann Termine vereinbaren oder Ihre Nachricht ans Team weitergeben. Wie kann ich helfen?",
+    scenarios: {
+      termin: {
+        btn: "🗓️ Termin zur Zahnreinigung",
+        steps: [
+          {w:"c", t:"Hallo! Ich bräuchte mal wieder einen Termin zur Zahnreinigung."},
+          {w:"a", t:"Sehr gerne! Sind Sie schon Patientin bei uns?"},
+          {w:"c", t:"Ja — Meyer, Anna Meyer."},
+          {w:"a", t:"Danke, Frau Meyer. Für die professionelle Zahnreinigung hätte ich nächste Woche Dienstag um 9:40 Uhr oder Donnerstag um 15:10 Uhr frei. Was passt Ihnen besser?"},
+          {w:"c", t:"Donnerstag klingt gut."},
+          {w:"a", t:"Alles klar: Donnerstag, 15:10 Uhr, Zahnreinigung bei Frau Krause. Ich schicke Ihnen eine Bestätigung per SMS — passt die Nummer, mit der Sie gerade anrufen?"},
+          {w:"c", t:"Ja, genau. Super, danke!"},
+          {w:"a", t:"Sehr gerne, Frau Meyer! Bitte kommen Sie fünf Minuten früher. Bis Donnerstag — auf Wiederhören!"},
+        ],
+        result: {
+          icon:"✅", tone:"teal", title:"Termin eingetragen — ohne dass jemand ans Telefon musste",
+          rows:[["Patientin","Anna Meyer"],["Leistung","Prof. Zahnreinigung (PZR)"],["Termin","Do · 15:10 Uhr · Fr. Krause"],["Bestätigung","per SMS versendet ✓"]],
+          log:["Frau Meyer","Termin Zahnreinigung",'<span class="rounded-full bg-teal/15 px-2.5 py-0.5 text-teal">✓ Termin gebucht</span>']
+        }
+      },
+      schmerz: {
+        btn: "⚡ Patient mit starken Schmerzen",
+        steps: [
+          {w:"c", t:"Ich habe seit gestern Nacht richtig starke Zahnschmerzen … ich halte das kaum aus."},
+          {w:"a", t:"Oh, das tut mir leid! Bei starken Schmerzen bekommen Sie bei uns noch heute einen Schmerztermin. Ich habe um 11:20 Uhr etwas frei — schaffen Sie das?"},
+          {w:"c", t:"Ja, da komme ich. Backes ist mein Name."},
+          {w:"a", t:"Notiert, Frau Backes: heute 11:20 Uhr, Schmerzbehandlung. Ich markiere den Termin fürs Team als dringend. Falls es vorher unerträglich wird oder Schwellung und Fieber dazukommen, wenden Sie sich bitte sofort an den zahnärztlichen Notdienst."},
+          {w:"c", t:"Mach ich. Danke, das ging ja schnell!"},
+          {w:"a", t:"Gute Besserung, Frau Backes — das Team weiß Bescheid. Bis gleich!"},
+        ],
+        result: {
+          icon:"⚡", tone:"flame", title:"Dringlichkeit erkannt — Schmerztermin noch am selben Tag",
+          rows:[["Patientin","Frau Backes"],["Einstufung","dringend — heute 11:20 Uhr"],["Team-Notiz","„Starke Schmerzen seit gestern Nacht“ ✓"],["Hinweis gegeben","Notdienst bei Verschlechterung"]],
+          log:["Frau Backes","starke Schmerzen",'<span class="rounded-full bg-flame/20 px-2.5 py-0.5 text-[#FF9B8A]">⚡ Schmerztermin heute</span>']
+        }
+      },
+      mensch: {
+        btn: "🙋 Anrufer möchte einen Menschen",
+        steps: [
+          {w:"c", t:"Ähm … ich rede da gerade mit einem Computer, oder? Ich würde lieber mit einer echten Person sprechen."},
+          {w:"a", t:"Ja, genau — ich bin der digitale Assistent der Praxis, das sage ich lieber gleich ehrlich. Kein Problem! Ich kann Sie direkt mit dem Empfang verbinden, oder das Team ruft Sie zurück, sobald jemand frei ist. Was ist Ihnen lieber?"},
+          {w:"c", t:"Dann bitte ein Rückruf. Weber, wegen einer Rechnung."},
+          {w:"a", t:"Gerne, Herr Weber. Ich habe notiert: Rückruf wegen einer Rechnungsfrage, unter dieser Nummer. Das Team meldet sich heute bis 17 Uhr bei Ihnen. Passt das?"},
+          {w:"c", t:"Ja, danke."},
+          {w:"a", t:"Sehr gerne — Sie hören heute noch von uns. Auf Wiederhören, Herr Weber!"},
+        ],
+        result: {
+          icon:"🤝", tone:"amber", title:"Kein Zwang zur KI — Rückruf sauber fürs Team notiert",
+          rows:[["Anrufer","Herr Weber"],["Anliegen","Frage zur Rechnung"],["Zusage","Rückruf heute bis 17 Uhr"],["Fürs Team","fertiger Eintrag in der Rückrufliste ✓"]],
+          log:["Herr Weber","möchte Mitarbeiter",'<span class="rounded-full bg-amber/20 px-2.5 py-0.5 text-amber">→ Rückruf notiert</span>']
+        }
+      },
+    }
+  },
+  werkstatt: {
+    label: "KFZ-Werkstatt Scholl",
+    avatar: "🔧",
+    greeting: "KFZ-Werkstatt Scholl, guten Tag! Hier ist der digitale Assistent der Werkstatt — ich vereinbare Termine, gebe Auskunft zu Ihrem Fahrzeug oder nehme eine Nachricht auf. Was kann ich für Sie tun?",
+    scenarios: {
+      reparatur: {
+        btn: "🛠️ Termin: Bremsen quietschen",
+        steps: [
+          {w:"c", t:"Hallo, meine Bremsen quietschen seit ein paar Tagen. Ich bräuchte einen Termin."},
+          {w:"a", t:"Machen wir! Um welches Fahrzeug geht es denn?"},
+          {w:"c", t:"Ein VW Golf, Baujahr 2019. Kennzeichen SB-KL 421."},
+          {w:"a", t:"Danke! Für einen Bremsen-Check habe ich Mittwoch um 7:30 Uhr oder Freitag um 10:00 Uhr frei. Das Fahrzeug bleibt in der Regel bis zum Nachmittag bei uns — brauchen Sie solange einen Ersatzwagen?"},
+          {w:"c", t:"Mittwoch passt. Und ja, ein Ersatzwagen wäre super."},
+          {w:"a", t:"Erledigt: Mittwoch, 7:30 Uhr, Bremsen-Check für Ihren Golf, Ersatzwagen ist reserviert. Sie bekommen eine Bestätigung per SMS. Bringen Sie bitte den Fahrzeugschein mit!"},
+          {w:"c", t:"Top, bis Mittwoch!"},
+          {w:"a", t:"Bis Mittwoch — gute Fahrt!"},
+        ],
+        result: {
+          icon:"✅", tone:"teal", title:"Auftrag angelegt — inklusive Ersatzwagen, ohne Rückfrage beim Meister",
+          rows:[["Kunde","Golf · SB-KL 421"],["Auftrag","Bremsen-Check"],["Termin","Mi · 7:30 Uhr"],["Ersatzwagen","reserviert ✓ · SMS-Bestätigung ✓"]],
+          log:["SB-KL 421","Bremsen-Check + Ersatzwagen",'<span class="rounded-full bg-teal/15 px-2.5 py-0.5 text-teal">✓ Termin gebucht</span>']
+        }
+      },
+      status: {
+        btn: "🚗 „Ist mein Auto fertig?“",
+        steps: [
+          {w:"c", t:"Guten Tag! Ich wollte fragen, ob mein Auto fertig ist — der graue Golf, SB-XY 123."},
+          {w:"a", t:"Einen Moment, ich schaue nach … Ihr Golf ist gerade in der Endkontrolle. Geplant ist, dass er heute ab 16 Uhr abholbereit ist."},
+          {w:"c", t:"Ah super. Bekomme ich Bescheid?"},
+          {w:"a", t:"Ja — ich schicke Ihnen automatisch eine SMS, sobald er bereitsteht. Die Rechnung können Sie vor Ort per Karte zahlen. Bis später!"},
+          {w:"c", t:"Perfekt, danke!"},
+        ],
+        result: {
+          icon:"📲", tone:"teal", title:"Statusauskunft erteilt — der Meister musste nicht aus der Grube",
+          rows:[["Fahrzeug","Golf · SB-XY 123"],["Status","Endkontrolle · fertig ~16 Uhr"],["Benachrichtigung","SMS bei Abholbereitschaft ✓"],["Werkstatt","wurde nicht unterbrochen 😉"]],
+          log:["SB-XY 123","Statusabfrage",'<span class="rounded-full bg-white/10 px-2.5 py-0.5">beantwortet</span>']
+        }
+      },
+      panne: {
+        btn: "🚨 Panne — dringender Fall",
+        steps: [
+          {w:"c", t:"Hallo?! Mein Wagen ist gerade auf der A620 ausgegangen und springt nicht mehr an!"},
+          {w:"a", t:"Das klingt dringend — ich helfe sofort. Stehen Sie sicher? Bitte stellen Sie sich hinter die Leitplanke, falls noch nicht geschehen."},
+          {w:"c", t:"Ja, ich bin in Sicherheit, der Wagen steht auf dem Standstreifen."},
+          {w:"a", t:"Gut. Ich stelle Sie jetzt direkt zu unserem Meister durch, der organisiert die Abholung. Bleiben Sie dran — es dauert nur einen Moment."},
+          {w:"s", t:"→ Anruf wird an Meister Scholl durchgestellt …"},
+        ],
+        result: {
+          icon:"🚨", tone:"flame", title:"Notfall erkannt — sofort zum Menschen durchgestellt",
+          rows:[["Einstufung","dringend · Panne A620"],["Aktion","Durchstellung an Meister Scholl"],["Sicherheitshinweis","gegeben ✓"],["Protokoll","Standort &amp; Fahrzeug fürs Team notiert"]],
+          log:["+49 151 ••• 77","Panne A620",'<span class="rounded-full bg-flame/20 px-2.5 py-0.5 text-[#FF9B8A]">⚡ durchgestellt</span>']
+        }
+      },
+    }
+  }
+};
+
+/* ---------- Zustand & Elemente ---------- */
+let curBiz = "zahn", curScenario = null, playing = false, timerInt = null;
+
+const $ = id => document.getElementById(id);
+const elPick = $("scenario-pick"), elBtns = $("scenario-buttons"), elTrans = $("transcript"),
+      elPlay = $("btn-play"), elReset = $("btn-reset"), elResult = $("result"),
+      elName = $("call-name"), elAvatar = $("call-avatar"), elStatus = $("call-status"),
+      elTimer = $("call-timer");
+
+function renderBiz(){
+  const b = BIZ[curBiz];
+  elName.textContent = b.label;
+  elAvatar.textContent = b.avatar;
+  document.querySelectorAll(".biztab").forEach(t=>{
+    const on = t.dataset.biztab===curBiz;
+    t.className = "biztab rounded-xl px-4 py-2.5 text-sm font-bold transition " +
+      (on ? "bg-pine text-snow" : "text-mist hover:text-pine");
+    t.setAttribute("aria-selected", on);
+  });
+  elBtns.innerHTML = "";
+  Object.entries(b.scenarios).forEach(([key,sc])=>{
+    const btn = document.createElement("button");
+    btn.className = "w-full rounded-xl border border-white/12 px-4 py-3 text-left text-sm font-semibold text-snow/85 transition hover:border-teal hover:bg-teal/10";
+    btn.innerHTML = sc.btn;
+    btn.onclick = ()=>{ curScenario = key;
+      elBtns.querySelectorAll("button").forEach(x=>x.classList.remove("border-teal","bg-teal/10"));
+      btn.classList.add("border-teal","bg-teal/10");
+      elPlay.disabled = false;
+    };
+    elBtns.appendChild(btn);
+  });
+  curScenario = null;
+  elPlay.disabled = true;
+  resetCall(false);
+}
+
+function resetCall(rerender=true){
+  clearInterval(timerInt);
+  playing = false;
+  elTrans.classList.add("hidden"); elTrans.innerHTML = "";
+  elPick.classList.remove("hidden");
+  elResult.classList.add("hidden"); elResult.innerHTML = "";
+  elTimer.classList.add("hidden");
+  elStatus.textContent = "Bereit für Ihren Test-Anruf";
+  elPlay.textContent = "📞  Anruf starten";
+  elPlay.classList.remove("hidden");
+  elReset.classList.add("hidden");
+  if(rerender) renderBiz();
+}
+
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const readTime = t => Math.min(Math.max(t.length*34, 1100), 3400);
+
+function bubble(step){
+  const wrap = document.createElement("div");
+  if(step.w==="s"){ // System (Durchstellen)
+    wrap.className = "bub text-center font-mono text-[11px] text-amber";
+    wrap.textContent = step.t;
+    return wrap;
+  }
+  const ai = step.w==="a";
+  wrap.className = "bub flex " + (ai ? "justify-start" : "justify-end");
+  wrap.innerHTML = `
+    <div class="max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed ${ai
+      ? "rounded-tl-sm bg-teal/15 text-snow"
+      : "rounded-tr-sm bg-white/10 text-snow/90"}">
+      <p class="mb-1 font-mono text-[9px] uppercase tracking-[0.15em] ${ai?"text-teal":"text-snow/40"}">${ai?"KI-Assistent":"Anrufer"}</p>
+      <span class="bub-text"></span>
+    </div>`;
+  wrap.querySelector(".bub-text").textContent = step.t;
+  return wrap;
+}
+
+function indicator(ai){
+  const wrap = document.createElement("div");
+  wrap.className = "bub flex " + (ai ? "justify-start" : "justify-end");
+  wrap.innerHTML = ai
+    ? `<div class="rounded-2xl rounded-tl-sm bg-teal/15 px-4 py-3 text-teal"><span class="eq" style="height:14px"><i></i><i></i><i></i><i></i><i></i></span></div>`
+    : `<div class="typing rounded-2xl rounded-tr-sm bg-white/10 px-4 py-3.5 text-snow/70"><i></i> <i></i> <i></i></div>`;
+  return wrap;
+}
+
+function startTimer(){
+  let s = 0;
+  elTimer.classList.remove("hidden");
+  elTimer.textContent = "0:00";
+  timerInt = setInterval(()=>{ s++;
+    elTimer.textContent = Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+  },1000);
+}
+
+async function playCall(){
+  if(playing || !curScenario) return;
+  playing = true;
+  const b = BIZ[curBiz], sc = b.scenarios[curScenario];
+
+  elPick.classList.add("hidden");
+  elTrans.classList.remove("hidden");
+  elPlay.classList.add("hidden");
+  elReset.classList.remove("hidden");
+  elResult.classList.add("hidden"); elResult.innerHTML = "";
+  elStatus.innerHTML = "Anruf läuft …";
+  startTimer();
+
+  const steps = [{w:"a", t:b.greeting}, ...sc.steps];
+  await sleep(700);
+
+  for(const step of steps){
+    if(!playing) return;
+    if(step.w!=="s"){
+      const ind = indicator(step.w==="a");
+      elTrans.appendChild(ind);
+      elTrans.scrollTop = elTrans.scrollHeight;
+      await sleep(step.w==="a" ? 950 : 750);
+      ind.remove();
+    }
+    if(!playing) return;
+    elTrans.appendChild(bubble(step));
+    elTrans.scrollTop = elTrans.scrollHeight;
+    await sleep(readTime(step.t));
+  }
+
+  clearInterval(timerInt);
+  elStatus.textContent = "Anruf beendet · " + elTimer.textContent;
+
+  // Ergebnis-Karte
+  const r = sc.result;
+  const toneBg = r.tone==="teal" ? "border-teal/40" : r.tone==="flame" ? "border-flame/40" : "border-amber/50";
+  elResult.innerHTML = `
+    <div class="pop rounded-3xl border-2 ${toneBg} bg-white p-6 shadow-xl">
+      <p class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-mist">Ergebnis — landet automatisch bei Ihrem Team</p>
+      <h3 class="mt-2 flex items-start gap-2 text-base font-extrabold leading-snug">${r.icon} ${r.title}</h3>
+      <dl class="mt-4 space-y-2 border-t border-hair pt-4 font-mono text-[12px]">
+        ${r.rows.map(([k,v])=>`<div class="flex justify-between gap-4"><dt class="text-mist">${k}</dt><dd class="text-right font-semibold">${v}</dd></div>`).join("")}
+      </dl>
+    </div>`;
+  elResult.classList.remove("hidden");
+
+  // Dashboard-Zeile ergänzen
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,"0"), mm = String(now.getMinutes()).padStart(2,"0");
+  const tr = document.createElement("tr");
+  tr.className = "bg-teal/10";
+  tr.innerHTML = `<td class="px-5 py-3 text-snow/50">${hh}:${mm}</td><td class="px-5 py-3">${r.log[0]}</td><td class="px-5 py-3">${r.log[1]}</td><td class="px-5 py-3">${r.log[2]} <span class="ml-1 text-teal">← gerade eben</span></td>`;
+  $("log-body").prepend(tr);
+  $("stat-calls").textContent = +$("stat-calls").textContent + 1;
+  if(r.tone==="teal") $("stat-appts").textContent = +$("stat-appts").textContent + 1;
+
+  playing = false;
+}
+
+document.querySelectorAll(".biztab").forEach(t=>t.onclick = ()=>{ curBiz = t.dataset.biztab; renderBiz(); });
+elPlay.onclick = playCall;
+elReset.onclick = ()=>resetCall();
+
+/* ---------- Uhr, Reveal, Config ---------- */
+function tickClock(){ const n=new Date(); $("clock").textContent = String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0"); }
+tickClock(); setInterval(tickClock, 30000);
+
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+(function applyConfig(){
+  const d = Object.assign({}, CONFIG, {
+    mailHref: "mailto:"+CONFIG.email,
+    waHref:   "https://wa.me/"+CONFIG.whatsapp,
+  });
+  document.querySelectorAll("[data-cfg]").forEach(el=>{ const k=el.getAttribute("data-cfg"); if(d[k]!=null) el.textContent=d[k]; });
+  document.querySelectorAll("[data-cfg-href]").forEach(el=>{ const k=el.getAttribute("data-cfg-href"); if(d[k]!=null) el.setAttribute("href",d[k]); });
+})();
+$("year").textContent = new Date().getFullYear();
+
+renderBiz();
+</script>
+</body>
+</html>
