@@ -74,6 +74,10 @@ body {
   0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
   50%       { opacity: 1;   transform: scaleY(1); }
 }
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
 
 .fade-up {
   opacity: 0;
@@ -94,7 +98,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  height: 68px;
+  height: 80px;
   background: rgba(196,168,130,0.96);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -108,7 +112,7 @@ nav.scrolled { box-shadow: 0 4px 20px rgba(45,26,14,0.14); }
   text-decoration: none;
   flex-shrink: 0;
 }
-.nav-logo-svg { height: 44px; width: auto; }
+.nav-logo-svg { height: 62px; width: auto; }
 
 .nav-links {
   display: flex;
@@ -161,7 +165,7 @@ nav.scrolled { box-shadow: 0 4px 20px rgba(45,26,14,0.14); }
 /* ── MOBILE MENU ── */
 .mobile-menu {
   position: fixed;
-  top: 68px; left: 0; right: 0;
+  top: 80px; left: 0; right: 0;
   background: rgba(196,168,130,0.98);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -243,10 +247,48 @@ nav.scrolled { box-shadow: 0 4px 20px rgba(45,26,14,0.14); }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--choco-soft);
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.1rem;
   position: relative;
   animation: fadeUp 0.7s 0.2s ease both;
 }
+
+/* ── STATUS-PILL ── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.1rem;
+  border-radius: 2rem;
+  border: 1px solid;
+  position: relative;
+}
+.status-pill:empty { display: none; }
+.status-pill.open {
+  color: #3a6a3a;
+  border-color: rgba(90,138,90,0.4);
+  background: rgba(90,138,90,0.1);
+}
+.status-pill.closed {
+  color: #9a3a2a;
+  border-color: rgba(154,58,42,0.35);
+  background: rgba(154,58,42,0.08);
+}
+.status-pill::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  animation: dotPulse 2s ease infinite;
+}
+.hero .status-pill { margin-bottom: 2.2rem; animation: fadeUp 0.7s 0.28s ease both; }
+#oeffnungszeiten .status-pill { margin-top: 0.5rem; }
 .hero-sub {
   font-size: 1.05rem;
   color: var(--choco-mid);
@@ -798,6 +840,37 @@ section { padding: 6rem 2rem; }
 .contact-value a:hover { color: var(--choco); }
 
 
+/* ── ANRUF-BUTTON (FLOATING) ── */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 90;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--choco);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(45,26,14,0.35);
+  transition: transform 0.2s, background 0.2s;
+}
+.wa-float:hover { transform: translateY(-3px); background: var(--choco-mid); }
+.wa-float svg { width: 24px; height: 24px; }
+.wa-float-dot {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2.5px solid var(--sand);
+  background: #9a3a2a;
+}
+.wa-float-dot.open { background: #4a9a4a; animation: dotPulse 2s ease infinite; }
+
 /* ── FOOTER ── */
 footer {
   background: var(--choco);
@@ -929,6 +1002,7 @@ footer {
   </div>
 
   <p class="hero-tagline">St. Wendel · Seit über 15 Jahren</p>
+  <div class="status-pill js-status" role="status" aria-live="polite"></div>
   <p class="hero-sub">Frisch zubereitet, direkt vor deinen Augen. Döner, Pizza, Pasta, Falafel & mehr – der beste Döner im Landkreis St. Wendel.</p>
 
   <div class="hero-badges">
@@ -1135,6 +1209,7 @@ footer {
   <div class="container">
     <p class="section-label">Wann & wo</p>
     <h2 class="section-title">Öffnungszeiten & Kontakt</h2>
+    <div class="status-pill js-status" role="status"></div>
     <div class="info-grid">
       <div class="fade-up">
         <div class="info-block-title">Öffnungszeiten</div>
@@ -1177,6 +1252,11 @@ footer {
   </div>
 </footer>
 
+<!-- FLOATING ANRUF-BUTTON -->
+<a href="tel:068518007997" class="wa-float" id="call-float" aria-label="Keko Bistro anrufen: 06851 8007997">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  <span class="wa-float-dot" id="call-float-dot" aria-hidden="true"></span>
+</a>
 
 <script>
 // ── TAB SWITCHING ──
@@ -1237,6 +1317,49 @@ document.querySelectorAll('.hours-row[data-day]').forEach(row => {
   const days = row.dataset.day.split(',').map(Number);
   if (days.includes(today)) row.classList.add('today');
 });
+
+// ── GEÖFFNET / GESCHLOSSEN STATUS ──
+// Öffnungszeiten pro Wochentag (0=So … 6=Sa), null = Ruhetag
+const openingHours = { 0: [16, 22], 1: null, 2: [12, 22], 3: [12, 22], 4: [12, 22], 5: [12, 23], 6: [16, 23] };
+const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
+function getOpenStatus() {
+  const now = new Date();
+  const day = now.getDay();
+  const time = now.getHours() + now.getMinutes() / 60;
+  const hours = openingHours[day];
+
+  if (hours && time >= hours[0] && time < hours[1]) {
+    return { open: true, text: 'Jetzt geöffnet · bis ' + hours[1] + ':00 Uhr' };
+  }
+  if (hours && time < hours[0]) {
+    return { open: false, text: 'Geschlossen · öffnet heute um ' + hours[0] + ':00 Uhr' };
+  }
+  for (let i = 1; i <= 7; i++) {
+    const nextDay = (day + i) % 7;
+    const nextHours = openingHours[nextDay];
+    if (nextHours) {
+      const when = i === 1 ? 'morgen' : dayNames[nextDay];
+      return { open: false, text: 'Geschlossen · öffnet ' + when + ' um ' + nextHours[0] + ':00 Uhr' };
+    }
+  }
+}
+
+function updateOpenStatus() {
+  const status = getOpenStatus();
+  document.querySelectorAll('.js-status').forEach(el => {
+    el.textContent = status.text;
+    el.classList.toggle('open', status.open);
+    el.classList.toggle('closed', !status.open);
+  });
+  const dot = document.getElementById('call-float-dot');
+  dot.classList.toggle('open', status.open);
+  document.getElementById('call-float').setAttribute('aria-label',
+    'Keko Bistro anrufen: 06851 8007997 – ' + status.text);
+}
+
+updateOpenStatus();
+setInterval(updateOpenStatus, 60000);
 </script>
 </body>
 </html>
