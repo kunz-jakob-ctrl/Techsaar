@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zahnarztpraxis Dr. Sommer — Gesunde Zähne für jedes Lächeln | Saarbrücken</title>
+<meta name="description" content="Zahnarztpraxis Dr. Sommer in Saarbrücken: Prophylaxe, Zahnerhaltung, Implantate. Termin online buchen oder anrufen — wir sind rund um die Uhr erreichbar." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      cyan1:  '#18AEC4',   // Haupt-Türkis
+      cyan2:  '#0E93A8',   // Hover
+      petrol: '#0C4A57',   // dunkle Headlines
+      icefog: '#EAF7F9',   // helle Türkis-Tönung
+      inkgy:  '#41565C',   // Fließtext
+      linegy: '#E3EDEF',
+    },
+    fontFamily: {
+      display: ['Poppins','system-ui','sans-serif'],
+      sans: ['Inter','system-ui','sans-serif'],
+    },
+    boxShadow: {
+      soft: '0 18px 50px -18px rgba(12,74,87,.22)',
+      card: '0 10px 34px -14px rgba(12,74,87,.18)',
+    },
+  }}
+}
+</script>
+
+<style>
+  html,body{background:#fff}
+  ::selection{background:#18AEC4;color:#fff}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  .pulse-dot{position:relative}
+  .pulse-dot::after{content:"";position:absolute;inset:-4px;border-radius:99px;border:2px solid currentColor;opacity:0;animation:pp 1.8s ease-out infinite}
+  @keyframes pp{0%{transform:scale(.5);opacity:.8}80%,100%{transform:scale(1.6);opacity:0}}
+
+  .step{display:none}
+  .step.active{display:block;animation:stepIn .35s ease}
+  @keyframes stepIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+  .slot:disabled{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+
+  /* sanft schwebender Glanz im Hero */
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .floaty{animation:floaty 5s ease-in-out infinite}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition-duration:.001ms!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+
+<body class="font-sans text-inkgy antialiased">
+
+<!-- ===================== HERO-KARTE mit Nav im Bild ===================== -->
+<section id="top" class="px-3 pt-3 sm:px-5 sm:pt-5">
+  <div class="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] shadow-soft sm:rounded-[2.5rem]" style="background:linear-gradient(135deg,#0C4A57,#18AEC4)">
+    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1800&auto=format&fit=crop" alt="Modernes, helles Behandlungszimmer der Praxis" class="absolute inset-0 h-full w-full object-cover" loading="eager" onerror="this.remove()" />
+    <div class="absolute inset-0" style="background:linear-gradient(100deg,rgba(7,42,51,.82) 0%,rgba(7,42,51,.45) 52%,rgba(24,174,196,.15) 100%)"></div>
+
+    <!-- NAV: schwebende Pille im Hero (wie Referenz) -->
+    <header class="relative z-20 px-4 pt-4 sm:px-8 sm:pt-6">
+      <div class="mx-auto flex max-w-5xl items-center justify-between rounded-full bg-white/95 py-2.5 pl-3 pr-2.5 shadow-card backdrop-blur">
+        <a href="#top" class="flex items-center gap-2.5">
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-cyan1 font-display text-lg font-bold text-white">S</span>
+          <span class="hidden font-display text-base font-bold text-petrol sm:block" data-cfg="name">Praxis Dr. Sommer</span>
+        </a>
+        <nav class="hidden items-center gap-6 md:flex">
+          <a href="#ueber"      class="text-sm font-semibold text-inkgy hover:text-cyan2">Über uns</a>
+          <a href="#leistungen" class="text-sm font-semibold text-inkgy hover:text-cyan2">Leistungen</a>
+          <a href="#erreichbar" class="text-sm font-semibold text-inkgy hover:text-cyan2">Erreichbarkeit</a>
+          <a href="#kontakt"    class="text-sm font-semibold text-inkgy hover:text-cyan2">Kontakt</a>
+        </nav>
+        <a href="#termin" class="rounded-full bg-cyan1 px-5 py-2.5 font-display text-sm font-semibold text-white transition hover:bg-cyan2">Termin buchen</a>
+      </div>
+    </header>
+
+    <!-- Hero-Inhalt -->
+    <div class="relative z-10 grid gap-8 px-6 pb-12 pt-14 sm:px-12 sm:pb-16 sm:pt-20 lg:grid-cols-[1.1fr_.9fr] lg:px-16">
+      <div>
+        <p class="mb-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur">
+          <span id="open-dot" class="pulse-dot inline-block h-2 w-2 rounded-full bg-emerald-300 text-emerald-300"></span>
+          <span id="open-text">Heute geöffnet</span>
+        </p>
+        <h1 class="font-display text-4xl font-bold leading-tight text-white sm:text-6xl">
+          Gesunde Zähne.<br />Für jedes <span class="text-[#8FE3EF]">Lächeln.</span>
+        </h1>
+        <p class="mt-5 max-w-md text-lg leading-relaxed text-white/85">
+          Moderne Zahnmedizin mit Ruhe und Zeit — von der Prophylaxe bis zum Implantat.
+          Termine gibt es bei uns ohne Warteschleife: online oder telefonisch, rund um die Uhr.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="#termin" class="rounded-full bg-cyan1 px-7 py-3.5 font-display text-base font-semibold text-white shadow-card transition hover:bg-cyan2">Termin vereinbaren</a>
+          <a data-cfg-href="telHref" href="tel:+4968100000000" class="rounded-full border-2 border-white/60 px-7 py-3.5 font-display text-base font-semibold text-white transition hover:bg-white/10">📞 <span data-cfg="phoneDisplay">0681 000 000 00</span></a>
+        </div>
+        <p class="mt-3 text-sm text-white/70">Auch nachts &amp; am Wochenende: Unser Telefonassistent bucht Ihren Termin sofort.</p>
+      </div>
+      <!-- Bewertungs-Badge -->
+      <div class="flex items-end justify-end">
+        <div class="floaty rounded-3xl bg-white/95 p-5 shadow-soft backdrop-blur">
+          <p class="font-display text-3xl font-bold text-petrol">5,0 <span class="text-amber-400">★★★★★</span></p>
+          <p class="mt-1 text-sm font-semibold text-inkgy"><span data-cfg="reviews">217</span> Google-Bewertungen</p>
+          <p class="mt-2 text-xs text-inkgy/70">„Endlich eine Praxis, die man immer erreicht.“</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ÜBER UNS (Karte + Text, wie Referenz) ===================== -->
+<section id="ueber" class="scroll-mt-28 px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[.9fr_1.1fr]">
+    <div class="reveal relative">
+      <div class="absolute -inset-3 rounded-[2rem] bg-icefog"></div>
+      <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=1200&auto=format&fit=crop" alt="Dr. Sommer und Team" class="relative h-[340px] w-full rounded-[1.6rem] object-cover shadow-card" loading="lazy" onerror="this.style.background='#EAF7F9'" />
+      <div class="absolute -bottom-4 left-6 rounded-2xl bg-white px-4 py-2.5 shadow-card">
+        <p class="font-display text-sm font-bold text-petrol">Dr. med. dent. J. Sommer</p>
+        <p class="text-xs text-inkgy/70">& Team · seit 2009 in Saarbrücken</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-cyan2">Über uns</p>
+      <h2 class="mt-2 font-display text-3xl font-bold leading-snug text-petrol sm:text-4xl">Wir glauben: Jeder verdient ein gesundes, selbstbewusstes Lächeln.</h2>
+      <p class="mt-4 leading-relaxed">
+        Bei uns sind Sie keine Nummer. Wir nehmen uns Zeit, erklären jeden Schritt
+        und behandeln so schonend wie möglich — auch für Angstpatienten.
+        Modernste Technik, ein eingespieltes Team und eine Praxis, in der man sich wohlfühlt.
+      </p>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        <li class="flex items-center gap-2.5 text-sm font-semibold text-petrol"><span class="grid h-6 w-6 place-items-center rounded-full bg-icefog text-cyan2">✓</span> Angstpatienten willkommen</li>
+        <li class="flex items-center gap-2.5 text-sm font-semibold text-petrol"><span class="grid h-6 w-6 place-items-center rounded-full bg-icefog text-cyan2">✓</span> Digitales Röntgen</li>
+        <li class="flex items-center gap-2.5 text-sm font-semibold text-petrol"><span class="grid h-6 w-6 place-items-center rounded-full bg-icefog text-cyan2">✓</span> Schmerztermine noch am selben Tag</li>
+        <li class="flex items-center gap-2.5 text-sm font-semibold text-petrol"><span class="grid h-6 w-6 place-items-center rounded-full bg-icefog text-cyan2">✓</span> Barrierefreier Zugang</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LEISTUNGEN ===================== -->
+<section id="leistungen" class="scroll-mt-28 bg-icefog px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mx-auto mb-10 max-w-xl text-center">
+      <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-cyan2">Unsere Leistungen</p>
+      <h2 class="mt-2 font-display text-3xl font-bold text-petrol sm:text-4xl">Alles für Ihre Zahngesundheit</h2>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">🪥</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Prophylaxe &amp; Zahnreinigung</h3>
+        <p class="mt-1.5 text-sm">Professionelle Zahnreinigung (PZR) für langfristig gesunde Zähne — sanft und gründlich.</p>
+      </article>
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">🦷</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Zahnerhaltung</h3>
+        <p class="mt-1.5 text-sm">Hochwertige Füllungen und Wurzelbehandlungen — Zähne retten statt ziehen.</p>
+      </article>
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">✨</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Ästhetische Zahnmedizin</h3>
+        <p class="mt-1.5 text-sm">Bleaching, Veneers und unsichtbare Korrekturen für Ihr schönstes Lächeln.</p>
+      </article>
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">🔩</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Implantate</h3>
+        <p class="mt-1.5 text-sm">Fester Zahnersatz, der sich anfühlt wie echt — Planung digital &amp; präzise.</p>
+      </article>
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">🧒</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Kinderzahnheilkunde</h3>
+        <p class="mt-1.5 text-sm">Geduldig und spielerisch — damit der Zahnarztbesuch nie zur Angst wird.</p>
+      </article>
+      <article class="reveal rounded-3xl bg-white p-6 shadow-card transition hover:-translate-y-1">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-icefog text-2xl">⚡</span>
+        <h3 class="mt-4 font-display text-lg font-bold text-petrol">Schmerzbehandlung</h3>
+        <p class="mt-1.5 text-sm">Akute Schmerzen? Sie bekommen noch heute einen Termin — rufen Sie einfach an.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ERREICHBARKEIT (Telefonassistent) ===================== -->
+<section id="erreichbar" class="scroll-mt-28 px-4 py-16 sm:px-6 lg:py-24">
+  <div class="reveal mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-petrol text-white shadow-soft">
+    <div class="grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:p-14">
+      <div>
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-[#8FE3EF]">Immer erreichbar</p>
+        <h2 class="mt-2 font-display text-3xl font-bold leading-snug sm:text-4xl">Bei uns landen Sie nie in der Warteschleife.</h2>
+        <p class="mt-4 leading-relaxed text-white/80">
+          Wenn unser Team gerade behandelt oder die Praxis geschlossen ist, nimmt unser
+          <strong class="text-white">digitaler Telefonassistent</strong> Ihren Anruf an:
+          Er vereinbart und verschiebt Termine, beantwortet Fragen und sorgt dafür,
+          dass Schmerzpatienten sofort einen Termin bekommen.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-white/85">
+          <li class="flex items-start gap-3"><span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/10 text-[#8FE3EF]">✓</span> Stellt sich ehrlich als digitaler Assistent vor — auf Wunsch verbindet er mit dem Team</li>
+          <li class="flex items-start gap-3"><span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/10 text-[#8FE3EF]">✓</span> Fragt keine medizinischen Details ab — nur Name, Nummer und Terminwunsch</li>
+          <li class="flex items-start gap-3"><span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/10 text-[#8FE3EF]">✓</span> Schmerzpatienten erhalten noch am selben Tag einen Termin</li>
+          <li class="flex items-start gap-3"><span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/10 text-[#8FE3EF]">✓</span> Keine Gesprächsaufzeichnung — Datenschutz hat Vorrang</li>
+        </ul>
+        <a data-cfg-href="telHref" href="tel:+4968100000000" class="mt-8 inline-block rounded-full bg-cyan1 px-7 py-3.5 font-display text-base font-semibold text-white transition hover:bg-cyan2">📞 Jetzt anrufen — rund um die Uhr</a>
+      </div>
+      <!-- 3 Schritte -->
+      <ol class="space-y-3">
+        <li class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/15">
+          <p class="font-display text-sm font-bold text-[#8FE3EF]">SCHRITT 1</p>
+          <h3 class="mt-1 font-display text-lg font-semibold">Sie rufen an — jederzeit</h3>
+          <p class="mt-1 text-sm text-white/70">Mittagspause, 22 Uhr, Sonntag: Es wird immer abgenommen.</p>
+        </li>
+        <li class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/15">
+          <p class="font-display text-sm font-bold text-[#8FE3EF]">SCHRITT 2</p>
+          <h3 class="mt-1 font-display text-lg font-semibold">Termin wird direkt vereinbart</h3>
+          <p class="mt-1 text-sm text-white/70">Der Assistent kennt den Kalender und schlägt freie Zeiten vor — dauert keine 2 Minuten.</p>
+        </li>
+        <li class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/15">
+          <p class="font-display text-sm font-bold text-[#8FE3EF]">SCHRITT 3</p>
+          <h3 class="mt-1 font-display text-lg font-semibold">SMS-Bestätigung kommt sofort</h3>
+          <p class="mt-1 text-sm text-white/70">Und das Praxisteam sieht morgens alle neuen Termine auf einen Blick.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TERMINBUCHUNG ===================== -->
+<section id="termin" class="scroll-mt-28 bg-icefog px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto max-w-3xl">
+    <div class="reveal mb-8 text-center">
+      <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-cyan2">Online oder telefonisch — derselbe Kalender</p>
+      <h2 class="mt-2 font-display text-3xl font-bold text-petrol sm:text-4xl">Termin buchen</h2>
+      <p class="mx-auto mt-3 max-w-md text-sm">Lieber sprechen? <a data-cfg-href="telHref" href="tel:+4968100000000" class="font-semibold text-cyan2 underline underline-offset-4">Rufen Sie an</a> — unser Assistent bucht dieselben Zeitfenster mit Ihnen am Telefon.</p>
+    </div>
+
+    <div class="reveal overflow-hidden rounded-3xl bg-white shadow-soft">
+      <!-- Fortschritt -->
+      <div class="flex border-b border-linegy text-center font-display text-xs font-semibold sm:text-sm">
+        <div data-tab="1" class="wtab flex-1 border-b-4 border-cyan1 bg-icefog/60 py-3 text-petrol">1 · Anliegen</div>
+        <div data-tab="2" class="wtab flex-1 border-b-4 border-transparent py-3 text-inkgy/50">2 · Termin</div>
+        <div data-tab="3" class="wtab flex-1 border-b-4 border-transparent py-3 text-inkgy/50">3 · Daten</div>
+        <div data-tab="4" class="wtab flex-1 border-b-4 border-transparent py-3 text-inkgy/50">4 · Fertig</div>
+      </div>
+
+      <!-- Schritt 1: Anliegen -->
+      <div class="step active p-6 sm:p-8" data-step="1">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <button class="svc rounded-2xl border-2 border-linegy p-4 text-left transition hover:border-cyan1" data-svc="Kontrolle" data-dauer="20 Min">🦷 <strong class="text-petrol">Kontrolle</strong><span class="block text-xs text-inkgy/60">ca. 20 Min · Kassenleistung</span></button>
+          <button class="svc rounded-2xl border-2 border-linegy p-4 text-left transition hover:border-cyan1" data-svc="Professionelle Zahnreinigung" data-dauer="45–60 Min">🪥 <strong class="text-petrol">Zahnreinigung (PZR)</strong><span class="block text-xs text-inkgy/60">ca. 45–60 Min</span></button>
+          <button class="svc rounded-2xl border-2 border-linegy p-4 text-left transition hover:border-cyan1" data-svc="Schmerzbehandlung" data-dauer="30 Min">⚡ <strong class="text-petrol">Schmerzen / akut</strong><span class="block text-xs text-inkgy/60">heute noch — oder gleich anrufen!</span></button>
+          <button class="svc rounded-2xl border-2 border-linegy p-4 text-left transition hover:border-cyan1" data-svc="Beratung" data-dauer="30 Min">💬 <strong class="text-petrol">Beratung</strong><span class="block text-xs text-inkgy/60">z. B. Implantate, Bleaching, Ästhetik</span></button>
+        </div>
+        <p class="mt-4 rounded-2xl bg-icefog p-3 text-xs">💡 <strong>Hinweis:</strong> Bei akuten starken Schmerzen rufen Sie am besten direkt an — der Assistent priorisiert Sie sofort: <a data-cfg-href="telHref" href="tel:+4968100000000" class="font-semibold text-cyan2" data-cfg="phoneDisplay">0681 000 000 00</a></p>
+      </div>
+
+      <!-- Schritt 2: Termin -->
+      <div class="step p-6 sm:p-8" data-step="2">
+        <p class="mb-3 text-sm font-semibold text-petrol">Tag wählen:</p>
+        <div id="day-row" class="flex gap-2 overflow-x-auto pb-2"><!-- JS --></div>
+        <p class="mb-3 mt-6 text-sm font-semibold text-petrol">Uhrzeit:</p>
+        <div id="slot-grid" class="grid grid-cols-3 gap-2 sm:grid-cols-4"><!-- JS --></div>
+        <div class="mt-6"><button class="wback text-sm font-semibold text-inkgy/60 hover:text-petrol">← Zurück</button></div>
+      </div>
+
+      <!-- Schritt 3: Daten -->
+      <div class="step p-6 sm:p-8" data-step="3">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block"><span class="text-xs font-semibold uppercase tracking-wide text-inkgy/60">Ihr Name *</span>
+            <input id="f-name" required placeholder="Vor- und Nachname" class="mt-1 w-full rounded-xl border-2 border-linegy px-3 py-2.5 outline-none focus:border-cyan1" /></label>
+          <label class="block"><span class="text-xs font-semibold uppercase tracking-wide text-inkgy/60">Handynummer (SMS-Bestätigung) *</span>
+            <input id="f-tel" required placeholder="0151 …" class="mt-1 w-full rounded-xl border-2 border-linegy px-3 py-2.5 outline-none focus:border-cyan1" /></label>
+          <div class="sm:col-span-2">
+            <span class="text-xs font-semibold uppercase tracking-wide text-inkgy/60">Sind Sie schon Patient:in bei uns?</span>
+            <div class="mt-2 flex gap-3">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="f-pat" value="ja" checked class="accent-cyan1" /> Ja</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="f-pat" value="nein" class="accent-cyan1" /> Nein, Neupatient:in</label>
+            </div>
+          </div>
+          <label class="block sm:col-span-2"><span class="text-xs font-semibold uppercase tracking-wide text-inkgy/60">Anmerkung (optional — bitte keine medizinischen Details)</span>
+            <input id="f-notiz" placeholder="z. B. bitte Termin-Erinnerung per SMS" class="mt-1 w-full rounded-xl border-2 border-linegy px-3 py-2.5 outline-none focus:border-cyan1" /></label>
+        </div>
+        <p id="f-error" class="mt-3 hidden text-sm font-semibold text-red-500">Bitte Name und Handynummer angeben.</p>
+        <div class="mt-6 flex items-center justify-between">
+          <button class="wback text-sm font-semibold text-inkgy/60 hover:text-petrol">← Zurück</button>
+          <button id="f-submit" class="rounded-full bg-cyan1 px-7 py-3.5 font-display text-base font-semibold text-white transition hover:bg-cyan2">Termin anfragen</button>
+        </div>
+      </div>
+
+      <!-- Schritt 4: Bestätigung -->
+      <div class="step p-6 text-center sm:p-10" data-step="4">
+        <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-icefog text-3xl">✓</span>
+        <h3 class="mt-4 font-display text-2xl font-bold text-petrol">Ihr Termin ist eingetragen!</h3>
+        <div id="summary" class="mx-auto mt-5 max-w-md space-y-1.5 rounded-2xl bg-icefog p-5 text-left text-sm"><!-- JS --></div>
+        <p class="mt-4 text-sm">Sie erhalten gleich eine SMS-Bestätigung.<br />Bitte kommen Sie 5 Minuten früher und bringen Sie Ihre Versichertenkarte mit.</p>
+        <p class="mx-auto mt-5 max-w-md rounded-2xl border-2 border-dashed border-cyan1/40 bg-white p-3 text-xs font-semibold text-cyan2">DEMO-HINWEIS: Musterseite von TechSaar — es wurde kein echter Termin gebucht.</p>
+        <button id="restart" class="mt-6 text-sm font-semibold text-cyan2 underline underline-offset-4">↺ Neue Buchung testen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KONTAKT ===================== -->
+<section id="kontakt" class="scroll-mt-28 px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
+    <div class="reveal">
+      <h2 class="font-display text-3xl font-bold text-petrol">Kontakt</h2>
+      <p class="mt-4"><strong class="text-petrol" data-cfg="name">Praxis Dr. Sommer</strong><br /><span data-cfg="address">Musterallee 8, 66111 Saarbrücken</span></p>
+      <p class="mt-3"><a data-cfg-href="telHref" href="tel:+4968100000000" class="font-semibold text-cyan2" data-cfg="phoneDisplay">0681 000 000 00</a><br />
+      <a data-cfg-href="mailHref" href="mailto:praxis@dr-sommer.de" class="underline underline-offset-2" data-cfg="email">praxis@dr-sommer.de</a></p>
+      <p class="mt-4 rounded-2xl bg-icefog p-3 text-xs">🚨 Außerhalb der Sprechzeiten bei akuten Notfällen: zahnärztlicher Notdienst Saarland — Infos unter kzv-saarland.de</p>
+    </div>
+    <div class="reveal">
+      <h3 class="font-display text-lg font-bold text-petrol">Sprechzeiten</h3>
+      <table class="mt-3 w-full text-sm">
+        <tr class="border-b border-linegy"><td class="py-2">Mo – Do</td><td class="py-2 text-right font-semibold text-petrol">8:00 – 12:00 · 14:00 – 18:00</td></tr>
+        <tr class="border-b border-linegy"><td class="py-2">Freitag</td><td class="py-2 text-right font-semibold text-petrol">8:00 – 13:00</td></tr>
+        <tr><td class="py-2">Sa / So</td><td class="py-2 text-right font-semibold text-petrol">geschlossen</td></tr>
+      </table>
+      <p class="mt-3 flex items-center gap-2 text-sm font-semibold text-cyan2"><span class="inline-block h-2 w-2 rounded-full bg-cyan1"></span> Telefonisch rund um die Uhr erreichbar</p>
+    </div>
+    <div class="reveal">
+      <h3 class="font-display text-lg font-bold text-petrol">Anfahrt</h3>
+      <iframe title="Karte" class="mt-3 h-48 w-full rounded-2xl border border-linegy" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Saarbr%C3%BCcken%20Zahnarzt&z=14&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-petrol px-4 py-10 text-sm text-white/70 sm:px-6">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+    <p>© <span id="year"></span> <span data-cfg="name">Praxis Dr. Sommer</span> · Musterseite von TechSaar</p>
+    <nav class="flex gap-5">
+      <a href="#" class="hover:text-white">Impressum</a>
+      <a href="#ds-hinweis" class="hover:text-white">Datenschutz</a>
+    </nav>
+  </div>
+  <p id="ds-hinweis" class="mx-auto mt-6 max-w-6xl border-t border-white/15 pt-5 text-xs leading-relaxed text-white/50">
+    Hinweis zur Telefonannahme: Außerhalb der Sprechzeiten sowie bei belegter Leitung nimmt ein
+    KI-gestützter Telefonassistent Anrufe entgegen. Er stellt sich zu Gesprächsbeginn als solcher vor
+    und verbindet auf Wunsch mit dem Praxisteam. Es erfolgt keine Gesprächsaufzeichnung. Zur
+    Terminvereinbarung werden ausschließlich Name, Rufnummer und Terminwunsch verarbeitet —
+    keine Gesundheitsdaten. Details in der Datenschutzerklärung. — Auf einer echten Praxisseite
+    stehen hier vollständige Rechtstexte (Impressum § 5 DDG, Datenschutzerklärung inkl. Art.-9-Hinweisen).
+  </p>
+</footer>
+
+<script>
+/* ================= KONFIGURATION ================= */
+const CONFIG = {
+  name: "Praxis Dr. Sommer",
+  phoneDisplay: "0681 000 000 00",      // <-- Twilio/ElevenLabs-Nummer (lesbar)
+  phoneTel:     "+4968100000000",        // <-- Nummer für tel:-Links
+  email:   "praxis@dr-sommer.de",
+  address: "Musterallee 8, 66111 Saarbrücken",
+  reviews: "217",
+  // Sprechzeiten je Wochentag (0=So): Liste von [von, bis] in Stunden
+  hours: { 1:[[8,12],[14,18]], 2:[[8,12],[14,18]], 3:[[8,12],[14,18]], 4:[[8,12],[14,18]], 5:[[8,13]], 6:null, 0:null },
+};
+/* ================================================ */
+
+const $ = id => document.getElementById(id);
+
+/* ---- Config anwenden ---- */
+(function(){
+  const d = Object.assign({}, CONFIG, {
+    telHref: "tel:"+CONFIG.phoneTel,
+    mailHref: "mailto:"+CONFIG.email,
+  });
+  document.querySelectorAll("[data-cfg]").forEach(el=>{ const k=el.getAttribute("data-cfg"); if(d[k]!=null) el.textContent=d[k]; });
+  document.querySelectorAll("[data-cfg-href]").forEach(el=>{ const k=el.getAttribute("data-cfg-href"); if(d[k]!=null) el.setAttribute("href",d[k]); });
+})();
+
+/* ---- Live-Öffnungsstatus ---- */
+(function(){
+  const now = new Date();
+  const spans = CONFIG.hours[now.getDay()];
+  const t = now.getHours() + now.getMinutes()/60;
+  const open = !!(spans && spans.some(s=>t>=s[0] && t<s[1]));
+  const dot=$("open-dot"), txt=$("open-text");
+  if(open){
+    const cur = spans.find(s=>t>=s[0] && t<s[1]);
+    const fmt = x => { const hh=Math.floor(x), mm=Math.round((x-hh)*60); return hh+":"+String(mm).padStart(2,"0"); };
+    txt.textContent = "Heute geöffnet bis "+fmt(cur[1])+" Uhr · Telefon: 24/7";
+  } else {
+    dot.classList.remove("bg-emerald-300","text-emerald-300");
+    dot.classList.add("bg-amber-300","text-amber-300");
+    txt.textContent = "Praxis geschlossen — Telefonassistent nimmt trotzdem ab";
+  }
+})();
+
+/* ---- Reveal ---- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+$("year").textContent = new Date().getFullYear();
+
+/* ================= Buchungs-Wizard ================= */
+const booking = { svc:null, dauer:null, day:null, slot:null };
+
+function goStep(n){
+  document.querySelectorAll(".step").forEach(s=>s.classList.toggle("active", s.dataset.step==String(n)));
+  document.querySelectorAll(".wtab").forEach(t=>{
+    const on = t.dataset.tab==String(n);
+    t.classList.toggle("border-cyan1", on);
+    t.classList.toggle("bg-icefog/60", on);
+    t.classList.toggle("text-petrol", on);
+    t.classList.toggle("border-transparent", !on);
+    t.classList.toggle("text-inkgy/50", !on);
+  });
+  document.getElementById("termin").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+document.querySelectorAll(".svc").forEach(b=>b.addEventListener("click", ()=>{
+  booking.svc=b.dataset.svc; booking.dauer=b.dataset.dauer;
+  renderDays(); goStep(2);
+}));
+
+const WD = ["So","Mo","Di","Mi","Do","Fr","Sa"];
+const MO = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+
+function nextDays(n=8){
+  const out=[]; const d=new Date(); d.setDate(d.getDate()+1);
+  while(out.length<n){ if(d.getDay()!==0 && d.getDay()!==6){ out.push(new Date(d)); } d.setDate(d.getDate()+1); }
+  return out;
+}
+function slotsFor(date){
+  const fr = date.getDay()===5;
+  const base = fr ? ["08:00","08:40","09:20","10:00","10:40","11:20","12:00"]
+                  : ["08:00","08:40","09:20","10:00","11:20","14:00","14:40","15:20","16:00","16:40","17:20"];
+  const seed = date.getDate()+date.getMonth();
+  return base.map((s,i)=>({ time:s, free: (seed+i*2)%3 !== 0 }));
+}
+function renderDays(){
+  const row=$("day-row"); row.innerHTML="";
+  nextDays().forEach((d,i)=>{
+    const btn=document.createElement("button");
+    btn.className="dbtn shrink-0 rounded-2xl border-2 border-linegy px-4 py-2.5 text-center transition hover:border-cyan1";
+    btn.innerHTML=`<span class="block font-display text-base font-bold text-petrol">${WD[d.getDay()]}</span><span class="block text-xs text-inkgy/60">${d.getDate()}. ${MO[d.getMonth()]}</span>`;
+    btn.onclick=()=>{ booking.day=d;
+      document.querySelectorAll(".dbtn").forEach(x=>x.classList.remove("border-cyan1","bg-icefog"));
+      btn.classList.add("border-cyan1","bg-icefog");
+      renderSlots(d);
+    };
+    row.appendChild(btn);
+    if(i===0) btn.click();
+  });
+}
+function renderSlots(d){
+  const grid=$("slot-grid"); grid.innerHTML="";
+  slotsFor(d).forEach(s=>{
+    const b=document.createElement("button");
+    b.className="slot rounded-xl border-2 border-linegy py-2.5 font-semibold text-petrol transition hover:border-cyan1";
+    b.textContent=s.time;
+    b.disabled=!s.free;
+    b.onclick=()=>{ booking.slot=s.time; goStep(3); };
+    grid.appendChild(b);
+  });
+}
+
+document.querySelectorAll(".wback").forEach(b=>b.addEventListener("click", e=>{
+  const cur = +e.target.closest(".step").dataset.step;
+  goStep(cur-1);
+}));
+
+$("f-submit").addEventListener("click", ()=>{
+  const ok = $("f-name").value.trim().length>1 && $("f-tel").value.trim().length>3;
+  $("f-error").classList.toggle("hidden", ok);
+  if(!ok) return;
+  const d=booking.day;
+  const pat = document.querySelector('input[name="f-pat"]:checked').value==="ja" ? "Ja" : "Neupatient:in";
+  $("summary").innerHTML = `
+    <p><strong class="text-petrol">Anliegen:</strong> ${booking.svc} <span class="text-inkgy/60">(${booking.dauer})</span></p>
+    <p><strong class="text-petrol">Termin:</strong> ${WD[d.getDay()]}, ${d.getDate()}. ${MO[d.getMonth()]} · ${booking.slot} Uhr</p>
+    <p><strong class="text-petrol">Name:</strong> ${$("f-name").value}</p>
+    <p><strong class="text-petrol">Patient:in:</strong> ${pat}</p>
+    <p><strong class="text-petrol">SMS an:</strong> ${$("f-tel").value}</p>
+    ${$("f-notiz").value.trim() ? "<p><strong class='text-petrol'>Anmerkung:</strong> "+$("f-notiz").value+"</p>" : ""}`;
+  goStep(4);
+});
+
+$("restart").addEventListener("click", ()=>{
+  ["f-name","f-tel","f-notiz"].forEach(id=>$(id).value="");
+  Object.assign(booking,{svc:null,dauer:null,day:null,slot:null});
+  goStep(1);
+});
+</script>
+</body>
+</html>
