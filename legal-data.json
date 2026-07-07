@@ -1,0 +1,19 @@
+{
+  "_hinweis": "Firmendaten für Impressum/Datenschutz der TechSaar-Hauptseite. Vollständig befüllt (Stand 2026-07-06). Empfehlung: Rechtstexte vor Live anwaltlich/über eRecht24 gegenprüfen.",
+  "unternehmen": "TechSaar",
+  "rechtsform": "GbR",
+  "inhaber": ["Jakob Elias Kunz", "Leon Merlin Thies"],
+  "strasse": "Hochstattstraße 12",
+  "plz_ort": "66640 Namborn",
+  "email": "tech-saar@outlook.de",
+  "telefon": "0157 71232099",
+  "ust_id": "",
+  "kleinunternehmer": true,
+  "handelsregister": "",
+  "verantwortlich_inhalt": "Jakob Elias Kunz",
+  "hosting_anbieter": "GitHub Pages (GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA)",
+  "hosting_eu": false,
+  "dienste": ["Kontaktformular", "Schriftarten (lokal gehostet)"],
+  "kontaktformular": true,
+  "cookies_tracking": false
+}

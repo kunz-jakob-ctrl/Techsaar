@@ -6,590 +6,436 @@
   <title>TechSaar — Moderne Websites, Apps & KI aus dem Saarland</title>
   <meta name="description" content="TechSaar – zwei Studenten aus dem Saarland bauen moderne Websites & Apps mit cleverer Technik & KI. Lokal, persönlich, ohne Agentur-Blabla." />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            paper:  '#FBFAF8',
-            paper2: '#F3F1EC',
-            ink:    '#1A1A22',
-            muted:  '#6B6B76',
-            line:   '#E7E3DC',
-            lilac:  '#8B7CF6',
-            coral:  '#FB8C8C',
-            peach:  '#FFB178',
-            mint:   '#5FE3C0',
-            sky:    '#7FC8FF',
-            butter: '#FFD66B',
-          },
-          fontFamily: {
-            display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <!-- Lokal gehostet (DSGVO): kein Tailwind-CDN, keine Google-Fonts-Requests mehr.
+       styles.css = lokaler Tailwind-Build (tailwind.config.js), fonts.css = lokale Schriften. -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="fonts/fonts.css">
 
   <style>
-    html, body { background:#FBFAF8; }
+    html, body { background:#050507; }
     ::selection { background:#8B7CF6; color:#fff; }
-
     ::-webkit-scrollbar { width:10px; }
-    ::-webkit-scrollbar-track { background:#F3F1EC; }
-    ::-webkit-scrollbar-thumb { background:#D8D3CA; border-radius:10px; }
+    ::-webkit-scrollbar-track { background:#050507; }
+    ::-webkit-scrollbar-thumb { background:#26262f; border-radius:10px; }
     ::-webkit-scrollbar-thumb:hover { background:#8B7CF6; }
 
-    .grad-text {
-      background: linear-gradient(100deg,#8B7CF6 0%,#FB8C8C 45%,#FFB178 100%);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .grad-anim {
-      background: linear-gradient(100deg,#8B7CF6,#FB8C8C,#FFB178,#5FE3C0,#8B7CF6);
-      background-size:300% 100%;
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      animation: hue 9s ease infinite;
-    }
-    @keyframes hue { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    /* Anton: condensed Display, immer Uppercase, eng geführt */
+    .display { font-family:'Anton', Impact, sans-serif; text-transform:uppercase; letter-spacing:.01em; line-height:.92; font-weight:400; }
 
-    /* floating pastel blobs */
-    .blob { position:absolute; border-radius:50%; filter:blur(60px); opacity:.55; pointer-events:none; }
-    @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-26px) scale(1.08)} }
-    @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-26px,24px) scale(1.1)} }
-    .float1 { animation: float1 13s ease-in-out infinite; }
-    .float2 { animation: float2 16s ease-in-out infinite; }
+    /* Mikro-Label: Linie + Uppercase-Tracking (ersetzt Icons) */
+    .mlabel { display:flex; align-items:center; gap:.9rem; font-size:.72rem; font-weight:600; letter-spacing:.28em; text-transform:uppercase; }
+    .mlabel::before { content:""; height:1px; width:44px; background:currentColor; opacity:.6; }
 
-    /* cursor spotlight in hero */
-    .spotlight {
-      position:absolute; inset:0; pointer-events:none; z-index:0;
-      background: radial-gradient(520px circle at var(--mx,70%) var(--my,30%), rgba(139,124,246,.16), transparent 62%);
-      transition: opacity .4s;
+    /* Shader als Hero-Hintergrund (hinter der Headline) */
+    #shader-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+    .hero-fallback {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 75% 60% at 60% 35%, rgba(139,124,246,.28), transparent 65%),
+        radial-gradient(ellipse 45% 40% at 20% 80%, rgba(196,181,253,.10), transparent 70%),
+        #0F0F14;
+    }
+    /* Abdunklung, damit die Headline auf dem Shader immer lesbar bleibt */
+    .hero-vignette {
+      position:absolute; inset:0; pointer-events:none;
+      background:
+        linear-gradient(100deg, rgba(15,15,20,.82) 0%, rgba(15,15,20,.55) 45%, rgba(15,15,20,.15) 80%),
+        linear-gradient(to bottom, rgba(15,15,20,.5), transparent 25%, transparent 60%, #0F0F14 100%);
     }
 
-    /* reveal on scroll */
-    .reveal { opacity:0; transform:translateY(26px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
-    .reveal.in { opacity:1; transform:none; }
+    /* Hero-Einblendungen */
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(26px); } to { opacity:1; transform:translateY(0); } }
+    .anim-up { animation: fadeInUp .8s cubic-bezier(.22,1,.36,1) forwards; opacity:0; }
+    .d-150 { animation-delay:.15s; } .d-300 { animation-delay:.3s; }
+    .d-450 { animation-delay:.45s; } .d-600 { animation-delay:.6s; } .d-750 { animation-delay:.75s; }
 
-    /* shine sweep on primary button */
-    .shine { position:relative; overflow:hidden; }
-    .shine::after {
-      content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
-      background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);
-      transform:skewX(-20deg); transition:left .6s;
-    }
-    .shine:hover::after { left:160%; }
+    [data-animate] { opacity:0; }
 
-    /* marquee */
-    .marquee { display:flex; gap:0; width:max-content; animation: scroll 28s linear infinite; }
-    @keyframes scroll { to { transform: translateX(-50%); } }
+    .card { transition: border-color .25s, transform .25s cubic-bezier(.2,.7,.2,1); }
+    .card:hover { border-color: rgba(139,124,246,.55); transform: translateY(-4px); }
 
-    /* tilt cards keep transform via JS variable */
-    .tilt { transition: transform .25s cubic-bezier(.2,.7,.2,1); transform-style:preserve-3d; will-change:transform; }
-
-    .dotgrid {
-      background-image: radial-gradient(circle, rgba(26,26,34,.07) 1px, transparent 1px);
-      background-size: 22px 22px;
-    }
+    /* Tabellenzeilen-Hover */
+    .trow { transition: background-color .2s; }
+    .trow:hover { background: rgba(139,124,246,.05); }
 
     @media (prefers-reduced-motion: reduce) {
       *,*::before,*::after { animation:none !important; transition-duration:.001ms !important; }
-      .reveal { opacity:1; transform:none; }
+      [data-animate] { opacity:1 !important; transform:none !important; }
+      .anim-up { opacity:1 !important; transform:none !important; }
     }
   </style>
+  <noscript><style>[data-animate]{opacity:1 !important} .anim-up{opacity:1 !important}</style></noscript>
 </head>
 
-<body class="bg-paper font-sans text-ink antialiased">
+<body class="bg-void font-sans text-ink antialiased">
+
+  <!-- Scroll-Fortschritt -->
+  <div id="scroll-progress" class="fixed left-0 top-0 z-[60] h-[2.5px] w-full origin-left bg-lilac" style="transform:scaleX(0)"></div>
+
+  <!-- ===== Seiten-Rahmen (Aura-Signatur: Inhalt als abgerundete Fläche im Void) ===== -->
+  <div class="mx-auto min-h-screen max-w-[1600px] px-2 pt-2 sm:px-4 sm:pt-4">
+  <div class="overflow-hidden rounded-t-[1.75rem] bg-night sm:rounded-t-[2.5rem]">
 
   <!-- ===================== NAV ===================== -->
-  <header class="fixed inset-x-0 top-0 z-50">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6">
-      <div id="navbar" class="mt-3 flex items-center justify-between rounded-2xl border border-line bg-paper/70 px-4 py-3 backdrop-blur-md transition-all duration-300">
-        <a href="#top" class="flex items-center gap-2.5">
-          <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-paper">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/></svg>
-          </span>
-          <span class="font-display text-lg font-bold tracking-tight" data-cfg="company">TechSaar</span>
-        </a>
-        <nav class="hidden items-center gap-7 md:flex">
-          <a href="#leistungen" class="text-sm font-medium text-muted transition-colors hover:text-ink">Leistungen</a>
-          <a href="#arbeiten"   class="text-sm font-medium text-muted transition-colors hover:text-ink">Arbeiten</a>
-          <a href="#team"       class="text-sm font-medium text-muted transition-colors hover:text-ink">Über uns</a>
-          <a href="#prozess"    class="text-sm font-medium text-muted transition-colors hover:text-ink">Ablauf</a>
-        </nav>
-        <a href="#kontakt" class="shine inline-flex cursor-pointer items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-transform duration-200 hover:-translate-y-0.5">
-          Projekt anfragen
-        </a>
-      </div>
+  <header class="sticky top-0 z-50 border-b border-line bg-night/80 backdrop-blur-md" id="navbar">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+      <a href="#top" class="flex items-center gap-2.5">
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-night">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/></svg>
+        </span>
+        <span class="leading-none">
+          <span class="block font-brand text-lg font-bold tracking-tight" data-cfg="company">TechSaar</span>
+          <span class="mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.24em] text-muted">Web · Apps · KI</span>
+        </span>
+      </a>
+      <nav class="hidden items-center gap-8 md:flex">
+        <a href="#problem"    class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Warum</a>
+        <a href="#leistungen" class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Leistungen</a>
+        <a href="#arbeiten"   class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Arbeiten</a>
+        <a href="#team"       class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Über uns</a>
+      </nav>
+      <a href="#kontakt" class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-night transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend">
+        Anfragen
+        <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </header>
 
   <!-- ===================== HERO ===================== -->
-  <section id="top" class="relative isolate overflow-hidden px-4 pb-20 pt-36 sm:px-6 lg:pb-28 lg:pt-44">
-    <div class="spotlight" id="spotlight"></div>
-    <!-- blobs -->
-    <div class="blob float1 -left-10 top-20 h-72 w-72" style="background:radial-gradient(circle,#8B7CF6,transparent 70%)"></div>
-    <div class="blob float2 right-0 top-10 h-80 w-80" style="background:radial-gradient(circle,#FB8C8C,transparent 70%)"></div>
-    <div class="blob float1 left-1/3 top-72 h-72 w-72" style="background:radial-gradient(circle,#5FE3C0,transparent 70%)"></div>
+  <section id="top" class="relative overflow-hidden px-5 pb-16 pt-14 sm:px-8 lg:pb-24 lg:pt-20">
+    <div class="hero-fallback" aria-hidden="true"></div>
+    <canvas id="shader-canvas" aria-hidden="true"></canvas>
+    <div class="hero-vignette" aria-hidden="true"></div>
 
-    <div class="relative z-10 mx-auto max-w-4xl text-center">
-      <div class="reveal mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-4 py-1.5 text-sm font-medium text-ink shadow-sm backdrop-blur">
-        <svg viewBox="0 0 24 24" class="h-4 w-4 text-lilac" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Direkt aus dem Saarland — dein lokaler Ansprechpartner
-      </div>
+    <div class="relative z-10 mx-auto max-w-7xl">
+      <div>
+        <div>
+          <p class="mlabel anim-up text-muted">Websites, Apps &amp; KI aus dem Saarland</p>
 
-      <h1 class="reveal font-display text-5xl font-bold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
-        <span class="grad-anim">Auffallen</span>.<br>Lokal. Digital.
-      </h1>
+          <h1 class="display anim-up d-150 mt-8 text-[17vw] text-ink sm:text-[6.5rem] lg:text-[7.5rem]">
+            Auffallen<span class="text-lilac">.</span><br>
+            <span class="text-muted">Lokal. Digital.</span>
+          </h1>
 
-      <p class="reveal mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-        Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> — zwei Studenten, die moderne Websites &amp; Apps
-        mit cleverer Technik und KI bauen. Persönlich, lokal, ohne Agentur-Blabla.
-      </p>
+          <p class="anim-up d-300 mt-8 max-w-xl text-lg font-light leading-relaxed text-ink/80">
+            Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> — zwei Studenten, die moderne
+            Websites &amp; Apps mit cleverer Technik und KI bauen. Persönlich, lokal, ohne Agentur-Blabla.
+          </p>
 
-      <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a href="#kontakt" class="shine inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-base font-semibold text-paper transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto">
-          Kostenloses Erstgespräch
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a href="#arbeiten" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-line bg-white px-7 py-4 text-base font-semibold text-ink transition-colors hover:border-ink sm:w-auto">
-          Arbeiten ansehen
-        </a>
-      </div>
-
-      <!-- stat row -->
-      <div class="reveal mx-auto mt-14 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
-        <div class="rounded-2xl border border-line bg-white/60 px-4 py-5 backdrop-blur">
-          <p class="font-display text-3xl font-bold"><span data-count="100">0</span><span class="grad-text">%</span></p>
-          <p class="mt-1 text-xs font-medium text-muted">lokal aus dem Saarland</p>
-        </div>
-        <div class="rounded-2xl border border-line bg-white/60 px-4 py-5 backdrop-blur">
-          <p class="font-display text-3xl font-bold"><span data-count="24">0</span><span class="grad-text">h</span></p>
-          <p class="mt-1 text-xs font-medium text-muted">Antwort auf Anfragen</p>
-        </div>
-        <div class="rounded-2xl border border-line bg-white/60 px-4 py-5 backdrop-blur">
-          <p class="font-display text-3xl font-bold"><span data-count="2">0</span></p>
-          <p class="mt-1 text-xs font-medium text-muted">feste Ansprechpartner</p>
-        </div>
-        <div class="rounded-2xl border border-line bg-white/60 px-4 py-5 backdrop-blur">
-          <p class="font-display text-3xl font-bold grad-text">KI</p>
-          <p class="mt-1 text-xs font-medium text-muted">smarte Technik inklusive</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== MARQUEE ===================== -->
-  <div class="relative overflow-hidden border-y border-line bg-white py-4">
-    <div class="marquee text-ink/80">
-      <div class="flex shrink-0 items-center">
-        <!-- repeated block -->
-        <span class="mx-6 font-display text-lg font-semibold">Webdesign</span><span class="text-lilac">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">KI-Automatisierung</span><span class="text-coral">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Online-Buchung</span><span class="text-mint">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Lokal gefunden werden</span><span class="text-peach">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Persönlich</span><span class="text-sky">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">App-Entwicklung</span><span class="text-lilac">✦</span>
-      </div>
-      <div class="flex shrink-0 items-center" aria-hidden="true">
-        <span class="mx-6 font-display text-lg font-semibold">Webdesign</span><span class="text-lilac">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">KI-Automatisierung</span><span class="text-coral">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Online-Buchung</span><span class="text-mint">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Lokal gefunden werden</span><span class="text-peach">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">Persönlich</span><span class="text-sky">✦</span>
-        <span class="mx-6 font-display text-lg font-semibold">App-Entwicklung</span><span class="text-lilac">✦</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== LEISTUNGEN (BENTO) ===================== -->
-  <section id="leistungen" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-lilac">Was wir machen</p>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Alles für deinen digitalen Auftritt</h2>
-        <p class="mt-4 text-lg text-muted">Von der ersten Idee bis zur fertigen Seite, die Kunden bringt — wir kümmern uns um alles.</p>
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <!-- big card -->
-        <article class="reveal tilt group relative col-span-1 overflow-hidden rounded-3xl border border-line bg-white p-7 md:col-span-2 md:row-span-2">
-          <div class="absolute -right-10 -top-10 h-48 w-48 rounded-full opacity-40 blur-3xl transition-opacity group-hover:opacity-70" style="background:radial-gradient(circle,#8B7CF6,transparent 70%)"></div>
-          <div class="relative">
-            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-lilac/15 text-lilac">
-              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 9h18M7 21h10M9 17v4M15 17v4"/></svg>
-            </span>
-            <h3 class="mt-5 font-display text-2xl font-bold">Modernes Webdesign</h3>
-            <p class="mt-2 max-w-lg text-muted">Schnelle, schöne Websites, die auf jedem Gerät perfekt aussehen — mit Animationen, die im Kopf bleiben, aber niemanden erschlagen. Maßgeschneidert auf dein Geschäft, nicht von der Stange.</p>
-            <ul class="mt-5 flex flex-wrap gap-2">
-              <li class="rounded-full border border-line px-3 py-1 text-xs font-medium text-muted">Responsive</li>
-              <li class="rounded-full border border-line px-3 py-1 text-xs font-medium text-muted">Schnell &amp; sicher</li>
-              <li class="rounded-full border border-line px-3 py-1 text-xs font-medium text-muted">Individuelles Design</li>
-              <li class="rounded-full border border-line px-3 py-1 text-xs font-medium text-muted">Barrierearm</li>
-            </ul>
+          <div class="anim-up d-450 mt-10 flex flex-col gap-3 sm:flex-row">
+            <a href="#kontakt" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-lilac px-8 py-4 text-sm font-bold uppercase tracking-[0.14em] text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend hover:text-night">
+              Kostenloses Erstgespräch
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#arbeiten" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:border-lilac hover:text-lavend">
+              Arbeiten ansehen
+            </a>
           </div>
-        </article>
 
-        <article class="reveal tilt group relative overflow-hidden rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-coral/15 text-coral">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold">Online-Terminbuchung</h3>
-          <p class="mt-2 text-sm text-muted">Kunden buchen rund um die Uhr selbst — inkl. Zeitfenstern pro Mitarbeiter und Bestätigungsmail.</p>
-        </article>
-
-        <article class="reveal tilt group relative overflow-hidden rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-mint/20 text-emerald-600">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4M12 8a4 4 0 0 0-4 4v4a4 4 0 0 0 8 0v-4a4 4 0 0 0-4-4ZM5 12H3M21 12h-2M6.5 6.5 5 5M17.5 6.5 19 5"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold">KI &amp; Automatisierung</h3>
-          <p class="mt-2 text-sm text-muted">Chatbots, automatische Antworten, smarte Formulare — wir nehmen dir lästige Aufgaben ab.</p>
-        </article>
-
-        <article class="reveal tilt group relative overflow-hidden rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-sky/20 text-sky-600">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold">Lokal gefunden werden</h3>
-          <p class="mt-2 text-sm text-muted">Damit dich Kunden bei Google &amp; Maps finden — optimiert für deine Region im Saarland.</p>
-        </article>
-
-        <article class="reveal tilt group relative overflow-hidden rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-peach/25 text-orange-600">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold">Rundum-Betreuung</h3>
-          <p class="mt-2 text-sm text-muted">Hosting, Updates, Änderungen — ein fester Ansprechpartner, kein Callcenter.</p>
-        </article>
-
-        <article class="reveal tilt group relative overflow-hidden rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-butter/30 text-amber-600">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 18h.01"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold">App-Entwicklung</h3>
-          <p class="mt-2 text-sm text-muted">Eigene Apps fürs Handy — für Stammkunden, Treuepunkte und mehr Nähe zum Kunden.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== ANGEBOT: WEBSITE / APP / BEIDES ===================== -->
-  <section id="angebot" class="scroll-mt-24 px-4 pb-20 sm:px-6 lg:pb-28">
-    <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-coral">Website, App – oder beides?</p>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Was passt zu dir?</h2>
-        <p class="mt-4 text-lg text-muted">Jedes Geschäft ist anders. Du entscheidest, was du brauchst — wir bauen beides aus einer Hand und perfekt verzahnt.</p>
-      </div>
-
-      <div class="grid items-stretch gap-5 md:grid-cols-3">
-        <!-- Website -->
-        <article class="reveal tilt flex flex-col rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-lilac/15 text-lilac">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-2xl font-bold">Website</h3>
-          <p class="mt-2 text-sm text-muted">Dein Aushängeschild im Netz — damit Kunden dich finden und direkt buchen.</p>
-          <ul class="mt-5 space-y-2.5 text-sm text-ink">
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Bei Google &amp; Maps gefunden werden</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Infos, Preise &amp; Online-Termine</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Läuft auf jedem Gerät</li>
-          </ul>
-        </article>
-
-        <!-- Beides (highlight) -->
-        <article class="reveal tilt relative flex flex-col rounded-3xl border border-lilac/40 bg-gradient-to-br from-lilac/12 via-coral/10 to-peach/12 p-7 ring-1 ring-lilac/20">
-          <span class="absolute right-5 top-5 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-paper">Beliebt</span>
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white text-coral shadow-sm">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"><path d="M12 2l2.2 5.8L20 10l-5.8 2.2L12 18l-2.2-5.8L4 10l5.8-2.2z"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-2xl font-bold">Beides vereint</h3>
-          <p class="mt-2 text-sm text-muted">Das volle Paket: Website &amp; App, perfekt verzahnt — ein Look, ein System.</p>
-          <ul class="mt-5 space-y-2.5 text-sm text-ink">
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-coral" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alles aus einer Hand</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-coral" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Website &amp; App verbunden</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-coral" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Maximale Reichweite</li>
-          </ul>
-        </article>
-
-        <!-- App -->
-        <article class="reveal tilt flex flex-col rounded-3xl border border-line bg-white p-7">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-mint/20 text-emerald-600">
-            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 18h.01"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-2xl font-bold">App</h3>
-          <p class="mt-2 text-sm text-muted">Direkt aufs Handy deiner Stammkunden — für Extras, die wirklich binden.</p>
-          <ul class="mt-5 space-y-2.5 text-sm text-ink">
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Push-Nachrichten &amp; Angebote</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Treuepunkte &amp; Stammkunden</li>
-            <li class="flex items-center gap-2"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-mint" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Immer griffbereit als Icon</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== ARBEITEN ===================== -->
-  <section id="arbeiten" class="scroll-mt-24 bg-paper2 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-        <div class="max-w-2xl">
-          <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-coral">Eine kleine Vorschau</p>
-          <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Unsere Arbeiten</h2>
-          <p class="mt-4 text-lg text-muted">Ein erster Einblick — und schon bald mehr.</p>
-        </div>
-      </div>
-
-      <div class="grid gap-6 lg:grid-cols-2">
-        <!-- Barbershop preview -->
-        <article class="reveal tilt group overflow-hidden rounded-3xl border border-line bg-white shadow-sm">
-          <!-- browser chrome -->
-          <div class="flex items-center gap-2 border-b border-line bg-paper2 px-4 py-3">
-            <span class="h-3 w-3 rounded-full bg-coral"></span>
-            <span class="h-3 w-3 rounded-full bg-butter"></span>
-            <span class="h-3 w-3 rounded-full bg-mint"></span>
-            <span class="ml-3 rounded-md bg-white px-3 py-1 text-xs text-muted">saar-barber-demo.netlify.app</span>
-          </div>
-          <!-- mini mock of the dark barbershop site -->
-          <div class="relative aspect-[16/10] overflow-hidden bg-[#0C0A09]">
-            <div class="absolute inset-0 opacity-30" style="background:radial-gradient(circle at 70% 30%,#CA8A04,transparent 55%)"></div>
-            <div class="absolute inset-0 flex flex-col justify-center px-8">
-              <span class="font-display text-[10px] uppercase tracking-[0.3em] text-[#E7C66B]">Est. 2014 · Saarbrücken</span>
-              <span class="mt-2 text-3xl font-bold leading-none text-[#FAFAF9] sm:text-4xl">DEIN LOOK.</span>
-              <span class="bg-gradient-to-r from-[#E7C66B] to-[#CA8A04] bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl">PERFEKT GESCHNITTEN.</span>
-              <span class="mt-4 w-fit rounded-lg bg-gradient-to-r from-[#E7C66B] to-[#CA8A04] px-4 py-2 text-xs font-semibold text-[#0C0A09]">Termin buchen</span>
+          <!-- Stats: Haarlinien, keine Icons -->
+          <div class="anim-up d-600 mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6">
+            <div>
+              <p class="display text-3xl text-ink"><span data-count="100">0</span><span class="text-lilac">%</span></p>
+              <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">lokal Saarland</p>
             </div>
-            <!-- hover overlay -->
-            <a data-cfg-href="demoUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-ink/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-              <span class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-ink">
+            <div>
+              <p class="display text-3xl text-ink"><span data-count="24">0</span><span class="text-lilac">h</span></p>
+              <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">Antwortzeit</p>
+            </div>
+            <div>
+              <p class="display text-3xl text-ink"><span data-count="2">0</span></p>
+              <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">Ansprechpartner</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROBLEM ===================== -->
+  <section id="problem" class="scroll-mt-24 border-t border-line px-5 py-20 sm:px-8 lg:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div data-animate="fade-up" class="mb-14 max-w-3xl">
+        <p class="mlabel text-lilac">Das Problem</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Wer dich online nicht findet,<br><span class="text-muted">kauft woanders.</span></h2>
+        <p class="mt-6 max-w-2xl text-lg text-muted">Kunden suchen heute zuerst im Netz — auch im Saarland. Ohne modernen Auftritt entscheiden sie sich, bevor du überhaupt weißt, dass sie da waren.</p>
+      </div>
+
+      <div data-stagger class="grid gap-4 md:grid-cols-3">
+        <article data-animate="fade-up" class="card rounded-2xl border border-line bg-panel p-8">
+          <p class="display text-5xl text-lilac">Unsichtbar</p>
+          <h3 class="mt-5 text-sm font-bold uppercase tracking-[0.16em] text-ink">Keine Website, kein Kunde</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Wer bei Google und Maps nicht auftaucht, existiert für Neukunden schlicht nicht — egal wie gut der Betrieb ist.</p>
+        </article>
+        <article data-animate="fade-up" class="card rounded-2xl border border-line bg-panel p-8">
+          <p class="display text-5xl text-lilac">Veraltet</p>
+          <h3 class="mt-5 text-sm font-bold uppercase tracking-[0.16em] text-ink">Alte Seite schreckt ab</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Eine Seite von 2012 auf dem Handy: winzige Schrift, nichts klickbar. Der erste Eindruck entscheidet — und bleibt.</p>
+        </article>
+        <article data-animate="fade-up" class="card rounded-2xl border border-line bg-panel p-8">
+          <p class="display text-5xl text-lilac">Zeitfresser</p>
+          <h3 class="mt-5 text-sm font-bold uppercase tracking-[0.16em] text-ink">Telefon statt Feierabend</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Terminanfragen, immer gleiche Fragen, Zettelwirtschaft — Aufgaben, die eine gute Website nachts um drei erledigt.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LEISTUNGEN (dunkle Vergleichstabelle) ===================== -->
+  <section id="leistungen" class="scroll-mt-24 px-5 pb-20 sm:px-8 lg:pb-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="overflow-hidden rounded-[1.75rem] border border-line bg-[#0A0A0F] px-6 py-12 sm:px-10 lg:px-14 lg:py-16">
+        <div data-animate="fade-up" class="mb-10 max-w-3xl">
+          <p class="mlabel text-lavend">Die Lösung</p>
+          <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Alles aus einer Hand</h2>
+          <p class="mt-5 max-w-2xl text-muted">Was wir bauen — und was es dir konkret bringt. Ohne Fachchinesisch.</p>
+        </div>
+
+        <div data-animate="fade-up" class="overflow-x-auto">
+          <table class="w-full min-w-[640px] border-collapse text-left">
+            <thead>
+              <tr class="border-b border-line">
+                <th class="py-4 pr-6 text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Bereich</th>
+                <th class="py-4 pr-6 text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Leistung</th>
+                <th class="py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Was es dir bringt</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="trow border-b border-line align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">Auftritt</td>
+                <td class="py-5 pr-6 font-semibold text-ink">Modernes Webdesign</td>
+                <td class="py-5 leading-relaxed text-muted">Schnelle, individuelle Seiten, die auf jedem Gerät sitzen — maßgeschneidert auf dein Geschäft, nicht von der Stange.</td>
+              </tr>
+              <tr class="trow border-b border-line align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">Buchung</td>
+                <td class="py-5 pr-6 font-semibold text-ink">Online-Terminbuchung</td>
+                <td class="py-5 leading-relaxed text-muted">Kunden buchen rund um die Uhr selbst — mit Zeitfenstern pro Mitarbeiter und automatischer Bestätigung.</td>
+              </tr>
+              <tr class="trow border-b border-line align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">KI</td>
+                <td class="py-5 pr-6 font-semibold text-ink">KI &amp; Automatisierung</td>
+                <td class="py-5 leading-relaxed text-muted">Chatbots, automatische Antworten, smarte Formulare — lästige Routine läuft von selbst.</td>
+              </tr>
+              <tr class="trow border-b border-line align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">Sichtbarkeit</td>
+                <td class="py-5 pr-6 font-semibold text-ink">Lokal gefunden werden</td>
+                <td class="py-5 leading-relaxed text-muted">Bei Google &amp; Maps vorn dabei — optimiert für deine Region im Saarland.</td>
+              </tr>
+              <tr class="trow border-b border-line align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">Betreuung</td>
+                <td class="py-5 pr-6 font-semibold text-ink">Rundum-Service</td>
+                <td class="py-5 leading-relaxed text-muted">Hosting, Updates, Änderungen — ein fester Ansprechpartner statt Callcenter.</td>
+              </tr>
+              <tr class="trow align-top">
+                <td class="py-5 pr-6 text-[11px] font-bold uppercase tracking-[0.16em] text-lilac">Apps</td>
+                <td class="py-5 pr-6 font-semibold text-ink">App-Entwicklung</td>
+                <td class="py-5 leading-relaxed text-muted">Eigene Apps fürs Handy — Treuepunkte, Push-Angebote und mehr Nähe zu Stammkunden.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ARBEITEN (helle Kontrastsektion) ===================== -->
+  <section id="arbeiten" class="scroll-mt-24 bg-paper px-5 py-20 text-inkd sm:px-8 lg:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div data-animate="fade-up" class="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+        <div class="max-w-2xl">
+          <p class="mlabel text-lilac">Eine kleine Vorschau</p>
+          <h2 class="display mt-6 text-5xl text-inkd sm:text-6xl">Unsere Arbeiten</h2>
+          <p class="mt-5 text-lg text-mutedl">Ein erster Einblick — und schon bald mehr.</p>
+        </div>
+        <a href="#kontakt" class="hidden shrink-0 items-center gap-2 rounded-full border border-linel px-6 py-3 text-xs font-bold uppercase tracking-[0.16em] text-inkd transition-colors hover:border-lilac hover:text-lilac sm:inline-flex">
+          Dein Projekt anfragen
+          <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div data-stagger class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- FASSON -->
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-linel bg-white">
+          <div class="flex items-center justify-between border-b border-linel px-5 py-3">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">fasson-barbershop.de</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Buchung</span>
+          </div>
+          <div class="relative aspect-[16/10] overflow-hidden bg-[#0B0B0A]">
+            <div class="absolute inset-0 opacity-25" style="background:radial-gradient(circle at 75% 20%,#5c5c58,transparent 60%)"></div>
+            <div class="absolute inset-0 flex flex-col justify-center px-8">
+              <span class="w-fit border border-white/25 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.25em] text-white/80">Saarbrücken — Saarland</span>
+              <span class="mt-3 font-brand text-3xl font-bold uppercase leading-none text-[#F4F3F0] xl:text-4xl">Klare</span>
+              <span class="text-3xl italic leading-tight text-[#F4F3F0]/90 xl:text-4xl" style="font-family:Georgia,serif">Kante.</span>
+              <span class="mt-4 w-fit border border-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">Termin buchen</span>
+            </div>
+            <a data-cfg-href="demoUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+              <span class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-inkd">
                 Live ansehen
-                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
               </span>
             </a>
           </div>
-          <div class="flex items-center justify-between gap-4 p-6">
-            <div>
-              <h3 class="font-display text-xl font-bold">Saar Barber Co.</h3>
-              <p class="mt-1 text-sm text-muted">Barbershop · Website mit Online-Terminbuchung</p>
-            </div>
-            <div class="flex flex-wrap justify-end gap-2">
-              <span class="rounded-full bg-lilac/12 px-3 py-1 text-xs font-medium text-lilac">Webdesign</span>
-              <span class="rounded-full bg-coral/12 px-3 py-1 text-xs font-medium text-coral">Buchung</span>
-            </div>
+          <div class="p-6">
+            <h3 class="font-brand text-xl font-bold text-inkd">FASSON. Barbershop</h3>
+            <p class="mt-1 text-sm text-mutedl">Barbershop · Website mit Online-Terminbuchung</p>
           </div>
         </article>
 
-        <!-- Eisdiele preview -->
-        <article class="reveal tilt group overflow-hidden rounded-3xl border border-line bg-white shadow-sm">
-          <div class="flex items-center gap-2 border-b border-line bg-paper2 px-4 py-3">
-            <span class="h-3 w-3 rounded-full bg-coral"></span>
-            <span class="h-3 w-3 rounded-full bg-butter"></span>
-            <span class="h-3 w-3 rounded-full bg-mint"></span>
-            <span class="ml-3 rounded-md bg-white px-3 py-1 text-xs text-muted">gelateria-luna-demo.netlify.app</span>
+        <!-- Gelateria -->
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-linel bg-white">
+          <div class="flex items-center justify-between border-b border-linel px-5 py-3">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">gelateria-luna.de</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Eiskarte</span>
           </div>
           <div class="relative aspect-[16/10] overflow-hidden bg-[#FCF2EE]">
             <div class="absolute inset-0 opacity-60" style="background:radial-gradient(circle at 80% 20%,#DB618844,transparent 52%),radial-gradient(circle at 14% 86%,#9CC07844,transparent 52%)"></div>
             <div class="absolute inset-0 flex flex-col justify-center px-8">
               <span class="w-fit rounded-full bg-[#9CC07833] px-2.5 py-0.5 text-[10px] font-bold text-[#5E7A3C]">● Handgemacht in Saarbrücken</span>
-              <span class="mt-3 text-3xl font-bold leading-none text-[#3B2A23] sm:text-4xl" style="font-family:Georgia,serif">Handgemachtes Gelato,</span>
-              <span class="text-3xl font-bold italic leading-tight text-[#DB6188] sm:text-4xl" style="font-family:Georgia,serif">mit Liebe gerührt.</span>
+              <span class="mt-3 text-lg font-bold leading-none text-[#3B2A23] xl:text-xl" style="font-family:Georgia,serif">Handgemachtes Gelato,</span>
+              <span class="text-lg font-bold italic leading-tight text-[#DB6188] xl:text-xl" style="font-family:Georgia,serif">mit Liebe gerührt.</span>
               <span class="mt-4 w-fit rounded-full bg-[#DB6188] px-4 py-2 text-xs font-bold text-white">Sorten ansehen</span>
             </div>
-            <a data-cfg-href="gelateriaUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-ink/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-              <span class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-ink">
+            <a data-cfg-href="gelateriaUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+              <span class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-inkd">
                 Live ansehen
-                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
               </span>
             </a>
           </div>
-          <div class="flex items-center justify-between gap-4 p-6">
-            <div>
-              <h3 class="font-display text-xl font-bold">Gelateria Luna</h3>
-              <p class="mt-1 text-sm text-muted">Eisdiele · Website mit Sorten &amp; Standort</p>
+          <div class="p-6">
+            <h3 class="font-brand text-xl font-bold text-inkd">Gelateria Luna</h3>
+            <p class="mt-1 text-sm text-mutedl">Eisdiele · Website mit Sorten &amp; Standort</p>
+          </div>
+        </article>
+
+        <!-- Saar Döner -->
+        <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-linel bg-white">
+          <div class="flex items-center justify-between border-b border-linel px-5 py-3">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">saar-doener.de</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Speisekarte</span>
+          </div>
+          <div class="relative aspect-[16/10] overflow-hidden bg-[#14100c]">
+            <div class="absolute inset-0 opacity-80" style="background:radial-gradient(circle at 78% 20%,#E1492E5c,transparent 55%),radial-gradient(circle at 18% 92%,#E8A5453d,transparent 52%)"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6">
+              <div class="mb-2 flex flex-wrap gap-1.5">
+                <span class="rounded-full bg-black/45 px-2 py-0.5 text-[9px] font-semibold text-white ring-1 ring-white/15 backdrop-blur">100% Halal</span>
+                <span class="inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[9px] font-semibold text-white ring-1 ring-white/15 backdrop-blur"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Jetzt geöffnet</span>
+              </div>
+              <span class="font-light leading-[0.95] text-white text-2xl xl:text-3xl">Döner, wie er<br>sein soll.</span>
+              <span class="mt-3 w-fit rounded-full bg-white px-4 py-1.5 text-[11px] font-semibold text-[#14100c]">Speisekarte ansehen</span>
             </div>
-            <div class="flex flex-wrap justify-end gap-2">
-              <span class="rounded-full bg-lilac/12 px-3 py-1 text-xs font-medium text-lilac">Webdesign</span>
-              <span class="rounded-full px-3 py-1 text-xs font-medium" style="background:rgba(219,97,136,.12);color:#C44E72">Eiskarte</span>
-            </div>
+            <a data-cfg-href="doenerUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+              <span class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-inkd">
+                Live ansehen
+                <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </span>
+            </a>
+          </div>
+          <div class="p-6">
+            <h3 class="font-brand text-xl font-bold text-inkd">Saar Döner</h3>
+            <p class="mt-1 text-sm text-mutedl">Imbiss · Website mit Speisekarte &amp; Vorbestellung</p>
           </div>
         </article>
       </div>
-
-      <p class="reveal mt-8 text-center text-muted">…und bald <span class="font-semibold text-ink">dein Projekt?</span>
-        <a href="#kontakt" class="font-semibold text-ink underline underline-offset-4 transition-colors hover:text-lilac">Jetzt anfragen</a>
-      </p>
     </div>
   </section>
 
-  <!-- ===================== ÜBER UNS ===================== -->
-  <section id="team" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
-      <div class="reveal">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-mint">Wer wir sind</p>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Zwei Studenten,<br><span class="grad-text">ein Anspruch</span>.</h2>
-        <p class="mt-5 text-lg leading-relaxed text-muted">
-          Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> aus dem Saarland — der eine studiert Rechtspflege,
-          der andere Maschinenbau. So trifft bei uns Recht auf Technik: eine solide Basis für Projekte, die sauber laufen.
-          Statt anonymer Agentur bekommst du echte Menschen, die sich Zeit nehmen, deine Sprache sprechen und für die Region brennen.
+  <!-- ===================== ÜBER UNS + PROZESS ===================== -->
+  <section id="team" class="scroll-mt-24 border-t border-line px-5 py-20 sm:px-8 lg:py-28">
+    <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2">
+      <!-- Über uns -->
+      <div data-animate="fade-up">
+        <p class="mlabel text-lilac">Wer wir sind</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Zwei Studenten,<br><span class="text-muted">ein Anspruch.</span></h2>
+        <p class="mt-6 text-lg leading-relaxed text-muted">
+          Wir sind <span class="font-semibold text-ink" data-cfg="foundersLine">Jakob &amp; Leon</span> aus dem Saarland — der eine studiert
+          Rechtspflege, der andere Maschinenbau. Recht trifft Technik: eine solide Basis für Projekte, die sauber laufen.
+          Statt anonymer Agentur bekommst du echte Menschen, die deine Sprache sprechen.
         </p>
-        <ul class="mt-8 space-y-4">
-          <li class="flex items-start gap-3">
-            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-lilac/15 text-lilac"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="text-ink"><strong class="font-semibold">Lokal &amp; persönlich</strong> — wir treffen dich gern auf einen Kaffee statt Hotline.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-coral/15 text-coral"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="text-ink"><strong class="font-semibold">Jung &amp; am Puls</strong> — wir wissen, was heute modern aussieht und morgen funktioniert.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-mint/20 text-emerald-600"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="text-ink"><strong class="font-semibold">Faire Preise</strong> — als Studenten kennen wir den Wert von gutem Geld.</span>
-          </li>
-        </ul>
+        <div class="mt-10 space-y-0 border-t border-line">
+          <div class="flex items-baseline justify-between gap-6 border-b border-line py-5">
+            <span class="font-brand text-xl font-bold text-ink" data-cfg="founder1Name">Jakob</span>
+            <span class="text-right text-sm text-muted" data-cfg="founder1Role">Studiert Rechtspflege · Recht &amp; Struktur</span>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 border-b border-line py-5">
+            <span class="font-brand text-xl font-bold text-ink" data-cfg="founder2Name">Leon</span>
+            <span class="text-right text-sm text-muted" data-cfg="founder2Role">Studiert Maschinenbau · Technik &amp; Umsetzung</span>
+          </div>
+        </div>
+        <p class="mt-6 text-sm text-muted">Zuhause im Saarland — wir kennen die Region, die Betriebe und die Menschen hier. Und wir treffen dich gern auf einen Kaffee statt Hotline.</p>
       </div>
 
-      <!-- founder cards -->
-      <div class="reveal grid grid-cols-2 gap-4">
-        <div class="rounded-3xl border border-line bg-white p-6 text-center">
-          <div class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-lilac to-sky font-display text-3xl font-bold text-white" data-cfg="founder1Initial">J</div>
-          <h3 class="mt-4 font-display text-xl font-bold" data-cfg="founder1Name">Jakob</h3>
-          <p class="mt-1 text-sm text-muted" data-cfg="founder1Role">Entwicklung &amp; Technik</p>
-        </div>
-        <div class="rounded-3xl border border-line bg-white p-6 text-center">
-          <div class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-coral to-peach font-display text-3xl font-bold text-white" data-cfg="founder2Initial">L</div>
-          <h3 class="mt-4 font-display text-xl font-bold" data-cfg="founder2Name">Leon</h3>
-          <p class="mt-1 text-sm text-muted" data-cfg="founder2Role">Design &amp; Kundenkontakt</p>
-        </div>
-        <div class="col-span-2 rounded-3xl border border-line bg-ink p-6 text-paper">
-          <div class="flex items-center gap-3">
-            <svg viewBox="0 0 24 24" class="h-6 w-6 text-mint" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            <p class="font-display text-lg font-bold">Zuhause im Saarland</p>
+      <!-- Prozess als Editorial-Zeilen -->
+      <div data-animate="fade-up">
+        <p class="mlabel text-lilac">So läuft's ab</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">In 3 Schritten</h2>
+        <div class="mt-10 border-t border-line">
+          <div class="trow grid grid-cols-[auto_1fr] gap-6 border-b border-line py-7">
+            <span class="display text-4xl text-lilac">01</span>
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-[0.16em] text-ink">Kennenlernen</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">Kostenloses Gespräch — bei einem Kaffee oder per Video. Wir hören zu und beraten ehrlich.</p>
+            </div>
           </div>
-          <p class="mt-2 text-sm text-paper/70">Wir kennen die Region, die Betriebe und die Menschen hier — und bauen Websites, die genau dazu passen.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== PROZESS ===================== -->
-  <section id="prozess" class="scroll-mt-24 bg-paper2 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-14 max-w-2xl">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-peach">So läuft's ab</p>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">In 3 Schritten zur Website</h2>
-        <p class="mt-4 text-lg text-muted">Unkompliziert, transparent und ohne Fachchinesisch.</p>
-      </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        <div class="reveal relative rounded-3xl border border-line bg-white p-7">
-          <span class="font-display text-5xl font-bold text-lilac/30">01</span>
-          <h3 class="mt-2 font-display text-xl font-bold">Kennenlernen</h3>
-          <p class="mt-2 text-muted">Kostenloses Gespräch — bei einem Kaffee oder per Video. Wir hören zu und beraten ehrlich.</p>
-        </div>
-        <div class="reveal relative rounded-3xl border border-line bg-white p-7">
-          <span class="font-display text-5xl font-bold text-coral/30">02</span>
-          <h3 class="mt-2 font-display text-xl font-bold">Entwurf &amp; Umsetzung</h3>
-          <p class="mt-2 text-muted">Du bekommst einen Entwurf, wir bauen deine Seite — mit Feedback-Runden, bis es passt.</p>
-        </div>
-        <div class="reveal relative rounded-3xl border border-line bg-white p-7">
-          <span class="font-display text-5xl font-bold text-mint/40">03</span>
-          <h3 class="mt-2 font-display text-xl font-bold">Online &amp; Betreuung</h3>
-          <p class="mt-2 text-muted">Wir stellen alles online und kümmern uns weiter — du hast immer einen Ansprechpartner.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== STIMMEN ===================== -->
-  <section id="stimmen" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto max-w-7xl">
-      <div class="reveal mb-12 max-w-2xl">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-500">Stimmen</p>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">Was Kunden sagen werden</h2>
-        <p class="mt-4 text-lg text-muted">Wir starten gerade durch — hier landen bald echte Bewertungen unserer Kunden.</p>
-      </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        <figure class="reveal rounded-3xl border border-line bg-white p-7">
-          <div class="flex gap-1 text-butter">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+          <div class="trow grid grid-cols-[auto_1fr] gap-6 border-b border-line py-7">
+            <span class="display text-4xl text-lilac">02</span>
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-[0.16em] text-ink">Entwurf &amp; Umsetzung</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">Du bekommst einen Entwurf, wir bauen deine Seite — mit Feedback-Runden, bis es passt.</p>
+            </div>
           </div>
-          <blockquote class="mt-4 text-muted">„Platzhalter — hier kommt bald eine echte Kundenstimme hin. Ersetzt diesen Text nach dem ersten Projekt."</blockquote>
-          <figcaption class="mt-5 flex items-center gap-3">
-            <span class="grid h-10 w-10 place-items-center rounded-full bg-paper2 font-display font-bold text-muted">?</span>
-            <span><span class="block font-semibold text-ink">Dein:e Kund:in</span><span class="block text-sm text-muted">Betrieb · Ort</span></span>
-          </figcaption>
-        </figure>
-        <figure class="reveal rounded-3xl border border-line bg-white p-7">
-          <div class="flex gap-1 text-butter">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 17.3 6.16 20.5l1.12-6.5-4.73-4.6 6.54-.95L12 2.5l2.9 5.95 6.54.95-4.73 4.6 1.12 6.5z"/></svg>
+          <div class="trow grid grid-cols-[auto_1fr] gap-6 border-b border-line py-7">
+            <span class="display text-4xl text-lilac">03</span>
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-[0.16em] text-ink">Online &amp; Betreuung</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">Wir stellen alles online und kümmern uns weiter — du hast immer einen Ansprechpartner.</p>
+            </div>
           </div>
-          <blockquote class="mt-4 text-muted">„Platzhalter — sobald ein Kunde happy ist, ersetzt ihr diesen Text durch sein echtes Feedback."</blockquote>
-          <figcaption class="mt-5 flex items-center gap-3">
-            <span class="grid h-10 w-10 place-items-center rounded-full bg-paper2 font-display font-bold text-muted">?</span>
-            <span><span class="block font-semibold text-ink">Dein:e Kund:in</span><span class="block text-sm text-muted">Betrieb · Ort</span></span>
-          </figcaption>
-        </figure>
-        <figure class="reveal rounded-3xl border border-line bg-gradient-to-br from-lilac/10 via-coral/10 to-peach/10 p-7">
-          <p class="font-display text-2xl font-bold leading-tight">Werde unser<br>erstes Erfolgs-<span class="grad-text">projekt</span>.</p>
-          <p class="mt-3 text-muted">Sei einer der ersten Betriebe — und profitiere von extra viel Aufmerksamkeit und einem Top-Preis.</p>
-          <a href="#kontakt" class="mt-5 inline-flex cursor-pointer items-center gap-2 font-semibold text-ink underline-offset-4 hover:underline">Jetzt anfragen
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </figure>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ===================== KONTAKT / CTA ===================== -->
-  <section id="kontakt" class="scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28">
-    <div class="mx-auto max-w-5xl">
-      <div class="relative overflow-hidden rounded-[2rem] border border-line bg-ink px-6 py-14 text-paper sm:px-12">
-        <div class="blob float1 -left-10 -top-10 h-72 w-72" style="background:radial-gradient(circle,#8B7CF6,transparent 70%)"></div>
-        <div class="blob float2 -bottom-16 right-0 h-80 w-80" style="background:radial-gradient(circle,#FB8C8C,transparent 70%)"></div>
+  <section id="kontakt" class="scroll-mt-24 px-5 pb-20 sm:px-8 lg:pb-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="relative overflow-hidden rounded-[1.75rem] border border-line bg-[#0A0A0F] px-6 py-14 sm:px-12 lg:py-20">
+        <div class="pointer-events-none absolute -right-24 -top-32 h-96 w-96 rounded-full opacity-25 blur-3xl" style="background:radial-gradient(circle,#8B7CF6,transparent 70%)"></div>
 
-        <div class="relative grid gap-10 lg:grid-cols-2">
+        <div class="relative grid gap-12 lg:grid-cols-2">
           <div>
-            <h2 class="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">Lass uns dein<br>Projekt starten.</h2>
-            <p class="mt-4 max-w-md text-paper/70">Erzähl uns kurz von deiner Idee — wir melden uns innerhalb von 24 Stunden. Das Erstgespräch ist kostenlos und unverbindlich.</p>
-            <div class="mt-8 space-y-3">
-              <a href="#" data-cfg-href="mailHref" class="flex items-center gap-3 text-paper/90 transition-colors hover:text-mint">
-                <span class="grid h-10 w-10 place-items-center rounded-xl bg-white/10"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-                <span data-cfg="email">hallo@techsaar.de</span>
+            <p class="mlabel text-lavend">Kontakt</p>
+            <h2 class="display mt-6 text-5xl text-ink sm:text-7xl">Lass uns dein<br>Projekt starten<span class="text-lilac">.</span></h2>
+            <p class="mt-6 max-w-md text-muted">Erzähl uns kurz von deiner Idee — wir melden uns innerhalb von 24 Stunden. Das Erstgespräch ist kostenlos und unverbindlich.</p>
+            <div class="mt-10 space-y-0 border-t border-line">
+              <a href="#" data-cfg-href="mailHref" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">E-Mail</span>
+                <span class="font-semibold" data-cfg="email">tech-saar@outlook.de</span>
               </a>
-              <a href="#" data-cfg-href="waHref" class="flex items-center gap-3 text-paper/90 transition-colors hover:text-mint">
-                <span class="grid h-10 w-10 place-items-center rounded-xl bg-white/10"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.9.9-2.7-.2-.3A8 8 0 1 1 12 20z"/></svg></span>
-                <span>WhatsApp schreiben</span>
+              <a href="#" data-cfg-href="waHref" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">WhatsApp</span>
+                <span class="font-semibold">Direkt schreiben</span>
               </a>
             </div>
           </div>
 
-          <form id="contact-form" class="space-y-4" novalidate>
+          <form id="contact-form" class="space-y-4 lg:pt-16" novalidate>
             <div>
-              <label for="c-name" class="mb-1.5 block text-sm text-paper/70">Name</label>
-              <input id="c-name" type="text" required class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-paper outline-none transition-colors placeholder:text-paper/40 focus:border-mint" placeholder="Dein Name" />
+              <label for="c-name" class="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.18em] text-muted">Name</label>
+              <input id="c-name" type="text" required class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-ink outline-none transition-colors placeholder:text-white/35 focus:border-lilac" placeholder="Dein Name" />
             </div>
             <div>
-              <label for="c-contact" class="mb-1.5 block text-sm text-paper/70">E-Mail oder Telefon</label>
-              <input id="c-contact" type="text" required class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-paper outline-none transition-colors placeholder:text-paper/40 focus:border-mint" placeholder="So erreichen wir dich" />
+              <label for="c-contact" class="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.18em] text-muted">E-Mail oder Telefon</label>
+              <input id="c-contact" type="text" required class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-ink outline-none transition-colors placeholder:text-white/35 focus:border-lilac" placeholder="So erreichen wir dich" />
             </div>
             <div>
-              <label for="c-msg" class="mb-1.5 block text-sm text-paper/70">Deine Idee</label>
-              <textarea id="c-msg" rows="3" class="w-full resize-none rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-paper outline-none transition-colors placeholder:text-paper/40 focus:border-mint" placeholder="Worum geht's? (Branche, Wünsche, …)"></textarea>
+              <label for="c-msg" class="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.18em] text-muted">Deine Idee</label>
+              <textarea id="c-msg" rows="3" class="w-full resize-none rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-ink outline-none transition-colors placeholder:text-white/35 focus:border-lilac" placeholder="Worum geht's? (Branche, Wünsche, …)"></textarea>
             </div>
-            <button type="submit" class="shine w-full cursor-pointer rounded-xl bg-gradient-to-r from-lilac via-coral to-peach px-6 py-4 font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5">Anfrage senden</button>
-            <p id="form-status" class="hidden rounded-xl bg-mint/15 px-4 py-3 text-sm text-mint"></p>
+            <button type="submit" class="w-full cursor-pointer rounded-full bg-lilac px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend hover:text-night">Anfrage senden</button>
+            <p class="text-xs leading-relaxed text-muted">Mit dem Absenden stimmst du der Verarbeitung deiner Angaben zur Bearbeitung deiner Anfrage gemäß unserer <a href="datenschutz.html" class="text-lavend underline underline-offset-2 hover:text-ink">Datenschutzerklärung</a> zu.</p>
+            <p id="form-status" class="hidden rounded-xl bg-lilac/15 px-4 py-3 text-sm text-lavend"></p>
           </form>
         </div>
       </div>
@@ -597,43 +443,60 @@
   </section>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="border-t border-line px-4 py-12 sm:px-6">
+  <footer class="border-t border-line px-5 py-12 sm:px-8">
     <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
       <div class="flex items-center gap-2.5">
-        <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-paper">
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-night">
           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/></svg>
         </span>
         <span>
-          <span class="block font-display font-bold leading-none" data-cfg="company">TechSaar</span>
+          <span class="block font-brand font-bold leading-none" data-cfg="company">TechSaar</span>
           <span class="block text-xs text-muted">Webdesign &amp; KI · Saarland</span>
         </span>
       </div>
-      <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted">
+      <nav class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
         <a href="#leistungen" class="transition-colors hover:text-ink">Leistungen</a>
         <a href="#arbeiten" class="transition-colors hover:text-ink">Arbeiten</a>
         <a href="#team" class="transition-colors hover:text-ink">Über uns</a>
         <a href="#kontakt" class="transition-colors hover:text-ink">Kontakt</a>
-        <a href="#" class="transition-colors hover:text-ink">Impressum</a>
+        <a href="impressum.html" class="transition-colors hover:text-ink">Impressum</a>
+        <a href="datenschutz.html" class="transition-colors hover:text-ink">Datenschutz</a>
       </nav>
       <p class="text-sm text-muted">© <span id="year"></span> <span data-cfg="company">TechSaar</span></p>
     </div>
   </footer>
 
-  <!-- ===================== SCRIPT ===================== -->
+  </div><!-- /Rahmen -->
+  <!-- unterer Void-Abschluss mit Rundung -->
+  <div class="h-2 sm:h-4"></div>
+  </div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script>
+    document.querySelectorAll('[data-stagger]').forEach(function(grid){
+      Array.prototype.forEach.call(grid.children, function(child, i){
+        if (child.hasAttribute('data-animate')) child.setAttribute('data-animate-delay', (i * 0.08).toFixed(2));
+      });
+    });
+  </script>
+  <script src="vendor/motion.js"></script>
+  <script src="animations.js"></script>
+
   <script>
   /* ============ HIER ANPASSEN ============ */
   const CONFIG = {
     company:    "TechSaar",
     city:       "Saarland",
-    email:      "hallo@techsaar.de",
+    email:      "tech-saar@outlook.de",
     phoneTel:   "+490000000000",          // für spätere Nutzung
     whatsapp:   "490000000000",           // nur Ziffern, mit Ländercode
-    demoUrl:      "saar-barber-demo/",       // Link zur Barbershop-Demo
-    gelateriaUrl: "gelateria-demo/",         // Link zur Eisdiele-Demo
+    demoUrl:      "saar-barber-demo/",
+    gelateriaUrl: "gelateria-demo/",
+    doenerUrl:    "doener-demo/",
 
     founder1Name: "Jakob",
     founder1Role: "Studiert Rechtspflege · Recht & Struktur",
-    founder2Name: "Leon",                   // <-- DEIN Name hier eintragen
+    founder2Name: "Leon",
     founder2Role: "Studiert Maschinenbau · Technik & Umsetzung",
   };
   /* ======================================== */
@@ -642,8 +505,6 @@
     const C = CONFIG;
     const d = Object.assign({}, C, {
       foundersLine:   `${C.founder1Name} & ${C.founder2Name}`,
-      founder1Initial:(C.founder1Name||"?").trim().charAt(0).toUpperCase(),
-      founder2Initial:(C.founder2Name||"?").trim().charAt(0).toUpperCase(),
       mailHref:       "mailto:"+C.email,
       waHref:         "https://wa.me/"+C.whatsapp,
     });
@@ -652,28 +513,153 @@
     document.title = `${C.company} — Websites, Apps & KI aus dem ${C.city}`;
   }
 
-  /* ---- cursor spotlight ---- */
-  const hero = document.getElementById('top');
-  const spot = document.getElementById('spotlight');
-  if(hero && spot && matchMedia('(hover:hover)').matches){
-    hero.addEventListener('pointermove', e=>{
-      const r = hero.getBoundingClientRect();
-      spot.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
-      spot.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
-    });
-  }
+  /* ============================================================
+     SHADER-KACHEL — WebGL2, Vanilla-JS-Port der 21st.dev-Komponente
+     „Animated Shader Hero" (ravikatiyar). Fragment-Shader von
+     Matthias Hurrle (@atzedent), lila Grading für TechSaar.
+     Rendert in der Hero-Kachel; Fallback: statischer Verlauf.
+     ============================================================ */
+  (function(){
+    const canvas = document.getElementById('shader-canvas');
+    const hero = document.getElementById('top');
+    if (!canvas || !hero) return;
+    // Bewusst KEIN prefers-reduced-motion-Abbruch: unter Windows ist
+    // „Animationseffekte aus" oft Systemstandard und würde den Shader
+    // fälschlich deaktivieren. Der Shader ist Kern des Designs.
 
-  /* ---- subtle tilt on cards ---- */
-  if(matchMedia('(hover:hover)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
-    document.querySelectorAll('.tilt').forEach(card=>{
-      card.addEventListener('pointermove', e=>{
-        const r=card.getBoundingClientRect();
-        const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
-        card.style.transform=`perspective(900px) rotateX(${(-py*4).toFixed(2)}deg) rotateY(${(px*4).toFixed(2)}deg) translateY(-4px)`;
-      });
-      card.addEventListener('pointerleave', ()=>{ card.style.transform=''; });
-    });
+    const gl = canvas.getContext('webgl2', { antialias: false });
+    if (!gl) { canvas.remove(); return; }
+
+    const VERT = `#version 300 es
+precision highp float;
+in vec4 position;
+void main(){gl_Position=position;}`;
+
+    const FRAG = `#version 300 es
+/* Basis-Shader von Matthias Hurrle (@atzedent), lila Farb-Grading für TechSaar */
+precision highp float;
+out vec4 O;
+uniform vec2 resolution;
+uniform float time;
+#define FC gl_FragCoord.xy
+#define T time
+#define R resolution
+#define MN min(R.x,R.y)
+float rnd(vec2 p) {
+  p=fract(p*vec2(12.9898,78.233));
+  p+=dot(p,p+34.56);
+  return fract(p.x*p.y);
+}
+float noise(in vec2 p) {
+  vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
+  float a=rnd(i), b=rnd(i+vec2(1,0)), c=rnd(i+vec2(0,1)), d=rnd(i+1.);
+  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+}
+float fbm(vec2 p) {
+  float t=.0, a=1.; mat2 m=mat2(1.,-.5,.2,1.2);
+  for (int i=0; i<5; i++) { t+=a*noise(p); p*=2.*m; a*=.5; }
+  return t;
+}
+float clouds(vec2 p) {
+  float d=1., t=.0;
+  for (float i=.0; i<3.; i++) {
+    float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
+    t=mix(t,d,a);
+    d=a;
+    p*=2./(i+1.);
   }
+  return t;
+}
+void main(void) {
+  vec2 uv=(FC-.5*R)/MN, st=uv*vec2(2,1);
+  vec3 col=vec3(0);
+  float bg=clouds(vec2(st.x+T*.5,-st.y));
+  uv*=1.-.3*(sin(T*.2)*.5+.5);
+  for (float i=1.; i<12.; i++) {
+    uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
+    vec2 p=uv;
+    float d=length(p);
+    col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);
+    float b=noise(i+p+bg*1.731);
+    col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
+    /* Wolken-Tönung: Lila statt Amber (TechSaar #8B7CF6) */
+    col=mix(col,vec3(bg*.13,bg*.11,bg*.26),d);
+  }
+  /* finales Grading Richtung Lila/Lavendel */
+  col*=vec3(.85,.78,1.25);
+  col+=vec3(.010,.006,.024);
+  O=vec4(col,1);
+}`;
+
+    function compile(type, src) {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+        console.error('Shader-Fehler:', gl.getShaderInfoLog(sh));
+        gl.deleteShader(sh);
+        return null;
+      }
+      return sh;
+    }
+
+    const vs = compile(gl.VERTEX_SHADER, VERT);
+    const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+    if (!vs || !fs) { canvas.remove(); return; }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.error('Programm-Fehler:', gl.getProgramInfoLog(prog));
+      canvas.remove(); return;
+    }
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,-1,-1,1,1,1,-1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes  = gl.getUniformLocation(prog, 'resolution');
+    const uTime = gl.getUniformLocation(prog, 'time');
+
+    // Render-Auflösung bewusst deckeln: der Fragment-Shader ist teuer,
+    // vollflächig würde er schwache GPUs (Windows-Onboard) ausbremsen.
+    // Wir rendern in eine begrenzte Backing-Store-Größe und lassen den
+    // Browser hochskalieren — optisch identisch (weicher Verlauf), aber
+    // stabil bei ~60fps. CAP = längste Kante in Render-Pixeln.
+    const CAP = 1100;
+    function resize() {
+      const w = hero.clientWidth, h = hero.clientHeight;
+      const scale = Math.min(1, CAP / Math.max(w, h));
+      canvas.width  = Math.max(1, Math.round(w * scale));
+      canvas.height = Math.max(1, Math.round(h * scale));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    resize();
+    new ResizeObserver(resize).observe(hero);
+
+    // nur rendern, solange das Hero sichtbar ist
+    let visible = true, rafId = 0;
+    new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      if (visible && !rafId) rafId = requestAnimationFrame(loop);
+    }).observe(hero);
+
+    function loop(now) {
+      rafId = 0;
+      if (!visible) return;
+      gl.useProgram(prog);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, now * 1e-3);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      rafId = requestAnimationFrame(loop);
+    }
+    rafId = requestAnimationFrame(loop);
+  })();
 
   /* ---- count up ---- */
   function countUp(el){
@@ -685,27 +671,15 @@
     }
     requestAnimationFrame(step);
   }
-
-  /* ---- reveal + counters ---- */
   const io=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
-        e.target.classList.add('in');
-        e.target.querySelectorAll?.('[data-count]').forEach(c=>{ if(!c.dataset.done){c.dataset.done=1; countUp(c);} });
+        if(!e.target.dataset.done){ e.target.dataset.done=1; countUp(e.target); }
         io.unobserve(e.target);
       }
     });
-  },{threshold:0.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  /* ---- navbar shadow on scroll ---- */
-  const navbar=document.getElementById('navbar');
-  addEventListener('scroll',()=>{
-    const s=scrollY>20;
-    navbar.classList.toggle('shadow-lg', s);
-    navbar.classList.toggle('bg-paper/90', s);
-    navbar.classList.toggle('bg-paper/70', !s);
-  },{passive:true});
+  },{threshold:0.6});
+  document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
 
   /* ---- contact form (demo) ---- */
   const form=document.getElementById('contact-form');
@@ -716,6 +690,16 @@
     status.classList.remove('hidden');
     form.querySelector('button').textContent='Gesendet ✓';
   });
+
+  /* ---- Scroll-Progress via Motion One ---- */
+  (function(){
+    const M = window.Motion;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bar = document.getElementById('scroll-progress');
+    if (M && M.scroll && bar && !reduced) {
+      M.scroll(M.animate(bar, { scaleX: [0, 1] }, { ease: 'linear' }));
+    } else if (bar) { bar.style.display = 'none'; }
+  })();
 
   /* ---- init ---- */
   document.getElementById('year').textContent=new Date().getFullYear();
