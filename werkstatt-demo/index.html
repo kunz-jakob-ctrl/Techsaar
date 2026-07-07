@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KFZ-Werkstatt Scholl — Meisterbetrieb in Saarbrücken</title>
+<meta name="description" content="KFZ-Werkstatt Scholl Saarbrücken: Inspektion, Bremsen, Reifen, TÜV. Termin online buchen oder einfach anrufen — unser Telefonassistent nimmt 24/7 ab." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      beton:  '#F4F4F1',
+      beton2: '#E9E9E4',
+      carbon: '#16191B',
+      stahl:  '#3E4A50',
+      grau:   '#6E7A80',
+      orange: '#F26722',
+      orangeD:'#D55110',
+      lineC:  '#DCDCD5',
+    },
+    fontFamily: {
+      display: ['"Saira Condensed"','system-ui','sans-serif'],
+      sans: ['Inter','system-ui','sans-serif'],
+    },
+  }}
+}
+</script>
+
+<style>
+  html,body{background:#F4F4F1}
+  ::selection{background:#F26722;color:#fff}
+
+  /* Warnstreifen-Motiv */
+  .hazard{background:repeating-linear-gradient(-45deg,#16191B 0 12px,#F26722 12px 24px)}
+  .hazard-thin{height:6px;background:repeating-linear-gradient(-45deg,#16191B 0 8px,#F26722 8px 16px)}
+
+  /* schräg angeschnittene Bildkante */
+  .clip-img{clip-path:polygon(6% 0,100% 0,100% 100%,0 100%)}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* pulsierender Punkt */
+  .pulse-dot{position:relative}
+  .pulse-dot::after{content:"";position:absolute;inset:-4px;border-radius:99px;border:2px solid currentColor;opacity:0;animation:pp 1.8s ease-out infinite}
+  @keyframes pp{0%{transform:scale(.5);opacity:.8}80%,100%{transform:scale(1.6);opacity:0}}
+
+  /* Buchungs-Wizard Übergänge */
+  .step{display:none}
+  .step.active{display:block;animation:stepIn .35s ease}
+  @keyframes stepIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+
+  .slot:disabled{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition-duration:.001ms!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+
+<body class="font-sans text-carbon antialiased">
+
+<!-- ===================== TOP-UTILITY-BAR ===================== -->
+<div class="bg-carbon px-4 py-2 text-xs text-white/80">
+  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
+    <span class="flex items-center gap-2">
+      <span id="open-dot" class="pulse-dot inline-block h-2 w-2 rounded-full bg-emerald-400 text-emerald-400"></span>
+      <span id="open-text">Geöffnet · heute bis 17:00 Uhr</span>
+    </span>
+    <span class="hidden sm:block"><span data-cfg="address">Musterstraße 12, 66111 Saarbrücken</span> · Mo–Fr 7:30–17:00 · Sa 8:00–12:00</span>
+  </div>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<header class="sticky top-0 z-40 border-b border-lineC bg-beton/95 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+    <a href="#top" class="flex items-center gap-3">
+      <span class="grid h-11 w-11 place-items-center bg-carbon text-orange">
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>
+      </span>
+      <span class="leading-none">
+        <span class="block font-display text-2xl font-800 uppercase tracking-wide" style="font-weight:800" data-cfg="name">Werkstatt Scholl</span>
+        <span class="block text-[11px] font-semibold uppercase tracking-[0.2em] text-grau">KFZ-Meisterbetrieb</span>
+      </span>
+    </a>
+    <nav class="hidden items-center gap-7 lg:flex">
+      <a href="#leistungen" class="text-sm font-semibold text-stahl hover:text-carbon">Leistungen</a>
+      <a href="#erreichbar" class="text-sm font-semibold text-stahl hover:text-carbon">Immer erreichbar</a>
+      <a href="#termin"     class="text-sm font-semibold text-stahl hover:text-carbon">Termin</a>
+      <a href="#kontakt"    class="text-sm font-semibold text-stahl hover:text-carbon">Kontakt</a>
+    </nav>
+    <a data-cfg-href="telHref" href="tel:+4968100000000" class="flex items-center gap-2 bg-orange px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orangeD">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="hidden sm:inline" data-cfg="phoneDisplay">0681 000 000 00</span><span class="sm:hidden">Anrufen</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="top" class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_.95fr] lg:py-20">
+  <div>
+    <p class="mb-4 inline-block bg-carbon px-3 py-1 font-display text-sm font-bold uppercase tracking-[0.2em] text-white">Meisterbetrieb · seit 1998</p>
+    <h1 class="font-display text-6xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl" style="font-weight:800">
+      Bremsen? TÜV?<br /><span class="bg-orange px-2 text-white">Wir machen das.</span>
+    </h1>
+    <p class="mt-6 max-w-lg text-lg leading-relaxed text-stahl">
+      Alle Marken, ehrliche Preise, feste Termine. Und das Beste:
+      <strong class="text-carbon">Bei uns geht immer jemand ans Telefon</strong> — auch nachts,
+      auch samstags, auch wenn alle Hebebühnen voll sind.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a data-cfg-href="telHref" href="tel:+4968100000000" class="flex items-center gap-2 bg-carbon px-6 py-4 font-display text-lg font-bold uppercase tracking-wide text-white transition hover:bg-stahl">
+        📞 Jetzt anrufen <span class="rounded bg-orange px-2 py-0.5 text-xs normal-case tracking-normal">24/7 besetzt</span>
+      </a>
+      <a href="#termin" class="border-2 border-carbon px-6 py-4 font-display text-lg font-bold uppercase tracking-wide text-carbon transition hover:bg-carbon hover:text-white">
+        Termin online buchen
+      </a>
+    </div>
+    <p class="mt-4 text-sm text-grau">Außerhalb der Öffnungszeiten nimmt unser digitaler Assistent Ihren Anruf entgegen und bucht direkt den Termin.</p>
+  </div>
+  <div class="relative">
+    <div class="hazard absolute -left-3 top-6 h-24 w-3"></div>
+    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1400&auto=format&fit=crop" alt="Mechaniker arbeitet an einem Fahrzeug auf der Hebebühne" class="clip-img h-[420px] w-full object-cover" loading="eager" onerror="this.style.background='#3E4A50';this.removeAttribute('src')" />
+    <div class="absolute bottom-4 left-8 bg-white px-5 py-3 shadow-xl">
+      <p class="font-display text-3xl font-bold text-carbon" style="font-weight:800">4,9 ★</p>
+      <p class="text-xs font-semibold text-grau">213 Google-Bewertungen</p>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-thin"></div>
+
+<!-- ===================== LEISTUNGEN ===================== -->
+<section id="leistungen" class="scroll-mt-28 bg-white px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal mb-10 flex items-end justify-between gap-4">
+      <div>
+        <p class="font-display text-sm font-bold uppercase tracking-[0.25em] text-orange">Was wir können</p>
+        <h2 class="font-display text-5xl font-bold uppercase tracking-tight" style="font-weight:800">Leistungen</h2>
+      </div>
+      <a href="#termin" class="hidden text-sm font-bold text-orange underline underline-offset-4 sm:block">Direkt Termin sichern →</a>
+    </div>
+    <div class="grid gap-px overflow-hidden border border-lineC bg-lineC sm:grid-cols-2 lg:grid-cols-3">
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">🔍</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">Inspektion &amp; Wartung</h3>
+        <p class="mt-1 text-sm text-grau">Nach Herstellervorgabe, mit Garantie-Erhalt. Alle Marken.</p>
+      </article>
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">🛞</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">Reifen &amp; Einlagerung</h3>
+        <p class="mt-1 text-sm text-grau">Wechsel ab 39,90 €, Wuchten, Einlagerung im Reifenhotel.</p>
+      </article>
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">🛑</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">Bremsen</h3>
+        <p class="mt-1 text-sm text-grau">Beläge, Scheiben, Leitungen — sicher ist sicher.</p>
+      </article>
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">❄️</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">Klimaservice</h3>
+        <p class="mt-1 text-sm text-grau">Prüfung, Desinfektion, Neubefüllung — ab 89 €.</p>
+      </article>
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">📋</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">HU/AU-Vorbereitung</h3>
+        <p class="mt-1 text-sm text-grau">TÜV ohne Stress — wir bereiten vor und fahren vor.</p>
+      </article>
+      <article class="reveal group bg-white p-7 transition hover:bg-beton">
+        <span class="text-3xl">🚗</span>
+        <h3 class="mt-3 font-display text-2xl font-bold uppercase">Ersatzwagen</h3>
+        <p class="mt-1 text-sm text-grau">Kostenlos bei Reparaturen ab einem Tag — einfach mitbuchen.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== IMMER ERREICHBAR (Telefon-KI) ===================== -->
+<section id="erreichbar" class="scroll-mt-28 bg-carbon px-4 py-16 text-white sm:px-6 lg:py-24">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal">
+        <p class="font-display text-sm font-bold uppercase tracking-[0.25em] text-orange">Kein Besetztzeichen. Nie.</p>
+        <h2 class="mt-2 font-display text-5xl font-bold uppercase leading-tight tracking-tight" style="font-weight:800">Rufen Sie an —<br />wir gehen <span class="text-orange">immer</span> ran.</h2>
+        <p class="mt-5 max-w-lg text-lg leading-relaxed text-white/70">
+          Wenn das Team an der Hebebühne steht oder Feierabend ist, nimmt unser
+          <strong class="text-white">digitaler Telefonassistent</strong> ab: Er vereinbart Ihren Termin,
+          reserviert den Ersatzwagen und beantwortet Fragen — rund um die Uhr.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm">
+          <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 shrink-0 bg-orange"></span> Sagt Ihnen ehrlich, dass er ein digitaler Assistent ist — und verbindet auf Wunsch mit einem Menschen</li>
+          <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 shrink-0 bg-orange"></span> Termin ist sofort fest eingetragen — Sie bekommen eine SMS-Bestätigung</li>
+          <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 shrink-0 bg-orange"></span> Bei Pannen und dringenden Fällen wird sofort durchgestellt</li>
+          <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 shrink-0 bg-orange"></span> Datenschutz: Verarbeitung auf Servern in Deutschland, keine Gesprächsaufzeichnung</li>
+        </ul>
+        <a data-cfg-href="telHref" href="tel:+4968100000000" class="mt-8 inline-flex items-center gap-2 bg-orange px-6 py-4 font-display text-lg font-bold uppercase tracking-wide text-white transition hover:bg-orangeD">
+          📞 <span data-cfg="phoneDisplay">0681 000 000 00</span>
+        </a>
+      </div>
+      <!-- Ablauf-Karten -->
+      <ol class="reveal space-y-3">
+        <li class="flex gap-4 border border-white/15 bg-white/5 p-5">
+          <span class="font-display text-3xl font-bold text-orange" style="font-weight:800">1</span>
+          <div><h3 class="font-display text-xl font-bold uppercase">Sie rufen an</h3>
+          <p class="mt-1 text-sm text-white/60">Zu jeder Uhrzeit. Kein Warten, keine Schleife — nach zwei Mal Klingeln wird abgenommen.</p></div>
+        </li>
+        <li class="flex gap-4 border border-white/15 bg-white/5 p-5">
+          <span class="font-display text-3xl font-bold text-orange" style="font-weight:800">2</span>
+          <div><h3 class="font-display text-xl font-bold uppercase">Assistent klärt Ihr Anliegen</h3>
+          <p class="mt-1 text-sm text-white/60">Fahrzeug, Problem, Wunschtermin — dauert keine zwei Minuten. Dringendes wird sofort durchgestellt.</p></div>
+        </li>
+        <li class="flex gap-4 border border-white/15 bg-white/5 p-5">
+          <span class="font-display text-3xl font-bold text-orange" style="font-weight:800">3</span>
+          <div><h3 class="font-display text-xl font-bold uppercase">Termin steht</h3>
+          <p class="mt-1 text-sm text-white/60">Eintrag im Werkstattkalender + SMS an Sie. Das Team sieht morgens alles auf einen Blick.</p></div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TERMINBUCHUNG ===================== -->
+<section id="termin" class="scroll-mt-28 px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto max-w-4xl">
+    <div class="reveal mb-8 text-center">
+      <p class="font-display text-sm font-bold uppercase tracking-[0.25em] text-orange">Online oder telefonisch — gleicher Kalender</p>
+      <h2 class="font-display text-5xl font-bold uppercase tracking-tight" style="font-weight:800">Termin buchen</h2>
+      <p class="mx-auto mt-3 max-w-xl text-grau">Lieber sprechen statt tippen? <a data-cfg-href="telHref" href="tel:+4968100000000" class="font-bold text-orange underline underline-offset-4">Rufen Sie an</a> — der Assistent bucht dieselben Zeitfenster mit Ihnen am Telefon.</p>
+    </div>
+
+    <div class="reveal border border-lineC bg-white shadow-sm">
+      <!-- Fortschritt -->
+      <div class="flex border-b border-lineC text-center font-display text-sm font-bold uppercase tracking-wide">
+        <div data-tab="1" class="wtab flex-1 border-b-4 border-orange bg-beton py-3">1 · Leistung</div>
+        <div data-tab="2" class="wtab flex-1 border-b-4 border-transparent py-3 text-grau">2 · Termin</div>
+        <div data-tab="3" class="wtab flex-1 border-b-4 border-transparent py-3 text-grau">3 · Fahrzeug</div>
+        <div data-tab="4" class="wtab flex-1 border-b-4 border-transparent py-3 text-grau">4 · Fertig</div>
+      </div>
+
+      <!-- Schritt 1: Leistung -->
+      <div class="step active p-6 sm:p-8" data-step="1">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="Inspektion / Wartung" data-dauer="1 Tag">🔍 <strong>Inspektion / Wartung</strong><span class="block text-xs text-grau">ca. 1 Tag · Ersatzwagen möglich</span></button>
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="Reifenwechsel" data-dauer="45 Min">🛞 <strong>Reifenwechsel</strong><span class="block text-xs text-grau">ca. 45 Min · ab 39,90 €</span></button>
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="Bremsen-Check" data-dauer="halber Tag">🛑 <strong>Bremsen-Check</strong><span class="block text-xs text-grau">ca. ½ Tag · Ersatzwagen möglich</span></button>
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="Klimaservice" data-dauer="2 Std">❄️ <strong>Klimaservice</strong><span class="block text-xs text-grau">ca. 2 Std · ab 89 €</span></button>
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="HU/AU (TÜV)" data-dauer="1 Tag">📋 <strong>HU/AU (TÜV)</strong><span class="block text-xs text-grau">ca. 1 Tag · inkl. Vorführung</span></button>
+          <button class="svc border-2 border-lineC p-4 text-left transition hover:border-orange" data-svc="Sonstiges / Diagnose" data-dauer="nach Absprache">🔧 <strong>Sonstiges / Diagnose</strong><span class="block text-xs text-grau">Beschreiben Sie es kurz in Schritt 3</span></button>
+        </div>
+      </div>
+
+      <!-- Schritt 2: Termin -->
+      <div class="step p-6 sm:p-8" data-step="2">
+        <p class="mb-3 text-sm font-semibold text-stahl">Tag wählen:</p>
+        <div id="day-row" class="flex gap-2 overflow-x-auto pb-2"><!-- JS --></div>
+        <p class="mb-3 mt-6 text-sm font-semibold text-stahl">Uhrzeit (Annahme):</p>
+        <div id="slot-grid" class="grid grid-cols-3 gap-2 sm:grid-cols-4"><!-- JS --></div>
+        <div class="mt-6 flex justify-between">
+          <button class="wback px-5 py-3 text-sm font-bold text-grau hover:text-carbon">← Zurück</button>
+        </div>
+      </div>
+
+      <!-- Schritt 3: Fahrzeug + Kontakt -->
+      <div class="step p-6 sm:p-8" data-step="3">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block"><span class="text-xs font-bold uppercase tracking-wide text-grau">Marke &amp; Modell *</span>
+            <input id="f-auto" required placeholder="z. B. VW Golf 7" class="mt-1 w-full border-2 border-lineC px-3 py-2.5 outline-none focus:border-orange" /></label>
+          <label class="block"><span class="text-xs font-bold uppercase tracking-wide text-grau">Kennzeichen *</span>
+            <input id="f-kz" required placeholder="SB-XX 123" class="mt-1 w-full border-2 border-lineC px-3 py-2.5 outline-none focus:border-orange" /></label>
+          <label class="block"><span class="text-xs font-bold uppercase tracking-wide text-grau">Ihr Name *</span>
+            <input id="f-name" required placeholder="Vor- und Nachname" class="mt-1 w-full border-2 border-lineC px-3 py-2.5 outline-none focus:border-orange" /></label>
+          <label class="block"><span class="text-xs font-bold uppercase tracking-wide text-grau">Handynummer (für SMS-Bestätigung) *</span>
+            <input id="f-tel" required placeholder="0151 …" class="mt-1 w-full border-2 border-lineC px-3 py-2.5 outline-none focus:border-orange" /></label>
+          <label class="block sm:col-span-2"><span class="text-xs font-bold uppercase tracking-wide text-grau">Anmerkung (optional)</span>
+            <textarea id="f-notiz" rows="2" placeholder="z. B. Quietscht vorne rechts beim Bremsen" class="mt-1 w-full border-2 border-lineC px-3 py-2.5 outline-none focus:border-orange"></textarea></label>
+          <label class="flex items-center gap-3 sm:col-span-2">
+            <input id="f-ersatz" type="checkbox" class="h-5 w-5 accent-orange" />
+            <span class="text-sm font-semibold">Ersatzwagen benötigt (kostenlos ab 1 Tag Reparaturdauer)</span>
+          </label>
+        </div>
+        <p id="f-error" class="mt-3 hidden text-sm font-semibold text-red-600">Bitte alle Pflichtfelder (*) ausfüllen.</p>
+        <div class="mt-6 flex justify-between">
+          <button class="wback px-5 py-3 text-sm font-bold text-grau hover:text-carbon">← Zurück</button>
+          <button id="f-submit" class="bg-orange px-7 py-3.5 font-display text-lg font-bold uppercase tracking-wide text-white transition hover:bg-orangeD">Termin anfragen</button>
+        </div>
+      </div>
+
+      <!-- Schritt 4: Bestätigung -->
+      <div class="step p-6 text-center sm:p-10" data-step="4">
+        <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-3xl">✓</span>
+        <h3 class="mt-4 font-display text-3xl font-bold uppercase" style="font-weight:800">Termin eingetragen!</h3>
+        <div id="summary" class="mx-auto mt-5 max-w-md space-y-1.5 border border-lineC bg-beton p-5 text-left text-sm"><!-- JS --></div>
+        <p class="mt-4 text-sm text-grau">Sie erhalten in wenigen Minuten eine SMS-Bestätigung.<br />Bitte bringen Sie den Fahrzeugschein mit.</p>
+        <p class="mx-auto mt-5 max-w-md border-2 border-dashed border-orange/50 bg-orange/5 p-3 text-xs font-semibold text-orangeD">DEMO-HINWEIS: Dies ist eine Musterseite von TechSaar — es wurde kein echter Termin gebucht.</p>
+        <button id="restart" class="mt-6 text-sm font-bold text-orange underline underline-offset-4">↺ Neue Buchung testen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-thin"></div>
+
+<!-- ===================== KONTAKT ===================== -->
+<section id="kontakt" class="scroll-mt-28 bg-white px-4 py-16 sm:px-6 lg:py-24">
+  <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-3">
+    <div class="reveal">
+      <h2 class="font-display text-4xl font-bold uppercase" style="font-weight:800">Kontakt</h2>
+      <p class="mt-4 text-stahl"><strong data-cfg="name">Werkstatt Scholl</strong><br /><span data-cfg="address">Musterstraße 12, 66111 Saarbrücken</span></p>
+      <p class="mt-3"><a data-cfg-href="telHref" href="tel:+4968100000000" class="font-bold text-orange" data-cfg="phoneDisplay">0681 000 000 00</a><br />
+      <a data-cfg-href="mailHref" href="mailto:info@werkstatt-scholl.de" class="text-stahl underline underline-offset-2" data-cfg="email">info@werkstatt-scholl.de</a></p>
+    </div>
+    <div class="reveal">
+      <h3 class="font-display text-xl font-bold uppercase">Öffnungszeiten</h3>
+      <table class="mt-3 w-full text-sm text-stahl">
+        <tr class="border-b border-lineC"><td class="py-2">Montag – Freitag</td><td class="py-2 text-right font-semibold">7:30 – 17:00</td></tr>
+        <tr class="border-b border-lineC"><td class="py-2">Samstag</td><td class="py-2 text-right font-semibold">8:00 – 12:00</td></tr>
+        <tr><td class="py-2">Sonntag</td><td class="py-2 text-right font-semibold">geschlossen</td></tr>
+      </table>
+      <p class="mt-3 flex items-center gap-2 text-sm font-semibold text-emerald-700"><span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span> Telefonisch: rund um die Uhr erreichbar</p>
+    </div>
+    <div class="reveal">
+      <h3 class="font-display text-xl font-bold uppercase">Anfahrt</h3>
+      <iframe title="Karte" class="mt-3 h-48 w-full border border-lineC grayscale" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Saarbr%C3%BCcken%20Musterstra%C3%9Fe&z=14&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-carbon px-4 py-10 text-sm text-white/60 sm:px-6">
+  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
+    <p>© <span id="year"></span> <span data-cfg="name">Werkstatt Scholl</span> · Musterseite von TechSaar</p>
+    <nav class="flex gap-5">
+      <a href="#" class="hover:text-white">Impressum</a>
+      <a href="#datenschutz-hinweis" class="hover:text-white">Datenschutz</a>
+    </nav>
+  </div>
+  <p id="datenschutz-hinweis" class="mx-auto mt-6 max-w-7xl border-t border-white/10 pt-5 text-xs leading-relaxed text-white/40">
+    Hinweis zur Telefonannahme: Außerhalb unserer Öffnungszeiten sowie bei besetzter Leitung nimmt ein
+    KI-gestützter Telefonassistent Ihren Anruf entgegen. Der Assistent stellt sich zu Gesprächsbeginn
+    als solcher vor. Es erfolgt keine Aufzeichnung des Gesprächs; zur Terminvereinbarung werden Name,
+    Rufnummer, Fahrzeug- und Termindaten verarbeitet (Server in Deutschland, Art. 6 Abs. 1 lit. b DSGVO).
+    Details in unserer Datenschutzerklärung. — Auf einer echten Kundenseite stehen hier verlinkte,
+    vollständige Rechtstexte (Impressum nach § 5 DDG, Datenschutzerklärung).
+  </p>
+</footer>
+
+<script>
+/* ================= KONFIGURATION =================
+   HIER die fonio-Testnummer eintragen, sobald sie da ist! */
+const CONFIG = {
+  name: "Werkstatt Scholl",
+  phoneDisplay: "0681 000 000 00",        // <-- fonio-Nummer (lesbar)
+  phoneTel:     "+4968100000000",          // <-- fonio-Nummer (nur Ziffern, mit +49)
+  email:   "info@werkstatt-scholl.de",
+  address: "Musterstraße 12, 66111 Saarbrücken",
+  // Öffnungszeiten für den Live-Status: [öffnet, schließt] je Wochentag (0=So)
+  hours: { 1:[7.5,17], 2:[7.5,17], 3:[7.5,17], 4:[7.5,17], 5:[7.5,17], 6:[8,12], 0:null },
+};
+/* ================================================ */
+
+const $ = id => document.getElementById(id);
+
+/* ---- Config anwenden ---- */
+(function(){
+  const d = Object.assign({}, CONFIG, {
+    telHref: "tel:"+CONFIG.phoneTel,
+    mailHref: "mailto:"+CONFIG.email,
+  });
+  document.querySelectorAll("[data-cfg]").forEach(el=>{ const k=el.getAttribute("data-cfg"); if(d[k]!=null) el.textContent=d[k]; });
+  document.querySelectorAll("[data-cfg-href]").forEach(el=>{ const k=el.getAttribute("data-cfg-href"); if(d[k]!=null) el.setAttribute("href",d[k]); });
+})();
+
+/* ---- Live-Öffnungsstatus ---- */
+(function(){
+  const now = new Date();
+  const h = CONFIG.hours[now.getDay()];
+  const t = now.getHours() + now.getMinutes()/60;
+  const dot = $("open-dot"), txt = $("open-text");
+  const fmt = x => { const hh=Math.floor(x), mm=Math.round((x-hh)*60); return hh+":"+String(mm).padStart(2,"0"); };
+  if(h && t>=h[0] && t<h[1]){
+    txt.textContent = "Geöffnet · heute bis "+fmt(h[1])+" Uhr — Telefon: 24/7";
+  } else {
+    dot.classList.remove("bg-emerald-400","text-emerald-400");
+    dot.classList.add("bg-orange","text-orange");
+    txt.textContent = "Werkstatt geschlossen — Telefonassistent nimmt trotzdem ab!";
+  }
+})();
+
+/* ---- Reveal ---- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+$("year").textContent = new Date().getFullYear();
+
+/* ================= Buchungs-Wizard ================= */
+const booking = { svc:null, dauer:null, day:null, slot:null };
+
+function goStep(n){
+  document.querySelectorAll(".step").forEach(s=>s.classList.toggle("active", s.dataset.step==String(n)));
+  document.querySelectorAll(".wtab").forEach(t=>{
+    const on = t.dataset.tab==String(n);
+    t.classList.toggle("border-orange", on);
+    t.classList.toggle("bg-beton", on);
+    t.classList.toggle("border-transparent", !on);
+    t.classList.toggle("text-grau", !on);
+  });
+  document.getElementById("termin").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* Schritt 1: Leistung */
+document.querySelectorAll(".svc").forEach(b=>b.addEventListener("click", ()=>{
+  booking.svc = b.dataset.svc; booking.dauer = b.dataset.dauer;
+  renderDays(); goStep(2);
+}));
+
+/* Schritt 2: Tage + Slots */
+const WD = ["So","Mo","Di","Mi","Do","Fr","Sa"];
+const MO = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+
+function nextDays(n=8){
+  const out=[]; const d=new Date(); d.setDate(d.getDate()+1);
+  while(out.length<n){ if(d.getDay()!==0){ out.push(new Date(d)); } d.setDate(d.getDate()+1); }
+  return out;
+}
+function slotsFor(date){
+  const sa = date.getDay()===6;
+  const base = sa ? ["08:00","09:00","10:00","11:00"]
+                  : ["07:30","08:30","09:30","10:30","13:00","14:00","15:00","16:00"];
+  // deterministisch ein paar Slots als "belegt" markieren, wirkt echt
+  const seed = date.getDate()+date.getMonth();
+  return base.map((s,i)=>({ time:s, free: (seed+i*3)%4 !== 0 }));
+}
+function renderDays(){
+  const row=$("day-row"); row.innerHTML="";
+  nextDays().forEach((d,i)=>{
+    const btn=document.createElement("button");
+    btn.className="dbtn shrink-0 border-2 border-lineC px-4 py-2.5 text-center transition hover:border-orange";
+    btn.innerHTML=`<span class="block font-display text-lg font-bold">${WD[d.getDay()]}</span><span class="block text-xs text-grau">${d.getDate()}. ${MO[d.getMonth()]}</span>`;
+    btn.onclick=()=>{ booking.day=d;
+      document.querySelectorAll(".dbtn").forEach(x=>x.classList.remove("border-orange","bg-orange/5"));
+      btn.classList.add("border-orange","bg-orange/5");
+      renderSlots(d);
+    };
+    row.appendChild(btn);
+    if(i===0) btn.click();
+  });
+}
+function renderSlots(d){
+  const grid=$("slot-grid"); grid.innerHTML="";
+  slotsFor(d).forEach(s=>{
+    const b=document.createElement("button");
+    b.className="slot border-2 border-lineC py-2.5 font-semibold transition hover:border-orange";
+    b.textContent=s.time;
+    b.disabled=!s.free;
+    b.onclick=()=>{ booking.slot=s.time; goStep(3); };
+    grid.appendChild(b);
+  });
+}
+
+/* Zurück-Buttons */
+document.querySelectorAll(".wback").forEach(b=>b.addEventListener("click", e=>{
+  const cur = +e.target.closest(".step").dataset.step;
+  goStep(cur-1);
+}));
+
+/* Schritt 3 → 4 */
+$("f-submit").addEventListener("click", ()=>{
+  const need=["f-auto","f-kz","f-name","f-tel"];
+  const ok = need.every(id=>$(id).value.trim().length>1);
+  $("f-error").classList.toggle("hidden", ok);
+  if(!ok) return;
+  const d=booking.day;
+  $("summary").innerHTML = `
+    <p><strong>Leistung:</strong> ${booking.svc} <span class="text-grau">(${booking.dauer})</span></p>
+    <p><strong>Termin:</strong> ${WD[d.getDay()]}, ${d.getDate()}. ${MO[d.getMonth()]} · ${booking.slot} Uhr</p>
+    <p><strong>Fahrzeug:</strong> ${$("f-auto").value} · ${$("f-kz").value}</p>
+    <p><strong>Name:</strong> ${$("f-name").value}</p>
+    <p><strong>SMS an:</strong> ${$("f-tel").value}</p>
+    ${$("f-ersatz").checked ? "<p><strong>Ersatzwagen:</strong> reserviert ✓</p>" : ""}
+    ${$("f-notiz").value.trim() ? "<p><strong>Anmerkung:</strong> "+$("f-notiz").value+"</p>" : ""}`;
+  goStep(4);
+});
+
+/* Neustart */
+$("restart").addEventListener("click", ()=>{
+  ["f-auto","f-kz","f-name","f-tel","f-notiz"].forEach(id=>$(id).value="");
+  $("f-ersatz").checked=false;
+  Object.assign(booking,{svc:null,dauer:null,day:null,slot:null});
+  goStep(1);
+});
+</script>
+</body>
+</html>
