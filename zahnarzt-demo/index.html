@@ -320,7 +320,10 @@ tailwind.config = {
     </div>
     <div class="reveal">
       <h3 class="font-display text-lg font-bold text-petrol">Anfahrt</h3>
-      <iframe title="Karte" class="mt-3 h-48 w-full rounded-2xl border border-linegy" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Saarbr%C3%BCcken%20Zahnarzt&z=14&output=embed"></iframe>
+      <iframe id="map" title="Karte zur Praxis" class="mt-3 h-48 w-full rounded-2xl border border-linegy" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <p class="mt-2 text-xs" data-cfg="address">Musterallee 8, 66111 Saarbrücken</p>
+      <a id="route-link" href="#" target="_blank" rel="noopener" class="mt-3 inline-block rounded-full border-2 border-cyan1 px-5 py-2 text-sm font-semibold text-cyan2 transition hover:bg-icefog">🧭 Route planen</a>
+      <p class="mt-3 text-xs text-inkgy/60">🅿️ Parkplätze vor der Praxis · ♿ barrierefrei · 🚋 Haltestelle „Musterallee" (2 Min)</p>
     </div>
   </div>
 </section>
@@ -352,6 +355,8 @@ const CONFIG = {
   phoneTel:     "+4968100000000",        // <-- Nummer für tel:-Links
   email:   "praxis@dr-sommer.de",
   address: "Musterallee 8, 66111 Saarbrücken",
+  // Karten-Suche für Anfahrt: beim echten Kunden exakte Adresse (oder "Praxisname, Stadt")
+  mapsQuery: "Musterallee 8, 66111 Saarbrücken",
   reviews: "217",
   // Sprechzeiten je Wochentag (0=So): Liste von [von, bis] in Stunden
   hours: { 1:[[8,12],[14,18]], 2:[[8,12],[14,18]], 3:[[8,12],[14,18]], 4:[[8,12],[14,18]], 5:[[8,13]], 6:null, 0:null },
@@ -368,6 +373,12 @@ const $ = id => document.getElementById(id);
   });
   document.querySelectorAll("[data-cfg]").forEach(el=>{ const k=el.getAttribute("data-cfg"); if(d[k]!=null) el.textContent=d[k]; });
   document.querySelectorAll("[data-cfg-href]").forEach(el=>{ const k=el.getAttribute("data-cfg-href"); if(d[k]!=null) el.setAttribute("href",d[k]); });
+  // Anfahrt: Karte + Routen-Link aus CONFIG.mapsQuery
+  const q = encodeURIComponent(CONFIG.mapsQuery);
+  const map = document.getElementById("map");
+  if(map) map.src = "https://maps.google.com/maps?q="+q+"&z=15&output=embed";
+  const route = document.getElementById("route-link");
+  if(route) route.href = "https://www.google.com/maps/dir/?api=1&destination="+q;
 })();
 
 /* ---- Live-Öffnungsstatus ---- */
