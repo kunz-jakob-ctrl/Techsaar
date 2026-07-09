@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechSaar — Moderne Websites, Apps & KI aus dem Saarland</title>
   <meta name="description" content="TechSaar – zwei Studenten aus dem Saarland bauen moderne Websites & Apps mit cleverer Technik & KI. Lokal, persönlich, ohne Agentur-Blabla." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- Lokal gehostet (DSGVO): kein Tailwind-CDN, keine Google-Fonts-Requests mehr.
        styles.css = lokaler Tailwind-Build (tailwind.config.js), fonts.css = lokale Schriften. -->
@@ -77,7 +78,7 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
       <a href="#top" class="flex items-center gap-2.5">
         <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-night">
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/></svg>
+          <svg viewBox="0 0 48 48" class="h-5 w-5" fill="none"><path d="M14 42 V21 a10 10 0 0 1 20 0 V42" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><circle cx="24" cy="21" r="3.6" fill="#8B7CF6"/></svg>
         </span>
         <span class="leading-none">
           <span class="block font-brand text-lg font-bold tracking-tight" data-cfg="company">TechSaar</span>
@@ -417,6 +418,10 @@
           </div>
 
           <form id="contact-form" class="space-y-4 lg:pt-16" novalidate>
+            <input type="hidden" name="access_key" value="c80f3e6f-5b75-4011-b2f2-08837cf24039" />
+            <input type="hidden" name="subject" value="Neue Anfrage über tech-saar.de" />
+            <input type="hidden" name="from_name" value="TechSaar Website" />
+            <input type="text" name="botcheck" id="c-website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
             <div>
               <label for="c-name" class="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.18em] text-muted">Name</label>
               <input id="c-name" type="text" required class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-ink outline-none transition-colors placeholder:text-white/35 focus:border-lilac" placeholder="Dein Name" />
@@ -443,7 +448,7 @@
     <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
       <div class="flex items-center gap-2.5">
         <span class="grid h-9 w-9 place-items-center rounded-xl bg-ink text-night">
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/></svg>
+          <svg viewBox="0 0 48 48" class="h-5 w-5" fill="none"><path d="M14 42 V21 a10 10 0 0 1 20 0 V42" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><circle cx="24" cy="21" r="3.6" fill="#8B7CF6"/></svg>
         </span>
         <span>
           <span class="block font-brand font-bold leading-none" data-cfg="company">TechSaar</span>
@@ -672,14 +677,31 @@ void main(void) {
   },{threshold:0.6});
   document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
 
-  /* ---- contact form (demo) ---- */
+  /* ---- contact form -> web3forms ---- */
   const form=document.getElementById('contact-form');
-  form?.addEventListener('submit', e=>{
+  form?.addEventListener('submit', async e=>{
     e.preventDefault();
     const status=document.getElementById('form-status');
-    status.textContent='Danke! Das ist eine Demo — verbinde das Formular später mit deiner E-Mail (z. B. Formspree oder Netlify Forms).';
-    status.classList.remove('hidden');
-    form.querySelector('button').textContent='Gesendet ✓';
+    const btn=form.querySelector('button[type="submit"]');
+    const show=msg=>{ status.textContent=msg; status.classList.remove('hidden'); };
+    const name=document.getElementById('c-name').value.trim();
+    const contact=document.getElementById('c-contact').value.trim();
+    if(!name || !contact){ show('Bitte gib deinen Namen und eine Kontaktmöglichkeit an.'); return; }
+    const label=btn.textContent; btn.disabled=true; btn.textContent='Senden …';
+    try{
+      const formData=new FormData();
+      formData.append('access_key','c80f3e6f-5b75-4011-b2f2-08837cf24039');
+      formData.append('subject','Neue Anfrage über tech-saar.de');
+      formData.append('from_name','TechSaar Website');
+      formData.append('name',name);
+      formData.append('contact',contact);
+      formData.append('message',document.getElementById('c-msg').value.trim());
+      formData.append('botcheck',document.getElementById('c-website')?.value||'');
+      const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:formData});
+      const data=await res.json().catch(()=>({success:false}));
+      if(data.success){ show('Danke! Deine Anfrage ist raus — wir melden uns innerhalb von 24 Stunden.'); form.reset(); btn.textContent='Gesendet ✓'; }
+      else throw new Error(data.message||'fail');
+    }catch(err){ show('Ups, das hat nicht geklappt. Bitte später erneut versuchen oder direkt an info@tech-saar.de schreiben.'); btn.disabled=false; btn.textContent=label; }
   });
 
   /* ---- Scroll-Progress via Motion One ---- */
