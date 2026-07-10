@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechSaar Reservierung | Produkt-Demo</title>
+  <meta name="description" content="Produkt-Demo: Online-Reservierungssystem für lokale Betriebe. Buchungsstrecke für Kunden plus Betreiber-Dashboard, gebaut von TechSaar." />
+
+  <!-- Alles lokal ausgeliefert (DSGVO: keine externen Requests).
+       Tailwind-Build: npx tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
+       Nach HTML-Änderungen neu bauen, sonst fehlen neue Utility-Klassen. -->
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root { color-scheme: light; }
+    body { background:#F2EBE1; color:#211D18; }
+    ::selection { background:#2B49C4; color:#F2EBE1; }
+
+    ::-webkit-scrollbar { width:10px; }
+    ::-webkit-scrollbar-track { background:#E3D7C6; }
+    ::-webkit-scrollbar-thumb { background:#211D18; }
+
+    /* Tages-Chips: horizontal wischbar, aber ohne sichtbare Scrollbar */
+    #day-chips { scrollbar-width:none; }
+    #day-chips::-webkit-scrollbar { display:none; }
+
+    :focus-visible { outline:2px solid #2B49C4; outline-offset:2px; border-radius:2px; }
+
+    /* Scroll-Reveal */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity:1; transform:none; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:none; } }
+    .anim-up { animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) both; }
+
+    /* Handgezogener Kreis um ein Wort (Hero), zeichnet sich beim Laden */
+    .circled { position:relative; white-space:nowrap; }
+    .circled svg { position:absolute; inset:-0.28em -0.34em; width:calc(100% + .68em); height:calc(100% + .56em); overflow:visible; pointer-events:none; }
+    .circled path { fill:none; stroke:#2B49C4; stroke-width:5; stroke-linecap:round;
+      stroke-dasharray:620; stroke-dashoffset:620; animation:draw 1.1s .7s cubic-bezier(.5,0,.3,1) forwards; }
+    @keyframes draw { to { stroke-dashoffset:0; } }
+
+    /* Glasur-Punkte: Kapazität als Farb-Tupfer */
+    .dot { width:9px; height:9px; border-radius:9999px; display:inline-block; }
+    .dot-free { box-shadow:inset 0 0 0 1.5px #D3C4AF; }
+    .dark-dots .dot-free { box-shadow:inset 0 0 0 1.5px #3A3229; }
+    /* „Gebrannt" = glänzend: kleines Glanzlicht oben links */
+    .dot-glossy { background-image:radial-gradient(circle at 30% 28%, rgba(255,255,255,.75) 0 18%, transparent 40%); }
+
+    .btn-primary { background:#211D18; color:#F2EBE1; transition:background .2s; }
+    .btn-primary:hover { background:#2B49C4; }
+    .btn-primary:disabled { background:#D3C4AF; color:#8A7E6E; cursor:not-allowed; }
+
+    /* Kalender */
+    .cal-day { aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; border-radius:9999px; font-variant-numeric:tabular-nums; transition:background .15s, color .15s; }
+    .cal-day:not(:disabled):hover { background:#E3D7C6; }
+    .cal-day.sel { background:#2B49C4 !important; color:#F2EBE1; }
+    .cal-day:disabled { color:#C4B6A0; cursor:not-allowed; }
+    .cal-day.today:not(.sel)::after { content:''; position:absolute; margin-top:1.55em; width:4px; height:4px; border-radius:99px; background:#C05B33; }
+
+    .slot-card { transition:border-color .15s, background .15s; }
+    .slot-card:not(:disabled):hover { border-color:#211D18; }
+    .slot-card.sel { border-color:#2B49C4; background:#fff; box-shadow:0 0 0 1px #2B49C4; }
+    .slot-card:disabled { opacity:.45; cursor:not-allowed; }
+
+    input[type=text], input[type=password], input[type=email] { background:#fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity:1; transform:none; transition:none; }
+      .anim-up { animation:none; }
+      .circled path { animation:none; stroke-dashoffset:0; }
+      html { scroll-behavior:auto; }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+
+  <!-- ============ HEADER ============ -->
+  <header id="site-header" class="sticky top-0 z-40 border-b border-line bg-bisque/90 backdrop-blur">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
+      <a href="#buchen" class="flex items-baseline gap-2 font-display text-xl font-800 tracking-tight" style="font-weight:800">
+        TECHSAAR<span class="text-kobalt">.</span>
+        <span class="font-mono text-[11px] font-normal tracking-normal text-muted">Reservierung</span>
+      </a>
+      <div class="flex items-center gap-3 sm:gap-5">
+        <span class="hidden rounded-full border border-line px-3 py-1 font-mono text-[11px] text-muted sm:inline-block">Produkt-Demo · Beispieldaten</span>
+        <a href="#buchen" data-nav="kunde" class="text-sm font-medium hover:text-kobalt">Reservieren</a>
+        <a href="#dashboard" data-nav="betreiber" class="font-mono text-[12px] text-muted underline decoration-line underline-offset-4 hover:text-kobalt">Betreiber-Ansicht</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ VIEW: KUNDE ============ -->
+  <main id="view-kunde">
+
+    <!-- Hero -->
+    <section class="mx-auto max-w-5xl px-5 pt-14 pb-10 sm:pt-20">
+      <p class="anim-up font-mono text-[12px] uppercase tracking-[0.18em] text-muted">Reservierungssystem für lokale Betriebe</p>
+      <h1 class="anim-up mt-4 max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl" style="font-weight:800; animation-delay:.08s">
+        Ihre Kunden buchen <span class="circled">selbst<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M12,44 C10,18 68,8 108,10 C158,13 194,24 191,42 C188,62 138,74 92,71 C48,68 14,60 16,40"/></svg></span>.<br />
+        Sie sehen alles sofort.
+      </h1>
+      <p class="anim-up mt-6 max-w-xl text-base text-ink/80 sm:text-lg" style="animation-delay:.16s">
+        Personen, Tag und Uhrzeit wählen: Nach einer Minute steht die Reservierung im System
+        und erscheint in Ihrem Dashboard. Slots, Plätze und Ruhetage stellen wir auf Ihren Betrieb ein.
+      </p>
+
+      <!-- Info-Leiste -->
+      <div class="anim-up mt-10 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-3" style="animation-delay:.24s">
+        <div class="bg-bisque px-4 py-3"><p class="font-mono text-[11px] uppercase tracking-wider text-muted">Buchung</p><p class="mt-1 text-sm font-medium">Rund um die Uhr, ohne Anruf</p></div>
+        <div class="bg-bisque px-4 py-3"><p class="font-mono text-[11px] uppercase tracking-wider text-muted">Kapazität</p><p class="mt-1 text-sm font-medium">Slots, Plätze & Ruhetage frei einstellbar</p></div>
+        <div class="bg-bisque px-4 py-3"><p class="font-mono text-[11px] uppercase tracking-wider text-muted">Überblick</p><p class="mt-1 text-sm font-medium">Jede Reservierung sofort im Dashboard</p></div>
+      </div>
+    </section>
+
+    <!-- Wizard -->
+    <section id="buchen" class="mx-auto max-w-5xl scroll-mt-20 px-5 pb-24">
+      <div class="reveal mx-auto max-w-2xl border border-ink bg-bisque">
+
+        <!-- Fortschritt -->
+        <div id="wizard-progress" class="flex items-stretch border-b border-line font-mono text-[11px]">
+          <!-- wird per JS gefüllt -->
+        </div>
+
+        <div class="p-5 sm:p-8">
+
+          <!-- Schritt 1: Personen -->
+          <div data-step="1" class="wstep">
+            <h2 class="font-display text-2xl" style="font-weight:700">Für wie viele reservieren Sie?</h2>
+            <div class="mt-7">
+              <p class="font-mono text-[11px] uppercase tracking-wider text-muted">Personen</p>
+              <div class="mt-2 flex items-center gap-4">
+                <button id="people-minus" class="h-11 w-11 border border-ink text-xl leading-none hover:bg-clay" aria-label="Eine Person weniger">−</button>
+                <span id="people-count" class="w-10 text-center font-mono text-2xl" aria-live="polite">2</span>
+                <button id="people-plus" class="h-11 w-11 border border-ink text-xl leading-none hover:bg-clay" aria-label="Eine Person mehr">+</button>
+                <span id="people-hint" class="text-sm text-muted"></span>
+              </div>
+            </div>
+
+            <button id="to-step-2" class="btn-primary mt-8 w-full py-3.5 font-medium">Weiter zum Datum</button>
+          </div>
+
+          <!-- Schritt 2: Datum -->
+          <div data-step="2" class="wstep hidden">
+            <h2 class="font-display text-2xl" style="font-weight:700">An welchem Tag?</h2>
+            <div class="mt-5 flex items-center justify-between">
+              <button id="cal-prev" class="h-10 w-10 border border-line hover:bg-clay" aria-label="Voriger Monat">‹</button>
+              <p id="cal-title" class="font-mono text-sm uppercase tracking-wider"></p>
+              <button id="cal-next" class="h-10 w-10 border border-line hover:bg-clay" aria-label="Nächster Monat">›</button>
+            </div>
+            <div class="mt-4 grid grid-cols-7 text-center font-mono text-[11px] uppercase text-muted">
+              <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+            </div>
+            <div id="cal-grid" class="mt-1 grid grid-cols-7 gap-y-1 text-sm"></div>
+            <p class="mt-3 font-mono text-[11px] text-muted">Montags geschlossen · buchbar bis 8 Wochen im Voraus</p>
+            <button class="w-back mt-6 text-sm text-muted underline underline-offset-4 hover:text-ink">← Zurück</button>
+          </div>
+
+          <!-- Schritt 3: Uhrzeit -->
+          <div data-step="3" class="wstep hidden">
+            <h2 class="font-display text-2xl" style="font-weight:700">Um wie viel Uhr?</h2>
+            <p id="slot-date-label" class="mt-1 font-mono text-sm text-muted"></p>
+            <div id="slot-list" class="mt-5 grid gap-3"></div>
+            <button class="w-back mt-6 text-sm text-muted underline underline-offset-4 hover:text-ink">← Zurück</button>
+          </div>
+
+          <!-- Schritt 4: Kontakt -->
+          <div data-step="4" class="wstep hidden">
+            <h2 class="font-display text-2xl" style="font-weight:700">An wen geht die Reservierung?</h2>
+            <div id="summary-box" class="mt-5 border border-line bg-clay/50 px-4 py-3 font-mono text-[13px] leading-relaxed"></div>
+            <form id="contact-form" class="mt-5 grid gap-4" novalidate>
+              <label class="grid gap-1.5">
+                <span class="font-mono text-[11px] uppercase tracking-wider text-muted">Name</span>
+                <input id="f-name" type="text" autocomplete="name" class="border border-ink px-3.5 py-3 text-base" placeholder="Vor- und Nachname" />
+              </label>
+              <label class="grid gap-1.5">
+                <span class="font-mono text-[11px] uppercase tracking-wider text-muted">E-Mail oder Telefon</span>
+                <input id="f-contact" type="text" autocomplete="email" class="border border-ink px-3.5 py-3 text-base" placeholder="Für die Bestätigung" />
+              </label>
+              <label class="grid gap-1.5">
+                <span class="font-mono text-[11px] uppercase tracking-wider text-muted">Anmerkung (optional)</span>
+                <input id="f-note" type="text" class="border border-ink px-3.5 py-3 text-base" placeholder="z. B. Geburtstag, Gutschein, barrierefrei" />
+              </label>
+              <p class="text-[13px] text-muted">Demo-Hinweis: Es wird nichts versendet. Ihre Eingaben bleiben in diesem Browser.
+                Mehr dazu in der <a href="../datenschutz.html" class="underline underline-offset-2 hover:text-ink">Datenschutzerklärung</a>.</p>
+              <button type="submit" class="btn-primary mt-1 w-full py-3.5 font-medium">Verbindlich reservieren</button>
+            </form>
+            <button class="w-back mt-5 text-sm text-muted underline underline-offset-4 hover:text-ink">← Zurück</button>
+          </div>
+
+          <!-- Schritt 5: Bestätigung -->
+          <div data-step="5" class="wstep hidden text-center">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-kobalt">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F2EBE1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <h2 class="mt-5 font-display text-3xl" style="font-weight:700">Reserviert!</h2>
+            <p id="confirm-text" class="mx-auto mt-3 max-w-sm text-ink/80"></p>
+            <p class="mt-6 font-mono text-[11px] uppercase tracking-wider text-muted">Buchungscode</p>
+            <p id="confirm-code" class="mt-1 font-mono text-3xl tracking-widest"></p>
+            <div class="mt-8 grid gap-3">
+              <a href="#dashboard" class="btn-primary block w-full py-3.5 text-center font-medium">Im Betreiber-Dashboard ansehen →</a>
+              <button id="restart-wizard" class="text-sm text-muted underline underline-offset-4 hover:text-ink">Neue Reservierung anlegen</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <p class="reveal mx-auto mt-6 max-w-2xl text-center font-mono text-[12px] text-muted">
+        Rechts oben finden Sie die <a href="#dashboard" class="underline underline-offset-4 hover:text-kobalt">Betreiber-Ansicht</a>.
+        Dort erscheint jede Reservierung sofort.
+      </p>
+    </section>
+  </main>
+
+  <!-- ============ VIEW: BETREIBER ============ -->
+  <main id="view-betreiber" class="hidden bg-ofen text-ofentext" style="min-height:calc(100vh - 62px)">
+
+    <!-- PIN-Gate -->
+    <section id="pin-gate" class="mx-auto flex max-w-5xl flex-col items-center px-5 py-24 sm:py-32">
+      <p class="font-mono text-[12px] uppercase tracking-[0.18em] text-ofenmuted">Interner Bereich</p>
+      <h2 class="mt-3 font-display text-3xl" style="font-weight:700">Betreiber-Zugang</h2>
+      <form id="pin-form" class="mt-8 w-full max-w-xs">
+        <input id="pin-input" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN"
+          class="w-full border border-ofenlinie bg-ofenkarte px-4 py-3.5 text-center font-mono text-xl tracking-[0.5em] text-ofentext placeholder:tracking-normal placeholder:text-ofenmuted" />
+        <button type="submit" class="mt-3 w-full bg-ofentext py-3.5 font-medium text-ofen transition hover:bg-kobalt hover:text-ofentext">Anmelden</button>
+      </form>
+      <p class="mt-4 font-mono text-[12px] text-ofenmuted">Demo: PIN <span class="text-ofentext">1234</span> (hier funktioniert jede Eingabe)</p>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard-main" class="mx-auto hidden max-w-5xl px-5 py-10 sm:py-14">
+
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="font-mono text-[12px] uppercase tracking-[0.18em] text-ofenmuted">Reservierungen · Betreiber-Ansicht</p>
+          <h2 class="mt-2 font-display text-3xl sm:text-4xl" style="font-weight:700">Der Tag im Überblick.</h2>
+        </div>
+        <button id="demo-reset" class="border border-ofenlinie px-4 py-2 font-mono text-[12px] text-ofenmuted transition hover:border-terra hover:text-terra">Demo zurücksetzen</button>
+      </div>
+
+      <!-- Statistik-Kacheln -->
+      <div class="mt-8 grid grid-cols-1 gap-px border border-ofenlinie bg-ofenlinie sm:grid-cols-3">
+        <div class="bg-ofenkarte px-5 py-4">
+          <p class="font-mono text-[11px] uppercase tracking-wider text-ofenmuted">Reservierungen heute</p>
+          <p id="stat-bookings" class="mt-2 font-mono text-4xl">–</p>
+        </div>
+        <div class="bg-ofenkarte px-5 py-4">
+          <p class="font-mono text-[11px] uppercase tracking-wider text-ofenmuted">Personen heute</p>
+          <p id="stat-people" class="mt-2 font-mono text-4xl">–</p>
+        </div>
+        <div class="bg-ofenkarte px-5 py-4">
+          <p class="font-mono text-[11px] uppercase tracking-wider text-ofenmuted">Auslastung nächste 7 Tage</p>
+          <p id="stat-util" class="mt-2 font-mono text-4xl">–</p>
+        </div>
+      </div>
+
+      <!-- Tages-Auswahl -->
+      <div id="day-chips" class="mt-10 flex gap-2 overflow-x-auto pb-1"></div>
+
+      <!-- Slot-Auslastung (Glasur-Punkte) -->
+      <div id="slot-usage" class="dark-dots mt-6 grid gap-3"></div>
+
+      <!-- Reservierungsliste -->
+      <h3 class="mt-10 font-mono text-[12px] uppercase tracking-[0.18em] text-ofenmuted">Reservierungen an diesem Tag</h3>
+      <ul id="res-list" class="mt-3 grid gap-2"></ul>
+
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-line bg-bisque">
+    <div class="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-8 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-[13px] text-muted">
+        Produkt-Demo mit Beispieldaten, es werden keine echten Reservierungen angenommen. Ein System von
+        <a href="https://tech-saar.de/" class="font-medium text-ink underline decoration-line underline-offset-4 hover:text-kobalt">TechSaar</a>
+        (Websites & Systeme für lokale Betriebe).
+      </p>
+      <div class="flex gap-5 font-mono text-[12px] text-muted">
+        <a href="../impressum.html" class="hover:text-ink">Impressum</a>
+        <a href="../datenschutz.html" class="hover:text-ink">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 translate-y-3 rounded-full bg-ink px-5 py-2.5 text-sm text-bisque opacity-0 transition-all duration-300"></div>
+
+<script>
+/* =====================================================================
+   TechSaar Reservierungs-Demo. Alles statisch, Daten nur im Browser.
+   Aufbau: CONFIG → Seed-Daten → Storage → Wizard → Dashboard → Routing
+   ===================================================================== */
+
+const CONFIG = {
+  storageKey: 'techsaar_res_demo_v1',
+  capacity: 24,                    // Plätze pro Slot
+  closedWeekdays: [1],             // Mo (getDay: So=0)
+  maxPeople: 8,
+  bookableWeeks: 8,
+  slots: [
+    { id: '09:00', label: '09:00' },
+    { id: '11:00', label: '11:00' },
+    { id: '13:00', label: '13:00' },
+    { id: '15:00', label: '15:00' },
+    { id: '17:00', label: '17:00' },
+    { id: '19:00', label: '19:00' },
+  ],
+  seedNotes: ['Geburtstag', 'Gutschein', 'Gruppe', 'Stammkunde', 'barrierefrei'],
+  dabColors: ['#2B49C4', '#C05B33', '#D19E3F', '#7FA48E'],
+};
+const WD = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+/* ---------- Datums-Helfer (lokal, ohne UTC-Verschiebung) ---------- */
+function fmtDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function parseDate(s) { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(d, n) { const c = new Date(d); c.setDate(c.getDate()+n); return c; }
+function today() { const t = new Date(); t.setHours(0,0,0,0); return t; }
+function isClosed(d) { return CONFIG.closedWeekdays.includes(d.getDay()); }
+function humanDate(s) { const d = parseDate(s); return WD[d.getDay()] + ', ' + d.getDate() + '. ' + MONTHS[d.getMonth()]; }
+
+/* ---------- Deterministische Seed-Reservierungen ----------
+   Pro Tag+Slot aus einem Hash generiert: gleiche Demo bei jedem
+   Aufruf, relativ zu „heute", die Demo veraltet also nie.        */
+function strHash(s) { let h = 2166136261; for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function mulberry32(a) { return function(){ a|=0; a = a+0x6D2B79F5|0; let t = Math.imul(a^a>>>15, 1|a); t = t+Math.imul(t^t>>>7, 61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+const SEED_NAMES = ['Lena Marotzke','Familie Schuster','Jonas Kiefer','Miriam & Ayla','Tobias Lang','Nele Hoffmann','Kita Sonnenblume','Sarah Wagner','David Brück','Emma und Oma','Kevin Scholz','Julia Petry','Team Physiopraxis','Marie Klein','Finn Weber','Anna-Lena Roth','Herr Backes','Leonie Simon','JGA Vanessa','Familie Yilmaz','Paul Gerber','Charlotte Fuchs','Mädelsabend Steffi','Lukas Diehl'];
+
+function seedsFor(dateStr) {
+  const d = parseDate(dateStr);
+  if (isClosed(d)) return [];
+  const weekend = d.getDay() === 0 || d.getDay() === 6;
+  const out = [];
+  for (const slot of CONFIG.slots) {
+    const rng = mulberry32(strHash(dateStr + slot.id));
+    const popular = slot.id === '13:00' || slot.id === '17:00' || slot.id === '19:00';
+    let target = Math.floor(CONFIG.capacity * ((weekend ? 0.40 : 0.12) + rng() * (weekend ? 0.42 : 0.34) + (popular ? 0.10 : 0)));
+    // Ein beliebter Wochenend-Slot darf voll sein, sonst bleiben Plätze frei
+    if (!(weekend && popular && rng() < 0.3)) target = Math.min(target, CONFIG.capacity - 5);
+    let seated = 0, i = 0;
+    while (seated < target && i < 10) {
+      const note = rng() < 0.3 ? CONFIG.seedNotes[Math.floor(rng()*CONFIG.seedNotes.length)] : '';
+      let people = 1 + Math.floor(rng()*4) + (rng() < 0.15 ? 3 : 0);
+      people = Math.min(people, CONFIG.capacity - seated);
+      const stR = rng();
+      const status = stR < 0.78 ? 'bestaetigt' : stR < 0.94 ? 'neu' : 'storniert';
+      out.push({
+        id: 's-' + dateStr + '-' + slot.id.replace(':','') + '-' + i,
+        seed: true, date: dateStr, slot: slot.id, people, note,
+        name: SEED_NAMES[Math.floor(rng()*SEED_NAMES.length)],
+        contact: '', status,
+      });
+      if (status !== 'storniert') seated += people;
+      i++;
+    }
+  }
+  return out;
+}
+
+/* ---------- Storage: echte Demo-Buchungen + Status-Overrides für Seeds ---------- */
+function getData() {
+  try {
+    const raw = localStorage.getItem(CONFIG.storageKey);
+    if (raw) { const p = JSON.parse(raw); if (p && Array.isArray(p.bookings)) return p; }
+  } catch (e) { /* defekter Eintrag → frisch starten */ }
+  return { v: 1, bookings: [], overrides: {} };
+}
+function saveData(data) { localStorage.setItem(CONFIG.storageKey, JSON.stringify(data)); }
+
+function bookingsFor(dateStr) {
+  const data = getData();
+  const seeds = seedsFor(dateStr).map(b => data.overrides[b.id] ? { ...b, status: data.overrides[b.id] } : b);
+  const own = data.bookings.filter(b => b.date === dateStr);
+  return seeds.concat(own).sort((a,b) => a.slot.localeCompare(b.slot) || a.name.localeCompare(b.name));
+}
+function seatsTaken(dateStr, slotId) {
+  return bookingsFor(dateStr).filter(b => b.slot === slotId && b.status !== 'storniert')
+    .reduce((sum, b) => sum + b.people, 0);
+}
+function setStatus(booking, status) {
+  const data = getData();
+  if (booking.seed) { data.overrides[booking.id] = status; }
+  else { const b = data.bookings.find(x => x.id === booking.id); if (b) b.status = status; }
+  saveData(data);
+}
+
+/* ---------- Platz-Punkte (Signatur-Element) ---------- */
+function dotRow(taken, capacity, newlyAdded = 0) {
+  let html = '<span class="flex flex-wrap gap-1" aria-hidden="true">';
+  for (let i = 0; i < capacity; i++) {
+    if (i < taken) {
+      const c = CONFIG.dabColors[i % CONFIG.dabColors.length];
+      const glossy = i >= taken - newlyAdded ? '' : ' dot-glossy';
+      html += `<span class="dot${glossy}" style="background-color:${c}"></span>`;
+    } else {
+      html += '<span class="dot dot-free"></span>';
+    }
+  }
+  return html + '</span>';
+}
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.remove('opacity-0','translate-y-3');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('opacity-0','translate-y-3'), 2600);
+}
+
+/* =====================================================================
+   WIZARD (Kunden-Buchung)
+   ===================================================================== */
+const state = { step: 1, people: 2, date: null, slot: null };
+let calMonth = new Date(today().getFullYear(), today().getMonth(), 1);
+let lastCreatedId = null;
+
+const STEP_NAMES = ['Personen','Datum','Uhrzeit','Kontakt'];
+
+function renderProgress() {
+  const el = document.getElementById('wizard-progress');
+  if (state.step === 5) { el.innerHTML = '<div class="flex-1 px-4 py-2.5 bg-kobalt text-bisque">Bestätigt ✓</div>'; return; }
+  el.innerHTML = STEP_NAMES.map((n, i) => {
+    const num = i + 1, active = num === state.step, done = num < state.step;
+    return `<div class="flex flex-1 items-center justify-center gap-1.5 border-r border-line px-1 py-2.5 last:border-r-0
+      ${active ? 'bg-ink text-bisque' : done ? 'text-kobalt' : 'text-muted'}">
+      <span>${done ? '✓' : num}</span><span class="hidden sm:inline">${n}</span></div>`;
+  }).join('');
+}
+
+function showStep(n) {
+  state.step = n;
+  document.querySelectorAll('.wstep').forEach(s => s.classList.toggle('hidden', Number(s.dataset.step) !== n));
+  renderProgress();
+  if (n === 2) renderCalendar();
+  if (n === 3) renderSlots();
+  if (n === 4) renderSummary();
+}
+function goStep(n) {
+  showStep(n);
+  document.getElementById('buchen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* --- Schritt 1: Personen --- */
+function renderPeople() {
+  document.getElementById('people-count').textContent = state.people;
+  document.getElementById('people-hint').textContent =
+    state.people >= CONFIG.maxPeople ? 'Mehr als 8? Rufen Sie kurz an, das richten wir ein.' : '';
+}
+
+/* --- Schritt 2: Kalender --- */
+function renderCalendar() {
+  const t = today();
+  const maxDate = addDays(t, CONFIG.bookableWeeks * 7);
+  document.getElementById('cal-title').textContent = MONTHS[calMonth.getMonth()] + ' ' + calMonth.getFullYear();
+
+  const minMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+  const maxMonth = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+  document.getElementById('cal-prev').disabled = calMonth <= minMonth;
+  document.getElementById('cal-next').disabled = calMonth >= maxMonth;
+  document.getElementById('cal-prev').style.opacity = calMonth <= minMonth ? .3 : 1;
+  document.getElementById('cal-next').style.opacity = calMonth >= maxMonth ? .3 : 1;
+
+  const first = new Date(calMonth);
+  const lead = (first.getDay() + 6) % 7;            // Montag-basiert
+  const daysInMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()+1, 0).getDate();
+
+  let html = '';
+  for (let i = 0; i < lead; i++) html += '<span></span>';
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(calMonth.getFullYear(), calMonth.getMonth(), day);
+    const ds = fmtDate(d);
+    const disabled = d < t || d > maxDate || isClosed(d);
+    const cls = ['cal-day','relative'];
+    if (fmtDate(d) === fmtDate(t)) cls.push('today');
+    if (state.date === ds) cls.push('sel');
+    html += `<button type="button" data-date="${ds}" class="${cls.join(' ')}" ${disabled ? 'disabled' : ''}>${day}</button>`;
+  }
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = html;
+  grid.querySelectorAll('button:not(:disabled)').forEach(btn => btn.addEventListener('click', () => {
+    state.date = btn.dataset.date;
+    state.slot = null;
+    goStep(3);
+  }));
+}
+
+/* --- Schritt 3: Slots mit Glasur-Punkten --- */
+function renderSlots() {
+  document.getElementById('slot-date-label').textContent = humanDate(state.date);
+  const el = document.getElementById('slot-list');
+  el.innerHTML = CONFIG.slots.map(s => {
+    const taken = seatsTaken(state.date, s.id);
+    const free = CONFIG.capacity - taken;
+    const full = free < state.people;
+    return `
+    <button type="button" data-slot="${s.id}" class="slot-card border border-line bg-bisque px-4 py-3.5 text-left ${state.slot === s.id ? 'sel' : ''}" ${full ? 'disabled' : ''}>
+      <span class="flex items-baseline justify-between">
+        <span class="font-mono text-lg">${s.label}</span>
+        <span class="font-mono text-[12px] ${full ? 'text-terra' : 'text-muted'}">${full ? 'Ausgebucht' : free + ' Plätze frei'}</span>
+      </span>
+      <span class="mt-2.5 block">${dotRow(taken, CONFIG.capacity)}</span>
+    </button>`;
+  }).join('');
+  el.querySelectorAll('[data-slot]:not(:disabled)').forEach(btn => btn.addEventListener('click', () => {
+    state.slot = btn.dataset.slot;
+    goStep(4);
+  }));
+}
+
+/* --- Schritt 4: Zusammenfassung + Formular --- */
+function renderSummary() {
+  document.getElementById('summary-box').innerHTML =
+    `${humanDate(state.date)} · ${CONFIG.slots.find(s => s.id === state.slot).label} Uhr<br>` +
+    `${state.people} ${state.people === 1 ? 'Person' : 'Personen'}`;
+}
+
+function submitBooking(e) {
+  e.preventDefault();
+  const name = document.getElementById('f-name').value.trim();
+  const contact = document.getElementById('f-contact').value.trim();
+  if (!name || !contact) { toast('Bitte Name und Kontakt angeben.'); return; }
+
+  const id = 'b-' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+  const code = 'RES-' + Math.random().toString(36).slice(2,6).toUpperCase();
+  const note = document.getElementById('f-note').value.trim();
+  const data = getData();
+  data.bookings.push({ id, code, date: state.date, slot: state.slot, people: state.people,
+    note, name, contact, status: 'neu', createdAt: new Date().toISOString() });
+  saveData(data);
+  lastCreatedId = id;
+  dashState.day = state.date;   // Dashboard springt auf den gebuchten Tag
+
+  document.getElementById('confirm-text').textContent =
+    `${humanDate(state.date)}, ${CONFIG.slots.find(s => s.id === state.slot).label} Uhr: Reservierung für ${state.people} auf den Namen ${name}.`;
+  document.getElementById('confirm-code').textContent = code;
+  goStep(5);
+}
+
+function resetWizard() {
+  state.step = 1; state.people = 2; state.date = null; state.slot = null;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-contact').value = '';
+  document.getElementById('f-note').value = '';
+  renderPeople(); showStep(1);
+}
+
+/* =====================================================================
+   DASHBOARD (Betreiber)
+   ===================================================================== */
+const dashState = { day: fmtDate(today()), unlocked: false };
+
+function renderDashboard() {
+  renderStats();
+  renderDayChips();
+  renderSlotUsage();
+  renderResList();
+}
+
+function renderStats() {
+  const t = fmtDate(today());
+  const todays = bookingsFor(t).filter(b => b.status !== 'storniert');
+  document.getElementById('stat-bookings').textContent = todays.length;
+  document.getElementById('stat-people').textContent = todays.reduce((s,b) => s + b.people, 0);
+
+  let taken = 0, avail = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(today(), i);
+    if (isClosed(d)) continue;
+    const ds = fmtDate(d);
+    avail += CONFIG.capacity * CONFIG.slots.length;
+    for (const s of CONFIG.slots) taken += seatsTaken(ds, s.id);
+  }
+  document.getElementById('stat-util').textContent = avail ? Math.round(taken / avail * 100) + ' %' : '–';
+}
+
+function renderDayChips() {
+  const el = document.getElementById('day-chips');
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(today(), i);
+    const ds = fmtDate(d);
+    const closed = isClosed(d);
+    const sel = dashState.day === ds;
+    const label = i === 0 ? 'Heute' : WD[d.getDay()] + ' ' + d.getDate() + '.' + (d.getMonth()+1) + '.';
+    html += `<button type="button" data-day="${ds}" ${closed ? 'disabled' : ''}
+      class="shrink-0 border px-4 py-2 font-mono text-[13px] transition
+      ${sel ? 'border-kobalt bg-kobalt text-ofentext' : closed ? 'border-ofenlinie text-ofenlinie cursor-not-allowed' : 'border-ofenlinie text-ofenmuted hover:border-ofenmuted hover:text-ofentext'}">
+      ${label}${closed ? ' · Ruhetag' : ''}</button>`;
+  }
+  el.innerHTML = html;
+  el.querySelectorAll('button:not(:disabled)').forEach(btn => btn.addEventListener('click', () => {
+    dashState.day = btn.dataset.day;
+    renderDayChips(); renderSlotUsage(); renderResList();
+  }));
+}
+
+function renderSlotUsage() {
+  const el = document.getElementById('slot-usage');
+  const d = parseDate(dashState.day);
+  if (isClosed(d)) { el.innerHTML = ''; return; }
+  el.innerHTML = CONFIG.slots.map(s => {
+    const taken = seatsTaken(dashState.day, s.id);
+    return `<div class="flex flex-wrap items-center gap-x-5 gap-y-2 border border-ofenlinie bg-ofenkarte px-4 py-3">
+      <span class="w-24 font-mono text-sm">${s.id}</span>
+      <span class="min-w-0 flex-1">${dotRow(taken, CONFIG.capacity)}</span>
+      <span class="font-mono text-[12px] text-ofenmuted">${taken}/${CONFIG.capacity}</span>
+    </div>`;
+  }).join('');
+}
+
+const STATUS_UI = {
+  neu:        { label: 'Neu',       cls: 'border-senf text-senf' },
+  bestaetigt: { label: 'Bestätigt', cls: 'border-kobalt text-ofentext bg-kobalt/20' },
+  storniert:  { label: 'Storniert', cls: 'border-ofenlinie text-ofenmuted line-through' },
+};
+
+function renderResList() {
+  const el = document.getElementById('res-list');
+  const list = bookingsFor(dashState.day);
+  if (!list.length) {
+    el.innerHTML = '<li class="border border-ofenlinie bg-ofenkarte px-4 py-6 text-center text-sm text-ofenmuted">Noch keine Reservierungen an diesem Tag.</li>';
+    return;
+  }
+  el.innerHTML = list.map(b => {
+    const st = STATUS_UI[b.status];
+    const isNew = b.id === lastCreatedId;
+    return `<li class="flex flex-wrap items-center gap-x-4 gap-y-2 border border-ofenlinie bg-ofenkarte px-4 py-3 ${isNew ? 'ring-2 ring-kobalt' : ''}">
+      <span class="font-mono text-sm text-ofenmuted">${b.slot}</span>
+      <span class="min-w-0 flex-1">
+        <span class="block truncate font-medium ${b.status === 'storniert' ? 'text-ofenmuted line-through' : ''}">${b.name}${isNew ? ' <span class="font-mono text-[11px] text-kobalt">← gerade eingegangen</span>' : ''}</span>
+        <span class="block font-mono text-[12px] text-ofenmuted">${b.people} Pers.${b.note ? ' · ' + b.note : ''}${b.code ? ' · ' + b.code : ''}</span>
+      </span>
+      <span class="rounded-full border px-2.5 py-0.5 font-mono text-[11px] ${st.cls}">${st.label}</span>
+      <span class="flex gap-2">
+        ${b.status === 'neu' ? `<button type="button" data-act="bestaetigt" data-id="${b.id}" class="border border-kobalt px-3 py-1.5 text-[12px] font-medium text-ofentext transition hover:bg-kobalt">Bestätigen</button>` : ''}
+        ${b.status !== 'storniert' ? `<button type="button" data-act="storniert" data-id="${b.id}" class="border border-ofenlinie px-3 py-1.5 text-[12px] text-ofenmuted transition hover:border-terra hover:text-terra">Stornieren</button>` : ''}
+      </span>
+    </li>`;
+  }).join('');
+
+  el.querySelectorAll('[data-act]').forEach(btn => btn.addEventListener('click', () => {
+    const booking = bookingsFor(dashState.day).find(b => b.id === btn.dataset.id);
+    if (!booking) return;
+    setStatus(booking, btn.dataset.act);
+    toast(btn.dataset.act === 'bestaetigt' ? `Reservierung von ${booking.name} bestätigt.` : `Reservierung von ${booking.name} storniert.`);
+    renderDashboard();
+  }));
+}
+
+/* =====================================================================
+   ROUTING (Kunde ↔ Betreiber) + Init
+   ===================================================================== */
+function route() {
+  const dash = location.hash === '#dashboard';
+  document.getElementById('view-kunde').classList.toggle('hidden', dash);
+  document.getElementById('view-betreiber').classList.toggle('hidden', !dash);
+
+  const header = document.getElementById('site-header');
+  header.classList.toggle('bg-bisque/90', !dash);
+  header.classList.toggle('border-line', !dash);
+  header.classList.toggle('bg-ofen/90', dash);
+  header.classList.toggle('border-ofenlinie', dash);
+  header.classList.toggle('text-ofentext', dash);
+
+  if (dash) {
+    const unlocked = dashState.unlocked || sessionStorage.getItem('tw_pin_ok') === '1';
+    document.getElementById('pin-gate').classList.toggle('hidden', unlocked);
+    document.getElementById('dashboard-main').classList.toggle('hidden', !unlocked);
+    if (unlocked) renderDashboard();
+    else setTimeout(() => document.getElementById('pin-input').focus(), 50);
+    window.scrollTo({ top: 0 });
+  }
+}
+
+document.getElementById('pin-form').addEventListener('submit', e => {
+  e.preventDefault();
+  dashState.unlocked = true;
+  sessionStorage.setItem('tw_pin_ok', '1');
+  route();
+});
+
+document.getElementById('demo-reset').addEventListener('click', () => {
+  localStorage.removeItem(CONFIG.storageKey);
+  lastCreatedId = null;
+  renderDashboard();
+  toast('Demo zurückgesetzt, alle Testbuchungen gelöscht.');
+});
+
+/* Wizard-Events */
+document.getElementById('people-minus').addEventListener('click', () => { if (state.people > 1) { state.people--; renderPeople(); } });
+document.getElementById('people-plus').addEventListener('click', () => { if (state.people < CONFIG.maxPeople) { state.people++; renderPeople(); } });
+document.getElementById('to-step-2').addEventListener('click', () => goStep(2));
+document.getElementById('cal-prev').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()-1, 1); renderCalendar(); });
+document.getElementById('cal-next').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()+1, 1); renderCalendar(); });
+document.querySelectorAll('.w-back').forEach(b => b.addEventListener('click', () => goStep(state.step - 1)));
+document.getElementById('contact-form').addEventListener('submit', submitBooking);
+document.getElementById('restart-wizard').addEventListener('click', () => { resetWizard(); goStep(1); });
+
+window.addEventListener('hashchange', route);
+
+/* Scroll-Reveal */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* Init */
+renderPeople();
+renderProgress();
+route();
+</script>
+</body>
+</html>
