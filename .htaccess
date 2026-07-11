@@ -1,0 +1,5 @@
+RewriteEngine On
+# HTTPS erzwingen und www auf Hauptdomain umleiten (301)
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://tech-saar.de%{REQUEST_URI} [R=301,L]
