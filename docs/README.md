@@ -1,6 +1,6 @@
 # TechSaar Docs — Arbeitsgrundlagen
 
-Gemeinsame Wissensbasis von Leon & Jakob (und unseren Claude-Instanzen). Business-Wissen gehört **hierher**, nicht in private Notizen — dann arbeiten beide (und beide Claudes) auf demselben Stand.
+Gemeinsame Wissensbasis von Leon & Jakob (und unseren Claude-Instanzen) — damit beide auf demselben Stand arbeiten. Leons Claude-Instanzen pflegen diese Docs mit und spiegeln Aktualisierungen hierher; Änderungen von Jakob hier sind genauso willkommen und werden übernommen.
 
 ## Anleitungen
 
