@@ -1,0 +1,21 @@
+{
+  "_hinweis": "FUNKE Elektrotechnik ist ein FIKTIVER Demo-Betrieb. Betreiber der Demo-Seite ist TechSaar; Impressum/Datenschutz verlinken deshalb auf tech-saar.de statt erfundene Rechtstexte zu zeigen.",
+  "unternehmen": "TechSaar (Demo-Betreiber) / FUNKE Elektrotechnik (fiktiv)",
+  "rechtsform": "GbR",
+  "inhaber": ["Jakob Elias Kunz", "Leon Merlin Thies"],
+  "strasse": "Hochstattstraße 12",
+  "plz_ort": "66640 Namborn",
+  "email": "info@tech-saar.de",
+  "telefon": "0157 71232099",
+  "ust_id": "",
+  "handelsregister": "",
+  "verantwortlich_inhalt": "Jakob Elias Kunz",
+  "hosting_anbieter": "GitHub Pages (GitHub Inc., USA)",
+  "hosting_eu": false,
+  "dienste": ["Schriftarten lokal", "Bilder lokal", "Demo-Formular ohne Versand/Speicherung"],
+  "kontaktformular": false,
+  "cookies_tracking": false,
+  "impressum_url": "https://tech-saar.de/impressum.html",
+  "datenschutz_url": "https://tech-saar.de/datenschutz.html",
+  "noindex": true
+}
