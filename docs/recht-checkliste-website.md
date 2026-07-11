@@ -1,4 +1,4 @@
-# Recht-Checkliste: Kundenwebsites (Deutschland)
+﻿# Recht-Checkliste: Kundenwebsites (Deutschland)
 
 Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine Anwälte — das ist eine Arbeits-Checkliste, keine Rechtsberatung. Bei Unsicherheit: Generator (z. B. eRecht24) nutzen oder Kunde zum Anwalt schicken, das dokumentieren. Verwandt: [no-gos](no-gos.md), [workflow-neuer-kunde](workflow-neuer-kunde.md).
 
@@ -34,6 +34,7 @@ Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine A
 
 ## Offene Punkte (nachtragen!)
 
+- **Datenschutzerklärung der Hauptseite www.tech-saar.de nennt noch GitHub Pages (USA) als Hoster — Hosting ist aber Hostinger** (Leons Info 2026-07-11). Korrigieren: `datenschutz.html` Abschnitt 3 + `legal-data.json` (`hosting_anbieter` → Hostinger-Entität, `hosting_eu` → prüfen) + **AV-Vertrag/DPA mit Hostinger bestätigen**. Gilt als Muster auch für alle Kundenseiten.
 - **Angebots-Einseiter + Kundenvertragsvorlage: existieren noch nicht — Pflicht-Artefakte VOR dem ersten Kundengespräch** ([eckstueck](eckstueck.md))
 - Steuerliche Erfassung: Status klären, erst dann Abschluss mit [eckstueck](eckstueck.md)
 - Rückmeldung Dienstherr zur Nebentätigkeitsanzeige (raus 06.07.2026)
