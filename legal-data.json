@@ -1,5 +1,5 @@
 {
-  "_hinweis": "Firmendaten für Impressum/Datenschutz der TechSaar-Hauptseite. Vollständig befüllt (Stand 2026-07-06). Empfehlung: Rechtstexte vor Live anwaltlich/über eRecht24 gegenprüfen.",
+  "_hinweis": "Firmendaten für Impressum/Datenschutz der TechSaar-Hauptseite. Stand 2026-07-11 (Hosting auf Hostinger aktualisiert, Abgleich mit Live-Seite). Empfehlung: Rechtstexte vor Live anwaltlich/über eRecht24 gegenprüfen.",
   "unternehmen": "TechSaar",
   "rechtsform": "GbR",
   "inhaber": ["Jakob Elias Kunz", "Leon Merlin Thies"],
@@ -11,8 +11,8 @@
   "kleinunternehmer": true,
   "handelsregister": "",
   "verantwortlich_inhalt": "Jakob Elias Kunz",
-  "hosting_anbieter": "GitHub Pages (GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA)",
-  "hosting_eu": false,
+  "hosting_anbieter": "Hostinger International Ltd., 61 Lordou Vironos Street, 6023 Larnaca, Zypern (Auslieferung über Server in der EU)",
+  "hosting_eu": true,
   "dienste": ["Kontaktformular", "Schriftarten (lokal gehostet)"],
   "kontaktformular": true,
   "cookies_tracking": false

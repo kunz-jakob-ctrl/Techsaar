@@ -34,7 +34,9 @@ Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine A
 
 ## Offene Punkte (nachtragen!)
 
-- **Repo ist älter als die Live-Seite:** www.tech-saar.de nennt im Datenschutz korrekt **Hostinger International Ltd. (EU-Server)** ✓ — aber `datenschutz.html` + `legal-data.json` im GitHub-Repo enthalten noch den alten GitHub-Pages-Stand. → Live-Stand ins Repo committen (Jakob fragen, wo die aktuelle Quelle liegt), sonst überschreibt der nächste Deploy aus dem Repo die korrekte Fassung. Außerdem: **AV-Vertrag/DPA mit Hostinger** einmal im hPanel bestätigen (falls noch nicht geschehen).
+- [x] ~~Repo älter als Live-Seite~~ **erledigt 2026-07-11:** Live-Stand von www.tech-saar.de per HTTP-Spiegel ins Repo übernommen (index.html mit neuer Mail info@tech-saar.de, datenschutz.html mit Hostinger/EU, favicon.svg, sitemap.xml; legal-data.json angepasst). Repo = Live-Stand.
+- **E-Mail-Inkonsistenz:** Kontaktsektion der Hauptseite nennt `info@tech-saar.de`, Impressum + legal-data.json noch `tech-saar@outlook.de`. Beide müssen funktionieren; klären, welche die offizielle ist, und Impressum ggf. angleichen.
+- **AV-Vertrag/DPA mit Hostinger** einmal im hPanel bestätigen (falls noch nicht geschehen).
 - **Angebots-Einseiter + Kundenvertragsvorlage: existieren noch nicht — Pflicht-Artefakte VOR dem ersten Kundengespräch** ([eckstueck](eckstueck.md))
 - Steuerliche Erfassung: Status klären, erst dann Abschluss mit [eckstueck](eckstueck.md)
 - Rückmeldung Dienstherr zur Nebentätigkeitsanzeige (raus 06.07.2026)
