@@ -34,7 +34,7 @@ Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine A
 
 ## Offene Punkte (nachtragen!)
 
-- **Datenschutzerklärung der Hauptseite www.tech-saar.de nennt noch GitHub Pages (USA) als Hoster — Hosting ist aber Hostinger** (Leons Info 2026-07-11). Korrigieren: `datenschutz.html` Abschnitt 3 + `legal-data.json` (`hosting_anbieter` → Hostinger-Entität, `hosting_eu` → prüfen) + **AV-Vertrag/DPA mit Hostinger bestätigen**. Gilt als Muster auch für alle Kundenseiten.
+- **Repo ist älter als die Live-Seite:** www.tech-saar.de nennt im Datenschutz korrekt **Hostinger International Ltd. (EU-Server)** ✓ — aber `datenschutz.html` + `legal-data.json` im GitHub-Repo enthalten noch den alten GitHub-Pages-Stand. → Live-Stand ins Repo committen (Jakob fragen, wo die aktuelle Quelle liegt), sonst überschreibt der nächste Deploy aus dem Repo die korrekte Fassung. Außerdem: **AV-Vertrag/DPA mit Hostinger** einmal im hPanel bestätigen (falls noch nicht geschehen).
 - **Angebots-Einseiter + Kundenvertragsvorlage: existieren noch nicht — Pflicht-Artefakte VOR dem ersten Kundengespräch** ([eckstueck](eckstueck.md))
 - Steuerliche Erfassung: Status klären, erst dann Abschluss mit [eckstueck](eckstueck.md)
 - Rückmeldung Dienstherr zur Nebentätigkeitsanzeige (raus 06.07.2026)

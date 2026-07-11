@@ -6,7 +6,7 @@ Gemeinsame Wissensbasis von Leon & Jakob (und unseren Claude-Instanzen) — dami
 
 - [workflow-neuer-kunde.md](workflow-neuer-kunde.md) — Master-Blueprint: Erstgespräch → Angebot → Build → Go-Live → Übergabe
 - [website-blueprint-7-level.md](website-blueprint-7-level.md) — Build-Methodik für hochwertige Claude-Code-Websites
-- [hostinger-deployment.md](hostinger-deployment.md) — Websites auf Hostinger live schalten (Hauptseite **www.tech-saar.de** ist dort live; ⚠️ Datenschutzerklärung/legal-data.json nennen noch GitHub Pages → siehe Recht-Checkliste)
+- [hostinger-deployment.md](hostinger-deployment.md) — Websites auf Hostinger live schalten (Hauptseite **www.tech-saar.de** ist dort live; ⚠️ Repo enthält noch den älteren Stand mit GitHub Pages in datenschutz.html/legal-data.json → Live-Stand committen, siehe Recht-Checkliste)
 - [sichtbarkeit-google-bing.md](sichtbarkeit-google-bing.md) — Search Console, Bing, Google Business Profile, Apple Business Connect, Verzeichnisse
 
 ## Recht
