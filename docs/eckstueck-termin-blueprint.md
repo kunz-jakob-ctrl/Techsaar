@@ -6,7 +6,7 @@ Konkreter Fahrplan für den Termin. Basis: [eckstueck](eckstueck.md) (Jakobs Ges
 
 | Aufgabe | Wer | Status |
 |---|---|---|
-| **Angebots-Einseiter** (1 Seite: 3 Stufen, Preise, was enthalten/nicht enthalten) — ausgedruckt 2× | Claude baut, Leon+Jakob prüfen | offen |
+| **Angebots-Einseiter** (1 Seite: 3 Stufen, Preise, was enthalten/nicht enthalten) — ausgedruckt 2× | Claude baut, Leon+Jakob prüfen | ✅ gebaut 12.07.: `Techsaar/docs/angebote/eckstueck-angebot-einseiter.html` — im Browser öffnen → Strg+P → drucken. Leon+Jakob: Preisspanne ok oder Festpreis? |
 | **Vertragsvorlage** (für schnelle Zusage, muss nicht im Termin unterschrieben werden) | Claude baut, Leon+Jakob prüfen | offen |
 | **Teaser-Demo** (siehe Abschnitt 3) | Claude baut, Leon prüft | offen |
 | Instagram `eckstueck_` komplett durchgehen: Namen der Betreiberinnen, Eröffnungsdatum, Preise aus Stories, Ton | Leon oder Jakob | offen |
