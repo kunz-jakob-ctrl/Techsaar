@@ -1,4 +1,4 @@
-# Kunde: Eckstück (Keramik-Bemalstudio St. Wendel)
+﻿# Kunde: Eckstück (Keramik-Bemalstudio St. Wendel)
 
 Erster echter Akquise-Kontakt von Techsaar. Quelle: Jakobs Gesprächsvorbereitung (PDF, Stand 09.07.2026 — noch nichts gebaut). Vorlage: [kunde-template](kunde-template.md).
 
@@ -32,6 +32,8 @@ Marke existiert (Logo) — **verlängern, nicht neu erfinden**. Seite soll sich 
 - Formsprache: rund, organisch, Aquarell-Kleckse, handgezeichnete Sparkles wie im Logo, viel Weißraum. Kein Tech-Look, kein Dark Mode
 - Bilder: warme echte Fotos; bis Eröffnung Aquarell-Illustrationen im Logo-Stil
 - Ton: herzlich, "ihr/du", wie ihr Instagram
+
+**➡️ Termin steht: Freitag, 17.07.2026 — kompletter Fahrplan in [eckstueck-termin-blueprint](eckstueck-termin-blueprint.md).**
 
 ## Gesprächs-Checkliste (vor/im Termin)
 
