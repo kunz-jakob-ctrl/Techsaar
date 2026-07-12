@@ -12,7 +12,7 @@
   "verantwortlich_inhalt": "Jakob Elias Kunz",
   "hosting_anbieter": "GitHub Pages (GitHub Inc., USA)",
   "hosting_eu": false,
-  "dienste": ["Schriftarten lokal", "Bilder lokal", "Demo-Formular ohne Versand/Speicherung"],
+  "dienste": ["Schriftarten lokal", "Bilder lokal", "Demo-Formular ohne Versand/Speicherung", "WhatsApp nur als wa.me-Link (kein Widget/Script, keine Datenübertragung vor Klick) — bei echter Kundenseite WhatsApp-Absatz in Datenschutzerklärung ergänzen"],
   "kontaktformular": false,
   "cookies_tracking": false,
   "impressum_url": "https://tech-saar.de/impressum.html",
