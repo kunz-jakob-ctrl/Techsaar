@@ -71,6 +71,46 @@
   }
   </script>
 
+  <!-- Strukturierte Daten (JSON-LD): FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Was kostet eine Website bei euch?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Umfang ab: eine schlanke Visitenkarten-Seite ist etwas anderes als ein Auftritt mit Online-Terminbuchung. Deshalb gibt es bei uns kein Paket von der Stange. Nach dem kostenlosen Erstgespräch bekommst du ein transparentes Festpreis-Angebot, das genau zu deinem Betrieb passt." }
+      },
+      {
+        "@type": "Question",
+        "name": "Wie lange dauert es, bis meine Seite online ist?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Je nach Projektumfang. Eine übersichtliche Seite steht oft in wenigen Wochen, größere Projekte dauern entsprechend länger. Den realistischen Zeitrahmen nennen wir dir gleich beim Erstgespräch, und mit regelmäßigen Feedback-Runden halten wir dich auf dem Laufenden." }
+      },
+      {
+        "@type": "Question",
+        "name": "Bin ich langfristig an euch gebunden?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Wir setzen auf faire, transparente Konditionen und erklären dir vor dem Start genau, was im Preis enthalten ist und was eine laufende Betreuung kostet. Keine versteckten Klauseln, kein Agentur-Blabla." }
+      },
+      {
+        "@type": "Question",
+        "name": "Sorgt ihr auch dafür, dass man uns bei Google findet?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ja. Wir optimieren deine Seite fürs lokale Suchen im Saarland: saubere Struktur, kurze Ladezeit und die technischen Grundlagen, damit du bei Google und in Maps in deiner Region sichtbar wirst." }
+      },
+      {
+        "@type": "Question",
+        "name": "Arbeitet ihr auch mit kleinen Betrieben?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Genau dafür sind wir da. Unsere Kunden sind lokale Betriebe aus dem Saarland: Handwerk, Gastro, Dienstleister. Kein Projekt ist zu klein, wenn es dir Kunden bringt." }
+      },
+      {
+        "@type": "Question",
+        "name": "Können wir uns persönlich treffen?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Klar. Wir sind aus dem Saarland und treffen dich gern auf einen Kaffee statt per Hotline, oder per Video, wenn es schneller gehen soll. Bei uns hast du immer einen festen Ansprechpartner." }
+      }
+    ]
+  }
+  </script>
+
   <!-- Lokal gehostet (DSGVO): kein Tailwind-CDN, keine Google-Fonts-Requests mehr.
        styles.css = lokaler Tailwind-Build (tailwind.config.js), fonts.css = lokale Schriften. -->
   <link rel="stylesheet" href="styles.css">
@@ -123,6 +163,13 @@
     .trow { transition: background-color .2s; }
     .trow:hover { background: rgba(139,124,246,.05); }
 
+    /* FAQ-Accordion (native <details>, ohne JS) */
+    details.faq summary { list-style:none; }
+    details.faq summary::-webkit-details-marker { display:none; }
+    details.faq .faq-chevron { transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+    details.faq[open] .faq-chevron { transform: rotate(180deg); }
+    details.faq summary:hover .faq-q { color:#C4B5FD; }
+
     @media (prefers-reduced-motion: reduce) {
       *,*::before,*::after { animation:none !important; transition-duration:.001ms !important; }
       [data-animate] { opacity:1 !important; transform:none !important; }
@@ -154,6 +201,7 @@
         <a href="#leistungen" class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Leistungen</a>
         <a href="#arbeiten"   class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Arbeiten</a>
         <a href="#team"       class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Über uns</a>
+        <a href="#faq"        class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">FAQ</a>
       </nav>
       <a href="#kontakt" class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-night transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend">
         Anfragen
@@ -458,6 +506,71 @@
     </div>
   </section>
 
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" class="scroll-mt-24 border-t border-line px-5 py-20 sm:px-8 lg:py-28">
+    <div class="mx-auto max-w-3xl">
+      <div data-animate="fade-up" class="mb-12">
+        <p class="mlabel text-lilac">Häufige Fragen</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Gut zu wissen</h2>
+        <p class="mt-5 text-lg text-muted">Was Betriebe uns am häufigsten fragen, kurz und ehrlich beantwortet.</p>
+      </div>
+
+      <div data-animate="fade-up" class="border-t border-line">
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Was kostet eine Website bei euch?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Das hängt vom Umfang ab: eine schlanke Visitenkarten-Seite ist etwas anderes als ein Auftritt mit Online-Terminbuchung. Deshalb gibt es bei uns kein Paket von der Stange. Nach dem kostenlosen Erstgespräch bekommst du ein transparentes Festpreis-Angebot, das genau zu deinem Betrieb passt.</p>
+        </details>
+
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Wie lange dauert es, bis meine Seite online ist?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Je nach Projektumfang. Eine übersichtliche Seite steht oft in wenigen Wochen, größere Projekte dauern entsprechend länger. Den realistischen Zeitrahmen nennen wir dir gleich beim Erstgespräch, und mit regelmäßigen Feedback-Runden halten wir dich auf dem Laufenden.</p>
+        </details>
+
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Bin ich langfristig an euch gebunden?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Wir setzen auf faire, transparente Konditionen und erklären dir vor dem Start genau, was im Preis enthalten ist und was eine laufende Betreuung kostet. Keine versteckten Klauseln, kein Agentur-Blabla.</p>
+        </details>
+
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Sorgt ihr auch dafür, dass man uns bei Google findet?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Ja. Wir optimieren deine Seite fürs lokale Suchen im Saarland: saubere Struktur, kurze Ladezeit und die technischen Grundlagen, damit du bei Google und in Maps in deiner Region sichtbar wirst.</p>
+        </details>
+
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Arbeitet ihr auch mit kleinen Betrieben?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Genau dafür sind wir da. Unsere Kunden sind lokale Betriebe aus dem Saarland: Handwerk, Gastro, Dienstleister. Kein Projekt ist zu klein, wenn es dir Kunden bringt.</p>
+        </details>
+
+        <details class="faq border-b border-line">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6">
+            <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Können wir uns persönlich treffen?</span>
+            <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Klar. Wir sind aus dem Saarland und treffen dich gern auf einen Kaffee statt per Hotline, oder per Video, wenn es schneller gehen soll. Bei uns hast du immer einen festen Ansprechpartner.</p>
+        </details>
+      </div>
+
+      <p data-animate="fade-up" class="mt-10 text-muted">Noch eine Frage offen?
+        <a href="#kontakt" class="font-semibold text-lavend underline underline-offset-4 transition-colors hover:text-ink">Schreib uns einfach.</a>
+      </p>
+    </div>
+  </section>
+
   <!-- ===================== KONTAKT / CTA ===================== -->
   <section id="kontakt" class="scroll-mt-24 px-5 pb-20 sm:px-8 lg:pb-28">
     <div class="mx-auto max-w-7xl">
@@ -523,6 +636,7 @@
         <a href="#leistungen" class="transition-colors hover:text-ink">Leistungen</a>
         <a href="#arbeiten" class="transition-colors hover:text-ink">Arbeiten</a>
         <a href="#team" class="transition-colors hover:text-ink">Über uns</a>
+        <a href="#faq" class="transition-colors hover:text-ink">FAQ</a>
         <a href="#kontakt" class="transition-colors hover:text-ink">Kontakt</a>
         <a href="impressum.html" class="transition-colors hover:text-ink">Impressum</a>
         <a href="datenschutz.html" class="transition-colors hover:text-ink">Datenschutz</a>
