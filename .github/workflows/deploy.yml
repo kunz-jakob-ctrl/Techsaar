@@ -1,9 +1,16 @@
 name: Deploy zu Hostinger
 
 # Läuft bei jedem Push nach main (egal ob von Jakob oder Leon) und lädt die
-# Website per FTP zu Hostinger hoch. Kann auch manuell ausgelöst werden.
-# Die FTP-Zugangsdaten liegen als GitHub-Secrets (Settings -> Secrets and
-# variables -> Actions): FTP_HOST, FTP_USERNAME, FTP_PASSWORD.
+# Website per SFTP (verschlüsselt, SSH) zu Hostinger hoch. Kann auch manuell
+# ausgelöst werden.
+#
+# Zugangsdaten liegen als GitHub-Secrets (Settings -> Secrets and variables ->
+# Actions). WICHTIG: die Namen müssen exakt so heißen:
+#   FTP_IP           = Server-Adresse, nur die IP/den Host (OHNE "ftp://"!)
+#   FTP_BENUTZERNAME = FTP/SSH-Benutzer (z. B. u597466797)
+#   FTP_PASSWORT     = FTP/SSH-Passwort (aus hPanel)
+# Voraussetzung: SSH-Zugang in hPanel aktiviert (Hostinger -> Erweitert ->
+# SSH-Zugang), da SFTP über SSH-Port 65002 läuft.
 # NIEMALS die Zugangsdaten hier im Klartext eintragen.
 
 on:
@@ -18,39 +25,34 @@ jobs:
       - name: Repo auschecken
         uses: actions/checkout@v4
 
-      - name: Per FTP zu Hostinger deployen
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy-Verzeichnis vorbereiten (sensible/interne Dateien ausschliessen)
+        # Kopiert die Website nach _deploy/ und laesst dabei alles weg, was NICHT
+        # oeffentlich auf den Server soll. .htaccess bleibt bewusst drin.
+        run: |
+          rsync -a --delete \
+            --exclude='_deploy' \
+            --exclude='.git*' \
+            --exclude='.claude' --exclude='.impeccable' --exclude='.superpowers' \
+            --exclude='.agents' \
+            --exclude='docs' \
+            --exclude='build' \
+            --exclude='*.xlsx' --exclude='*.docx' \
+            --exclude='legal-data.json' \
+            --exclude='*.preview.html' \
+            --exclude='telefon-demo' \
+            --exclude='tailwind.config.js' \
+            --exclude='*.md' \
+            ./ ./_deploy/
+          echo "Zu deployende Dateien:"; find ./_deploy -maxdepth 2 -type f | sort
+
+      - name: Per SFTP zu Hostinger deployen
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          # Verschluesseltes FTPS (explicit AUTH TLS ueber Port 21).
-          # WICHTIG: Das Secret FTP_HOST muss der Hostname sein, fuer den das
-          # Server-Zertifikat gilt (aus hPanel -> FTP-Konten), NICHT die IP --
-          # sonst schlaegt die Zertifikatspruefung fehl.
-          protocol: ftps
-          port: 21
-          # Web-Root dieses Kontos ist domains/tech-saar.de/public_html/ (das
-          # FTP-Konto startet im Account-Root, nicht direkt in public_html/).
-          # Mit "public_html/" schlaegt der CWD fehl (550 denied).
-          server-dir: domains/tech-saar.de/public_html/
-          local-dir: ./
-          # Nur geänderte Dateien werden übertragen (Zustand wird serverseitig
-          # in .ftp-deploy-sync-state.json gemerkt).
-          exclude: |
-            # --- Sensible / interne Daten: NIE öffentlich ---
-            **/*.xlsx
-            **/*.docx
-            legal-data.json
-            # --- Entwurfs-/Review-Seiten (nicht für die Live-Domain) ---
-            **/*.preview.html
-            # --- Interne Sales-Demo (auskommentieren, um sie doch zu deployen) ---
-            telefon-demo/**
-            # --- Entwickler-/Build-Kram (auf dem Server unnötig) ---
-            **/.git*
-            **/.git*/**
-            .github/**
-            build/**
-            tailwind.config.js
-            README.md
-            **/*.md
+          host: ${{ secrets.FTP_IP }}
+          username: ${{ secrets.FTP_BENUTZERNAME }}
+          password: ${{ secrets.FTP_PASSWORT }}
+          port: 65002
+          source: "_deploy"
+          strip_components: 1
+          target: "domains/tech-saar.de/public_html"
+          overwrite: true
