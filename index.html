@@ -3,10 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechSaar — Moderne Websites, Apps & KI aus dem Saarland</title>
+  <title>TechSaar — Webdesign, Apps & KI aus dem Saarland</title>
   <meta name="description" content="TechSaar – zwei Studenten aus dem Saarland bauen moderne Websites & Apps mit cleverer Technik & KI. Lokal, persönlich, ohne Agentur-Blabla." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="canonical" href="https://tech-saar.de/" />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TechSaar" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:url" content="https://tech-saar.de/" />
+  <meta property="og:title" content="TechSaar — Webdesign, Apps & KI aus dem Saarland" />
+  <meta property="og:description" content="Zwei Studenten aus dem Saarland bauen moderne Websites & Apps mit cleverer Technik & KI. Lokal, persönlich, ohne Agentur-Blabla." />
+  <meta property="og:image" content="https://tech-saar.de/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="TechSaar — Webdesign, Apps & KI aus dem Saarland" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TechSaar — Webdesign, Apps & KI aus dem Saarland" />
+  <meta name="twitter:description" content="Moderne Websites & Apps für lokale Betriebe im Saarland. Persönlich, DSGVO-konform, ohne Agentur-Blabla." />
+  <meta name="twitter:image" content="https://tech-saar.de/og-image.png" />
+
+  <!-- Strukturierte Daten (JSON-LD): lokales Dienstleistungsunternehmen -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://tech-saar.de/#techsaar",
+    "name": "TechSaar",
+    "legalName": "TechSaar GbR (Jakob Elias Kunz & Leon Merlin Thies)",
+    "description": "Webdesign, App-Entwicklung und KI-Automatisierung für lokale Betriebe im Saarland. Moderne Websites mit Online-Terminbuchung, persönlich betreut und DSGVO-konform.",
+    "url": "https://tech-saar.de/",
+    "image": "https://tech-saar.de/og-image.png",
+    "logo": "https://tech-saar.de/favicon.svg",
+    "email": "info@tech-saar.de",
+    "telephone": "+49 157 71232099",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Hochstattstraße 12",
+      "postalCode": "66640",
+      "addressLocality": "Namborn",
+      "addressRegion": "Saarland",
+      "addressCountry": "DE"
+    },
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "Saarland"
+    },
+    "founder": [
+      { "@type": "Person", "name": "Jakob Elias Kunz" },
+      { "@type": "Person", "name": "Leon Merlin Thies" }
+    ],
+    "knowsAbout": ["Webdesign", "App-Entwicklung", "KI-Automatisierung", "Lokales SEO", "Online-Terminbuchung"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Leistungen",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Modernes Webdesign", "description": "Schnelle, individuelle Websites für jedes Gerät." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Online-Terminbuchung", "description": "Kunden buchen rund um die Uhr selbst, mit automatischer Bestätigung." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "KI & Automatisierung", "description": "Chatbots, automatische Antworten und smarte Formulare." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lokales SEO", "description": "Bei Google & Maps in der Region gefunden werden." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "App-Entwicklung", "description": "Eigene Apps mit Treuepunkten und Push-Angeboten." } }
+      ]
+    }
+  }
+  </script>
 
   <!-- Lokal gehostet (DSGVO): kein Tailwind-CDN, keine Google-Fonts-Requests mehr.
        styles.css = lokaler Tailwind-Build (tailwind.config.js), fonts.css = lokale Schriften. -->
@@ -507,7 +569,7 @@
     });
     document.querySelectorAll('[data-cfg]').forEach(el=>{ const k=el.getAttribute('data-cfg'); if(d[k]!=null) el.textContent=d[k]; });
     document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const k=el.getAttribute('data-cfg-href'); if(d[k]!=null) el.setAttribute('href',d[k]); });
-    document.title = `${C.company} — Websites, Apps & KI aus dem ${C.city}`;
+    document.title = `${C.company} — Webdesign, Apps & KI aus dem ${C.city}`;
   }
 
   /* ============================================================
