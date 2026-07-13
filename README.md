@@ -13,6 +13,7 @@ mobiloptimiert. Es sind reine Front-End-Demos (HTML + Tailwind), keine echten Ba
 | [`doener-keko/`](doener-keko/) | Döner / Bistro · St. Wendel | „Keko Bistro" — von Jakob gebaut. Döner, Pizza, Pasta & mehr |
 | [`gelateria-demo/`](gelateria-demo/) | Eisdiele | Premium Gelateria, Serifenschrift, runde Eiskugel-Motive, Google-Maps, Sorten-Highlights |
 | [`dachdecker/`](dachdecker/) | Dachdeckerei | Handwerker-Look, Leistungen & Kontakt |
+| [`acai-demo/`](acai-demo/) | Açaí-Bowl-Laden · Mannheim N4 | „[acaí] Mannheim" — Pastell-Look (Salbei/Beere/Mango), Marquee-Ticker, interaktiver Bowl-Builder mit Live-Preis, Live-Öffnungsstatus |
 | [`werkstatt-demo/`](werkstatt-demo/) | KFZ-Werkstatt | Online-Terminbuchung + Telefonassistent-Integration |
 | [`zahnarzt-demo/`](zahnarzt-demo/) | Zahnarztpraxis | Dental-Care-Stil, Online-Terminbuchung + Telefonassistent-Sektion |
 | [`telefon-demo/`](telefon-demo/) | KI-Telefonassistent (intern) | Demo-Seite für Kundengespräche |

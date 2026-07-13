@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[acaí] Mannheim — Açaí Bowls, Smoothies & Matcha in N4</title>
+<meta name="description" content="Frische Açaí Bowls, Smoothies & Matcha mitten in Mannheim (N4, 10). Täglich 10–19 Uhr. Bowls mit Toppings nach Wahl — jetzt vorbeikommen!">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%238FAE8C'/><text x='24' y='30' font-size='13' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'>[a]</text></svg>">
+
+<script>
+/* ============ HIER ANPASSEN ============ */
+const CONFIG = {
+  name: "[acaí]",
+  nameClean: "acaí mannheim",
+  claim: "Açaí Bowls · Smoothies · Matcha & More",
+  address: "N4, 10 · 68161 Mannheim",
+  mapsQuery: "Acai Mannheim, N4 10, 68161 Mannheim",
+  instagram: "https://www.instagram.com/acai.mannheim/",
+  instaHandle: "@acai.mannheim",
+  tiktok: "https://www.tiktok.com/@acai_mannheim",
+  // Öffnungszeiten: 0=So, 1=Mo ... 6=Sa  [von, bis] in Stunden
+  hours: { 0:[10,19], 1:[10,19], 2:[10,19], 3:[10,19], 4:[10,19], 5:[10,19], 6:[10,19] },
+  hoursLabel: "Mo – So · 10:00 – 19:00 Uhr",
+  // Bowl-Builder
+  sizes: [
+    { id:"s", name:"Klein",  ml:"300 ml", price:7.90 },
+    { id:"m", name:"Medium", ml:"500 ml", price:9.90 },
+    { id:"l", name:"Groß",   ml:"700 ml", price:11.90 },
+  ],
+  toppingPrice: 0.80, freeToppings: 3,
+  toppings: [
+    { name:"Erdbeeren", e:"🍓" }, { name:"Banane", e:"🍌" }, { name:"Blaubeeren", e:"🫐" },
+    { name:"Mango", e:"🥭" }, { name:"Kiwi", e:"🥝" }, { name:"Granola", e:"🌾" },
+    { name:"Kokosflocken", e:"🥥" }, { name:"Erdnussbutter", e:"🥜" }, { name:"Nutella", e:"🍫" },
+    { name:"Chiasamen", e:"✨" }, { name:"Honig", e:"🍯" }, { name:"Mandeln", e:"🌰" },
+  ],
+};
+/* ======================================= */
+</script>
+
+<style>
+:root{
+  --cream:#FBF6EE; --cream-2:#F6EEDF;
+  --sage:#8FAE8C; --sage-deep:#5F7F5F; --sage-soft:#DCE8D8;
+  --berry:#5B3A80; --berry-soft:#E8DDF6; --berry-pop:#8A63C9;
+  --pink:#F7D8E7; --pink-pop:#EE7FB2;
+  --mango:#FFC670; --mango-soft:#FFE9C7;
+  --ink:#2E2438;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Schibsted Grotesk',sans-serif;overflow-x:hidden}
+.display{font-family:'Bricolage Grotesque',sans-serif}
+
+/* Korn-Textur über allem */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* Marquee-Ticker */
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee{overflow:hidden}
+.marquee-track{display:flex;width:max-content;animation:marquee 22s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+/* Schwebende Früchte */
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(6deg)}}
+@keyframes floaty2{0%,100%{transform:translateY(-10px) rotate(8deg)}50%{transform:translateY(10px) rotate(-4deg)}}
+.float-a{animation:floaty 5s ease-in-out infinite}
+.float-b{animation:floaty2 6.5s ease-in-out infinite}
+.float-c{animation:floaty 7.5s ease-in-out infinite}
+
+/* Rotierendes Badge */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-slow{animation:spin 16s linear infinite}
+
+/* Blob-Morphing hinter dem Hero-Bowl */
+@keyframes blob{0%,100%{border-radius:58% 42% 55% 45%/50% 58% 42% 50%}33%{border-radius:45% 55% 48% 52%/58% 44% 56% 42%}66%{border-radius:52% 48% 60% 40%/45% 55% 45% 55%}}
+.blob{animation:blob 9s ease-in-out infinite}
+
+/* Scroll-Reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* Karten-Kipp-Effekt */
+.tilt{transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s}
+.tilt:hover{transform:rotate(-1.5deg) translateY(-6px);box-shadow:10px 12px 0 rgba(46,36,56,.12)}
+
+/* Sticker */
+.sticker{box-shadow:4px 5px 0 rgba(46,36,56,.15)}
+
+/* Wellen-Trenner nutzt currentColor */
+.wave{display:block;width:100%;height:60px}
+
+/* Topping-Chips */
+.chip{transition:all .2s cubic-bezier(.2,.7,.3,1);cursor:pointer;user-select:none}
+.chip:hover{transform:translateY(-3px) rotate(-2deg)}
+.chip.on{background:var(--ink);color:var(--cream);transform:rotate(-2deg) scale(1.05)}
+
+/* Preis-Wackeln bei Änderung */
+@keyframes pricepop{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-3deg)}100%{transform:scale(1)}}
+.pricepop{animation:pricepop .35s ease}
+
+/* Bowl-Schichten im Hero */
+.bowl-shadow{filter:drop-shadow(0 24px 22px rgba(91,58,128,.22))}
+
+::selection{background:var(--mango);color:var(--ink)}
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="fixed top-4 left-0 right-0 z-50 px-4">
+  <nav class="mx-auto flex max-w-5xl items-center justify-between rounded-full border-2 px-4 py-2.5 sm:px-6"
+       style="background:rgba(251,246,238,.88);backdrop-filter:blur(12px);border-color:var(--ink)">
+    <a href="#top" class="display flex items-center gap-2 text-lg font-800 font-extrabold tracking-tight">
+      <span class="grid h-9 w-9 place-items-center rounded-full text-[13px] font-bold text-white" style="background:var(--sage)">[a]</span>
+      <span data-cfg="name">[acaí]</span>
+    </a>
+    <div class="hidden items-center gap-6 text-sm font-bold sm:flex">
+      <a href="#bowls" class="hover:opacity-60 transition-opacity">Bowls</a>
+      <a href="#builder" class="hover:opacity-60 transition-opacity">Bowl-Builder</a>
+      <a href="#drinks" class="hover:opacity-60 transition-opacity">Drinks</a>
+      <a href="#standort" class="hover:opacity-60 transition-opacity">Standort</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="openBadge" class="hidden rounded-full px-3 py-1.5 text-xs font-bold sm:inline-block"></span>
+      <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener"
+         class="rounded-full px-4 py-2 text-sm font-bold text-white transition-transform hover:scale-105 hover:-rotate-2"
+         style="background:var(--ink)">Insta ↗</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="top" class="relative overflow-hidden px-4 pt-32 pb-10 sm:pt-40">
+  <!-- Pastell-Kreise im Hintergrund -->
+  <div class="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full opacity-60" style="background:var(--pink)"></div>
+  <div class="pointer-events-none absolute top-40 -right-32 h-[28rem] w-[28rem] rounded-full opacity-50" style="background:var(--berry-soft)"></div>
+  <div class="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full opacity-50" style="background:var(--mango-soft)"></div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2">
+    <div>
+      <p class="mb-5 inline-block -rotate-2 rounded-full border-2 px-4 py-1.5 text-xs font-bold uppercase tracking-widest sticker"
+         style="border-color:var(--ink);background:var(--sage-soft)">🫐 Neu in Mannheim · N4, 10</p>
+      <h1 class="display text-[13vw] font-extrabold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
+        Löffel<br>für Löffel<br>
+        <span class="relative inline-block">
+          <span class="relative z-10" style="color:var(--berry)">glücklich.</span>
+          <span class="absolute bottom-2 left-0 z-0 h-4 w-full -rotate-1 rounded-full sm:h-6" style="background:var(--mango)"></span>
+        </span>
+      </h1>
+      <p class="mt-6 max-w-md text-lg font-medium opacity-80" data-cfg="claim">Açaí Bowls · Smoothies · Matcha & More</p>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="#builder" class="display rounded-full px-7 py-3.5 text-base font-bold text-white transition-transform hover:scale-105 hover:rotate-1"
+           style="background:var(--berry)">Bowl zusammenstellen →</a>
+        <a href="#bowls" class="display rounded-full border-2 px-7 py-3.5 text-base font-bold transition-colors hover:text-white"
+           style="border-color:var(--ink)" onmouseover="this.style.background='var(--ink)'" onmouseout="this.style.background='transparent'">Menü ansehen</a>
+      </div>
+      <div class="mt-8 flex items-center gap-3 text-sm font-bold opacity-70">
+        <span id="openDot" class="inline-block h-2.5 w-2.5 rounded-full" style="background:var(--sage-deep)"></span>
+        <span id="openText">Täglich 10:00 – 19:00 Uhr</span>
+      </div>
+    </div>
+
+    <!-- CSS-illustrierte Bowl -->
+    <div class="relative mx-auto w-full max-w-md">
+      <div class="blob absolute inset-4 opacity-70" style="background:var(--sage-soft)"></div>
+
+      <!-- rotierendes Badge -->
+      <div class="absolute -top-6 -right-2 z-20 h-28 w-28 sm:-right-6">
+        <svg viewBox="0 0 100 100" class="spin-slow h-full w-full">
+          <defs><path id="circ" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
+          <circle cx="50" cy="50" r="49" fill="var(--mango)"/>
+          <text style="font:700 11.5px 'Bricolage Grotesque',sans-serif;letter-spacing:2.5px" fill="var(--ink)">
+            <textPath href="#circ">FRESH · DAILY · MANNHEIM · FRESH · DAILY ·</textPath>
+          </text>
+          <g stroke="#2E2438" stroke-width="2.5">
+            <circle cx="44" cy="49" r="7" fill="#6D5BC7"/>
+            <circle cx="57" cy="49" r="7" fill="#8A63C9"/>
+            <circle cx="50.5" cy="59" r="7" fill="#5B3A80"/>
+          </g>
+          <circle cx="41.5" cy="46.5" r="2" fill="#fff" opacity=".7"/>
+        </svg>
+      </div>
+
+      <!-- schwebende Früchte (SVG) -->
+      <div class="float-a absolute left-0 top-12 z-20 w-12">
+        <svg viewBox="0 0 60 66"><path d="M14,14 C14,6 22,2 30,2 C38,2 46,6 46,14" fill="none" stroke="#5F7F5F" stroke-width="5" stroke-linecap="round"/><path d="M30,10 C42,10 50,18 50,28 C50,42 39,56 30,62 C21,56 10,42 10,28 C10,18 18,10 30,10 Z" fill="#F2688C" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/><g fill="#FBF6EE"><ellipse cx="23" cy="28" rx="1.8" ry="2.6"/><ellipse cx="37" cy="28" rx="1.8" ry="2.6"/><ellipse cx="30" cy="40" rx="1.8" ry="2.6"/><ellipse cx="23" cy="48" rx="1.5" ry="2.2"/><ellipse cx="37" cy="48" rx="1.5" ry="2.2"/></g></svg>
+      </div>
+      <div class="float-b absolute -left-2 bottom-24 z-20 w-10">
+        <svg viewBox="0 0 48 40"><g stroke="#2E2438" stroke-width="3.5"><circle cx="16" cy="16" r="11" fill="#6D5BC7"/><circle cx="33" cy="24" r="11" fill="#5B3A80"/></g><circle cx="12" cy="12" r="2.6" fill="#fff" opacity=".7"/><circle cx="29" cy="20" r="2.6" fill="#fff" opacity=".5"/></svg>
+      </div>
+      <div class="float-c absolute right-0 bottom-44 z-20 w-11">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#FFE9A8" stroke="#2E2438" stroke-width="4"/><circle cx="24" cy="24" r="12.5" fill="#FFF6D8" stroke="#E9CE7E" stroke-width="2.5"/><g fill="#D9B968"><circle cx="24" cy="20" r="1.7"/><circle cx="20.5" cy="26" r="1.7"/><circle cx="27.5" cy="26" r="1.7"/></g></svg>
+      </div>
+
+      <!-- Bowl (SVG-Illustration) -->
+      <svg viewBox="0 0 420 400" class="bowl-shadow relative z-10 mx-auto mt-10 w-[92%]" role="img" aria-label="Illustrierte Açaí-Bowl mit Toppings">
+        <defs>
+          <linearGradient id="acai" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8A63C9"/><stop offset="1" stop-color="#5B3A80"/>
+          </linearGradient>
+          <clipPath id="bowlclip"><path d="M52,214 A158,132 0 0 0 368,214 Z"/></clipPath>
+        </defs>
+
+        <!-- Fuß -->
+        <rect x="172" y="336" width="76" height="26" rx="9" fill="#FFFDF6" stroke="#2E2438" stroke-width="5"/>
+
+        <!-- Açaí-Kuppel -->
+        <path d="M62,214 a148,148 0 0 1 296,0 Z" fill="url(#acai)" stroke="#2E2438" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M118,146 a100,100 0 0 1 58,-56" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="10" stroke-linecap="round"/>
+
+        <!-- Schale -->
+        <path d="M52,214 A158,132 0 0 0 368,214 Z" fill="#FFFDF6" stroke="#2E2438" stroke-width="5" stroke-linejoin="round"/>
+        <rect x="40" y="268" width="340" height="26" fill="var(--sage-soft)" clip-path="url(#bowlclip)"/>
+
+        <!-- Drips über den Rand -->
+        <path d="M85,212 v14 a9,9 0 0 0 18,0 v-14 Z" fill="#5B3A80" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M150,212 v24 a10,10 0 0 0 20,0 v-24 Z" fill="#5B3A80" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M255,212 v18 a10,10 0 0 0 20,0 v-18 Z" fill="#5B3A80" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M318,212 v11 a8,8 0 0 0 16,0 v-11 Z" fill="#5B3A80" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+
+        <!-- Kiwi -->
+        <g transform="translate(138,120)">
+          <circle r="17" fill="#A9CF70" stroke="#2E2438" stroke-width="4"/>
+          <circle r="11.5" fill="#D9EDAD"/>
+          <circle r="3.5" fill="#FFFDF6"/>
+          <g fill="#2E2438"><circle cy="-7.5" r="1.4"/><circle cx="5.5" cy="-4.5" r="1.4"/><circle cx="7.5" cy="2" r="1.4"/><circle cx="3.5" cy="6.5" r="1.4"/><circle cx="-3.5" cy="6.5" r="1.4"/><circle cx="-7.5" cy="2" r="1.4"/><circle cx="-5.5" cy="-4.5" r="1.4"/></g>
+        </g>
+
+        <!-- Erdbeer-Hälften -->
+        <g transform="translate(196,92) rotate(-10)">
+          <path d="M0,-14 C9,-14 16,-7 16,1 C16,11 7,20 0,25 C-7,20 -16,11 -16,1 C-16,-7 -9,-14 0,-14 Z" fill="#F2688C" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M0,-8 C6,-8 10,-4 10,1 C10,8 5,14 0,18 C-5,14 -10,8 -10,1 C-10,-4 -6,-8 0,-8 Z" fill="#F7A8C0"/>
+          <g fill="#FBF6EE"><ellipse cx="-4" cy="0" rx="1.4" ry="2"/><ellipse cx="4" cy="0" rx="1.4" ry="2"/><ellipse cy="8" rx="1.4" ry="2"/></g>
+        </g>
+        <g transform="translate(243,102) rotate(14) scale(.85)">
+          <path d="M0,-14 C9,-14 16,-7 16,1 C16,11 7,20 0,25 C-7,20 -16,11 -16,1 C-16,-7 -9,-14 0,-14 Z" fill="#F2688C" stroke="#2E2438" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M0,-8 C6,-8 10,-4 10,1 C10,8 5,14 0,18 C-5,14 -10,8 -10,1 C-10,-4 -6,-8 0,-8 Z" fill="#F7A8C0"/>
+          <g fill="#FBF6EE"><ellipse cx="-4" cy="0" rx="1.4" ry="2"/><ellipse cx="4" cy="0" rx="1.4" ry="2"/><ellipse cy="8" rx="1.4" ry="2"/></g>
+        </g>
+
+        <!-- Bananenscheiben -->
+        <g transform="translate(292,124)">
+          <circle r="15" fill="#FFE9A8" stroke="#2E2438" stroke-width="4"/>
+          <circle r="9.5" fill="#FFF6D8" stroke="#E9CE7E" stroke-width="2.5"/>
+          <g fill="#D9B968"><circle cy="-3" r="1.5"/><circle cx="-3" cy="2.5" r="1.5"/><circle cx="3" cy="2.5" r="1.5"/></g>
+        </g>
+        <g transform="translate(268,84) scale(.8)">
+          <circle r="15" fill="#FFE9A8" stroke="#2E2438" stroke-width="4"/>
+          <circle r="9.5" fill="#FFF6D8" stroke="#E9CE7E" stroke-width="2.5"/>
+          <g fill="#D9B968"><circle cy="-3" r="1.5"/><circle cx="-3" cy="2.5" r="1.5"/><circle cx="3" cy="2.5" r="1.5"/></g>
+        </g>
+
+        <!-- Blaubeeren -->
+        <g stroke="#2E2438" stroke-width="3.5">
+          <circle cx="172" cy="136" r="9" fill="#6D5BC7"/>
+          <circle cx="222" cy="132" r="9" fill="#5B3A80"/>
+          <circle cx="116" cy="92" r="8" fill="#8A63C9"/>
+          <circle cx="212" cy="62" r="8" fill="#6D5BC7"/>
+        </g>
+        <g fill="#fff" opacity=".65"><circle cx="169" cy="133" r="2.2"/><circle cx="219" cy="129" r="2.2"/><circle cx="113" cy="89" r="2"/><circle cx="209" cy="59" r="2"/></g>
+
+        <!-- Kokosflocken -->
+        <path d="M160,64 a10,10 0 0 1 14,-6" fill="none" stroke="#FFFDF6" stroke-width="5" stroke-linecap="round"/>
+        <path d="M242,54 a10,10 0 0 1 13,7" fill="none" stroke="#FFFDF6" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- Löffel -->
+        <g transform="translate(330,118) rotate(30)">
+          <rect x="-5" y="-102" width="10" height="100" rx="5" fill="#2E2438"/>
+          <ellipse cy="12" rx="16" ry="21" fill="#2E2438"/>
+          <ellipse cx="-3" cy="8" rx="7" ry="11" fill="#8A63C9"/>
+        </g>
+
+        <!-- Sparkles -->
+        <path d="M56,64 l3,8 8,3 -8,3 -3,8 -3,-8 -8,-3 8,-3 Z" fill="var(--mango)"/>
+        <path d="M382,168 l2.5,7 7,2.5 -7,2.5 -2.5,7 -2.5,-7 -7,-2.5 7,-2.5 Z" fill="var(--pink-pop)"/>
+        <path d="M368,58 l2,5.5 5.5,2 -5.5,2 -2,5.5 -2,-5.5 -5.5,-2 5.5,-2 Z" fill="var(--sage)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TICKER ================= -->
+<div class="marquee relative z-10 -rotate-1 border-y-2 py-3" style="background:var(--berry);border-color:var(--ink)">
+  <div class="marquee-track gap-8 pr-8 display text-lg font-bold uppercase tracking-widest text-white">
+    <span>Açaí Bowls 🍇</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Frische Toppings 🍓</span><span>·</span><span>Catering 🎉</span><span>·</span>
+    <span>Açaí Bowls 🍇</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Frische Toppings 🍓</span><span>·</span><span>Catering 🎉</span><span>·</span>
+  </div>
+</div>
+
+<!-- ================= BOWLS ================= -->
+<section id="bowls" class="relative px-4 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="mb-3 inline-block rotate-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest text-white sticker" style="background:var(--sage-deep)">Unsere Klassiker</p>
+        <h2 class="display text-5xl font-extrabold tracking-tight sm:text-6xl">Bowls, die<br>knallen. 💥</h2>
+      </div>
+      <p class="max-w-xs text-sm font-medium opacity-70">Basis aus 100 % Açaí, gecrushed mit Banane — dazu Toppings, so viel das Herz will.</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Bowl 1 -->
+      <div class="reveal tilt rounded-3xl border-2 p-6" style="border-color:var(--ink);background:var(--berry-soft)">
+        <div class="mb-4 flex items-start justify-between">
+          <span class="text-5xl">🫐</span>
+          <span class="display -rotate-3 rounded-full border-2 px-3 py-1 text-sm font-bold sticker" style="border-color:var(--ink);background:var(--cream)">ab 7,90 €</span>
+        </div>
+        <h3 class="display text-2xl font-extrabold">Der Klassiker</h3>
+        <p class="mt-2 text-sm font-medium opacity-75">Açaí-Basis · Granola · Banane · Erdbeeren · Blaubeeren · Honig</p>
+        <div class="mt-4 flex flex-wrap gap-1.5 text-xs font-bold">
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🌾 Granola</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🍓 Erdbeere</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🍯 Honig</span>
+        </div>
+      </div>
+      <!-- Bowl 2 -->
+      <div class="reveal tilt rounded-3xl border-2 p-6 md:-mt-6" style="border-color:var(--ink);background:var(--pink)">
+        <div class="mb-4 flex items-start justify-between">
+          <span class="text-5xl">🥜</span>
+          <span class="display rotate-2 rounded-full border-2 px-3 py-1 text-sm font-bold sticker" style="border-color:var(--ink);background:var(--cream)">ab 8,90 €</span>
+        </div>
+        <h3 class="display text-2xl font-extrabold">Peanut Crunch</h3>
+        <p class="mt-2 text-sm font-medium opacity-75">Açaí-Basis · Erdnussbutter · Banane · Granola · Kakao-Nibs · Kokos</p>
+        <div class="mt-4 flex flex-wrap gap-1.5 text-xs font-bold">
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🥜 Peanut</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🍫 Nibs</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🥥 Kokos</span>
+        </div>
+        <p class="display mt-4 inline-block -rotate-2 rounded-full px-3 py-1 text-xs font-bold text-white sticker" style="background:var(--pink-pop)">★ Fan-Liebling</p>
+      </div>
+      <!-- Bowl 3 -->
+      <div class="reveal tilt rounded-3xl border-2 p-6" style="border-color:var(--ink);background:var(--mango-soft)">
+        <div class="mb-4 flex items-start justify-between">
+          <span class="text-5xl">🥭</span>
+          <span class="display -rotate-2 rounded-full border-2 px-3 py-1 text-sm font-bold sticker" style="border-color:var(--ink);background:var(--cream)">ab 8,90 €</span>
+        </div>
+        <h3 class="display text-2xl font-extrabold">Tropic Sunshine</h3>
+        <p class="mt-2 text-sm font-medium opacity-75">Açaí-Basis · Mango · Kiwi · Maracuja · Kokosflocken · Chia</p>
+        <div class="mt-4 flex flex-wrap gap-1.5 text-xs font-bold">
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🥭 Mango</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">🥝 Kiwi</span>
+          <span class="rounded-full bg-white/70 px-2.5 py-1">✨ Chia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOWL-BUILDER ================= -->
+<section id="builder" class="relative px-4 py-20 sm:py-24" style="background:var(--sage-soft)">
+  <svg class="wave absolute -top-[58px] left-0" style="color:var(--sage-soft)" viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="currentColor" d="M0,30 C240,60 480,0 720,25 C960,50 1200,10 1440,35 L1440,60 L0,60 Z"/></svg>
+
+  <div class="mx-auto max-w-4xl">
+    <div class="reveal mb-10 text-center">
+      <p class="mb-3 inline-block -rotate-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest text-white sticker" style="background:var(--berry)">Interaktiv ✦</p>
+      <h2 class="display text-5xl font-extrabold tracking-tight sm:text-6xl">Bau dir deine Bowl.</h2>
+      <p class="mx-auto mt-3 max-w-md text-sm font-medium opacity-70">Größe wählen, Toppings antippen — die ersten <b>3 Toppings sind gratis</b>, jedes weitere +0,80 €.</p>
+    </div>
+
+    <div class="reveal rounded-3xl border-2 bg-white/80 p-6 sm:p-10 sticker" style="border-color:var(--ink)">
+      <!-- Größen -->
+      <p class="display mb-3 text-sm font-bold uppercase tracking-widest opacity-60">1 · Deine Größe</p>
+      <div id="sizeRow" class="mb-8 grid gap-3 sm:grid-cols-3"></div>
+
+      <!-- Toppings -->
+      <p class="display mb-3 text-sm font-bold uppercase tracking-widest opacity-60">2 · Deine Toppings <span id="tCount" class="ml-1 rounded-full px-2 py-0.5 text-xs text-white" style="background:var(--sage-deep)">0 gewählt</span></p>
+      <div id="topRow" class="mb-8 flex flex-wrap gap-2.5"></div>
+
+      <!-- Summe -->
+      <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 px-5 py-4" style="border-color:var(--ink);background:var(--cream)">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest opacity-60">Deine Bowl</p>
+          <p id="sumLabel" class="text-sm font-medium opacity-80">Medium · 0 Toppings</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <span id="sumPrice" class="display text-4xl font-extrabold" style="color:var(--berry)">9,90 €</span>
+          <button onclick="demoToast()" class="display rounded-full px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-105 hover:-rotate-1" style="background:var(--ink)">Im Laden bestellen 🛎️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DRINKS ================= -->
+<section id="drinks" class="px-4 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mb-12">
+      <p class="mb-3 inline-block rotate-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest text-white sticker" style="background:var(--pink-pop)">Zum Trinken</p>
+      <h2 class="display text-5xl font-extrabold tracking-tight sm:text-6xl">Smoothies<br>& Matcha. 🍵</h2>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="reveal tilt flex flex-col justify-between rounded-3xl border-2 p-6" style="border-color:var(--ink);background:var(--pink)">
+        <span class="text-4xl">🍓</span>
+        <div class="mt-8"><h3 class="display text-xl font-extrabold">Berry Blast</h3>
+        <p class="mt-1 text-xs font-medium opacity-70">Erdbeere · Himbeere · Banane</p>
+        <p class="display mt-3 text-lg font-bold">5,90 €</p></div>
+      </div>
+      <div class="reveal tilt flex flex-col justify-between rounded-3xl border-2 p-6 lg:mt-6" style="border-color:var(--ink);background:var(--mango-soft)">
+        <span class="text-4xl">🥭</span>
+        <div class="mt-8"><h3 class="display text-xl font-extrabold">Mango Tango</h3>
+        <p class="mt-1 text-xs font-medium opacity-70">Mango · Maracuja · Orange</p>
+        <p class="display mt-3 text-lg font-bold">5,90 €</p></div>
+      </div>
+      <div class="reveal tilt flex flex-col justify-between rounded-3xl border-2 p-6" style="border-color:var(--ink);background:var(--sage-soft)">
+        <span class="text-4xl">🍵</span>
+        <div class="mt-8"><h3 class="display text-xl font-extrabold">Iced Matcha Latte</h3>
+        <p class="mt-1 text-xs font-medium opacity-70">Ceremonial Grade · Hafer o. Kuhmilch</p>
+        <p class="display mt-3 text-lg font-bold">5,40 €</p></div>
+      </div>
+      <div class="reveal tilt flex flex-col justify-between rounded-3xl border-2 p-6 lg:mt-6" style="border-color:var(--ink);background:var(--berry-soft)">
+        <span class="text-4xl">🧊</span>
+        <div class="mt-8">
+          <h3 class="display text-xl font-extrabold">Wassereis-Matcha</h3>
+          <p class="mt-1 text-xs font-medium opacity-70">Unser Sommer-Special ❄️</p>
+          <p class="display mt-3 text-lg font-bold">5,90 €</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WARUM / CATERING ================= -->
+<section class="relative px-4 py-20" style="background:var(--berry)">
+  <svg class="wave absolute -top-[58px] left-0" style="color:var(--berry)" viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="currentColor" d="M0,35 C240,5 480,55 720,30 C960,5 1200,50 1440,25 L1440,60 L0,60 Z"/></svg>
+  <div class="mx-auto grid max-w-6xl gap-10 text-white lg:grid-cols-2 lg:items-center">
+    <div class="reveal">
+      <h2 class="display text-5xl font-extrabold tracking-tight sm:text-6xl">Frisch.<br>Jeden Tag.<br>Mitten in N4.</h2>
+      <p class="mt-5 max-w-md font-medium text-white/80">Wir crushen unser Açaí täglich frisch und schneiden jedes Topping selbst — keine Fertigmischung, kein Schnickschnack. Einfach ehrlich gutes Superfood im Herzen von Mannheim.</p>
+      <div class="mt-8 grid max-w-md grid-cols-3 gap-3 text-center">
+        <div class="rounded-2xl bg-white/10 p-4"><p class="display text-3xl font-extrabold" style="color:var(--mango)">100%</p><p class="mt-1 text-xs font-bold text-white/70">echtes Açaí</p></div>
+        <div class="rounded-2xl bg-white/10 p-4"><p class="display text-3xl font-extrabold" style="color:var(--mango)">12+</p><p class="mt-1 text-xs font-bold text-white/70">Toppings</p></div>
+        <div class="rounded-2xl bg-white/10 p-4"><p class="display text-3xl font-extrabold" style="color:var(--mango)">7/7</p><p class="mt-1 text-xs font-bold text-white/70">Tage offen</p></div>
+      </div>
+    </div>
+    <div class="reveal rounded-3xl border-2 border-white/25 bg-white/10 p-8 backdrop-blur">
+      <p class="display mb-2 inline-block -rotate-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest sticker" style="background:var(--mango);color:var(--ink)">Event geplant? 🎉</p>
+      <h3 class="display text-3xl font-extrabold">Açaí-Catering für euer Event</h3>
+      <p class="mt-3 text-sm font-medium text-white/80">Geburtstag, Office-Party oder Uni-Event — wir kommen mit Bowl-Bar & Toppings zu euch. Schreib uns einfach per DM.</p>
+      <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="display mt-6 inline-block rounded-full bg-white px-6 py-3 text-sm font-bold transition-transform hover:scale-105 hover:rotate-1" style="color:var(--berry)">Catering anfragen ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INSTA ================= -->
+<section class="px-4 py-20 sm:py-24">
+  <div class="reveal mx-auto max-w-4xl rounded-3xl border-2 p-8 text-center sm:p-12 sticker" style="border-color:var(--ink);background:linear-gradient(135deg,var(--pink) 0%,var(--berry-soft) 50%,var(--sage-soft) 100%)">
+    <span class="text-5xl">📸</span>
+    <h2 class="display mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Folg uns für<br>Bowl-Content & Specials</h2>
+    <p class="mt-3 text-sm font-bold opacity-70"><span data-cfg="instaHandle">@acai.mannheim</span> · über 1.200 Follower 🫶</p>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="display rounded-full px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-105 hover:-rotate-1" style="background:var(--ink)">Instagram ↗</a>
+      <a data-cfg-href="tiktok" href="#" target="_blank" rel="noopener" class="display rounded-full border-2 px-6 py-3 text-sm font-bold transition-transform hover:scale-105 hover:rotate-1" style="border-color:var(--ink)">TikTok ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STANDORT ================= -->
+<section id="standort" class="px-4 pb-20 sm:pb-28">
+  <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-5">
+    <div class="reveal rounded-3xl border-2 p-8 lg:col-span-2" style="border-color:var(--ink);background:var(--cream-2)">
+      <p class="mb-3 inline-block -rotate-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest text-white sticker" style="background:var(--sage-deep)">Komm vorbei 👋</p>
+      <h2 class="display text-4xl font-extrabold tracking-tight">Mitten in den Quadraten.</h2>
+      <div class="mt-6 space-y-4 text-sm font-medium">
+        <p class="flex items-start gap-3"><span class="text-xl">📍</span><span><b data-cfg="address">N4, 10 · 68161 Mannheim</b><br><span class="opacity-60">2 Min. vom Paradeplatz</span></span></p>
+        <p class="flex items-start gap-3"><span class="text-xl">🕙</span><span><b data-cfg="hoursLabel">Mo – So · 10:00 – 19:00 Uhr</b><br><span id="openText2" class="opacity-60"></span></span></p>
+      </div>
+      <a id="routeLink" href="#" target="_blank" rel="noopener" class="display mt-7 inline-block rounded-full px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-105 hover:-rotate-1" style="background:var(--berry)">Route planen ↗</a>
+    </div>
+    <div class="reveal overflow-hidden rounded-3xl border-2 lg:col-span-3" style="border-color:var(--ink);min-height:320px">
+      <iframe id="mapFrame" src="" class="h-full w-full" style="min-height:320px;border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Karte: Standort"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="border-t-2 px-4 py-10" style="border-color:var(--ink);background:var(--cream-2)">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 text-sm font-medium">
+    <p class="display flex items-center gap-2 text-lg font-extrabold">
+      <span class="grid h-8 w-8 place-items-center rounded-full text-[11px] font-bold text-white" style="background:var(--sage)">[a]</span>
+      <span data-cfg="name">[acaí]</span> <span class="font-normal opacity-50">Mannheim</span>
+    </p>
+    <p class="opacity-60"><span data-cfg="address">N4, 10 · 68161 Mannheim</span></p>
+    <p class="opacity-40 text-xs">Demo-Musterseite · gestaltet von TechSaar</p>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="display fixed bottom-6 left-1/2 z-[99] -translate-x-1/2 translate-y-24 rounded-full border-2 px-6 py-3 text-sm font-bold opacity-0 transition-all duration-300 sticker" style="border-color:var(--ink);background:var(--mango)">
+  Yum! 🍇 Bestellung geht direkt im Laden — N4, 10.
+</div>
+
+<script>
+/* ---------- CONFIG in die Seite schreiben ---------- */
+document.querySelectorAll("[data-cfg]").forEach(el=>{ const k=el.dataset.cfg; if(CONFIG[k]) el.textContent=CONFIG[k]; });
+document.querySelectorAll("[data-cfg-href]").forEach(el=>{ const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k]; });
+document.getElementById("mapFrame").src = "https://www.google.com/maps?q="+encodeURIComponent(CONFIG.mapsQuery)+"&output=embed";
+document.getElementById("routeLink").href = "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(CONFIG.mapsQuery);
+
+/* ---------- Öffnungsstatus ---------- */
+(function(){
+  const now=new Date(), h=CONFIG.hours[now.getDay()], hr=now.getHours()+now.getMinutes()/60;
+  const open = h && hr>=h[0] && hr<h[1];
+  const badge=document.getElementById("openBadge");
+  badge.classList.remove("hidden");
+  badge.textContent = open ? "● Jetzt geöffnet" : "● Geschlossen";
+  badge.style.background = open ? "var(--sage-soft)" : "var(--pink)";
+  badge.style.color = "var(--ink)";
+  const t = open ? "Jetzt geöffnet — bis "+h[1]+":00 Uhr" : "Gerade geschlossen — ab "+ (h?h[0]:10) +":00 Uhr wieder da";
+  document.getElementById("openText").textContent = t;
+  document.getElementById("openText2").textContent = t;
+  document.getElementById("openDot").style.background = open ? "var(--sage-deep)" : "var(--pink-pop)";
+})();
+
+/* ---------- Scroll-Reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+/* ---------- Bowl-Builder ---------- */
+let size=CONFIG.sizes[1], picked=new Set();
+const sizeRow=document.getElementById("sizeRow"), topRow=document.getElementById("topRow");
+
+CONFIG.sizes.forEach(s=>{
+  const b=document.createElement("button");
+  b.className="chip rounded-2xl border-2 px-4 py-3 text-left";
+  b.style.borderColor="var(--ink)";
+  b.innerHTML=`<span class="display block text-lg font-extrabold">${s.name}</span><span class="text-xs font-medium opacity-60">${s.ml} · ${s.price.toFixed(2).replace(".",",")} €</span>`;
+  b.onclick=()=>{ size=s; [...sizeRow.children].forEach(c=>c.classList.remove("on")); b.classList.add("on"); update(); };
+  if(s.id===size.id) b.classList.add("on");
+  sizeRow.appendChild(b);
+});
+
+CONFIG.toppings.forEach(t=>{
+  const b=document.createElement("button");
+  b.className="chip rounded-full border-2 px-3.5 py-2 text-sm font-bold";
+  b.style.borderColor="var(--ink)";
+  b.textContent=`${t.e} ${t.name}`;
+  b.onclick=()=>{ picked.has(t.name)?(picked.delete(t.name),b.classList.remove("on")):(picked.add(t.name),b.classList.add("on")); update(); };
+  topRow.appendChild(b);
+});
+
+function update(){
+  const extra=Math.max(0,picked.size-CONFIG.freeToppings)*CONFIG.toppingPrice;
+  const sum=size.price+extra;
+  const p=document.getElementById("sumPrice");
+  p.textContent=sum.toFixed(2).replace(".",",")+" €";
+  p.classList.remove("pricepop"); void p.offsetWidth; p.classList.add("pricepop");
+  document.getElementById("sumLabel").textContent=`${size.name} · ${picked.size} Topping${picked.size===1?"":"s"}${extra>0?` (+${extra.toFixed(2).replace(".",",")} €)`:""}`;
+  document.getElementById("tCount").textContent=`${picked.size} gewählt${picked.size<=CONFIG.freeToppings?" · gratis":""}`;
+}
+update();
+
+/* ---------- Demo-Toast ---------- */
+function demoToast(){
+  const t=document.getElementById("toast");
+  t.style.opacity="1"; t.style.transform="translate(-50%,0)";
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transform="translate(-50%,6rem)"; },2600);
+}
+</script>
+</body>
+</html>
