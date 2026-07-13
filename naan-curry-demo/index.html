@@ -113,9 +113,9 @@
   .sec-intro{color:var(--ink-70);max-width:52ch}
 
   /* Empfehlungen */
-  .rec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-  @media(max-width:960px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:560px){.rec-grid{grid-template-columns:1fr 1fr}}
+  .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:820px){.rec-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.rec-grid{grid-template-columns:1fr}}
   .rec{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .2s ease,box-shadow .2s}
   .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .rec-thumb{position:relative;aspect-ratio:5/4;background:linear-gradient(140deg,#F6E2BE,var(--paper-2));overflow:hidden;border-radius:38% 38% 0 0/22% 22% 0 0}
@@ -532,7 +532,7 @@ function applyConfig(){
 function vtag(t){ return t==='veg'?'<span class="vtag">Vegetarisch</span>':(t==='beliebt'?'<span class="vtag" style="border-color:var(--marigold);color:var(--marigold-d)">★ Beliebt</span>':''); }
 
 function renderRecs(){
-  const recs = allItems().filter(i=>i.tags.includes('beliebt')).slice(0,4);
+  const recs = allItems().filter(i=>i.tags.includes('beliebt')).slice(0,3);
   document.getElementById('rec-grid').innerHTML = recs.map(i=>`
     <article class="rec">
       <div class="rec-thumb">${i.img?`<img src="${i.img}" alt="${i.name}" loading="lazy" onerror="this.remove()">`:''}</div>
