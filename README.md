@@ -18,7 +18,9 @@ mobiloptimiert. Es sind reine Front-End-Demos (HTML + Tailwind), keine echten Ba
 | [`zahnarzt-demo/`](zahnarzt-demo/) | Zahnarztpraxis | Dental-Care-Stil, Online-Terminbuchung + Telefonassistent-Sektion |
 | [`telefon-demo/`](telefon-demo/) | KI-Telefonassistent (intern) | Demo-Seite für Kundengespräche |
 
-> Unsere eigene Agentur-Website (TechSaar) liegt nicht mehr im Repo — sie ist live bei Hostinger.
+> Unsere eigene Agentur-Website (TechSaar) liegt im Repo-Root (`index.html`) und wird bei jedem
+> Push nach `main` automatisch per GitHub Action zu Hostinger (tech-saar.de) deployt.
+> Dadurch sind auch alle Demo-Ordner live erreichbar, z. B. `tech-saar.de/acai-demo/`.
 
 ## Ansehen
 
