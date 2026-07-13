@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BORI 보리 — Koreanisches Restaurant in Mannheim</title>
+<meta name="description" content="Koreanische Hausküche in den Mannheimer Quadraten. Bibimbap, Kimchi-Jeon, Japchae — hausgemacht und herzlich. U 2, 3 · Reservierung empfohlen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lack:#191210;        /* Hintergrund: dunkler Lack */
+    --dolsot:#251b15;      /* Fläche: Steinschale */
+    --dolsot-2:#2e221a;    /* hellere Fläche */
+    --reis:#F4ECDF;        /* Text: Reisweiß */
+    --reis-60:rgba(244,236,223,.62);
+    --reis-30:rgba(244,236,223,.28);
+    --gerste:#C89B5F;      /* Akzent: geröstete Gerste */
+    --gochu:#C23A2B;       /* Akzent: Gochujang-Rot */
+    --gochu-dunkel:#A52F22;
+    --linie:rgba(200,155,95,.22);
+    --radius:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+  body{
+    background:var(--lack);
+    color:var(--reis);
+    font-family:'Schibsted Grotesk',system-ui,sans-serif;
+    font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hangul{font-family:'Gowun Batang',serif}
+  h1,h2,h3,.display{font-family:'Young Serif',serif;font-weight:400;line-height:1.12}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--gerste);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ---------- Navigation ---------- */
+  nav{
+    position:fixed;inset:0 0 auto 0;z-index:50;
+    background:linear-gradient(rgba(25,18,16,.92),rgba(25,18,16,.75) 70%,transparent);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .nav-inner{
+    max-width:1120px;margin:0 auto;padding:18px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .logo{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+  .logo .lat{font-family:'Young Serif',serif;font-size:1.35rem;letter-spacing:.14em}
+  .logo .kor{color:var(--gerste);font-size:1.05rem}
+  .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+  .nav-links a{
+    text-decoration:none;font-size:.92rem;letter-spacing:.04em;color:var(--reis-60);
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--reis)}
+  .btn{
+    display:inline-block;text-decoration:none;border-radius:999px;
+    padding:12px 26px;font-weight:600;font-size:.95rem;letter-spacing:.02em;
+    transition:transform .15s ease,background .2s,box-shadow .2s;
+  }
+  .btn-rot{background:var(--gochu);color:#fff;box-shadow:0 4px 18px rgba(194,58,43,.35)}
+  .btn-rot:hover{background:var(--gochu-dunkel);transform:translateY(-1px)}
+  .btn-leer{border:1px solid var(--linie);color:var(--reis)}
+  .btn-leer:hover{border-color:var(--gerste);color:var(--gerste)}
+  .nav-cta{padding:9px 20px;font-size:.88rem}
+  @media(max-width:760px){.nav-links li:not(.nav-cta-li){display:none}}
+
+  /* ---------- Hero ---------- */
+  header{
+    position:relative;min-height:100svh;
+    display:flex;align-items:center;
+    background:
+      linear-gradient(100deg,rgba(25,18,16,.96) 32%,rgba(25,18,16,.55) 62%,rgba(25,18,16,.35)),
+      var(--dolsot) url('https://images.unsplash.com/photo-1590301157890-4810ed352733?w=1800&q=75&fm=jpg') center/cover no-repeat;
+    overflow:hidden;
+  }
+  .hero-inner{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:120px 24px 90px;width:100%}
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:.82rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gerste);
+    margin-bottom:22px;
+  }
+  .hero-eyebrow::before{content:"";width:34px;height:1px;background:var(--gerste)}
+  h1{font-size:clamp(2.4rem,5.4vw,4.2rem);max-width:13ch;margin-bottom:22px}
+  .hero-sub{max-width:46ch;color:var(--reis-60);font-size:1.08rem;margin-bottom:34px}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:26px}
+  .hero-hinweis{
+    display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--reis-60);
+  }
+  .punkt{width:7px;height:7px;border-radius:50%;background:var(--gochu);flex:none;
+    box-shadow:0 0 0 4px rgba(194,58,43,.18)}
+  /* vertikales Hangul als Signatur */
+  .hero-hangul{
+    position:absolute;top:50%;right:4vw;transform:translateY(-50%);
+    writing-mode:vertical-rl;font-size:clamp(5rem,13vw,11rem);
+    color:transparent;-webkit-text-stroke:1px rgba(200,155,95,.35);
+    letter-spacing:.18em;user-select:none;pointer-events:none;z-index:1;
+  }
+  @media(max-width:900px){.hero-hangul{right:2vw;-webkit-text-stroke-color:rgba(200,155,95,.22)}}
+
+  /* Einstiegs-Animation */
+  .steig{opacity:0;transform:translateY(18px);animation:steigen .8s cubic-bezier(.2,.7,.3,1) forwards}
+  .steig.s2{animation-delay:.15s}.steig.s3{animation-delay:.3s}.steig.s4{animation-delay:.45s}
+  @keyframes steigen{to{opacity:1;transform:none}}
+
+  /* ---------- Öffnungszeiten-Band ---------- */
+  .band{
+    background:var(--gerste);color:#241a15;
+    font-size:.92rem;font-weight:600;letter-spacing:.05em;
+    padding:12px 24px;text-align:center;
+  }
+  .band span{white-space:nowrap}
+  .band .tr{margin:0 14px;opacity:.45}
+
+  /* ---------- Sektionen allgemein ---------- */
+  section{padding:96px 0}
+  .eyebrow{
+    font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gerste);
+    margin-bottom:14px;display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--gerste)}
+  h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin-bottom:14px}
+  .sek-intro{color:var(--reis-60);max-width:52ch;margin-bottom:48px}
+
+  /* Scroll-Reveal */
+  .zeig{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+  .zeig.da{opacity:1;transform:none}
+
+  /* ---------- Speisekarte (차림표) ---------- */
+  .karte{
+    background:var(--dolsot);border:1px solid var(--linie);border-radius:var(--radius);
+    padding:56px clamp(24px,5vw,72px);position:relative;
+  }
+  .karte::before{
+    content:"차림표";position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+    background:var(--lack);border:1px solid var(--linie);border-radius:999px;
+    padding:5px 22px;font-family:'Gowun Batang',serif;color:var(--gerste);
+    font-size:.95rem;letter-spacing:.3em;
+  }
+  .karte-spalten{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  @media(max-width:820px){.karte-spalten{grid-template-columns:1fr;gap:40px}}
+  .karte h3{font-size:1.15rem;color:var(--gerste);letter-spacing:.06em;margin-bottom:26px;
+    padding-bottom:12px;border-bottom:1px solid var(--linie)}
+  .gericht{display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+    padding:14px 0;border-bottom:1px dashed rgba(200,155,95,.14)}
+  .gericht:last-child{border-bottom:none}
+  .g-name{font-weight:600;font-size:1.02rem}
+  .g-kor{font-family:'Gowun Batang',serif;color:var(--gerste);font-size:.92rem;white-space:nowrap}
+  .g-desc{color:var(--reis-60);font-size:.9rem;margin-top:2px}
+  .tag{display:inline-block;font-size:.7rem;letter-spacing:.08em;border:1px solid var(--linie);
+    color:var(--gerste);border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px}
+  .karte-fuss{margin-top:36px;text-align:center;color:var(--reis-60);font-size:.9rem;font-style:italic}
+
+  /* ---------- Über / Atmosphäre ---------- */
+  .ueber-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+  @media(max-width:880px){.ueber-grid{grid-template-columns:1fr;gap:44px}}
+  .ueber-bilder{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ueber-bilder figure{border-radius:var(--radius);overflow:hidden;background:var(--dolsot-2);
+    border:1px solid var(--linie)}
+  .ueber-bilder img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4;
+    filter:saturate(1.05) contrast(1.02);transition:transform .6s ease}
+  .ueber-bilder figure:hover img{transform:scale(1.04)}
+  .ueber-bilder figure:nth-child(2){margin-top:36px}
+  .ueber-text p{color:var(--reis-60);margin-bottom:18px}
+  .ueber-text p strong{color:var(--reis)}
+  .fakten{list-style:none;margin-top:30px;display:grid;gap:12px}
+  .fakten li{display:flex;gap:12px;align-items:baseline;font-size:.95rem}
+  .fakten li::before{content:"—";color:var(--gochu);font-weight:700;flex:none}
+
+  /* ---------- Zitat ---------- */
+  .zitat{background:var(--dolsot);border-block:1px solid var(--linie);text-align:center;
+    padding:80px 24px}
+  .zitat blockquote{font-family:'Young Serif',serif;font-size:clamp(1.3rem,2.6vw,1.9rem);
+    max-width:26ch;margin:0 auto 18px;line-height:1.35}
+  .zitat blockquote::before{content:"„"}.zitat blockquote::after{content:""}
+  .zitat cite{font-style:normal;color:var(--gerste);font-size:.88rem;letter-spacing:.12em;
+    text-transform:uppercase}
+
+  /* ---------- Kontakt ---------- */
+  .kontakt-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+  @media(max-width:820px){.kontakt-grid{grid-template-columns:1fr;gap:44px}}
+  .k-block h3{font-size:1.05rem;color:var(--gerste);letter-spacing:.08em;margin-bottom:16px}
+  .k-tel{font-family:'Young Serif',serif;font-size:clamp(1.5rem,3vw,2.1rem);
+    text-decoration:none;display:inline-block;margin:6px 0 10px;
+    border-bottom:2px solid var(--gochu);padding-bottom:2px;transition:color .2s}
+  .k-tel:hover{color:var(--gerste)}
+  .zeiten{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:6px}
+  .zeiten td{padding:9px 0;border-bottom:1px dashed rgba(200,155,95,.14)}
+  .zeiten td:last-child{text-align:right;color:var(--reis-60)}
+  .zeiten .heute td{color:var(--gerste);font-weight:600}
+  .k-adresse{color:var(--reis-60);margin-bottom:22px}
+  .k-adresse strong{color:var(--reis)}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--linie);padding:38px 24px;text-align:center;
+    color:var(--reis-30);font-size:.85rem}
+  footer .f-logo{font-family:'Young Serif',serif;letter-spacing:.14em;color:var(--reis-60);
+    margin-bottom:10px;font-size:1.05rem}
+  footer .demo-hinweis{
+    display:inline-block;margin-top:16px;padding:6px 16px;border:1px dashed var(--linie);
+    border-radius:999px;color:var(--gerste);font-size:.78rem;letter-spacing:.06em;
+  }
+  footer a{color:var(--reis-60)}
+</style>
+</head>
+<body>
+
+<nav aria-label="Hauptnavigation">
+  <div class="nav-inner">
+    <a class="logo" href="#oben" aria-label="Bori — nach oben">
+      <span class="lat">BORI</span><span class="kor hangul">보리</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#speisekarte">Speisekarte</a></li>
+      <li><a href="#ueber">Über uns</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+      <li class="nav-cta-li"><a class="btn btn-rot nav-cta" href="tel:+4962131973055">Tisch reservieren</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header id="oben">
+  <div class="hero-hangul hangul" aria-hidden="true">보리</div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow steig">Koreanisches Restaurant · Mannheim, U&nbsp;2</p>
+    <h1 class="steig s2">Koreanische Hausküche, mitten in den Quadraten.</h1>
+    <p class="hero-sub steig s3">
+      Bibimbap aus der heißen Schale, knusprige Kimchi-Pfannkuchen, Glasnudeln
+      wie bei Familie zuhause. Frisch gekocht, ehrlich gewürzt, seit Jahren
+      eine der beliebtesten Adressen für koreanisches Essen in Mannheim.
+    </p>
+    <div class="hero-ctas steig s4">
+      <a class="btn btn-rot" href="tel:+4962131973055">☎ &nbsp;Tisch reservieren · 0621 31973055</a>
+      <a class="btn btn-leer" href="#speisekarte">Zur Speisekarte</a>
+    </div>
+    <p class="hero-hinweis steig s4"><span class="punkt" aria-hidden="true"></span>
+      Abends oft ausgebucht. Wir empfehlen eine Reservierung.</p>
+  </div>
+</header>
+
+<div class="band" role="note">
+  <span>Di–Do 17:00–22:00</span><span class="tr">·</span>
+  <span>Fr–So 12:30–22:00</span><span class="tr">·</span>
+  <span>Montag Ruhetag</span>
+</div>
+
+<section id="speisekarte">
+  <div class="wrap">
+    <p class="eyebrow zeig">Aus unserer Küche</p>
+    <h2 class="zeig">Die Karte — hausgemacht, wie es sich gehört.</h2>
+    <p class="sek-intro zeig">Ein Auszug unserer Klassiker. Die vollständige Karte,
+      mit Tagesgerichten und geschmorten Spezialitäten, gibt es bei uns im Haus.</p>
+
+    <div class="karte zeig">
+      <div class="karte-spalten">
+        <div>
+          <h3>Gerichte</h3>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Bibimbap</span>
+              <p class="g-desc">Reis, buntes Gemüse, Spiegelei &amp; Gochujang. Unser Signature-Gericht</p>
+            </div>
+            <span class="g-kor hangul">비빔밥</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Kimchi-Jeon</span>
+              <p class="g-desc">Knuspriger Kimchi-Pfannkuchen, außen kross, innen saftig</p>
+            </div>
+            <span class="g-kor hangul">김치전</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Japchae<span class="tag">auch vegan</span></span>
+              <p class="g-desc">Gebratene Glasnudeln mit Sesam und Gemüse</p>
+            </div>
+            <span class="g-kor hangul">잡채</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Ddukbokki</span>
+              <p class="g-desc">Scharfe Reiskuchen in Gochujang-Sauce, für Mutige</p>
+            </div>
+            <span class="g-kor hangul">떡볶이</span>
+          </div>
+        </div>
+        <div>
+          <h3>Getränke</h3>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Makgeolli</span>
+              <p class="g-desc">Traditioneller koreanischer Reiswein, mild &amp; leicht perlend</p>
+            </div>
+            <span class="g-kor hangul">막걸리</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Soju</span>
+              <p class="g-desc">Der koreanische Klassiker, pur oder als Begleiter zum Essen</p>
+            </div>
+            <span class="g-kor hangul">소주</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Sujeonggwa</span>
+              <p class="g-desc">Hausgemachter Zimt-Kaki-Punsch, kalt serviert</p>
+            </div>
+            <span class="g-kor hangul">수정과</span>
+          </div>
+          <div class="gericht">
+            <div>
+              <span class="g-name">Boricha<span class="tag">aufs Haus</span></span>
+              <p class="g-desc">Gerösteter Gerstentee. Unser Namensgeber: „Bori" heißt Gerste</p>
+            </div>
+            <span class="g-kor hangul">보리차</span>
+          </div>
+        </div>
+      </div>
+      <p class="karte-fuss">Viele Gerichte bereiten wir auf Wunsch auch vegetarisch oder vegan zu. Sprechen Sie uns an.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ueber" style="padding-top:0">
+  <div class="wrap">
+    <div class="ueber-grid">
+      <div class="ueber-bilder zeig">
+        <figure>
+          <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?w=700&q=70&fm=jpg"
+               alt="Ddukbokki — scharfe koreanische Reiskuchen in roter Gochujang-Sauce">
+        </figure>
+        <figure>
+          <img src="https://images.unsplash.com/photo-1583224964978-2257b960c3d3?w=700&q=70&fm=jpg"
+               alt="Hausgemachtes Kimchi in dunkler Steinschale">
+        </figure>
+      </div>
+      <div class="ueber-text zeig">
+        <p class="eyebrow">Über Bori</p>
+        <h2>„Bori" heißt Gerste — und Gerste heißt: zuhause.</h2>
+        <p>
+          In Korea steht in fast jedem Zuhause eine Kanne <strong>Boricha</strong> —
+          gerösteter Gerstentee. Er ist das Erste, was Gästen eingeschenkt wird.
+          Genau dieses Gefühl servieren wir in Mannheim: koreanische Hausküche,
+          bei der alles selbst gemacht ist, vom Kimchi bis zur Sauce.
+        </p>
+        <p>
+          Unsere Küche ist klein, unsere Karte ehrlich, unsere Portionen großzügig.
+          Deshalb gilt bei uns: <strong>lieber reservieren</strong>, die Tische
+          sind abends schnell vergeben.
+        </p>
+        <ul class="fakten">
+          <li>Alles hausgemacht: Kimchi, Saucen, Banchan</li>
+          <li>Vegetarische &amp; vegane Optionen</li>
+          <li>Reservierung empfohlen, telefonisch unter 0621&nbsp;31973055</li>
+          <li>Zahlung: bar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="zitat zeig">
+  <blockquote>Als hätte man in Seoul bei einer Familie am Tisch gesessen."</blockquote>
+  <cite>— Stimmen unserer Gäste</cite>
+</div>
+
+<section id="kontakt">
+  <div class="wrap">
+    <p class="eyebrow zeig">Besuch &amp; Reservierung</p>
+    <h2 class="zeig">Wir freuen uns auf Sie.</h2>
+    <p class="sek-intro zeig">Mitten in den Quadraten, wenige Minuten vom Paradeplatz.</p>
+    <div class="kontakt-grid">
+      <div class="k-block zeig">
+        <h3>Reservierung &amp; Adresse</h3>
+        <p class="k-adresse">
+          <strong>BORI · Koreanisches Restaurant</strong><br>
+          U 2, 3 · 68161 Mannheim
+        </p>
+        <a class="k-tel" href="tel:+4962131973055">0621 31973055</a>
+        <p style="color:var(--reis-60);font-size:.92rem;margin-bottom:24px">
+          Am liebsten telefonisch — wir sind während der Öffnungszeiten erreichbar.</p>
+        <a class="btn btn-leer" href="https://maps.google.com/?q=Bori+Restaurant+U2+3+Mannheim"
+           target="_blank" rel="noopener">Route in Google Maps →</a>
+      </div>
+      <div class="k-block zeig">
+        <h3>Öffnungszeiten</h3>
+        <table class="zeiten">
+          <tr><td>Montag</td><td>Ruhetag</td></tr>
+          <tr><td>Dienstag – Donnerstag</td><td>17:00 – 22:00</td></tr>
+          <tr><td>Freitag – Sonntag</td><td>12:30 – 22:00</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="f-logo">BORI <span class="hangul" style="color:var(--gerste)">보리</span></p>
+  <p>U 2, 3 · 68161 Mannheim · <a href="tel:+4962131973055">0621 31973055</a></p>
+  <p style="margin-top:8px">Impressum &amp; Datenschutz werden vor Veröffentlichung ergänzt</p>
+  <span class="demo-hinweis">Unverbindlicher Design-Entwurf · gestaltet von TechSaar · tech-saar.de</span>
+</footer>
+
+<script>
+  // Scroll-Reveal (respektiert prefers-reduced-motion)
+  const reduziert = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduziert) {
+    document.querySelectorAll('.zeig').forEach(el => el.classList.add('da'));
+  } else {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('da'); io.unobserve(e.target); } });
+    }, { threshold: .12 });
+    document.querySelectorAll('.zeig').forEach(el => io.observe(el));
+  }
+</script>
+</body>
+</html>
