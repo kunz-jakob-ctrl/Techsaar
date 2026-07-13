@@ -24,10 +24,16 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Ziel auf dem Server. Bei Hostinger liegt die Website i. d. R. in
-          # public_html/. Falls euer FTP-Konto schon DIREKT in public_html
-          # startet, hier auf "./" ändern.
-          server-dir: public_html/
+          # Verschluesseltes FTPS (explicit AUTH TLS ueber Port 21).
+          # WICHTIG: Das Secret FTP_HOST muss der Hostname sein, fuer den das
+          # Server-Zertifikat gilt (aus hPanel -> FTP-Konten), NICHT die IP --
+          # sonst schlaegt die Zertifikatspruefung fehl.
+          protocol: ftps
+          port: 21
+          # Web-Root dieses Kontos ist domains/tech-saar.de/public_html/ (das
+          # FTP-Konto startet im Account-Root, nicht direkt in public_html/).
+          # Mit "public_html/" schlaegt der CWD fehl (550 denied).
+          server-dir: domains/tech-saar.de/public_html/
           local-dir: ./
           # Nur geänderte Dateien werden übertragen (Zustand wird serverseitig
           # in .ftp-deploy-sync-state.json gemerkt).
