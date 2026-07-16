@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECKSTÜCK · Keramikmalstudio St. Wendel — Keramik bemalen</title>
+<meta name="description" content="ECKSTÜCK — dein Keramikmalstudio in St. Wendel. Rohling aussuchen, bemalen, wir glasieren & brennen. Jetzt Platz reservieren — auch für Kindergeburtstage & Events.">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@500;600;700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<script>
+/* ============ CONFIG — pro Kunde anpassen ============ */
+const CONFIG = {
+  name: "ECKSTÜCK",
+  sub: "Keramikmalstudio",
+  city: "St. Wendel",
+  claim: "Keramik bemalen in St. Wendel",
+  address: "Musterstraße 1 · 66606 St. Wendel",
+  mapsQuery: "Sankt Wendel Fußgängerzone",
+  phone: "+49 6851 000000",
+  phoneLabel: "06851 / 000 000",
+  whatsapp: "4915780750445",           // für Reservierungs-Anfragen per WhatsApp
+  instagram: "https://www.instagram.com/eckstueck_/",
+  instaHandle: "@eckstueck_",
+  // Öffnungszeiten: 0=So … 6=Sa · null = Ruhetag · [von, bis] in Stunden
+  hours: { 0:[11,17], 1:null, 2:[12,18], 3:[12,18], 4:[12,18], 5:[12,18], 6:[10,18] },
+  hoursLabel: "Di – Fr 12–18 · Sa 10–18 · So 11–17",
+  closedLabel: "Montag Ruhetag",
+  // Reservierung
+  slots: ["10:00","12:00","14:00","16:00"],   // Startzeiten (~2 Std. Malzeit), werden je Tag an Öffnungszeiten angepasst
+  maxPersons: 10,
+  occasions: ["Einfach malen","Kindergeburtstag 🎈","Mädelsabend 🥂","Teamevent 🧑‍🤝‍🧑"],
+  // Preise
+  feeAdult: "6,90 €", feeKid: "4,90 €",
+  blanks: [
+    { n:"Tassen & Becher",  p:"ab 12 €", e:"☕" },
+    { n:"Müslischalen",     p:"ab 14 €", e:"🥣" },
+    { n:"Teller",           p:"ab 16 €", e:"🍽️" },
+    { n:"Vasen",            p:"ab 19 €", e:"🏺" },
+    { n:"Figuren & Deko",   p:"ab 9 €",  e:"🐢" },
+    { n:"Spardosen",        p:"ab 17 €", e:"🐷" },
+  ],
+};
+/* ===================================================== */
+</script>
+
+<style>
+:root{
+  --paper:#FAF6ED; --paper-2:#F4EDDD;
+  --ink:#41493B; --ink-soft:#6B7562;
+  --clay:#C2734E; --clay-deep:#A85C39;
+  --blush:#F3CBD8; --butter:#F3E3AE; --sage:#C8DCBB; --sky:#CBDDE6;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Karla',sans-serif;overflow-x:hidden}
+.serif{font-family:'Cormorant Garamond',serif}
+.hand{font-family:'Caveat',cursive}
+
+/* Papier-Körnung über allem */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Aquarell-Aura wie im Logo */
+.aura{position:absolute;border-radius:9999px;filter:blur(46px);opacity:.75;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, var(--sage) 0%, var(--butter) 38%, var(--blush) 68%, transparent 78%)}
+.aura-2{background:radial-gradient(circle at 50% 50%, var(--sky) 0%, var(--blush) 45%, var(--butter) 70%, transparent 80%)}
+
+/* Bogen-Fenster für Fotos (wie Regal-Nischen im Atelier) */
+.arch{border-radius:999px 999px 26px 26px;overflow:hidden;background-size:cover;background-position:center}
+
+/* Handgezeichneter Unterstrich */
+.squiggle{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 14' preserveAspectRatio='none'%3E%3Cpath d='M4 9 C 40 3, 80 12, 116 7 S 190 4, 216 8' fill='none' stroke='%23C2734E' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center bottom/100% .5em;padding-bottom:.18em}
+
+/* Karten mit handgezeichnetem Rand */
+.sketch{border:1.5px dashed rgba(65,73,59,.35);border-radius:22px;background:rgba(255,255,255,.55)}
+
+/* Scroll-Reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* Nav */
+#nav{transition:background .3s,box-shadow .3s}
+#nav.scrolled{background:rgba(250,246,237,.94);box-shadow:0 6px 24px -12px rgba(65,73,59,.25);backdrop-filter:blur(8px)}
+
+/* Buttons */
+.btn-clay{background:var(--clay);color:#fff;transition:transform .2s,background .2s}
+.btn-clay:hover{background:var(--clay-deep);transform:translateY(-2px)}
+
+/* Reservierung: Chips */
+.chip{border:1.5px solid rgba(65,73,59,.25);border-radius:16px;transition:all .15s;cursor:pointer;background:#fff}
+.chip:hover{border-color:var(--clay)}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip.full{opacity:.38;cursor:not-allowed;text-decoration:line-through}
+
+/* Sanftes Schweben für Deko */
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-9px) rotate(var(--r,0deg))}}
+.floaty{animation:floaty 5s ease-in-out infinite}
+input,select{outline:none}
+input:focus{border-color:var(--clay)!important}
+</style>
+</head>
+<body>
+
+<!-- Ribbon -->
+<div class="relative z-40 text-center text-[13px] font-bold tracking-wide py-2 px-3" style="background:var(--ink);color:var(--paper)">
+  ✨ Neueröffnung in <span data-cfg="city">St. Wendel</span> — jetzt <a href="#reservierung" class="underline underline-offset-2 hover:opacity-80">Platz zur Eröffnung sichern</a>
+</div>
+
+<!-- Nav: zentriertes Wortzeichen -->
+<nav id="nav" class="sticky top-0 z-40">
+  <div class="max-w-6xl mx-auto px-5 py-4 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+    <div class="hidden md:flex gap-7 text-[15px] font-bold">
+      <a href="#ablauf" class="hover:opacity-60 transition-opacity">So funktioniert's</a>
+      <a href="#preise" class="hover:opacity-60 transition-opacity">Preise</a>
+      <a href="#events" class="hover:opacity-60 transition-opacity">Events</a>
+    </div>
+    <a href="#" class="justify-self-center text-center leading-none">
+      <span class="hand text-[15px] block" style="color:var(--ink-soft)" data-cfg="sub">Keramikmalstudio</span>
+      <span class="serif font-semibold text-[26px] tracking-[.22em] block mt-0.5"><span data-cfg="name">ECKSTÜCK</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 justify-self-end">
+      <a href="#galerie" class="text-[15px] font-bold hover:opacity-60 transition-opacity">Galerie</a>
+      <a href="#kontakt" class="text-[15px] font-bold hover:opacity-60 transition-opacity">Kontakt</a>
+      <a href="#reservierung" class="btn-clay rounded-full px-5 py-2.5 text-[14px] font-bold">Platz reservieren</a>
+    </div>
+    <button id="burger" class="md:hidden justify-self-end text-2xl" aria-label="Menü">☰</button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden px-6 pb-5 flex flex-col gap-3 text-[16px] font-bold" style="background:rgba(250,246,237,.97)">
+    <a href="#ablauf">So funktioniert's</a><a href="#preise">Preise</a><a href="#events">Events</a>
+    <a href="#galerie">Galerie</a><a href="#kontakt">Kontakt</a>
+    <a href="#reservierung" class="btn-clay rounded-full px-5 py-2.5 text-center text-white">Platz reservieren</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="relative max-w-6xl mx-auto px-5 pt-10 pb-20 md:pt-16 md:pb-28">
+  <div class="aura w-[420px] h-[420px] -top-20 -left-32"></div>
+  <div class="aura aura-2 w-[380px] h-[380px] top-40 -right-28"></div>
+
+  <div class="relative grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <p class="hand text-[26px]" style="color:var(--clay)" data-cfg="claim">Keramik bemalen in St. Wendel</p>
+      <h1 class="serif font-semibold text-[46px] md:text-[64px] leading-[1.04] mt-3">
+        Mal dir dein<br><em class="squiggle">Lieblingsstück.</em>
+      </h1>
+      <p class="mt-6 max-w-md text-[17px] leading-relaxed" style="color:var(--ink-soft)">
+        Rohling aussuchen, Pinsel schnappen, drauflosmalen — den Rest (Glasur &amp; Brand)
+        übernehmen wir. Nach etwa einer Woche holst du dein fertiges Unikat ab.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="#reservierung" class="btn-clay rounded-full px-7 py-3.5 font-bold text-[16px]">Platz reservieren</a>
+        <a href="#ablauf" class="rounded-full px-7 py-3.5 font-bold text-[16px] border-[1.5px] hover:bg-white transition-colors" style="border-color:var(--ink)">So funktioniert's ↓</a>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-2 text-[13px] font-bold">
+        <span class="rounded-full px-3.5 py-1.5" style="background:var(--sage)">ohne Vorkenntnisse</span>
+        <span class="rounded-full px-3.5 py-1.5" style="background:var(--blush)">für Groß &amp; Klein</span>
+        <span class="rounded-full px-3.5 py-1.5" style="background:var(--butter)">spülmaschinenfest gebrannt</span>
+      </div>
+    </div>
+
+    <!-- Bogen-Collage -->
+    <div class="relative h-[440px] md:h-[520px]">
+      <div class="arch absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 top-0 w-[240px] md:w-[280px] h-[360px] md:h-[420px] shadow-2xl"
+           style="background-color:var(--blush);background-image:url('https://images.unsplash.com/photo-1657395348373-28a0cb49804b?q=80&w=800&auto=format&fit=crop')"></div>
+      <div class="arch absolute left-2 md:-left-6 bottom-2 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:-4deg;background-color:var(--sky);background-image:url('https://images.unsplash.com/photo-1657395342406-36d5b745f07d?q=80&w=500&auto=format&fit=crop')"></div>
+      <div class="arch absolute right-2 md:right-0 bottom-10 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:4deg;animation-delay:1.2s;background-color:var(--butter);background-image:url('https://images.unsplash.com/photo-1599601821513-00e3f9fa1e6a?q=80&w=500&auto=format&fit=crop')"></div>
+      <div class="hand absolute -right-1 md:right-6 top-6 rotate-6 rounded-2xl px-4 py-2 text-[20px] shadow-lg" style="background:#fff;color:var(--clay)">handgemacht mit ♥</div>
+      <span class="absolute left-4 top-8 text-2xl floaty" style="animation-delay:.6s">✦</span>
+      <span class="absolute right-16 bottom-0 text-xl floaty" style="animation-delay:2s">✦</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABLAUF ============ -->
+<section id="ablauf" class="relative py-20" style="background:var(--paper-2)">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="hand text-[24px] text-center" style="color:var(--clay)">ganz entspannt</p>
+    <h2 class="serif font-semibold text-[38px] md:text-[48px] text-center">So funktioniert's</h2>
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="rv sketch p-7 text-center">
+        <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--blush)">1</div>
+        <h3 class="serif font-semibold text-[24px] mt-4">Rohling aussuchen</h3>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Tasse, Teller, Vase oder Figur — such dir dein Stück aus dem Regal aus.</p>
+      </div>
+      <div class="rv sketch p-7 text-center" style="transition-delay:.1s">
+        <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--butter)">2</div>
+        <h3 class="serif font-semibold text-[24px] mt-4">Bemalen</h3>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Farben, Pinsel, Stempel &amp; Schablonen liegen bereit — wir helfen bei Ideen.</p>
+      </div>
+      <div class="rv sketch p-7 text-center" style="transition-delay:.2s">
+        <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--sage)">3</div>
+        <h3 class="serif font-semibold text-[24px] mt-4">Wir brennen's</h3>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Glasur &amp; Brand übernehmen wir — dadurch wird alles glänzend und alltagstauglich.</p>
+      </div>
+      <div class="rv sketch p-7 text-center" style="transition-delay:.3s">
+        <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--sky)">4</div>
+        <h3 class="serif font-semibold text-[24px] mt-4">Abholen &amp; freuen</h3>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Nach ca. einer Woche ist dein Unikat fertig — spülmaschinenfest &amp; lebensmittelecht.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREISE ============ -->
+<section id="preise" class="relative py-20">
+  <div class="aura w-[340px] h-[340px] top-10 -right-32"></div>
+  <div class="max-w-6xl mx-auto px-5 relative">
+    <p class="hand text-[24px]" style="color:var(--clay)">fair &amp; einfach</p>
+    <h2 class="serif font-semibold text-[38px] md:text-[48px]">Was kostet das?</h2>
+    <div class="mt-10 grid lg:grid-cols-[1fr_1.3fr] gap-8 items-start">
+      <div class="rv sketch p-8">
+        <h3 class="serif font-semibold text-[28px]">Studiogebühr</h3>
+        <p class="mt-1 text-[15px]" style="color:var(--ink-soft)">einmalig pro Person — Farben, Pinsel, Glasur &amp; Brand inklusive</p>
+        <div class="mt-6 flex items-end gap-8">
+          <div><div class="serif font-bold text-[44px] leading-none" data-cfg="feeAdult">6,90 €</div><div class="text-[14px] font-bold mt-1">Erwachsene</div></div>
+          <div><div class="serif font-bold text-[44px] leading-none" style="color:var(--clay)" data-cfg="feeKid">4,90 €</div><div class="text-[14px] font-bold mt-1">Kinder bis 12</div></div>
+        </div>
+        <p class="hand text-[21px] mt-6" style="color:var(--ink-soft)">+ dein Rohling — das war's schon ✦</p>
+      </div>
+      <div class="rv" style="transition-delay:.15s">
+        <div class="grid sm:grid-cols-2 gap-4" id="blankList"></div>
+        <p class="mt-4 text-[13px]" style="color:var(--ink-soft)">Beispielpreise — die Auswahl im Studio wechselt ständig. Alle Rohlinge inkl. Transparent-Glasur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVENTS ============ -->
+<section id="events" class="py-20" style="background:var(--paper-2)">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="hand text-[24px] text-center" style="color:var(--clay)">gemeinsam kreativ</p>
+    <h2 class="serif font-semibold text-[38px] md:text-[48px] text-center">Feiern &amp; Events</h2>
+    <div class="mt-12 grid md:grid-cols-3 gap-6">
+      <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--blush)">
+        <span class="text-4xl">🎈</span>
+        <h3 class="serif font-semibold text-[26px] mt-3">Kindergeburtstag</h3>
+        <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, matschen — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
+        <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
+      </div>
+      <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--butter);transition-delay:.1s">
+        <span class="text-4xl">🥂</span>
+        <h3 class="serif font-semibold text-[26px] mt-3">Mädelsabend</h3>
+        <p class="mt-2 text-[15px] leading-relaxed">Der etwas andere Abend: Musik, gute Gespräche und am Ende ein selbst bemaltes Andenken.</p>
+        <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
+      </div>
+      <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--sage);transition-delay:.2s">
+        <span class="text-4xl">🧑‍🤝‍🧑</span>
+        <h3 class="serif font-semibold text-[26px] mt-3">Teamevents &amp; JGA</h3>
+        <p class="mt-2 text-[15px] leading-relaxed">Kreativ statt Konferenzraum — für Gruppen reservieren wir euch gern das ganze Studio.</p>
+        <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section id="galerie" class="py-20">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="hand text-[24px]" style="color:var(--clay)">aus dem Atelier</p>
+    <h2 class="serif font-semibold text-[38px] md:text-[48px]">Ein bisschen Vorfreude</h2>
+    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-5">
+      <div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--sky);background-image:url('https://images.unsplash.com/photo-1452802447250-470a88ac82bc?q=80&w=600&auto=format&fit=crop')"></div>
+      <div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="transition-delay:.08s;background-color:var(--blush);background-image:url('https://images.unsplash.com/photo-1721328004336-c19ee38adcd1?q=80&w=600&auto=format&fit=crop')"></div>
+      <div class="rv arch h-[240px] md:h-[300px]" style="transition-delay:.16s;background-color:var(--butter);background-image:url('https://images.unsplash.com/photo-1657395353364-4708d905c875?q=80&w=600&auto=format&fit=crop')"></div>
+      <div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="transition-delay:.24s;background-color:var(--sage);background-image:url('https://images.unsplash.com/photo-1610206349499-c932c3b3aacb?q=80&w=600&auto=format&fit=crop')"></div>
+    </div>
+    <p class="mt-8 text-center text-[15px] font-bold">Mehr auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline underline-offset-4" style="color:var(--clay)"><span data-cfg="instaHandle">@eckstueck_</span> ↗</a></p>
+  </div>
+</section>
+
+<!-- ============ RESERVIERUNG ============ -->
+<section id="reservierung" class="relative py-20" style="background:var(--ink)">
+  <div class="max-w-4xl mx-auto px-5 relative">
+    <p class="hand text-[24px] text-center" style="color:var(--butter)">Plätze sind begrenzt</p>
+    <h2 class="serif font-semibold text-[38px] md:text-[48px] text-center" style="color:var(--paper)">Reserviere deinen Maltisch</h2>
+    <p class="text-center mt-3 text-[15px] max-w-md mx-auto" style="color:rgba(250,246,237,.65)">Such dir Tag &amp; Uhrzeit aus — wir bestätigen deine Reservierung kurz per WhatsApp oder Anruf.</p>
+
+    <div class="mt-12 rounded-[28px] p-6 md:p-10" style="background:var(--paper)">
+      <!-- Tag -->
+      <p class="font-bold text-[15px]">1 · Wähle einen Tag</p>
+      <div id="dayRow" class="mt-3 flex gap-2.5 overflow-x-auto pb-2"></div>
+      <!-- Uhrzeit -->
+      <p class="font-bold text-[15px] mt-7">2 · Wähle eine Startzeit <span class="font-normal text-[13px]" style="color:var(--ink-soft)">(ca. 2 Std. Malzeit)</span></p>
+      <div id="slotRow" class="mt-3 flex flex-wrap gap-2.5"></div>
+      <!-- Personen + Anlass -->
+      <div class="mt-7 grid sm:grid-cols-2 gap-6">
+        <div>
+          <p class="font-bold text-[15px]">3 · Wie viele Personen?</p>
+          <div class="mt-3 inline-flex items-center gap-5 rounded-2xl border-[1.5px] px-5 py-3 bg-white" style="border-color:rgba(65,73,59,.25)">
+            <button id="pMinus" class="text-2xl font-bold w-8 h-8 grid place-items-center rounded-full hover:bg-black/5">−</button>
+            <span id="pCount" class="serif font-bold text-[28px] w-8 text-center">2</span>
+            <button id="pPlus" class="text-2xl font-bold w-8 h-8 grid place-items-center rounded-full hover:bg-black/5">+</button>
+          </div>
+          <p class="hand text-[19px] mt-2" style="color:var(--ink-soft)">Gruppen ab 8? Ruf uns am besten kurz an ☎</p>
+        </div>
+        <div>
+          <p class="font-bold text-[15px]">4 · Anlass <span class="font-normal text-[13px]" style="color:var(--ink-soft)">(optional)</span></p>
+          <div id="occRow" class="mt-3 flex flex-wrap gap-2.5"></div>
+        </div>
+      </div>
+      <!-- Kontakt -->
+      <div class="mt-7 grid sm:grid-cols-2 gap-4">
+        <input id="rName" type="text" placeholder="Dein Name" class="rounded-2xl border-[1.5px] px-5 py-3.5 bg-white text-[15px]" style="border-color:rgba(65,73,59,.25)">
+        <input id="rPhone" type="tel" placeholder="Handynummer (für die Bestätigung)" class="rounded-2xl border-[1.5px] px-5 py-3.5 bg-white text-[15px]" style="border-color:rgba(65,73,59,.25)">
+      </div>
+      <p id="rError" class="hidden mt-3 text-[14px] font-bold" style="color:var(--clay-deep)"></p>
+      <button id="rSubmit" class="btn-clay w-full mt-6 rounded-2xl py-4 font-bold text-[17px]">Reservierung anfragen ✦</button>
+      <p class="mt-3 text-center text-[12.5px]" style="color:var(--ink-soft)">Unverbindliche Anfrage — verbindlich wird's erst mit unserer Bestätigung.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt" class="py-20">
+  <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-2 gap-10 items-start">
+    <div>
+      <p class="hand text-[24px]" style="color:var(--clay)">komm vorbei</p>
+      <h2 class="serif font-semibold text-[38px] md:text-[48px]">Mitten in <span data-cfg="city">St. Wendel</span></h2>
+      <div class="mt-8 space-y-5 text-[16px]">
+        <p class="flex items-start gap-3"><span class="text-xl">📍</span><span><b data-cfg="address">Musterstraße 1 · 66606 St. Wendel</b><br><a id="routeLink" href="#" target="_blank" rel="noopener" class="underline underline-offset-4 text-[14px]" style="color:var(--clay)">Route planen ↗</a></span></p>
+        <p class="flex items-start gap-3"><span class="text-xl">🕙</span><span><b data-cfg="hoursLabel">Di – Fr 12–18 · Sa 10–18 · So 11–17</b> <span class="text-[14px]" style="color:var(--ink-soft)">(<span data-cfg="closedLabel">Montag Ruhetag</span>)</span><br><span id="openText" class="text-[14px] font-bold"></span></span></p>
+        <p class="flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a><br><span class="text-[14px]" style="color:var(--ink-soft)">oder schreib uns bei Insta: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" data-cfg="instaHandle">@eckstueck_</a></span></span></p>
+      </div>
+      <a href="#reservierung" class="btn-clay inline-block mt-8 rounded-full px-7 py-3.5 font-bold">Platz reservieren</a>
+    </div>
+    <div class="rounded-[28px] overflow-hidden shadow-xl h-[340px] md:h-[420px]">
+      <iframe id="mapFrame" src="" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Karte"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-10 text-center text-[13.5px]" style="background:var(--paper-2);color:var(--ink-soft)">
+  <p class="serif font-semibold text-[22px] tracking-[.2em]" style="color:var(--ink)"><span data-cfg="name">ECKSTÜCK</span></p>
+  <p class="hand text-[19px] mt-1">Keramik bemalen · <span data-cfg="city">St. Wendel</span></p>
+  <p class="mt-4">Demo-Website · <a href="#" class="underline">Impressum</a> · <a href="#" class="underline">Datenschutz</a></p>
+</footer>
+
+<!-- Bestätigungs-Modal -->
+<div id="modal" class="hidden fixed inset-0 z-50 grid place-items-center p-5" style="background:rgba(65,73,59,.55)">
+  <div class="rounded-[28px] max-w-md w-full p-8 text-center relative" style="background:var(--paper)">
+    <div class="aura w-[260px] h-[260px] -top-16 -left-20 opacity-60"></div>
+    <div class="relative">
+      <span class="text-5xl">🎨</span>
+      <h3 class="serif font-semibold text-[32px] mt-3">Fast geschafft!</h3>
+      <p id="mSummary" class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)"></p>
+      <a id="mWhats" href="#" target="_blank" rel="noopener" class="block mt-6 rounded-2xl py-3.5 font-bold text-white" style="background:#25D366">Anfrage per WhatsApp senden 💬</a>
+      <button id="mClose" class="mt-3 w-full rounded-2xl py-3 font-bold border-[1.5px]" style="border-color:var(--ink)">Schließen</button>
+      <p class="mt-4 text-[12px]" style="color:var(--ink-soft)">Demo-Hinweis: In der echten Version geht die Anfrage direkt bei euch ein.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- CONFIG in die Seite schreiben ---------- */
+CONFIG.phoneHref = "tel:" + CONFIG.phone.replace(/\s/g,"");
+document.querySelectorAll("[data-cfg]").forEach(el=>{const k=el.dataset.cfg; if(CONFIG[k]) el.textContent=CONFIG[k];});
+document.querySelectorAll("[data-cfg-href]").forEach(el=>{const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k];});
+document.getElementById("mapFrame").src="https://www.google.com/maps?q="+encodeURIComponent(CONFIG.mapsQuery)+"&output=embed";
+document.getElementById("routeLink").href="https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(CONFIG.mapsQuery);
+document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bemalen";
+
+/* ---------- Rohling-Preisliste ---------- */
+document.getElementById("blankList").innerHTML = CONFIG.blanks.map(b=>`
+  <div class="sketch flex items-center gap-4 px-5 py-4">
+    <span class="text-3xl">${b.e}</span>
+    <div class="flex-1"><b class="text-[15.5px]">${b.n}</b></div>
+    <span class="serif font-bold text-[20px]" style="color:var(--clay)">${b.p}</span>
+  </div>`).join("");
+
+/* ---------- Offen/Geschlossen-Status ---------- */
+(function(){
+  const now=new Date(), h=CONFIG.hours[now.getDay()], hr=now.getHours()+now.getMinutes()/60;
+  const el=document.getElementById("openText");
+  if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+h[1]+":00 Uhr"; el.style.color="#5F7F5F"; }
+  else { el.textContent="● Gerade geschlossen"; el.style.color="var(--clay-deep)"; }
+})();
+
+/* ---------- Nav ---------- */
+const nav=document.getElementById("nav");
+addEventListener("scroll",()=>nav.classList.toggle("scrolled",scrollY>10),{passive:true});
+const mm=document.getElementById("mobileMenu");
+document.getElementById("burger").onclick=()=>mm.classList.toggle("hidden");
+mm.querySelectorAll("a").forEach(a=>a.onclick=()=>mm.classList.add("hidden"));
+
+/* ---------- Scroll-Reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.15});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+
+/* ---------- Reservierung ---------- */
+const state={day:null,slot:null,persons:2,occ:null};
+const fmtDay=d=>d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","");
+const fmtDate=d=>d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"});
+const fullDate=d=>d.toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
+
+/* Nächste 14 Tage, Ruhetage übersprungen */
+const days=[];
+for(let i=1;days.length<10 && i<21;i++){
+  const d=new Date(); d.setDate(d.getDate()+i);
+  if(CONFIG.hours[d.getDay()]) days.push(d);
+}
+const dayRow=document.getElementById("dayRow");
+days.forEach((d,i)=>{
+  const b=document.createElement("button");
+  b.className="chip shrink-0 px-4 py-2.5 text-center";
+  b.innerHTML=`<span class="block text-[12px] font-bold opacity-60">${fmtDay(d)}</span><span class="block font-bold text-[15px]">${fmtDate(d)}</span>`;
+  b.onclick=()=>{state.day=d;state.slot=null;dayRow.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));b.classList.add("on");renderSlots();};
+  dayRow.appendChild(b);
+  if(i===0) b.click();
+});
+
+/* Slots je Tag — pseudo-zufällig manche "ausgebucht" (Demo) */
+function seeded(str){let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))>>>0;return h;}
+function renderSlots(){
+  const row=document.getElementById("slotRow"); row.innerHTML="";
+  const h=CONFIG.hours[state.day.getDay()];
+  CONFIG.slots.filter(s=>{const t=parseInt(s);return t>=h[0]&&t+2<=h[1]+0.01;}).forEach(s=>{
+    const full=seeded(state.day.toDateString()+s)%4===0;
+    const b=document.createElement("button");
+    b.className="chip px-5 py-2.5 font-bold text-[15px]"+(full?" full":"");
+    b.textContent=s+(full?" · voll":"");
+    if(!full) b.onclick=()=>{state.slot=s;row.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));b.classList.add("on");};
+    row.appendChild(b);
+  });
+}
+
+/* Personen */
+const pc=document.getElementById("pCount");
+document.getElementById("pMinus").onclick=()=>{state.persons=Math.max(1,state.persons-1);pc.textContent=state.persons;};
+document.getElementById("pPlus").onclick=()=>{state.persons=Math.min(CONFIG.maxPersons,state.persons+1);pc.textContent=state.persons;};
+
+/* Anlass */
+const occRow=document.getElementById("occRow");
+CONFIG.occasions.forEach(o=>{
+  const b=document.createElement("button");
+  b.className="chip px-4 py-2 font-bold text-[13.5px]"; b.textContent=o;
+  b.onclick=()=>{const on=b.classList.contains("on");occRow.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));if(!on){b.classList.add("on");state.occ=o;}else state.occ=null;};
+  occRow.appendChild(b);
+});
+
+/* Absenden */
+document.getElementById("rSubmit").onclick=()=>{
+  const name=document.getElementById("rName").value.trim(),
+        phone=document.getElementById("rPhone").value.trim(),
+        err=document.getElementById("rError");
+  let msg="";
+  if(!state.slot) msg="Bitte wähle noch eine Startzeit aus.";
+  if(!name||!phone) msg="Bitte Name und Handynummer eintragen — sonst können wir nicht bestätigen.";
+  if(msg){err.textContent="✎ "+msg;err.classList.remove("hidden");return;}
+  err.classList.add("hidden");
+  const txt=`${fullDate(state.day)} um ${state.slot} Uhr · ${state.persons} ${state.persons===1?"Person":"Personen"}${state.occ?" · "+state.occ.replace(/\s*[^\x00-\x7FäöüÄÖÜß ]+$/,""):""}`;
+  document.getElementById("mSummary").innerHTML=`<b>${name}</b>, dein Wunschtermin:<br><b>${txt}</b><br><br>Sende uns die Anfrage per WhatsApp — wir bestätigen dir den Platz so schnell wie möglich.`;
+  document.getElementById("mWhats").href="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent(`Hallo ${CONFIG.name}! Ich möchte gern reservieren: ${txt}. Name: ${name}, Tel: ${phone}`);
+  document.getElementById("modal").classList.remove("hidden");
+};
+document.getElementById("mClose").onclick=()=>document.getElementById("modal").classList.add("hidden");
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.target.classList.add("hidden");};
+</script>
+</body>
+</html>
