@@ -56,7 +56,7 @@ const CONFIG = {
   --clay:#C2734E; --clay-deep:#A85C39;
   --blush:#F3CBD8; --butter:#F3E3AE; --sage:#C8DCBB; --sky:#CBDDE6;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip} /* clip statt hidden: verhindert seitliches Wackeln (iOS) ohne sticky-Nav zu brechen */
 body{background:var(--paper);color:var(--ink);font-family:'Karla',sans-serif;overflow-x:hidden}
 .serif{font-family:'Cormorant Garamond',serif}
 .hand{font-family:'Caveat',cursive}
