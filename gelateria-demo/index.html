@@ -6,39 +6,13 @@
   <title>Gelateria Luna — Handgemachtes Eis aus Saarbrücken</title>
   <meta name="description" content="Gelateria Luna – handgemachtes Gelato, täglich frisch gerührt aus natürlichen Zutaten. Mitten in Saarbrücken." />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+  <!-- Demo-Seite: nicht indexieren -->
+  <meta name="robots" content="noindex" />
+  <!-- Lokal gehostet (DSGVO): Tailwind-Build (styles.css) + Fonts lokal (fonts/), keine externen Requests.
+       Theme in tailwind.config.js; neu bauen: npx tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="fonts/fonts.css">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            blush:  '#FCF2EE',
-            cream:  '#FFFDFA',
-            soft:   '#F7E9E1',
-            line:   '#EFDED4',
-            choco:  '#3B2A23',
-            muted:  '#8C7A70',
-            berry:  '#DB6188',
-            berryd: '#C44E72',
-            pist:   '#9CC078',
-            caramel:'#DDA15E',
-          },
-          fontFamily: {
-            display: ['Fraunces', 'Georgia', 'serif'],
-            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
-          },
-          boxShadow: {
-            soft: '0 18px 50px -20px rgba(80,40,30,0.30)',
-            berry:'0 14px 32px -12px rgba(219,97,136,0.55)',
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
     html, body { background:#FCF2EE; }
@@ -66,6 +40,12 @@
 </head>
 
 <body class="bg-blush font-sans text-choco antialiased">
+  <!-- Rechtlicher Demo-Hinweis (UWG): kennzeichnet fiktiven Betrieb + Beispieldaten -->
+  <div role="note" style="position:fixed;left:12px;bottom:12px;z-index:9999;max-width:min(92vw,350px);display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(17,17,17,.88);color:#fff;font:500 12px/1.35 system-ui,-apple-system,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+    <span aria-hidden="true" style="flex:none;font-size:13px">&#9432;</span>
+    <span>Demo-Projekt von <a href="https://tech-saar.de" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;text-underline-offset:2px">TechSaar</a> &ndash; kein echtes Unternehmen; Preise &amp; Bewertungen sind Beispiele.</span>
+  </div>
+
 
   <!-- ===================== HEADER ===================== -->
   <header id="hdr" class="fixed inset-x-0 top-0 z-40 transition-all duration-300">
@@ -132,7 +112,7 @@
       <!-- RIGHT: round highlight image with 6 flavor scoops floating evenly around -->
       <div class="anim-up relative mx-auto aspect-square w-full max-w-[30rem]" style="animation-delay:.2s">
         <div class="imgfall absolute left-1/2 top-1/2 aspect-square w-[74%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-soft ring-[6px] ring-cream">
-          <img id="hero-img" src="bilder/gelateria.jpg" alt="Unsere Eisdiele" class="h-full w-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=900&auto=format&fit=crop';" />
+          <img id="hero-img" src="bilder/gelateria.jpg" alt="Unsere Eisdiele" class="h-full w-full object-cover" onerror="this.onerror=null;this.src='bilder/gelateria-163393335811-900.jpg';" />
         </div>
         <!-- Sorten-Kugeln, gleichmäßig im Kreis (12/2/4/6/8/10 Uhr) -->
         <div class="floaty absolute left-1/2 top-0 grid h-[4.6rem] w-[4.6rem] -translate-x-1/2 place-items-center rounded-full bg-[#F3E2B3] text-choco shadow-soft" style="animation-delay:0s"><span class="font-display text-[13px] font-semibold">Vanille</span></div>
@@ -194,7 +174,7 @@
   <section id="laden" class="scroll-mt-24 bg-soft px-5 py-16 sm:px-8 lg:py-24">
     <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
       <div class="reveal imgfall overflow-hidden rounded-[2rem] shadow-soft">
-        <img src="bilder/laden.jpg" alt="Unser Laden" class="aspect-[4/3] h-full w-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1629385701021-fcd568a743e8?q=80&w=1000&auto=format&fit=crop';" />
+        <img src="bilder/laden.jpg" alt="Unser Laden" class="aspect-[4/3] h-full w-full object-cover" onerror="this.onerror=null;this.src='bilder/gelateria-162938570102-1000.jpg';" />
       </div>
       <div class="reveal">
         <p class="font-display text-lg italic text-berry">unser kleines Reich</p>
@@ -218,7 +198,16 @@
       </div>
       <div class="grid gap-8 lg:grid-cols-2">
         <div class="reveal overflow-hidden rounded-[2rem] border border-line shadow-soft">
-          <iframe id="map" title="Standort auf Google Maps" class="h-72 w-full lg:h-full" style="min-height:340px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src=""></iframe>
+          <div class="flex h-72 w-full flex-col items-center justify-center gap-4 bg-soft text-center lg:h-full" style="min-height:340px">
+            <span class="grid h-14 w-14 place-items-center rounded-full bg-berry/15 text-berry">
+              <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.5-7-11a7 7 0 1 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </span>
+            <p class="px-6 font-display text-xl text-choco">Du findest uns mitten in SaarbrÃ¼cken.</p>
+            <a data-cfg-href="mapsLink" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-berry px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-berryd">
+              Auf Google Maps Ã¶ffnen
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
         </div>
         <div class="reveal space-y-4">
           <div class="flex items-start gap-4 rounded-3xl border border-line bg-cream p-5 shadow-sm">
@@ -251,8 +240,8 @@
       </div>
       <p class="text-sm text-blush/60">© <span id="year"></span> <span data-cfg="name">Gelateria Luna</span> · Demo-Website</p>
       <p class="flex gap-5 text-sm text-blush/60">
-        <a href="#" class="transition-colors hover:text-berry">Impressum</a>
-        <a href="#" class="transition-colors hover:text-berry">Datenschutz</a>
+        <a href="https://tech-saar.de/impressum.html" rel="noopener" class="transition-colors hover:text-berry">Impressum</a>
+        <a href="https://tech-saar.de/datenschutz.html" rel="noopener" class="transition-colors hover:text-berry">Datenschutz</a>
       </p>
     </div>
   </footer>
@@ -270,20 +259,20 @@
     // Eigene Fotos: in den Ordner "bilder/" legen (hero -> gelateria.jpg, Laden -> laden.jpg).
     // Solange sie fehlen, werden die Fallback-Bilder aus dem Netz genutzt.
     heroImage:     "bilder/gelateria.jpg",
-    heroFallback:  "https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=900&auto=format&fit=crop",
-    ladenFallback: "https://images.unsplash.com/photo-1629385701021-fcd568a743e8?q=80&w=1000&auto=format&fit=crop",
+    heroFallback:  "bilder/gelateria-163393335811-900.jpg",
+    ladenFallback: "bilder/gelateria-162938570102-1000.jpg",
 
     // Öffnungszeiten: [open,close] oder null. 0=So..6=Sa
     hours: { 0:[12,21], 1:null, 2:[11,21], 3:[11,21], 4:[11,21], 5:[11,22], 6:[11,22] },
 
     // Ein paar Highlight-Sorten (nicht alle). color = Hintergrund der Kugel (falls Bild fehlt).
     flavors: [
-      { name:'Pistazie',       note:'Sizilianische Pistazien, fein geröstet', color:'#9CC078', img:'https://images.unsplash.com/photo-1534706936160-d5ee67737249?q=80&w=500&auto=format&fit=crop' },
-      { name:'Stracciatella',  note:'Sahne mit zarten Schokosplittern',       color:'#EDE3D6', img:'https://images.unsplash.com/photo-1590080962330-747c6aba8028?q=80&w=500&auto=format&fit=crop' },
-      { name:'Erdbeere',       note:'Sonnengereifte Erdbeeren',               color:'#E86F92', img:'https://images.unsplash.com/photo-1633933358116-a27b902fad35?q=80&w=500&auto=format&fit=crop' },
-      { name:'Dunkle Schokolade', note:'Intensiv & samtig, 70% Kakao',        color:'#5A3A2E', img:'https://images.unsplash.com/photo-1562790879-dfde82829db0?q=80&w=500&auto=format&fit=crop' },
-      { name:'Vanille',        note:'Cremige Bourbon-Vanille',                color:'#F3E2B3', img:'https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=500&auto=format&fit=crop' },
-      { name:'Mango-Sorbet',   note:'Fruchtig, vegan, erfrischend',           color:'#F2B84B', img:'https://images.unsplash.com/photo-1663904458920-f153c162fa79?q=80&w=500&auto=format&fit=crop' },
+      { name:'Pistazie',       note:'Sizilianische Pistazien, fein geröstet', color:'#9CC078', img:'bilder/gelateria-153470693616-500.jpg' },
+      { name:'Stracciatella',  note:'Sahne mit zarten Schokosplittern',       color:'#EDE3D6', img:'bilder/gelateria-159008096233-500.jpg' },
+      { name:'Erdbeere',       note:'Sonnengereifte Erdbeeren',               color:'#E86F92', img:'bilder/gelateria-163393335811-500.jpg' },
+      { name:'Dunkle Schokolade', note:'Intensiv & samtig, 70% Kakao',        color:'#5A3A2E', img:'bilder/gelateria-1562790879-500.jpg' },
+      { name:'Vanille',        note:'Cremige Bourbon-Vanille',                color:'#F3E2B3', img:'bilder/gelateria-157019778841-500.jpg' },
+      { name:'Mango-Sorbet',   note:'Fruchtig, vegan, erfrischend',           color:'#F2B84B', img:'bilder/gelateria-166390445892-500.jpg' },
     ],
   };
   /* ==================================================== */
@@ -298,7 +287,6 @@
     document.querySelectorAll('[data-cfg-href]').forEach(e=>{const k=e.getAttribute('data-cfg-href'); if(d[k]!=null)e.setAttribute('href',d[k]);});
     document.querySelectorAll('[data-cfg-src]').forEach(e=>{const k=e.getAttribute('data-cfg-src'); if(d[k]!=null)e.setAttribute('src',d[k]);});
     document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+C.phoneTel);
-    document.getElementById('map').src = 'https://www.google.com/maps?q='+encodeURIComponent(C.mapsQuery)+'&output=embed';
     document.title = `${C.name} — Handgemachtes Eis aus Saarbrücken`;
   }
 

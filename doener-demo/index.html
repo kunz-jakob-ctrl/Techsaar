@@ -6,40 +6,13 @@
   <title>Saar Döner — Frisch gemacht in Saarbrücken</title>
   <meta name="description" content="Saar Döner – frische Döner, Dürüm & Teller, täglich frisch zubereitet. Online vorbestellen und abholen." />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Demo-Seite: nicht indexieren -->
+  <meta name="robots" content="noindex" />
+  <!-- Lokal gehostet (DSGVO): Tailwind-Build (styles.css) + Fonts lokal (fonts/), keine externen Requests.
+       Theme in tailwind.config.js; neu bauen: npx tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="fonts/fonts.css">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            cream:  '#FBF6EC',
-            card:   '#FFFFFF',
-            soft:   '#F4ECDD',
-            line:   '#EBE1D0',
-            ink:    '#26201A',
-            muted:  '#857A6B',
-            tomato: '#E1492E',
-            tomatod:'#C23D26',
-            leaf:   '#4FA45A',
-            leafd:  '#3C8A48',
-            honey:  '#F2A63C',
-          },
-          fontFamily: {
-            display: ['Inter', 'system-ui', 'sans-serif'],
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-          boxShadow: {
-            soft: '0 14px 40px -16px rgba(60,40,20,0.25)',
-            tomato: '0 12px 30px -10px rgba(225,73,46,0.5)',
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
     html, body { background:#FBF6EC; }
@@ -76,12 +49,18 @@
 </head>
 
 <body class="bg-[#14100c] font-sans text-ink antialiased">
+  <!-- Rechtlicher Demo-Hinweis (UWG): kennzeichnet fiktiven Betrieb + Beispieldaten -->
+  <div role="note" style="position:fixed;left:12px;bottom:12px;z-index:9999;max-width:min(92vw,350px);display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(17,17,17,.88);color:#fff;font:500 12px/1.35 system-ui,-apple-system,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+    <span aria-hidden="true" style="flex:none;font-size:13px">&#9432;</span>
+    <span>Demo-Projekt von <a href="https://tech-saar.de" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;text-underline-offset:2px">TechSaar</a> &ndash; kein echtes Unternehmen; Preise &amp; Bewertungen sind Beispiele.</span>
+  </div>
+
 
   <!-- ===================== HERO (Aura-Look: randlose Foto-Karte) ===================== -->
   <section id="top" class="px-3 pt-3 sm:px-4 sm:pt-4">
     <div class="relative flex min-h-[94vh] flex-col overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]" style="background:radial-gradient(120% 120% at 70% 15%, #3a2418, #160c06 72%)">
       <!-- Hero-Foto (Unsplash; bei Fehler bleibt der warme Verlauf) -->
-      <img src="https://images.unsplash.com/photo-1596995804697-27d11d43652e?q=80&w=1900&auto=format&fit=crop" alt="Frisch geschnittener Döner vom Drehspieß" class="absolute inset-0 h-full w-full object-cover" loading="eager" onerror="this.remove()" />
+      <img src="bilder/doener-159699580469-1900.jpg" alt="Frisch geschnittener Döner vom Drehspieß" class="absolute inset-0 h-full w-full object-cover" loading="eager" onerror="this.remove()" />
       <!-- Verläufe für Lesbarkeit -->
       <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(16,9,4,.94) 0%, rgba(16,9,4,.30) 45%, rgba(16,9,4,.55) 100%)"></div>
 
@@ -245,8 +224,8 @@
       </div>
       <p class="text-sm text-cream/60">© <span id="year"></span> <span data-cfg="name">Saar Döner</span> · Demo-Website</p>
       <p class="flex gap-5 text-sm text-cream/60">
-        <a href="#" class="transition-colors hover:text-honey">Impressum</a>
-        <a href="#" class="transition-colors hover:text-honey">Datenschutz</a>
+        <a href="https://tech-saar.de/impressum.html" rel="noopener" class="transition-colors hover:text-honey">Impressum</a>
+        <a href="https://tech-saar.de/datenschutz.html" rel="noopener" class="transition-colors hover:text-honey">Datenschutz</a>
       </p>
     </div>
   </footer>
@@ -361,22 +340,22 @@
 
     menu: [
       { id:'doener', name:'Döner', items:[
-        { id:'d1', name:'Döner Kebab', desc:'Kalbfleisch, Salat, Soße im frischen Fladenbrot', price:6.50, custom:true, tags:['beliebt'], img:'bilder/doener-kebab.jpg', fit:'contain' },
+        { id:'d1', name:'Döner Kebab', desc:'Kalbfleisch, Salat, Soße im frischen Fladenbrot', price:6.50, custom:true, tags:['beliebt'], img:'' },
         { id:'d2', name:'Hähnchen Döner', desc:'Saftiges Hähnchenfleisch, Salat, Soße', price:6.50, custom:true, tags:[], img:'' },
         { id:'d3', name:'Döner mit Weichkäse', desc:'Cremiger Weichkäse, frisch dazu', price:7.00, custom:true, tags:[], img:'' },
         { id:'b3', name:'Lahmacun', desc:'Türkische Pizza, dünn & würzig', price:4.00, custom:false, tags:[], img:'' },
       ]},
       { id:'duerum', name:'Dürüm', items:[
-        { id:'u1', name:'Dürüm', desc:'Im gerollten Yufka-Teigfladen', price:7.50, custom:true, tags:['beliebt'], img:'https://images.unsplash.com/photo-1633321702518-7feccafb94d5?q=80&w=600&auto=format&fit=crop' },
+        { id:'u1', name:'Dürüm', desc:'Im gerollten Yufka-Teigfladen', price:7.50, custom:true, tags:['beliebt'], img:'' },
         { id:'u2', name:'Dürüm Hähnchen', desc:'Hähnchen gerollt mit Salat & Soße', price:7.50, custom:true, tags:[], img:'' },
       ]},
       { id:'teller', name:'Teller', items:[
-        { id:'t1', name:'Döner Teller', desc:'Salat & Soße, dazu Beilage nach Wahl', price:11.50, custom:true, sides:['Pommes','Reis'], tags:['beliebt'], img:'bilder/doener-teller.jpg', fit:'contain' },
+        { id:'t1', name:'Döner Teller', desc:'Salat & Soße, dazu Beilage nach Wahl', price:11.50, custom:true, sides:['Pommes','Reis'], tags:['beliebt'], img:'' },
         { id:'t2', name:'Hähnchen Teller', desc:'Hähnchen, Salat & Soße, Beilage nach Wahl', price:11.50, custom:true, sides:['Pommes','Reis'], tags:[], img:'' },
         { id:'t3', name:'Falafel Teller', desc:'Hausgemachte Falafel, vegetarisch', price:10.50, custom:true, sides:['Pommes','Reis'], tags:['veg'], img:'' },
       ]},
       { id:'veggie', name:'Vegetarisch', items:[
-        { id:'v1', name:'Falafel Döner', desc:'Knusprige Falafel im Fladenbrot', price:6.00, custom:true, tags:['beliebt','veg'], img:'bilder/falafel-doener.jpg', fit:'contain' },
+        { id:'v1', name:'Falafel Döner', desc:'Knusprige Falafel im Fladenbrot', price:6.00, custom:true, tags:['beliebt','veg'], img:'' },
         { id:'v2', name:'Veggie Dürüm', desc:'Halloumi & gegrilltes Gemüse', price:7.00, custom:true, tags:['veg'], img:'' },
       ]},
       { id:'beilagen', name:'Beilagen & Snacks', items:[

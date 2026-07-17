@@ -80,7 +80,7 @@
       {
         "@type": "Question",
         "name": "Was kostet eine Website bei euch?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Umfang ab: eine schlanke Visitenkarten-Seite ist etwas anderes als ein Auftritt mit Online-Terminbuchung. Deshalb gibt es bei uns kein Paket von der Stange. Nach dem kostenlosen Erstgespräch bekommst du ein transparentes Festpreis-Angebot, das genau zu deinem Betrieb passt." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Eine normale Website inklusive Anfrageformular kostet bei uns 300 bis 400 Euro. Funktionen wie Online-Terminbuchung, Reservierung oder KI-Telefonbots kalkulieren wir individuell auf Anfrage. Deinen genauen Festpreis bekommst du nach dem kostenlosen Erstgespräch, ohne versteckte Kosten." }
       },
       {
         "@type": "Question",
@@ -199,6 +199,7 @@
       <nav class="hidden items-center gap-8 md:flex">
         <a href="#problem"    class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Warum wir</a>
         <a href="#leistungen" class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Leistungen</a>
+        <a href="#preise"     class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Preise</a>
         <a href="#arbeiten"   class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Arbeiten</a>
         <a href="#team"       class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">Über uns</a>
         <a href="#faq"        class="text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-ink">FAQ</a>
@@ -348,14 +349,58 @@
     </div>
   </section>
 
+  <!-- ===================== PREISE ===================== -->
+  <section id="preise" class="scroll-mt-24 px-5 pb-20 sm:px-8 lg:pb-28">
+    <div class="mx-auto max-w-7xl">
+      <div data-animate="fade-up" class="mb-12 max-w-3xl">
+        <p class="mlabel text-lavend">Preise</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Klare Preise, ehrlich gesagt</h2>
+        <p class="mt-5 max-w-2xl text-muted">Damit du gleich weißt, woran du bist. Deinen Endpreis bekommst du als transparentes Festpreis-Angebot nach dem kostenlosen Erstgespräch, ohne versteckte Kosten.</p>
+      </div>
+
+      <div data-stagger class="grid gap-4 md:grid-cols-2">
+        <!-- Website (hervorgehoben: das konkrete Angebot) -->
+        <article data-animate="fade-up" class="card relative flex flex-col rounded-2xl border border-lilac/60 bg-panel p-8 ring-1 ring-lilac/25">
+          <span class="absolute -top-3 left-8 rounded-full bg-lilac px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white">Fester Rahmen</span>
+          <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-lilac">Website</p>
+          <p class="mt-4 flex items-baseline gap-2"><span class="display text-5xl text-ink">300<span class="text-muted"> – </span>400</span><span class="text-2xl text-ink">€</span></p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Dein kompletter Auftritt: eine moderne, individuelle Website, die auf jedem Gerät sitzt und bei Google gefunden wird.</p>
+          <ul class="mt-6 space-y-2.5 text-sm text-ink/80">
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Individuelle Website, mobil optimiert</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Anfrage- &amp; Kontaktformular inklusive</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Google-Eintrag &amp; Basis-SEO</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Impressum &amp; Datenschutz DSGVO-konform</li>
+          </ul>
+          <a href="#kontakt" class="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-lilac px-6 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend hover:text-night">Anfragen</a>
+        </article>
+
+        <!-- KI & Funktionen (auf Anfrage) -->
+        <article data-animate="fade-up" class="card flex flex-col rounded-2xl border border-line bg-panel p-8">
+          <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-lilac">KI &amp; Funktionen</p>
+          <p class="mt-4 flex items-baseline gap-1.5"><span class="display text-4xl text-ink">Auf Anfrage</span></p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Alles, was über die Website hinausgeht: Systeme, die dir Anrufe, Termine und Routine abnehmen. Preis nach Aufwand, vorab als Festpreis.</p>
+          <ul class="mt-6 space-y-2.5 text-sm text-ink/80">
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Online-Terminbuchung &amp; Reservierung</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> KI-Telefonbot, der Anrufe annimmt</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Chatbot &amp; Automatisierung</li>
+            <li class="flex gap-2.5"><span class="text-lilac">✓</span> Eigene App (Treuepunkte, Push)</li>
+          </ul>
+          <a href="#kontakt" class="mt-8 inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:border-lilac hover:text-lavend">Anfragen</a>
+        </article>
+      </div>
+
+      <p data-animate="fade-up" class="mt-6 text-sm text-muted">Laufende Betreuung &amp; Hosting optional als Monatspaket, Details im Erstgespräch. Als Kleinunternehmer nach §19 UStG weisen wir keine Umsatzsteuer aus.</p>
+    </div>
+  </section>
+
   <!-- ===================== ARBEITEN (helle Kontrastsektion) ===================== -->
   <section id="arbeiten" class="scroll-mt-24 bg-paper px-5 py-20 text-inkd sm:px-8 lg:py-28">
     <div class="mx-auto max-w-7xl">
       <div data-animate="fade-up" class="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
         <div class="max-w-2xl">
-          <p class="mlabel text-lilac">Eine kleine Vorschau</p>
+          <p class="mlabel text-lilac">Was möglich ist</p>
           <h2 class="display mt-6 text-5xl text-inkd sm:text-6xl">Unsere Arbeiten</h2>
-          <p class="mt-5 text-lg text-mutedl">Ein erster Einblick — und schon bald mehr.</p>
+          <p class="mt-5 text-lg text-mutedl">Ehrliche Demo-Projekte, die zeigen, was wir bauen, damit du dir vorstellen kannst, wie dein Betrieb online aussieht.</p>
         </div>
         <a href="#kontakt" class="hidden shrink-0 items-center gap-2 rounded-full border border-linel px-6 py-3 text-xs font-bold uppercase tracking-[0.16em] text-inkd transition-colors hover:border-lilac hover:text-lilac sm:inline-flex">
           Dein Projekt anfragen
@@ -450,6 +495,43 @@
     </div>
   </section>
 
+  <!-- ===================== VERTRAUEN / GRÜNDUNGSANGEBOT ===================== -->
+  <section id="ehrlich" class="scroll-mt-24 border-t border-line px-5 py-20 sm:px-8 lg:py-28">
+    <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <div data-animate="fade-up">
+        <p class="mlabel text-lilac">Ehrlich gesagt</p>
+        <h2 class="display mt-6 text-5xl text-ink sm:text-6xl">Wir sind neu.<br><span class="text-muted">Für dich ein Vorteil.</span></h2>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">TechSaar ist jung, und unsere ersten Google-Bewertungen sammeln wir gerade. Genau deshalb bekommst du etwas, das eine ausgelastete Agentur selten bietet: unsere volle Aufmerksamkeit, einen fairen Gründungspreis und zwei Leute, die persönlich dafür geradestehen, dass dein Projekt sitzt.</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#kontakt" class="inline-flex items-center justify-center gap-2 rounded-full bg-lilac px-7 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-lavend hover:text-night">
+            Gründungspreis sichern
+            <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="https://search.google.com/local/writereview?placeid=ChIJx4HIjiHrlUcRGIrGKCg__io" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full border border-line px-7 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:border-lilac hover:text-lavend">Schon Kunde? Bewerten</a>
+        </div>
+      </div>
+
+      <div data-animate="fade-up" class="rounded-2xl border border-line bg-panel p-8">
+        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Unser Versprechen an dich</p>
+        <ul class="mt-6 space-y-5 border-t border-line pt-6 text-sm">
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-lilac/15 text-lilac">✓</span>
+            <span><span class="font-semibold text-ink">Festpreis vorab.</span> <span class="text-muted">Du weißt vor dem Start genau, was es kostet. Keine versteckten Posten, kein Agentur-Blabla.</span></span>
+          </li>
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-lilac/15 text-lilac">✓</span>
+            <span><span class="font-semibold text-ink">Rechtssicher inklusive.</span> <span class="text-muted">Impressum, Datenschutz und DSGVO-konforme Technik sind bei jedem Projekt dabei.</span></span>
+          </li>
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-lilac/15 text-lilac">✓</span>
+            <span><span class="font-semibold text-ink">Fester Ansprechpartner.</span> <span class="text-muted">Auch nach dem Launch erreichst du direkt uns, keine Hotline, keine Warteschleife.</span></span>
+          </li>
+        </ul>
+        <p class="mt-6 border-t border-line pt-5 text-xs leading-relaxed text-muted">Deine Bewertung könnte hier bald die erste sein. Wir bauen unseren Ruf gerade auf, ganz transparent.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== ÜBER UNS + PROZESS ===================== -->
   <section id="team" class="scroll-mt-24 border-t border-line px-5 py-20 sm:px-8 lg:py-28">
     <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2">
@@ -521,7 +603,7 @@
             <span class="faq-q text-base font-semibold text-ink transition-colors sm:text-lg">Was kostet eine Website bei euch?</span>
             <svg class="faq-chevron h-5 w-5 shrink-0 text-lilac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <p class="-mt-1 pb-6 leading-relaxed text-muted">Das hängt vom Umfang ab: eine schlanke Visitenkarten-Seite ist etwas anderes als ein Auftritt mit Online-Terminbuchung. Deshalb gibt es bei uns kein Paket von der Stange. Nach dem kostenlosen Erstgespräch bekommst du ein transparentes Festpreis-Angebot, das genau zu deinem Betrieb passt.</p>
+          <p class="-mt-1 pb-6 leading-relaxed text-muted">Eine normale Website inklusive Anfrageformular kostet bei uns 300 bis 400 Euro. Funktionen wie Online-Terminbuchung, Reservierung oder KI-Telefonbots kalkulieren wir individuell auf Anfrage. Deinen genauen Festpreis bekommst du nach dem kostenlosen Erstgespräch, ohne versteckte Kosten.</p>
         </details>
 
         <details class="faq border-b border-line">
@@ -583,13 +665,17 @@
             <h2 class="display mt-6 text-5xl text-ink sm:text-7xl">Lass uns dein<br>Projekt starten<span class="text-lilac">.</span></h2>
             <p class="mt-6 max-w-md text-muted">Erzähl uns kurz von deiner Idee — wir melden uns innerhalb von 24 Stunden. Das Erstgespräch ist kostenlos und unverbindlich.</p>
             <div class="mt-10 space-y-0 border-t border-line">
+              <a href="#" data-cfg-href="telHref" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Anruf</span>
+                <span class="font-semibold" data-cfg="phonePretty">0157 71232099</span>
+              </a>
               <a href="#" data-cfg-href="mailHref" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">E-Mail</span>
                 <span class="font-semibold" data-cfg="email">info@tech-saar.de</span>
               </a>
               <a href="#" data-cfg-href="waHref" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">WhatsApp</span>
-                <span class="font-semibold">Direkt schreiben</span>
+                <span class="font-semibold" data-cfg="phonePretty">0157 71232099</span>
               </a>
               <a href="https://search.google.com/local/writereview?placeid=ChIJx4HIjiHrlUcRGIrGKCg__io" target="_blank" rel="noopener" class="flex items-baseline justify-between gap-6 border-b border-line py-5 text-ink/90 transition-colors hover:text-lavend">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-muted">Google</span>
@@ -638,6 +724,7 @@
       </div>
       <nav class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
         <a href="#leistungen" class="transition-colors hover:text-ink">Leistungen</a>
+        <a href="#preise" class="transition-colors hover:text-ink">Preise</a>
         <a href="#arbeiten" class="transition-colors hover:text-ink">Arbeiten</a>
         <a href="#team" class="transition-colors hover:text-ink">Über uns</a>
         <a href="#faq" class="transition-colors hover:text-ink">FAQ</a>
@@ -666,8 +753,9 @@
     company:    "TechSaar",
     city:       "Saarland",
     email:      "info@tech-saar.de",
-    phoneTel:   "+4915780750445",          // für spätere Nutzung
-    whatsapp:   "4915780750445",           // nur Ziffern, mit Ländercode
+    phoneTel:   "+4915771232099",          // Anruf & WhatsApp — identisch zu Impressum & Google
+    whatsapp:   "4915771232099",           // nur Ziffern, mit Ländercode
+    phonePretty:"0157 71232099",           // Anzeige-Format für den klickbaren tel:-Link
     demoUrl:      "saar-barber-demo/",
     gelateriaUrl: "gelateria-demo/",
     doenerUrl:    "doener-demo/",
@@ -685,6 +773,7 @@
       foundersLine:   `${C.founder1Name} & ${C.founder2Name}`,
       mailHref:       "mailto:"+C.email,
       waHref:         "https://wa.me/"+C.whatsapp,
+      telHref:        "tel:"+C.phoneTel,
     });
     document.querySelectorAll('[data-cfg]').forEach(el=>{ const k=el.getAttribute('data-cfg'); if(d[k]!=null) el.textContent=d[k]; });
     document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const k=el.getAttribute('data-cfg-href'); if(d[k]!=null) el.setAttribute('href',d[k]); });
