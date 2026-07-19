@@ -110,9 +110,24 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 /* Sanftes Schweben für Deko */
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-9px) rotate(var(--r,0deg))}}
 .floaty{animation:floaty 5s ease-in-out infinite}
+
+/* --- Laufendes Band als Trenner zwischen Ablauf und Events ---
+   Bewusst reines CSS: läuft auch dann, wenn Motion nicht lädt.
+   Das gekippte Band braucht Überbreite, sonst klaffen an den Ecken Lücken;
+   der Rahmen kappt den Überstand, damit kein horizontaler Überlauf entsteht. */
+.band-clip{overflow:hidden}
+.band{transform:rotate(-2.5deg);width:112%;margin-left:-6%}
+.band-lauf{display:flex;width:max-content;animation:bandlauf 45s linear infinite}
+/* Der Inhalt liegt exakt doppelt vor, deshalb ist die Schleife bei -50% nahtlos */
+@keyframes bandlauf{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.band-teil{display:flex;align-items:center;flex-shrink:0}
+.band-eintrag{display:flex;align-items:center;gap:22px;padding:0 22px;white-space:nowrap}
+
 @media (prefers-reduced-motion: reduce){
   .floaty{animation:none}
   html{scroll-behavior:auto}
+  /* Band steht still, bleibt aber als Trenner sichtbar */
+  .band-lauf{animation:none}
 }
 </style>
 </head>
@@ -265,6 +280,28 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   </div>
 </section>
 
+<!-- ============ LAUFBAND ============
+     Trennt "So funktioniert's" und "Feiern & Events" — beide haben denselben
+     Hintergrund und liefen vorher optisch ineinander.
+     aria-hidden: rein dekorativ, der Text steht anderswo schon auf der Seite. -->
+<div class="band-clip" aria-hidden="true">
+  <div class="band py-3" style="background:var(--butter)">
+    <div class="band-lauf">
+      <!-- Teil 1 und Teil 2 sind identisch — nur so ist die Schleife nahtlos -->
+      <div class="band-teil">
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+      </div>
+      <div class="band-teil">
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ============ EVENTS ============ -->
 <section id="events" class="py-20" style="background:var(--paper-2)">
   <div class="max-w-6xl mx-auto px-5">
@@ -299,11 +336,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   <div class="max-w-6xl mx-auto px-5">
     <p class="hand text-[24px]" style="color:var(--clay)">aus dem Atelier</p>
     <h2 class="serif font-semibold text-[38px] md:text-[48px]">Ein bisschen Vorfreude</h2>
+    <!-- Der Scroll-Drift sitzt auf den Wrappern, das Reveal auf den Bildern.
+         Beides auf demselben Element würde sich über transform gegenseitig
+         überschreiben. -->
     <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-5" data-reveal>
-      <div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--sky);background-image:url('img/galerie-1.jpg')"></div>
-      <div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--blush);background-image:url('img/galerie-2.jpg')"></div>
-      <div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--butter);background-image:url('img/galerie-3.jpg')"></div>
-      <div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--sage);background-image:url('img/galerie-4.jpg')"></div>
+      <div data-parallax="26"><div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--sky);background-image:url('img/galerie-1.jpg')"></div></div>
+      <div data-parallax="-18"><div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--blush);background-image:url('img/galerie-2.jpg')"></div></div>
+      <div data-parallax="22"><div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--butter);background-image:url('img/galerie-3.jpg')"></div></div>
+      <div data-parallax="-14"><div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--sage);background-image:url('img/galerie-4.jpg')"></div></div>
     </div>
     <p class="mt-8 text-center text-[15px] font-bold">Mehr auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline underline-offset-4" style="color:var(--clay)"><span data-cfg="instaHandle">@eckstueck_</span> ↗</a></p>
   </div>
@@ -477,12 +517,21 @@ if(document.documentElement.classList.contains("motion")){
   setTimeout(()=>document.querySelectorAll(".hero-in,.mark")
     .forEach(el=>el.classList.add("shown")), 3000);
 
-  /* Aquarell-Auren treiben beim Scrollen leicht mit.
+  /* Parallax für Auren und Galerie.
      Motion 11 übergibt den Fortschritt direkt (0…1), nicht mehr das
-     {y:{progress}}-Objekt aus Version 10. */
+     {y:{progress}}-Objekt aus Version 10.
+
+     Zwei Bezugsgrößen: Die Auren hängen am Fortschritt der ganzen Seite, das
+     genügt für ihr langsames Treiben. Die Galerie-Bilder brauchen dagegen den
+     Fortschritt des eigenen Durchlaufs durchs Bild — sonst wäre ihr Weg schon
+     fast abgelaufen, bevor man die Sektion überhaupt sieht. */
   document.querySelectorAll("[data-parallax]").forEach(el=>{
     const d=parseFloat(el.dataset.parallax);
-    scroll(progress=>{ el.style.transform="translateY("+(progress*d)+"px)"; });
+    const eigen=el.closest("#galerie")!==null;
+    const opts=eigen ? {target:el, offset:["start end","end start"]} : undefined;
+    /* -0.5…+0.5 statt 0…1: das Element steht in der Bildmitte auf null und
+       driftet nach beiden Seiten gleich weit aus. */
+    scroll(p=>{ el.style.transform="translateY("+((eigen?p-.5:p)*d)+"px)"; }, opts);
   });
 }
 </script>
