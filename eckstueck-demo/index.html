@@ -115,7 +115,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
    Bewusst reines CSS: läuft auch dann, wenn Motion nicht lädt.
    Das gekippte Band braucht Überbreite, sonst klaffen an den Ecken Lücken;
    der Rahmen kappt den Überstand, damit kein horizontaler Überlauf entsteht. */
-.band-clip{overflow:hidden}
+/* Der Streifen führt den Hintergrund der angrenzenden Sektionen fort, sonst
+   blitzt dazwischen das hellere Body-Papier als Riegel durch.
+   Die senkrechte Luft muss mit der Breite mitwachsen: ein um 2,5° gekipptes
+   Band ragt an den Enden umso weiter heraus, je breiter das Fenster ist
+   (Breite × tan 2,5°). Ohne diese Luft schneidet der Rahmen die Bandkanten
+   flach ab und aus dem Band wird ein Keil. */
+.band-clip{overflow:hidden;background:var(--paper-2);padding-block:clamp(14px,2.8vw,54px)}
 .band{transform:rotate(-2.5deg);width:112%;margin-left:-6%}
 .band-lauf{display:flex;width:max-content;animation:bandlauf 45s linear infinite}
 /* Der Inhalt liegt exakt doppelt vor, deshalb ist die Schleife bei -50% nahtlos */
