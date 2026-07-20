@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  DACHDECKER-DEMO · "FIRST Bedachungen" (fiktiver Betrieb, Arbeitstitel)
+  3D-Dachbau-Hero — Standalone-Prototyp, Website wird später darauf aufgebaut.
+  Demo-Seite: noindex, keine externen Requests, alle Assets self-hosted.
+  ============================================================================
+-->
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>FIRST Bedachungen — Dachdecker-Meisterbetrieb (Demo)</title>
+<meta name="description" content="Demo-Prototyp: 3D-Dachbau-Hero für eine Dachdecker-Website.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Palette — aus den Baustoffen der Szene abgeleitet */
+  --schiefer:      #151b23;   /* Hintergrund oben */
+  --schiefer-blau: #1e2733;   /* Flächen / Verlauf unten */
+  --morgenlicht:   #f3ede2;   /* Überschriften-Ton */
+  --text:          #c9cfd9;   /* Fließtext */
+  --zink:          #8d99a8;   /* gedämpfte Labels */
+  --ziegel:        #d95b32;   /* Akzent = Ziegelfarbe der 3D-Szene */
+  --ziegel-dk:     #bf4b26;
+  --holz:          #c78d58;   /* Sparrenholz — kleine Highlights */
+  --linie:         rgba(243, 237, 226, 0.12);
+
+  --font-display: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+  --font-body:    'Instrument Sans', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--schiefer);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ziegel); outline-offset: 3px; border-radius: 2px; }
+
+/* ───────────────────────── HERO ───────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Morgenlicht über der Baustelle: warmer Glow hinter dem Haus rechts */
+  background:
+    radial-gradient(58% 46% at 68% 62%, rgba(217, 91, 50, 0.16) 0%, rgba(217, 91, 50, 0) 70%),
+    radial-gradient(40% 32% at 76% 50%, rgba(199, 141, 88, 0.12) 0%, rgba(199, 141, 88, 0) 75%),
+    linear-gradient(180deg, var(--schiefer) 0%, #171e28 55%, var(--schiefer-blau) 100%);
+}
+
+/* 3D-Bühne: Canvas + Poster-Fallback übereinander */
+.stage { position: absolute; inset: 0; z-index: 1; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .8s ease; }
+.stage.ready canvas { opacity: 1; }
+.stage .poster {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 68% 62%;
+  opacity: 1; transition: opacity .8s ease;
+}
+.stage.ready .poster { opacity: 0; }
+
+/* Inhalt liegt über der Bühne */
+.hero-top, .hero-main, .hero-foot { position: relative; z-index: 2; }
+
+.hero-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.4rem clamp(1.25rem, 4vw, 3.5rem);
+}
+.brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+  color: var(--morgenlicht);
+  text-decoration: none;
+  display: flex; align-items: baseline; gap: 0.5rem;
+}
+.brand .brand-sub {
+  font-family: var(--font-mono); font-weight: 400;
+  font-size: 0.66rem; letter-spacing: 0.14em; color: var(--zink);
+}
+.top-phone {
+  font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.04em;
+  color: var(--morgenlicht); text-decoration: none;
+  padding: 0.55rem 0.9rem; border: 1px solid var(--linie); border-radius: 4px;
+  transition: border-color .2s ease, background .2s ease;
+  min-height: 44px; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.top-phone:hover { border-color: var(--ziegel); background: rgba(217, 91, 50, 0.08); }
+.top-phone .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ziegel); flex: none; }
+
+.demo-badge {
+  position: absolute; top: 0; right: 0; z-index: 3;
+  font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.18em;
+  color: var(--schiefer); background: var(--holz);
+  padding: 0.25rem 2.2rem; transform: rotate(45deg) translate(28%, -18%);
+  pointer-events: none;
+}
+
+.hero-main {
+  flex: 1;
+  display: flex; align-items: center;
+  padding: 1rem clamp(1.25rem, 4vw, 3.5rem) 0;
+}
+.hero-copy { max-width: 34rem; }
+
+.kicker {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--holz);
+  display: flex; align-items: center; gap: 0.7rem;
+  margin-bottom: 1.4rem;
+}
+.kicker::before { content: ""; width: 2rem; height: 1px; background: var(--holz); }
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.7rem, 6.4vw, 4.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--morgenlicht);
+  text-wrap: balance;
+}
+h1 .akzent { color: var(--ziegel); }
+
+.sub {
+  margin-top: 1.3rem;
+  font-size: clamp(1rem, 1.4vw, 1.13rem);
+  max-width: 28rem;
+  color: var(--text);
+}
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+  min-height: 48px; padding: 0.8rem 1.5rem;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.98rem;
+  text-decoration: none; border-radius: 5px;
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--ziegel); color: #fff8f3; }
+.btn-primary:hover { background: var(--ziegel-dk); }
+.btn-ghost {
+  border: 1px solid var(--linie); color: var(--morgenlicht);
+  font-family: var(--font-mono); font-weight: 400; font-size: 0.88rem; letter-spacing: 0.03em;
+}
+.btn-ghost:hover { border-color: var(--zink); background: rgba(243, 237, 226, 0.05); }
+
+/* ── Bauphasen-Streifen (läuft synchron zur 3D-Sequenz) ── */
+.hero-foot {
+  padding: 1.5rem clamp(1.25rem, 4vw, 3.5rem) 1.6rem;
+  border-top: 1px solid var(--linie);
+  background: linear-gradient(180deg, rgba(21, 27, 35, 0) 0%, rgba(21, 27, 35, 0.55) 100%);
+}
+.phasen {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1.1rem 1.8rem;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  list-style: none;
+}
+.phase { display: flex; align-items: center; gap: 0.55rem; color: var(--zink); transition: color .4s ease; }
+.phase .nr { color: inherit; opacity: 0.65; }
+.phase .tick {
+  width: 1.7rem; height: 3px; background: var(--linie); border-radius: 2px;
+  position: relative; overflow: hidden; flex: none;
+}
+.phase .tick::after {
+  content: ""; position: absolute; inset: 0;
+  background: var(--ziegel); transform: scaleX(0); transform-origin: left;
+  transition: transform .3s linear;
+}
+.phase.aktiv { color: var(--morgenlicht); }
+.phase.aktiv .tick::after, .phase.fertig .tick::after { transform: scaleX(1); }
+.phase.fertig { color: var(--holz); }
+.phase.fertig .tick::after { background: var(--holz); }
+
+.abschluss {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em;
+  color: var(--zink);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .8s ease .3s, transform .8s ease .3s;
+}
+.abschluss.sichtbar { opacity: 1; transform: none; }
+.abschluss .ok { color: var(--ziegel); }
+
+/* ───────────────────────── Responsive ───────────────────────── */
+@media (max-width: 860px) {
+  .hero-main { align-items: flex-start; padding-top: 0.5rem; }
+  .hero-copy {
+    max-width: 100%;
+    /* Text oben lesbar halten — Haus sitzt in der unteren Bildhälfte */
+    padding-bottom: 36svh;
+  }
+  .hero-foot { padding: 1rem 1.25rem 1.1rem; }
+  .sub { max-width: 100%; }
+  .demo-badge { display: none; }
+  .top-phone .phone-text { display: none; }
+  .phasen { gap: 0.5rem 0.7rem; font-size: 0.56rem; letter-spacing: 0.06em; flex-wrap: nowrap; }
+  .phase { gap: 0.3rem; }
+  .phase .nr { display: none; }
+  .phase .tick { width: 0.7rem; }
+  .abschluss { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .stage canvas, .stage .poster, .abschluss, .phase .tick::after { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <!-- 3D-Bühne: Poster zuerst (kein JS / kein WebGL), Canvas übernimmt wenn bereit -->
+  <div class="stage" id="stage" aria-hidden="true">
+    <img class="poster" id="poster" src="poster.webp" alt="" width="1600" height="900" decoding="async">
+  </div>
+
+  <div class="demo-badge">TechSaar&nbsp;Demo</div>
+
+  <header class="hero-top">
+    <a class="brand" href="#">FIRST<span class="brand-sub">BEDACHUNGEN&nbsp;·&nbsp;ST.&nbsp;WENDEL</span></a>
+    <a class="top-phone" href="tel:+4968511234567"><span class="dot"></span><span class="phone-text">06851&nbsp;123&nbsp;45&nbsp;67</span><span aria-hidden="true">☎</span></a>
+  </header>
+
+  <div class="hero-main">
+    <div class="hero-copy">
+      <p class="kicker">Dachdecker-Meisterbetrieb</p>
+      <h1>Vom Sparren<br>bis zum <span class="akzent">First.</span></h1>
+      <p class="sub">Steildach, Flachdach, Sanierung und Notdienst — sauber geplant, sauber gedeckt. Im Landkreis St.&nbsp;Wendel und Umgebung.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Kostenloses Angebot</a>
+        <a class="btn btn-ghost" href="tel:+4968511234567">06851 123 45 67</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="hero-foot">
+    <ol class="phasen" id="phasen">
+      <li class="phase" data-phase="0"><span class="nr">01</span> Dachstuhl <span class="tick"></span></li>
+      <li class="phase" data-phase="1"><span class="nr">02</span> Lattung <span class="tick"></span></li>
+      <li class="phase" data-phase="2"><span class="nr">03</span> Eindeckung <span class="tick"></span></li>
+      <li class="phase" data-phase="3"><span class="nr">04</span> First <span class="tick"></span></li>
+    </ol>
+    <p class="abschluss" id="abschluss"><span class="ok">✓</span> Hier in sechs Sekunden — auf Ihrem Dach in Meisterqualität.</p>
+  </footer>
+</section>
+
+<script type="module" src="scene.js"></script>
+</body>
+</html>
