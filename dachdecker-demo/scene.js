@@ -16,7 +16,8 @@ const track = document.querySelector('.scroll-track');
 const params = new URLSearchParams(location.search);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finishNow = reduceMotion || params.has('finish');
-const SCROLL = params.get('ablauf') === 'scroll' && !finishNow;
+// Scroll ist der Standard-Ablauf (Jakobs Entscheidung 2026-07-20); ?ablauf=auto als Referenz
+const SCROLL = params.get('ablauf') !== 'auto' && !finishNow;
 
 document.body.classList.toggle('modus-scroll', SCROLL);
 if (SCROLL && track) track.style.height = '420vh';
@@ -489,9 +490,10 @@ function init() {
     const elT = EL0 + parY * 0.03;
     let dEff = dist;
     if (SCROLL) {
-      const p = THREE.MathUtils.clamp(t / T_END, 0, 1);
-      azT += (p - 0.5) * 0.16;                       // dezenter Schwenk über den Baufortschritt
+      const p = THREE.MathUtils.clamp(t / T_SCRUB, 0, 1);
       dEff = dist * (1.05 - 0.05 * easeOutCubic(p)); // Mini-Dolly heran
+      // Volle 360°-Drehung über den Aufbau — endet exakt in der Ausgangsansicht
+      house.rotation.y = p * Math.PI * 2;
     }
     az += (azT - az) * 0.06;
     el += (elT - el) * 0.06;

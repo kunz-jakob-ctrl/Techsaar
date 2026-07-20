@@ -65,7 +65,7 @@ async function scrollTest(browser, url) {
     const u = r.url();
     if (!u.startsWith('http://127.0.0.1') && !u.startsWith('data:')) external.push(u);
   });
-  await page.goto(url + '?ablauf=scroll', { waitUntil: 'load' });
+  await page.goto(url, { waitUntil: 'load' });
   await page.waitForTimeout(800);
   const stops = [['scroll-00', 0], ['scroll-40', 0.4], ['scroll-75', 0.75], ['scroll-100', 1], ['scroll-back40', 0.4]];
   for (const [name, p] of stops) {
@@ -87,9 +87,10 @@ async function scrollTest(browser, url) {
   const browser = await chromium.launch();
   const url = 'http://127.0.0.1:8231/dachdecker-demo/';
 
-  await capture(browser, 'desktop', { viewport: { width: 1600, height: 900 } }, url);
-  await capture(browser, 'mid-build', { viewport: { width: 1600, height: 900 } }, url, false);
-  await capture(browser, 'mobile', { viewport: { width: 375, height: 812 } }, url);
+  // Auto-Ablauf (?ablauf=auto) als Referenz für den kompletten Durchlauf ohne Scrollen
+  await capture(browser, 'desktop', { viewport: { width: 1600, height: 900 } }, url + '?ablauf=auto');
+  await capture(browser, 'mid-build', { viewport: { width: 1600, height: 900 } }, url + '?ablauf=auto', false);
+  await capture(browser, 'mobile', { viewport: { width: 375, height: 812 } }, url + '?ablauf=auto');
   await capture(browser, 'reduced', { viewport: { width: 1600, height: 900 }, reducedMotion: 'reduce' }, url);
   await capture(browser, 'nojs', { viewport: { width: 1600, height: 900 }, javaScriptEnabled: false }, url, false);
   await scrollTest(browser, url);

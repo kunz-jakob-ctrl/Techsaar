@@ -4,9 +4,9 @@ Standalone-Hero für eine spätere Dachdecker-Demo-Website („FIRST Bedachungen
 Das Dach baut sich auf (Pfetten → Sparren → Lattung → Ziegel → First → Rinne/Dachfenster/Kamin),
 der Bauphasen-Streifen unten läuft synchron mit. Danach: dezente Kamera-Drift + Maus-Parallaxe.
 
-**Zwei Ablauf-Varianten (A/B-Vergleich, Umschalter unten rechts):**
-- `index.html` — Aufbau läuft automatisch beim Laden (~6,5 s)
-- `index.html?ablauf=scroll` — Hero ist gepinnt, der Scrollfortschritt baut das Dach (rückwärts scrollen = Rückbau)
+**Ablauf (Entscheidung 2026-07-20): Scroll ist Standard.** Das Hero ist gepinnt, der Scrollfortschritt
+baut das Dach und dreht das Haus dabei einmal um 360° (endet in der Ausgangsansicht; rückwärts
+scrollen = Rückbau). `?ablauf=auto` zeigt als Referenz den alten automatischen Aufbau beim Laden.
 
 - **Alles self-hosted**: Three.js in `vendor/`, Fonts in `fonts/`, 0 externe Requests (DSGVO).
 - **Fallbacks**: kein WebGL / kein JS → `poster.webp`; `prefers-reduced-motion` → sofort Endbild, keine Drift, kein Scroll-Pinning.

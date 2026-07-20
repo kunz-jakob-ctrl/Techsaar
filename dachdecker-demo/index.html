@@ -200,18 +200,7 @@ h1 .akzent { color: var(--ziegel); }
 .abschluss.sichtbar { opacity: 1; transform: none; }
 .abschluss .ok { color: var(--ziegel); }
 
-/* ── Varianten-Umschalter (A/B-Vergleich: automatisch vs. Scroll) ── */
-.variante {
-  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em;
-  color: var(--zink); white-space: nowrap;
-}
-.variante a { color: var(--zink); text-decoration: none; border-bottom: 1px dotted var(--zink); }
-.variante a:hover { color: var(--morgenlicht); }
-.variante .v-auto { color: var(--ziegel); border-bottom: none; pointer-events: none; }
-body.modus-scroll .variante .v-auto { color: var(--zink); border-bottom: 1px dotted var(--zink); pointer-events: auto; }
-body.modus-scroll .variante .v-scroll { color: var(--ziegel); border-bottom: none; pointer-events: none; }
-
-/* ── Scroll-Variante (?ablauf=scroll): Hero gepinnt, Scrollen baut das Dach ── */
+/* ── Scroll-Ablauf (Standard): Hero gepinnt, Scrollen baut das Dach ── */
 .scroll-track { position: relative; }
 body.modus-scroll .scroll-track .hero { position: sticky; top: 0; min-height: 100svh; height: 100svh; }
 .scroll-hint {
@@ -291,7 +280,6 @@ body.modus-scroll .scroll-hint { display: block; }
       </ol>
       <p class="abschluss" id="abschluss"><span class="ok">✓</span> Hier in sechs Sekunden — auf Ihrem Dach in Meisterqualität.</p>
     </div>
-    <p class="variante">Ablauf: <a class="v-auto" href="./">automatisch</a> · <a class="v-scroll" href="?ablauf=scroll">beim Scrollen</a></p>
   </footer>
 </section>
 </div>
