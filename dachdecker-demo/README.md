@@ -1,12 +1,17 @@
 # Dachdecker-Demo — 3D-Dachbau-Hero (Prototyp)
 
 Standalone-Hero für eine spätere Dachdecker-Demo-Website („FIRST Bedachungen", fiktiv, Arbeitstitel).
-Beim Laden baut sich das Dach einmal auf (Pfetten → Sparren → Lattung → Ziegel → First),
+Das Dach baut sich auf (Pfetten → Sparren → Lattung → Ziegel → First → Rinne/Dachfenster/Kamin),
 der Bauphasen-Streifen unten läuft synchron mit. Danach: dezente Kamera-Drift + Maus-Parallaxe.
 
+**Zwei Ablauf-Varianten (A/B-Vergleich, Umschalter unten rechts):**
+- `index.html` — Aufbau läuft automatisch beim Laden (~6,5 s)
+- `index.html?ablauf=scroll` — Hero ist gepinnt, der Scrollfortschritt baut das Dach (rückwärts scrollen = Rückbau)
+
 - **Alles self-hosted**: Three.js in `vendor/`, Fonts in `fonts/`, 0 externe Requests (DSGVO).
-- **Fallbacks**: kein WebGL / kein JS → `poster.webp`; `prefers-reduced-motion` → sofort Endbild, keine Drift.
+- **Fallbacks**: kein WebGL / kein JS → `poster.webp`; `prefers-reduced-motion` → sofort Endbild, keine Drift, kein Scroll-Pinning.
 - **Debug**: `?finish=1` an die URL hängen springt direkt zum fertigen Dach.
+- **Technik-Hinweis**: Die Timeline ist stateless (Zustand rein aus t berechnet) — Voraussetzung fürs Scrubben.
 
 ## Poster neu erzeugen (nach Szenen-Änderungen)
 
