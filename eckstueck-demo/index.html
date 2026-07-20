@@ -395,13 +395,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <a href="#reservierung" class="btn-clay inline-block mt-8 rounded-full px-7 py-3.5 font-bold">Platz reservieren</a>
     </div>
     <!-- DSGVO: kein automatisches Maps-Embed — Karte öffnet erst auf Klick bei Google -->
-    <div class="rounded-[28px] overflow-hidden shadow-xl h-[340px] md:h-[420px] relative grid place-items-center text-center p-8" style="background:var(--paper-2)">
-      <div class="aura w-[240px] h-[240px] -top-10 -right-14 opacity-60"></div>
-      <div class="relative">
-        <span class="text-5xl">📍</span>
-        <p class="serif font-semibold text-[26px] mt-3">Du findest uns mitten<br>in der Fußgängerzone</p>
-        <p class="hand text-[20px] mt-1" style="color:var(--ink-soft)">nur ein paar Schritte vom Marktplatz ✦</p>
-        <a id="mapOpenLink" href="#" target="_blank" rel="noopener" class="btn-clay inline-block mt-5 rounded-full px-6 py-3 font-bold">Karte bei Google Maps öffnen ↗</a>
+    <div class="rounded-[28px] overflow-hidden shadow-xl h-[340px] md:h-[420px] relative grid items-end justify-items-center text-center p-7" style="background:var(--paper-2)">
+      <!-- Eigene Aufnahme des Kugelbrunnens in der Fußgängerzone. Bewusst als
+           <img> mit alt-Text statt als CSS-Hintergrund, damit Screenreader das
+           Motiv mitbekommen (Punkt aus dem Rechts-Check). -->
+      <img src="img/kontakt-brunnen.jpg" loading="lazy" width="1100" height="825"
+           alt="Der Kugelbrunnen in der Fußgängerzone von St. Wendel: eine große, gelblich glasierte Steinkugel, über die Wasser in ein flaches Becken läuft"
+           class="absolute inset-0 w-full h-full object-cover">
+      <!-- Abdunklung nach unten hin: der Text sitzt am unteren Rand, dort muss
+           sie kräftig sein. Oben bleibt die Kugel weitgehend frei — sie ist das
+           Motiv und soll nicht von Text zugedeckt werden. -->
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(65,73,59,.94) 0%, rgba(65,73,59,.88) 40%, rgba(65,73,59,.6) 66%, rgba(65,73,59,.2) 100%)"></div>
+      <!-- Schatten zusätzlich zum Verlauf: die Karte ist auf dem Handy fast
+           quadratisch, dort rückt der Text auf den hellsten Teil der Kugel. -->
+      <div class="relative" style="color:var(--paper);text-shadow:0 1px 12px rgba(65,73,59,.8)">
+        <p class="serif font-semibold text-[26px]">Du findest uns mitten<br>in der Fußgängerzone</p>
+        <p class="hand text-[20px] mt-1" style="color:var(--butter)">nur ein paar Schritte vom Marktplatz ✦</p>
+        <a id="mapOpenLink" href="#" target="_blank" rel="noopener" class="btn-butter inline-block mt-5 rounded-full px-6 py-3 font-bold">Karte bei Google Maps öffnen ↗</a>
       </div>
     </div>
   </div>
