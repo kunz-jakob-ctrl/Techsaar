@@ -49,9 +49,12 @@ try {
 if (renderer) init();
 
 function init() {
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  // Schatten hängen nur von Licht+Objekten ab, nicht von der Kamera: Depth-Pass nur
+  // neu rendern, wenn sich der Baufortschritt (und damit Objekte/Drehung) ändert.
+  renderer.shadowMap.autoUpdate = false;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;
   stage.appendChild(renderer.domElement);
@@ -63,7 +66,7 @@ function init() {
   const sun = new THREE.DirectionalLight(0xffe9cf, 3.0);
   sun.position.set(5, 9, 8);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(1024, 1024); // 2048 kostet auf iGPUs spürbar, low-poly braucht es nicht
   sun.shadow.camera.left = -9; sun.shadow.camera.right = 9;
   sun.shadow.camera.top = 9; sun.shadow.camera.bottom = -9;
   sun.shadow.camera.near = 1; sun.shadow.camera.far = 40;
@@ -144,7 +147,7 @@ function init() {
       const sh2 = sh.clone(); sh2.position.x = -sh.position.x;
       g.add(sh, sh2);
     }
-    g.traverse((m) => { if (m.isMesh) m.castShadow = true; });
+    // bewusst KEIN castShadow: ~20 Mini-Teile im Schatten-Pass kosten iGPU-Zeit ohne sichtbaren Nutzen
     return g;
   }
   const trim1 = windowTrim(1.15, 1.05, true);
@@ -528,6 +531,7 @@ function init() {
   let displayT = 0;
   let firstFrame = true;
   let lastNow = 0;
+  let lastEvalT = -1;
 
   function frame(now) {
     if (document.hidden) { requestAnimationFrame(frame); return; }
@@ -549,7 +553,11 @@ function init() {
     }
     window.__t = t;
 
-    evaluate(t);
+    if (Math.abs(t - lastEvalT) > 0.0005) {
+      evaluate(t);
+      renderer.shadowMap.needsUpdate = true;
+      lastEvalT = t;
+    }
     placeCamera(now / 1000, t);
     renderer.render(scene, camera);
 
@@ -571,7 +579,12 @@ function init() {
   applyFraming();
   window.addEventListener('resize', () => {
     applyFraming();
-    if (reduceMotion) { evaluate(T_END + 1); placeCamera(0, T_END + 1); renderer.render(scene, camera); }
+    if (reduceMotion) {
+      evaluate(T_END + 1);
+      renderer.shadowMap.needsUpdate = true;
+      placeCamera(0, T_END + 1);
+      renderer.render(scene, camera);
+    }
   });
 
   requestAnimationFrame(frame);
