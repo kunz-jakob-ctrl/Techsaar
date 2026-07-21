@@ -167,8 +167,9 @@ function init() {
   const doorL = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.06, 0.06), mat.trim);
   doorL.position.set(1.9 - 0.505, 1.36, W / 2 + 0.02);
   const doorR = doorL.clone(); doorR.position.x = 1.9 + 0.505;
-  const step = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.12, 0.45), mat.stone);
-  step.position.set(1.9, 0.29, W / 2 + 0.18);
+  // Oberkante 0.30 (Sockel = 0.35) und vor den Sockel gesetzt → keine koplanaren Flächen (kein Z-Fighting)
+  const step = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.3, 0.5), mat.stone);
+  step.position.set(1.9, 0.15, W / 2 + 0.27);
   step.castShadow = true;
   house.add(doorTop, doorL, doorR, step);
 
@@ -200,21 +201,25 @@ function init() {
     return mesh;
   }
 
-  /* ── Dachstuhl: Pfetten + Sparren ── */
-  const DROP = new THREE.Vector3(0, 2.2, 0);
+  /* ── Dachstuhl: Pfetten + Sparren ──
+     Länge 6.9 < Hauslänge 7.0 → Balkenenden sitzen 0.05 hinter der Giebelwand (kein Durchstecken,
+     keine koplanaren Enden). Drops mit easeOutCubic statt easeOutBack: KEIN Überschwinger, der die
+     Balken am Ende unter ihre Endlage und durchs Dach stanzt. */
+  const BEAM_L = L - 0.1;
+  const DROP = new THREE.Vector3(0, 1.7, 0);
   for (const side of [1, -1]) {
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(L + 0.2, 0.13, 0.16), mat.wood);
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(BEAM_L, 0.13, 0.16), mat.wood);
     plate.position.set(0, WALL_H + 0.065, side * (W / 2 - 0.08));
-    addItem(plate, 0.40 + (side < 0 ? 0.1 : 0), 0.5, DROP);
+    addItem(plate, 0.40 + (side < 0 ? 0.1 : 0), 0.5, DROP, easeOutCubic);
 
     slopePoint(1.0, side, V); roofNormal(side, V2);
-    const mid = new THREE.Mesh(new THREE.BoxGeometry(L + 0.4, 0.14, 0.12), mat.wood);
+    const mid = new THREE.Mesh(new THREE.BoxGeometry(BEAM_L, 0.14, 0.12), mat.wood);
     mid.position.set(0, V.y - V2.y * 0.1, V.z - V2.z * 0.1);
-    addItem(mid, 0.62 + (side < 0 ? 0.1 : 0), 0.5, DROP);
+    addItem(mid, 0.62 + (side < 0 ? 0.1 : 0), 0.5, DROP, easeOutCubic);
   }
-  const ridgeBeam = new THREE.Mesh(new THREE.BoxGeometry(L + 0.4, 0.18, 0.14), mat.wood);
+  const ridgeBeam = new THREE.Mesh(new THREE.BoxGeometry(BEAM_L, 0.18, 0.14), mat.wood);
   ridgeBeam.position.set(0, RIDGE_Y - 0.14, 0);
-  addItem(ridgeBeam, 0.9, 0.55, DROP);
+  addItem(ridgeBeam, 0.9, 0.55, DROP, easeOutCubic);
 
   const rafterGeo = new THREE.BoxGeometry(0.09, 0.17, SLOPE_LEN + 0.1);
   const N_RAFTER = 10;
@@ -225,13 +230,13 @@ function init() {
       slopePoint(SLOPE_LEN / 2, side, V); roofNormal(side, V2);
       r.position.set(x, V.y + V2.y * 0.085, V.z + V2.z * 0.085);
       r.rotation.x = side * PITCH;
-      roofNormal(side, V2).multiplyScalar(2.2);
-      addItem(r, 1.05 + i * 0.14 + (side < 0 ? 0.06 : 0), 0.5, V2, easeOutBack, side * 0.35);
+      roofNormal(side, V2).multiplyScalar(1.4);
+      addItem(r, 1.05 + i * 0.14 + (side < 0 ? 0.06 : 0), 0.5, V2, easeOutCubic, side * 0.3);
     }
   }
 
   /* ── Lattung ── */
-  const battenGeo = new THREE.BoxGeometry(L, 0.05, 0.06);
+  const battenGeo = new THREE.BoxGeometry(BEAM_L, 0.05, 0.06); // < Hauslänge → keine koplanaren Enden an der Giebelwand
   const N_BATTEN = 9;
   for (let j = 0; j < N_BATTEN; j++) {
     const s = 0.25 + j * 0.4;
