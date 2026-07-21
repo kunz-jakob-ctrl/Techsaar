@@ -51,7 +51,7 @@ if (renderer) init();
 function init() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap; // PCFSoft ist ab r185 deprecated (fiel ohnehin hierauf zurück)
   // Schatten hängen nur von Licht+Objekten ab, nicht von der Kamera: Depth-Pass nur
   // neu rendern, wenn sich der Baufortschritt (und damit Objekte/Drehung) ändert.
   renderer.shadowMap.autoUpdate = false;
@@ -66,11 +66,14 @@ function init() {
   const sun = new THREE.DirectionalLight(0xffe9cf, 3.0);
   sun.position.set(5, 9, 8);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(1024, 1024); // 2048 kostet auf iGPUs spürbar, low-poly braucht es nicht
-  sun.shadow.camera.left = -9; sun.shadow.camera.right = 9;
-  sun.shadow.camera.top = 9; sun.shadow.camera.bottom = -9;
-  sun.shadow.camera.near = 1; sun.shadow.camera.far = 40;
-  sun.shadow.bias = -0.0005;
+  sun.shadow.mapSize.set(2048, 2048);
+  // Frustum eng ums Haus legen (Szenenradius ~5,5): jeder Texel deckt ~7 mm statt ~18 mm ab.
+  // Zusammen mit normalBias killt das die Schatten-Streifen (Acne) auf Putz und Ziegeln.
+  sun.shadow.camera.left = -7; sun.shadow.camera.right = 7;
+  sun.shadow.camera.top = 7; sun.shadow.camera.bottom = -7;
+  sun.shadow.camera.near = 5; sun.shadow.camera.far = 22;
+  sun.shadow.bias = -0.0002;
+  sun.shadow.normalBias = 0.05;
   scene.add(sun);
   scene.add(new THREE.HemisphereLight(0x3a4a5e, 0x8a6a4c, 1.0));
 
