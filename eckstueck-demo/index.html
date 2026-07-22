@@ -62,7 +62,7 @@ const CONFIG = {
 html{scroll-behavior:smooth;overflow-x:clip} /* clip statt hidden: verhindert seitliches Wackeln (iOS) ohne sticky-Nav zu brechen */
 body{background:var(--paper);color:var(--ink);font-family:'Karla',sans-serif;overflow-x:hidden}
 .serif{font-family:'Cormorant Garamond',serif}
-.hand{font-family:'Caveat',cursive}
+.hand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600}
 
 /* Papier-Körnung über allem */
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.05;
@@ -238,7 +238,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <div class="hero-in mt-8 flex flex-wrap gap-2 text-[13px] font-bold">
         <span class="rounded-full px-3.5 py-1.5" style="background:var(--sage)">ohne Vorkenntnisse</span>
         <span class="rounded-full px-3.5 py-1.5" style="background:var(--blush)">für Groß &amp; Klein</span>
-        <span class="rounded-full px-3.5 py-1.5" style="background:var(--butter)">spülmaschinenfest gebrannt</span>
+        <span class="rounded-full px-3.5 py-1.5" style="background:var(--butter)">lebensmittelecht glasiert</span>
       </div>
     </div>
 
@@ -279,7 +279,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <div class="rv sketch p-7 text-center">
         <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--sky)">4</div>
         <h3 class="serif font-semibold text-[24px] mt-4">Abholen &amp; freuen</h3>
-        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Nach ca. zwei Wochen ist dein Unikat fertig — spülmaschinenfest &amp; lebensmittelecht.</p>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Nach ca. zwei Wochen ist dein Unikat fertig — lebensmittelecht glasiert und mit etwas Handwäsche lange schön.</p>
       </div>
     </div>
   </div>
@@ -425,7 +425,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
     <div class="mt-10 space-y-4" data-reveal>
       <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Wann kann ich mein Stück abholen?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
-        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Nach dem Bemalen glasieren und brennen wir dein Stück im Studio. Nach etwa zwei Wochen kannst du dein fertiges Lieblingsstück abholen, spülmaschinenfest gebrannt.</p>
+        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Nach dem Bemalen glasieren und brennen wir dein Stück im Studio. Nach etwa zwei Wochen kannst du dein fertiges Lieblingsstück abholen. Ein Tipp zur Pflege: von Hand spülen statt in der Spülmaschine, so bleiben die Farben lange leuchtend.</p>
       </details>
       <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Ab welchem Alter können Kinder mitmalen?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
