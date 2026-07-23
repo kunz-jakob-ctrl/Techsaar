@@ -28,6 +28,10 @@ jobs:
       - name: Deploy-Verzeichnis vorbereiten (sensible/interne Dateien ausschliessen)
         # Kopiert die Website nach _deploy/ und laesst dabei alles weg, was NICHT
         # oeffentlich auf den Server soll. .htaccess bleibt bewusst drin.
+        #
+        # acai-mannheim: Kunden-Entwurf mit Platzhalter-Preisen, laeuft vorerst nur
+        # ueber GitHub Pages. Zum Live-Schalten auf tech-saar.de einfach die
+        # entsprechende --exclude-Zeile unten wieder entfernen.
         run: |
           rsync -a --delete \
             --exclude='_deploy' \
@@ -39,6 +43,7 @@ jobs:
             --exclude='*.xlsx' --exclude='*.docx' \
             --exclude='legal-data.json' \
             --exclude='*.preview.html' \
+            --exclude='acai-mannheim' \
             --exclude='telefon-demo' \
             --exclude='tailwind.config.js' \
             --exclude='*.md' \
