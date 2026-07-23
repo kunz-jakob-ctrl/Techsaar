@@ -81,6 +81,7 @@ const CONFIG = {
     heroClaim: "Löffel für Löffel <em>glücklich.</em>",
     heroCtaMenu: "Zur Karte ↓",
     heroCtaRoute: "Route planen ↗",
+    playLabel: "Film abspielen",
     bowlsEyebrow: "Unsere Klassiker",
     bowlsHead: "Bowls, die<br>knallen. 💥",
     bowlsIntro: "Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.",
@@ -223,10 +224,19 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
   text-shadow:0 2px 10px rgba(36,24,38,.6)}
 .scrollhint span{display:inline-block;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-/* Autoplay blockiert (Datensparmodus): Tap-Hinweis einblenden */
-.film-stage.paused .scrollhint::after{content:' · zum Abspielen tippen'}
+/* Video laeuft nicht (Autoplay blockiert ODER "Bewegung reduzieren" aktiv):
+   sichtbarer Play-Button statt eines toten Standbilds. */
+.film-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;
+  display:none;align-items:center;gap:.7rem;cursor:pointer;
+  border:2px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(36,24,38,.45);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:.85rem 1.5rem .85rem 1.15rem;color:#fff;font-weight:800;font-size:.95rem;
+  font-family:inherit;transition:transform .25s,background .25s}
+.film-play:hover{transform:translate(-50%,-50%) scale(1.05);background:rgba(36,24,38,.65)}
+.film-play svg{width:22px;height:22px;flex:none}
+.film-stage.paused .film-play{display:inline-flex}
 
-/* Reduced Motion / kein Video: Poster als Standbild */
+/* Kein Video moeglich: Poster als Standbild */
 .film-stage.static{background:var(--poster,url('poster.jpg')) center/cover no-repeat}
 
 
@@ -438,6 +448,11 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
         <a class="btn ghost" id="heroRoute" href="#" target="_blank" rel="noopener" data-cfg="copy.heroCtaRoute">Route planen ↗</a>
       </div>
     </div>
+
+    <button class="film-play" id="filmPlay" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+      <span data-cfg="copy.playLabel">Film abspielen</span>
+    </button>
 
     <div class="scrollhint"><span>Scroll ↓</span></div>
   </div>
@@ -721,17 +736,27 @@ const FILM = CONFIG.film;
 
 function initVideo(){
   const v = document.getElementById('filmVideo');
+  const stage = document.getElementById('filmStage');
+  const btn = document.getElementById('filmPlay');
+
   v.poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
   v.src    = (IS_NARROW && FILM.srcMobile)    ? FILM.srcMobile    : FILM.src;
   v.muted = true; v.loop = true; v.playsInline = true;
-  /* Autoplay kann blockiert werden (Datensparmodus, Akku-Sparmodus).
-     Dann bleibt das Poster stehen und ein Tap startet den Film. */
-  const tryPlay = () => v.play().catch(() => {
-    document.getElementById('filmStage').classList.add('paused');
-    const start = () => { v.play().then(()=>document.getElementById('filmStage').classList.remove('paused')).catch(()=>{}); };
-    document.getElementById('filmStage').addEventListener('click', start, { once:true });
-  });
-  if (v.readyState >= 2) tryPlay(); else v.addEventListener('loadeddata', tryPlay, { once:true });
+
+  /* Es gibt zwei Gruende, warum der Film nicht von allein laeuft:
+     Autoplay ist blockiert (Strom-/Datensparmodus) ODER der Nutzer hat
+     "Bewegung reduzieren" aktiv. In BEIDEN Faellen darf kein totes Standbild
+     stehenbleiben — sonst wirkt die Seite kaputt. Also: Play-Button zeigen. */
+  const offer = () => stage.classList.add('paused');
+  const hide  = () => stage.classList.remove('paused');
+  const play  = () => v.play().then(hide).catch(offer);
+
+  btn.addEventListener('click', play);
+  v.addEventListener('pause', offer);
+  v.addEventListener('playing', hide);
+
+  if (REDUCE){ offer(); return; }   // Bewegung reduzieren: Poster + Play-Button, kein Autostart
+  if (v.readyState >= 2) play(); else v.addEventListener('loadeddata', play, { once:true });
 }
 
 function buildFilm(){
@@ -772,15 +797,6 @@ function buildFilm(){
   ScrollTrigger.create({onUpdate:self=>skewTo(gsap.utils.clamp(-10,10,self.getVelocity()/-260))});
 }
 
-/* ---------- Reduced motion: Poster statt bewegtem Film ---------- */
-function staticFilm(){
-  const poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
-  document.documentElement.style.setProperty('--poster', "url('" + poster + "')");
-  document.getElementById('filmStage').classList.add('static');
-  const v=document.getElementById('filmVideo'); if(v) v.remove();
-  const wm=document.getElementById('wordmark');
-  if (wm) wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
-}
 
 /* ---------- Lenis ---------- */
 let lenis=null;
@@ -807,7 +823,9 @@ function boot(){
   updateBuilder();
   initOpenStatus();
 
-  if (REDUCE){ staticFilm(); markReady(); return; }
+  /* Bewegung reduzieren: Video bleibt erhalten (Poster + Play-Button),
+     nur die scroll-getriebene Animation entfaellt. */
+  if (REDUCE){ initVideo(); markReady(); return; }
 
   if (JUMP===null) initLenis();
   initVideo();
