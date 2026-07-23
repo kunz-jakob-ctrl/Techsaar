@@ -13,7 +13,18 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%23A7CC6E'/><path d='M10 26 a14 10 0 0 0 28 0 Z' fill='%2343276B'/><text x='24' y='20' font-size='12' font-family='serif' font-weight='700' fill='%2343276B' text-anchor='middle'>a</text></svg>">
 
 <script>
-/* =================== HIER ANPASSEN — echte Ladendaten =================== */
+/* ============================================================================
+   VORLAGE — alles Kundenspezifische steht in DIESEM Block.
+   Markup und CSS müssen für einen neuen Kunden NICHT angefasst werden.
+
+   Für einen neuen Laden:
+     1. Stammdaten + copy + theme unten anpassen
+     2. Film tauschen: neue Frames nach frames/ + frames-m/, Poster erneuern,
+        dann film.count / film.seam anpassen (seam = Farbe der untersten
+        Bildzeile des LETZTEN Frames, damit der Übergang ins Menü nahtlos ist)
+     3. Menü (bowls/drinks/sizes/toppings) ersetzen — Preise vom Kunden bestätigen lassen
+   Hinweis: assets/ (Rohvideo, Keyframe) wird bewusst NICHT mit deployt.
+   ============================================================================ */
 const CONFIG = {
   name: "acaí",
   nameClean: "acaí mannheim",
@@ -28,6 +39,66 @@ const CONFIG = {
   tiktokHandle: "@acai_mannheim",
   hours: { 0:[10,19], 1:[10,19], 2:[10,19], 3:[10,19], 4:[10,19], 5:[10,19], 6:[10,19] },
   hoursLabel: "Mo – So · 10:00 – 19:00 Uhr",
+
+  /* --- Farbwelt: überschreibt die CSS-Variablen in :root --- */
+  theme: {
+    cream:"#FBF7EC", "cream-2":"#F3EAD6", paper:"#FFFDF6",
+    pist:"#A7CC6E", "pist-light":"#D7E9B0", "pist-deep":"#5F7F35", "pist-soft":"#E9F1D8",
+    acai:"#43276B", "acai-2":"#7B45B8", "acai-soft":"#E7DBF5",
+    berry:"#E85C8A", "berry-soft":"#FBDCE7",
+    blue:"#5A4BC7", honey:"#F4B740", mango:"#FBC96A", "mango-soft":"#FDECC9",
+    ink:"#241826", line:"#241826",
+  },
+
+  /* --- Scroll-Film --- */
+  film: {
+    dir: "frames", dirMobile: "frames-m", count: 121,
+    poster: "poster.jpg", posterMobile: "poster-m.jpg",
+    seam: "#b4af90",              // Farbe der untersten Bildzeile im letzten Frame
+  },
+
+  /* --- Text-Overlays über dem Film (Anteile am Film-Fortschritt 0–1) --- */
+  beats: [
+    { cls:"beat-hero", in:-0.1, peak:0,    out:0.13,
+      html:'<h1 class="wordmark" id="wordmark">açaí</h1><p class="tagline">Açaí Bowls · N4 · Mannheim</p>' },
+    { cls:"beat-mid",  in:0.30, peak:0.42, out:0.54, html:'<h2>100 % Açaí.<br>Frisch gemixt.</h2>' },
+    { cls:"beat-mid",  in:0.60, peak:0.70, out:0.80, html:'<h2>Deine Toppings.<br>Dein Ding.</h2>' },
+    { cls:"beat-finale", in:0.84, peak:0.93, out:2,
+      html:'<h2 class="finale">Löffel für Löffel<br><em>glücklich.</em></h2>' },
+  ],
+
+  ticker: ["Açaí Bowls 🍇","<b>Frisch gemixt</b> 🥄","Smoothies 🥤","Matcha 🍵","Catering 🎉"],
+
+  stats: [
+    { count:1296, fmt:"thousand", label:"Follower auf Insta" },
+    { value:"7/7",                label:"Tage geöffnet" },
+    { count:12,   fmt:"plus",     label:"Toppings" },
+  ],
+
+  /* --- Alle Überschriften & Fließtexte --- */
+  copy: {
+    title: "acaí mannheim — Açaí Bowls, Smoothies & Matcha in N4",
+    metaDesc: "Frische Açaí Bowls, Smoothies & Matcha mitten in Mannheim (N4, 10). Täglich 10–19 Uhr. Löffel für Löffel glücklich.",
+    bowlsEyebrow: "Unsere Klassiker",
+    bowlsHead: "Bowls, die<br>knallen. 💥",
+    bowlsIntro: "Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.",
+    menuNote: "Sorten &amp; Preise beispielhaft — die echte Karte kommt von acaí mannheim.",
+    builderEyebrow: "Interaktiv ✦",
+    builderHead: "Bau dir deine Bowl.",
+    builderIntro: "Größe wählen, Toppings antippen — die ersten <b>3 Toppings sind gratis</b>, jedes weitere +0,80 €.",
+    drinksEyebrow: "Zum Trinken",
+    drinksHead: "Smoothies<br>&amp; Matcha. 🍵",
+    bandHead: "Frisch.<br>Jeden Tag.<br>Mitten in N4.",
+    bandLead: "Wir crushen unser Açaí täglich frisch und schneiden jedes Topping selbst — keine Fertigmischung, kein Schnickschnack. Ehrlich gutes Superfood im Herzen von Mannheim.",
+    cateringEyebrow: "Event geplant? 🎉",
+    cateringHead: "Açaí-Catering für euer Event",
+    cateringText: "Geburtstag, Office-Party oder Uni-Event — wir kommen mit Bowl-Bar &amp; Toppings zu euch. Schreib uns einfach per DM.",
+    cateringCta: "Catering anfragen ↗",
+    socialHead: "Folg uns für Bowl-Content<br>&amp; Specials",
+    locEyebrow: "Komm vorbei 👋",
+    locHead: "Mitten in den Quadraten.",
+    footerNote: '<b>Unverbindliche Vorschau</b> für acaí mannheim — gestaltet von TechSaar. Diese Seite ist ein Entwurf und noch nicht live (<code>noindex</code>). Vor dem Go-live folgen: echte Speisekarte &amp; Preise, Impressum (§5&nbsp;DDG) &amp; Datenschutz (Art.&nbsp;13&nbsp;DSGVO), Self-Hosting von Schriften/Skripten (DSGVO), plus Rechts-Check.',
+  },
 
   /* --- BEISPIEL-KARTE: Namen & Preise vom Laden bestätigen lassen (Platzhalter) --- */
   bowls: [
@@ -122,8 +193,10 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 @media(max-width:760px){.nav-links{display:none}}
 
 /* ---------- FILM / HERO (Lane B: Canvas-Scrub über echte Frames) ---------- */
-#film{height:100vh}
-.film-stage{height:100vh;width:100%;position:relative;overflow:hidden;background:var(--cream)}
+/* svh = "small viewport height": bleibt beim Ein-/Ausblenden der mobilen Adressleiste
+   konstant. Mit 100vh davor als Fallback für ältere Browser. */
+#film{height:100vh;height:100svh}
+.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:var(--cream)}
 #filmCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .film-fade{position:absolute;left:0;right:0;bottom:0;height:44vh;pointer-events:none;opacity:0;z-index:5;
   background:linear-gradient(to bottom,transparent,var(--seam,#43276B))}
@@ -143,7 +216,10 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
   text-shadow:0 1px 10px rgba(36,24,38,.45)}
 .beat-finale{bottom:9vh}
 .finale{font-family:'Bricolage Grotesque',serif;font-weight:900;color:var(--ink);
-  font-size:clamp(2.1rem,6.5vw,4.6rem);line-height:.92}
+  font-size:clamp(2.1rem,6.5vw,4.6rem);line-height:.92;
+  /* heller Halo: hält die Zeile auch dann lesbar, wenn sie über der Bowl statt
+     über dem Hintergrund steht (Querformat, andere Footage) */
+  text-shadow:0 2px 18px rgba(251,247,236,.9),0 0 42px rgba(251,247,236,.75)}
 .finale em{font-style:italic;color:var(--acai)}
 .scrollhint{position:absolute;bottom:2.2vh;left:50%;transform:translateX(-50%);z-index:7;
   font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.5;pointer-events:none}
@@ -157,7 +233,7 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 .film-loader p{font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
 
 /* Reduced-Motion / Fallback: statisches Poster, Copy sichtbar */
-.film-stage.static{background:url('poster.jpg') center/cover no-repeat}
+.film-stage.static{background:var(--poster,url('poster.jpg')) center/cover no-repeat}
 .film-stage.static .beat{opacity:1}
 .film-stage.static .beat-mid,.film-stage.static .film-loader,.film-stage.static .scrollhint{display:none}
 
@@ -305,6 +381,18 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   .size-row{grid-template-columns:1fr}
 }
 
+/* Mobile: teure Compositing-Effekte raus. backdrop-filter über einem Canvas, das pro
+   Frame neu gezeichnet wird, kostet auf Handy-GPUs am meisten. */
+@media(max-width:760px){
+  .nav-inner{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(251,247,236,.95)}
+  .beat-mid h2{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(36,24,38,.68);
+    padding:.3em .55em;border-radius:20px}
+  body::after{display:none}                 /* Grain-Overlay */
+  .ticker{transform:rotate(-1.4deg) scale(1.06)}
+  .beat-hero{top:7vh}
+  .beat-finale{bottom:12vh}
+}
+
 /* Reduced motion: statischer, vollständiger Zustand */
 @media(prefers-reduced-motion:reduce){
   .scrollhint{display:none}
@@ -348,20 +436,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
     <canvas id="filmCanvas" aria-hidden="true"></canvas>
     <div class="film-fade" id="filmFade"></div>
 
-    <div class="beat beat-hero" data-in="-0.1" data-peak="0" data-out="0.13">
-      <h1 class="wordmark" id="wordmark">açaí</h1>
-      <p class="tagline">Açaí Bowls · N4 · Mannheim</p>
-    </div>
-    <div class="beat beat-mid" data-in="0.30" data-peak="0.42" data-out="0.54">
-      <h2>100 % Açaí.<br>Frisch gemixt.</h2>
-    </div>
-    <div class="beat beat-mid" data-in="0.60" data-peak="0.70" data-out="0.80">
-      <h2>Deine Toppings.<br>Dein Ding.</h2>
-    </div>
-    <div class="beat beat-finale" data-in="0.84" data-peak="0.93" data-out="2">
-      <h2 class="finale">Löffel für Löffel<br><em>glücklich.</em></h2>
-    </div>
-
+    <!-- Beats werden aus CONFIG.beats gerendert -->
     <div class="scrollhint"><span>Scroll ↓</span></div>
     <div class="film-loader" id="filmLoader">
       <div class="bar"><i id="loadBar"></i></div>
@@ -373,10 +448,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <!-- ===================== LANDING + TICKER ===================== -->
 <div class="landing">
 <div class="ticker" aria-hidden="true">
-  <div class="ticker-track" id="ticker">
-    <span>Açaí Bowls 🍇</span><span>·</span><span><b>Frisch gemixt</b> 🥄</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Catering 🎉</span><span>·</span>
-    <span>Açaí Bowls 🍇</span><span>·</span><span><b>Frisch gemixt</b> 🥄</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Catering 🎉</span><span>·</span>
-  </div>
+  <div class="ticker-track" id="ticker"><!-- aus CONFIG.ticker --></div>
 </div>
 </div>
 
@@ -385,13 +457,13 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <span class="pill eyebrow" style="background:var(--pist-soft)">Unsere Klassiker</span>
-        <h2>Bowls, die<br>knallen. 💥</h2>
+        <span class="pill eyebrow" style="background:var(--pist-soft)" data-cfg="copy.bowlsEyebrow">Unsere Klassiker</span>
+        <h2 data-cfg-html="copy.bowlsHead">Bowls, die<br>knallen. 💥</h2>
       </div>
-      <p>Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.</p>
+      <p data-cfg-html="copy.bowlsIntro">Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.</p>
     </div>
     <div class="bowl-grid" id="bowlGrid"></div>
-    <p class="menu-note reveal">Sorten &amp; Preise beispielhaft — die echte Karte kommt von acaí mannheim.</p>
+    <p class="menu-note reveal" data-cfg-html="copy.menuNote">Sorten &amp; Preise beispielhaft.</p>
   </div>
 </section>
 
@@ -399,9 +471,9 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <section id="builder" class="sec">
   <div class="wrap">
     <div class="sec-head reveal" style="justify-content:center;text-align:center;flex-direction:column;align-items:center">
-      <span class="pill eyebrow" style="background:var(--acai);color:#fff;border-color:var(--acai)">Interaktiv ✦</span>
-      <h2>Bau dir deine Bowl.</h2>
-      <p style="max-width:30rem">Größe wählen, Toppings antippen — die ersten <b>3 Toppings sind gratis</b>, jedes weitere +0,80 €.</p>
+      <span class="pill eyebrow" style="background:var(--acai);color:#fff;border-color:var(--acai)" data-cfg="copy.builderEyebrow">Interaktiv ✦</span>
+      <h2 data-cfg-html="copy.builderHead">Bau dir deine Bowl.</h2>
+      <p style="max-width:30rem" data-cfg-html="copy.builderIntro">Größe wählen, Toppings antippen.</p>
     </div>
     <div class="builder-card reveal">
       <p class="step-label">1 · Deine Größe</p>
@@ -427,8 +499,8 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <span class="pill eyebrow" style="background:var(--berry);color:#fff;border-color:var(--berry)">Zum Trinken</span>
-        <h2>Smoothies<br>& Matcha. 🍵</h2>
+        <span class="pill eyebrow" style="background:var(--berry);color:#fff;border-color:var(--berry)" data-cfg="copy.drinksEyebrow">Zum Trinken</span>
+        <h2 data-cfg-html="copy.drinksHead">Smoothies<br>&amp; Matcha. 🍵</h2>
       </div>
     </div>
     <div class="drink-grid" id="drinkGrid"></div>
@@ -439,19 +511,15 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <section class="band">
   <div class="wrap">
     <div class="reveal">
-      <h2>Frisch.<br>Jeden Tag.<br>Mitten in N4.</h2>
-      <p class="lead">Wir crushen unser Açaí täglich frisch und schneiden jedes Topping selbst — keine Fertigmischung, kein Schnickschnack. Ehrlich gutes Superfood im Herzen von Mannheim.</p>
-      <div class="stats">
-        <div class="stat"><div class="v" data-count="1296" data-fmt="thousand">0</div><div class="k">Follower auf Insta</div></div>
-        <div class="stat"><div class="v">7/7</div><div class="k">Tage geöffnet</div></div>
-        <div class="stat"><div class="v" data-count="12" data-fmt="plus">0</div><div class="k">Toppings</div></div>
-      </div>
+      <h2 data-cfg-html="copy.bandHead">Frisch.<br>Jeden Tag.<br>Mitten in N4.</h2>
+      <p class="lead" data-cfg-html="copy.bandLead">Täglich frisch gecrusht.</p>
+      <div class="stats" id="statsRow"><!-- aus CONFIG.stats --></div>
     </div>
     <div class="catering-box reveal">
-      <span class="pill pill-mango">Event geplant? 🎉</span>
-      <h3>Açaí-Catering für euer Event</h3>
-      <p>Geburtstag, Office-Party oder Uni-Event — wir kommen mit Bowl-Bar &amp; Toppings zu euch. Schreib uns einfach per DM.</p>
-      <a class="btn" style="margin-top:1.4rem;background:#fff;border-color:#fff;color:var(--acai)" data-cfg-href="instagram" href="#" target="_blank" rel="noopener">Catering anfragen ↗</a>
+      <span class="pill pill-mango" data-cfg="copy.cateringEyebrow">Event geplant? 🎉</span>
+      <h3 data-cfg-html="copy.cateringHead">Açaí-Catering für euer Event</h3>
+      <p data-cfg-html="copy.cateringText">Wir kommen mit Bowl-Bar zu euch.</p>
+      <a class="btn" style="margin-top:1.4rem;background:#fff;border-color:#fff;color:var(--acai)" data-cfg-href="instagram" data-cfg="copy.cateringCta" href="#" target="_blank" rel="noopener">Catering anfragen ↗</a>
     </div>
   </div>
 </section>
@@ -461,7 +529,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="social-card reveal">
       <div style="font-size:3rem">📸</div>
-      <h2>Folg uns für Bowl-Content<br>&amp; Specials</h2>
+      <h2 data-cfg-html="copy.socialHead">Folg uns für Bowl-Content<br>&amp; Specials</h2>
       <p class="sub"><span data-cfg="instaHandle">@acai.mannheim</span> · <span id="followerText">1.296</span> Follower 🫶</p>
       <div class="social-btns">
         <a class="btn btn-fill" data-cfg-href="instagram" href="#" target="_blank" rel="noopener">Instagram ↗</a>
@@ -476,8 +544,8 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="loc-grid">
       <div class="loc-card reveal">
-        <span class="pill eyebrow" style="background:var(--pist-soft)">Komm vorbei 👋</span>
-        <h2>Mitten in den Quadraten.</h2>
+        <span class="pill eyebrow" style="background:var(--pist-soft)" data-cfg="copy.locEyebrow">Komm vorbei 👋</span>
+        <h2 data-cfg-html="copy.locHead">Mitten in den Quadraten.</h2>
         <div class="loc-line"><span class="ic">📍</span><span><b data-cfg="address">N4, 10 · 68161 Mannheim</b><br><span class="muted" data-cfg="addressNote">2 Min. vom Paradeplatz</span></span></div>
         <div class="loc-line"><span class="ic">🕙</span><span><b data-cfg="hoursLabel">Mo – So · 10:00 – 19:00 Uhr</b><br><span class="muted" id="openText2"></span></span></div>
         <a id="routeLink" class="btn btn-fill" style="margin-top:1.8rem" href="#" target="_blank" rel="noopener">Route planen ↗</a>
@@ -515,11 +583,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
     <p style="opacity:.6;font-size:.9rem" data-cfg="address">N4, 10 · 68161 Mannheim</p>
     <p style="opacity:.6;font-size:.9rem" data-cfg="hoursLabel">Mo – So · 10:00 – 19:00 Uhr</p>
 
-    <p class="footnote">
-      <b>Unverbindliche Vorschau</b> für acaí mannheim — gestaltet von TechSaar. Diese Seite ist ein Entwurf und noch nicht live
-      (<code>noindex</code>). Vor dem Go-live folgen: echte Speisekarte &amp; Preise, Impressum (§5&nbsp;DDG) &amp; Datenschutz (Art.&nbsp;13&nbsp;DSGVO),
-      Self-Hosting von Schriften/Skripten (DSGVO), plus Rechts-Check. Frucht-Illustrationen &amp; Layout: TechSaar.
-    </p>
+    <p class="footnote" data-cfg-html="copy.footerNote">Unverbindliche Vorschau — gestaltet von TechSaar.</p>
   </div>
 </footer>
 
@@ -540,10 +604,48 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (JUMP !== null) history.scrollRestoration = 'manual';
 
 /* ---------- CONFIG in die Seite schreiben ---------- */
-document.querySelectorAll('[data-cfg]').forEach(el=>{ const k=el.dataset.cfg; if(CONFIG[k]!=null) el.textContent=CONFIG[k]; });
-document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k]; });
+const cfg = path => path.split('.').reduce((o,k)=> (o==null ? o : o[k]), CONFIG);
+
+/* Farbwelt aus CONFIG.theme in die CSS-Variablen kippen */
+if (CONFIG.theme) for (const [k,v] of Object.entries(CONFIG.theme))
+  document.documentElement.style.setProperty('--'+k, v);
+
+document.querySelectorAll('[data-cfg]').forEach(el=>{ const v=cfg(el.dataset.cfg); if(v!=null) el.textContent=v; });
+document.querySelectorAll('[data-cfg-html]').forEach(el=>{ const v=cfg(el.dataset.cfgHtml); if(v!=null) el.innerHTML=v; });
+document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const v=cfg(el.dataset.cfgHref); if(v) el.href=v; });
+
+if (CONFIG.copy){
+  if (CONFIG.copy.title) document.title = CONFIG.copy.title;
+  const md = document.querySelector('meta[name="description"]');
+  if (md && CONFIG.copy.metaDesc) md.setAttribute('content', CONFIG.copy.metaDesc);
+}
 document.getElementById('routeLink').href = 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(CONFIG.mapsQuery);
 document.getElementById('followerText').textContent = CONFIG.followers.toLocaleString('de-DE');
+
+/* ---------- Film-Overlays, Ticker & Kennzahlen aus CONFIG rendern ---------- */
+function buildFilmCopy(){
+  const stage = document.getElementById('filmStage');
+  const anchor = document.querySelector('.scrollhint');
+  CONFIG.beats.forEach(b=>{
+    const el=document.createElement('div');
+    el.className='beat '+b.cls;
+    el.dataset.in=b.in; el.dataset.peak=b.peak; el.dataset.out=b.out;
+    el.innerHTML=b.html;
+    stage.insertBefore(el, anchor);
+  });
+}
+function buildTicker(){
+  const t=document.getElementById('ticker');
+  const row=CONFIG.ticker.map(s=>'<span>'+s+'</span><span>·</span>').join('');
+  t.innerHTML=row+row;                       // doppelt für den nahtlosen Loop
+}
+function buildStats(){
+  const box=document.getElementById('statsRow');
+  box.innerHTML=CONFIG.stats.map(s=>
+    '<div class="stat"><div class="v"'+
+      (s.count!=null ? ' data-count="'+s.count+'" data-fmt="'+s.fmt+'">0' : '>'+s.value)+
+    '</div><div class="k">'+s.label+'</div></div>').join('');
+}
 
 /* ---------- Menü-Karten aus CONFIG ---------- */
 function buildMenus(){
@@ -618,9 +720,12 @@ function initOpenStatus(){
 /* =========================================================
    FILM: Canvas-Scrub-Engine (Lane B — echte Frames)
    ========================================================= */
-const FRAME_COUNT = 121;                      // nach Frame-Extraktion gesetzt
-const SEAM_HEX = '#b4af90';                   // gesampelte Randfarbe des letzten Frames (bei Master-Swap neu samplen!)
-const framePath = i => 'frames/f_' + String(i+1).padStart(4,'0') + '.jpg';
+const IS_NARROW = matchMedia('(max-width:760px)').matches;
+const FILM = CONFIG.film;
+const FRAME_COUNT = FILM.count;
+const SEAM_HEX = FILM.seam;
+const FRAME_DIR = (IS_NARROW && FILM.dirMobile) ? FILM.dirMobile : FILM.dir;
+const framePath = i => FRAME_DIR + '/f_' + String(i+1).padStart(4,'0') + '.jpg';
 
 const images = new Array(FRAME_COUNT);
 let loadedCount = 0, filmP = 0, currentFrame = 0, targetFrame = 0, displayed = -1;
@@ -631,13 +736,23 @@ let cv, cx2;
 function initCanvas(){
   cv = document.getElementById('filmCanvas');
   cx2 = cv.getContext('2d');
-  const resize = () => {
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);      // DPR-Cap (engine.md)
-    cv.width = Math.round(cv.clientWidth * dpr);
-    cv.height = Math.round(cv.clientHeight * dpr);
+  let lastW = -1, lastH = -1;
+  const sync = () => {
+    const r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);       // DPR-Cap (engine.md)
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (w === lastW && h === lastH) return;                 // keine Neuallokation ohne echte Änderung
+    lastW = w; lastH = h; cv.width = w; cv.height = h;
     if (displayed >= 0) drawFrame(displayed, true);
   };
-  addEventListener('resize', resize); resize();
+  /* ResizeObserver statt window-resize: feuert bei JEDER Box-Änderung (Pin-Spacer,
+     Font-Reflow, Adressleiste) — window-resize verpasst genau die Fälle, die auf
+     dem Handy den Canvas-Buffer desynchronisiert haben. */
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(cv);
+  addEventListener('resize', sync);
+  addEventListener('orientationchange', () => setTimeout(sync, 120));
+  sync();
 }
 
 function nearestFrame(idx){                                 // nie ein leeres Canvas
@@ -659,9 +774,25 @@ function drawFrame(idx, force){
   if (!src){ const n = nearestFrame(idx); src = n < 0 ? null : images[n]; }
   if (!src) return;
   const sw = src.width, sh = src.height, cw = cv.width, ch = cv.height;
-  const s = Math.max(cw / sw, ch / sh);                     // cover-fit
+  const coverS = Math.max(cw / sw, ch / sh);
+  const portrait = (cw / ch) < (sw / sh) * 0.92;
+
+  /* Querformat: klassisches Cover.
+     Hochformat: Cover würde ~80 % der Bildbreite wegschneiden (gemessen: nur 21 % sichtbar,
+     Bowl angeschnitten). Reines Fit-Width macht das Bild dagegen zum schmalen Streifen.
+     Deshalb gedeckelter Zoom: so groß wie möglich, solange ~2/3 der Bildbreite sichtbar
+     bleiben — die Bowl steht mittig und bleibt damit immer vollständig im Bild. */
+  const s = portrait ? Math.min(coverS, (cw / sw) * 1.5) : coverS;
   const dw = sw * s, dh = sh * s;
-  cx2.drawImage(src, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+  const dx = (cw - dw) / 2;
+  const dy = portrait ? (ch - dh) * 0.55 : (ch - dh) / 2;
+
+  /* Backdrop: saubere 8×8-Ecke des FRAME selbst über die ganze Fläche ziehen.
+     Trifft Farbe und Lichtstimmung des Moments exakt, ohne Pixel-Readback — und ohne
+     die oberste Bildzeile zu strecken (die würde den Guss-Strahl zu einem Balken verschmieren). */
+  if (dy > 0.5 || dx > 0.5) cx2.drawImage(src, 0, 0, 8, 8, 0, 0, cw, ch);
+
+  cx2.drawImage(src, dx, dy, dw, dh);
   displayed = idx;
 }
 
@@ -751,8 +882,13 @@ function buildFilm(){
   document.getElementById('filmFade').style.background =
     'linear-gradient(to bottom, transparent, ' + SEAM_HEX + ')';
 
+  /* Adressleisten-Resize auf Mobile ignorieren — sonst rechnet ScrollTrigger den Pin
+     mitten im Scrollen neu und die Seite springt. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
+
   ScrollTrigger.create({
-    trigger: '#film', start: 'top top', end: '+=340%',
+    trigger: '#film', start: 'top top',
+    end: IS_NARROW ? '+=260%' : '+=340%',              // kürzere Scrollstrecke am Handy
     pin: true, anticipatePin: 1, pinType: 'transform', fastScrollEnd: true,
     onUpdate: st => { filmP = st.progress; targetFrame = filmP * (FRAME_COUNT - 1); }
   });
@@ -792,6 +928,8 @@ function buildFilm(){
 
 /* ---------- Reduced motion: statisches Poster, volle Copy ---------- */
 function staticFilm(){
+  const poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
+  document.documentElement.style.setProperty('--poster', "url('" + poster + "')");
   document.getElementById('filmStage').classList.add('static');
   const wm=document.getElementById('wordmark');
   wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
@@ -814,6 +952,9 @@ function initLenis(){
 function markReady(){ window.__ready = true; }
 
 function boot(){
+  buildFilmCopy();                 // Beats ins Markup, bevor initBeats() sie einliest
+  buildTicker();
+  buildStats();
   buildMenus();
   buildBuilder();
   updateBuilder();
