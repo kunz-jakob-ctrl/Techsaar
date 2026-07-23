@@ -52,8 +52,8 @@ const CONFIG = {
 
   /* --- Scroll-Film --- */
   film: {
-    src: "media/film-720.mp4", srcMobile: "media/film-480.mp4",
-    poster: "media/poster.jpg", posterMobile: "media/poster-m.jpg",
+    dir: "frames", dirMobile: "frames-m", count: 121,
+    poster: "poster.jpg", posterMobile: "poster-m.jpg",
     seam: "#b4af90",              // Farbe der untersten Bildzeile im letzten Frame
   },
 
@@ -79,10 +79,6 @@ const CONFIG = {
   copy: {
     title: "acaí mannheim — Açaí Bowls, Smoothies & Matcha in N4",
     metaDesc: "Frische Açaí Bowls, Smoothies & Matcha mitten in Mannheim (N4, 10). Täglich 10–19 Uhr. Löffel für Löffel glücklich.",
-    heroTagline: "Açaí Bowls · N4 · Mannheim",
-    heroClaim: "Löffel für Löffel <em>glücklich.</em>",
-    heroCtaMenu: "Zur Karte ↓",
-    heroCtaRoute: "Route planen ↗",
     bowlsEyebrow: "Unsere Klassiker",
     bowlsHead: "Bowls, die<br>knallen. 💥",
     bowlsIntro: "Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.",
@@ -200,37 +196,46 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 /* svh = "small viewport height": bleibt beim Ein-/Ausblenden der mobilen Adressleiste
    konstant. Mit 100vh davor als Fallback für ältere Browser. */
 #film{height:100vh;height:100svh}
-.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:var(--pist-soft)}
-#filmVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-/* Scrim unten: haelt Copy und CTAs ueber jedem Footage lesbar */
-.film-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(to bottom,rgba(36,24,38,.30) 0%,transparent 26%,transparent 48%,rgba(36,24,38,.62) 100%)}
-.film-inner{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;text-align:center;padding:0 1.2rem 13vh;
-  will-change:transform,opacity}
+.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:var(--cream)}
+#filmCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.film-fade{position:absolute;left:0;right:0;bottom:0;height:44vh;pointer-events:none;opacity:0;z-index:5;
+  background:linear-gradient(to bottom,transparent,var(--seam,#43276B))}
+.beat{position:absolute;left:0;right:0;text-align:center;z-index:6;padding:0 1rem;pointer-events:none;
+  opacity:0;will-change:opacity,transform}
+.beat-hero{top:9vh}
 .wordmark{font-family:'Bricolage Grotesque',serif;font-weight:900;letter-spacing:-.04em;
-  font-size:clamp(3.6rem,15vw,11rem);line-height:.82;color:#fff;
-  text-shadow:0 4px 40px rgba(36,24,38,.5)}
-.wordmark .wm-char{display:inline-block}
-.tagline{margin-top:.5rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff;
-  font-size:clamp(.7rem,1.9vw,.95rem);text-shadow:0 2px 14px rgba(36,24,38,.7)}
-.film-claim{margin-top:1.1rem;font-family:'Bricolage Grotesque',serif;font-weight:900;color:#fff;
-  font-size:clamp(1.6rem,4.6vw,3rem);line-height:1;text-shadow:0 2px 22px rgba(36,24,38,.65)}
-.film-claim em{font-style:italic;color:var(--pist-light)}
-.film-cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:1.8rem}
-.film-cta .btn{background:#fff;border-color:#fff;color:var(--ink)}
-.film-cta .btn.ghost{background:transparent;border-color:rgba(255,255,255,.75);color:#fff}
-.scrollhint{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);z-index:4;color:#fff;
-  font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.75;pointer-events:none;
-  text-shadow:0 2px 10px rgba(36,24,38,.6)}
+  font-size:clamp(4.4rem,17vw,13rem);line-height:.8;color:var(--acai)}
+.wordmark .wm-char{display:inline-block;will-change:transform}
+.tagline{margin-top:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  font-size:clamp(.7rem,1.8vw,.95rem);opacity:.72}
+.beat-mid{top:50%;transform:translateY(-50%)}
+.beat-mid h2{font-family:'Bricolage Grotesque',serif;font-weight:800;color:#fff;
+  font-size:clamp(2rem,5.5vw,4rem);line-height:1.02;display:inline-block;
+  padding:.35em .7em;border-radius:26px;background:rgba(36,24,38,.56);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  text-shadow:0 1px 10px rgba(36,24,38,.45)}
+.beat-finale{bottom:9vh}
+.finale{font-family:'Bricolage Grotesque',serif;font-weight:900;color:var(--ink);
+  font-size:clamp(2.1rem,6.5vw,4.6rem);line-height:.92;
+  /* heller Halo: hält die Zeile auch dann lesbar, wenn sie über der Bowl statt
+     über dem Hintergrund steht (Querformat, andere Footage) */
+  text-shadow:0 2px 18px rgba(251,247,236,.9),0 0 42px rgba(251,247,236,.75)}
+.finale em{font-style:italic;color:var(--acai)}
+.scrollhint{position:absolute;bottom:2.2vh;left:50%;transform:translateX(-50%);z-index:7;
+  font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.5;pointer-events:none}
 .scrollhint span{display:inline-block;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-/* Autoplay blockiert (Datensparmodus): Tap-Hinweis einblenden */
-.film-stage.paused .scrollhint::after{content:' · zum Abspielen tippen'}
+.film-loader{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:1rem;background:var(--cream);transition:opacity .5s}
+.film-loader.done{opacity:0;pointer-events:none}
+.film-loader .bar{width:min(280px,60vw);height:8px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--paper)}
+.film-loader .bar i{display:block;height:100%;width:0%;background:var(--acai);transition:width .2s}
+.film-loader p{font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
 
-/* Reduced Motion / kein Video: Poster als Standbild */
+/* Reduced-Motion / Fallback: statisches Poster, Copy sichtbar */
 .film-stage.static{background:var(--poster,url('poster.jpg')) center/cover no-repeat}
-
+.film-stage.static .beat{opacity:1}
+.film-stage.static .beat-mid,.film-stage.static .film-loader,.film-stage.static .scrollhint{display:none}
 
 /* ---------- LANDING (Film → Content, Playbook §7) ---------- */
 /* Gradient startet exakt auf dem gesampelten Final-Frame-Grün (SEAM_HEX) und
@@ -424,24 +429,19 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   </div>
 </header>
 
-<!-- ===================== FILM / HERO (Autoplay-Video) ===================== -->
+<!-- ===================== FILM / HERO (Canvas-Scrub) ===================== -->
 <section id="film" aria-label="acaí — die Zubereitung als Film">
   <div class="film-stage" id="filmStage">
     <span id="top" style="position:absolute;top:0"></span>
-    <!-- src/poster setzt initVideo() aus CONFIG.film (mobil = leichtere Quelle) -->
-    <video id="filmVideo" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    <canvas id="filmCanvas" aria-hidden="true"></canvas>
+    <div class="film-fade" id="filmFade"></div>
 
-    <div class="film-inner">
-      <h1 class="wordmark" id="wordmark" data-cfg="name">açaí</h1>
-      <p class="tagline" data-cfg-html="copy.heroTagline">Açaí Bowls · N4 · Mannheim</p>
-      <p class="film-claim" data-cfg-html="copy.heroClaim">Löffel für Löffel <em>glücklich.</em></p>
-      <div class="film-cta">
-        <a class="btn" href="#bowls" data-cfg="copy.heroCtaMenu">Zur Karte ↓</a>
-        <a class="btn ghost" id="heroRoute" href="#" target="_blank" rel="noopener" data-cfg="copy.heroCtaRoute">Route planen ↗</a>
-      </div>
-    </div>
-
+    <!-- Beats werden aus CONFIG.beats gerendert -->
     <div class="scrollhint"><span>Scroll ↓</span></div>
+    <div class="film-loader" id="filmLoader">
+      <div class="bar"><i id="loadBar"></i></div>
+      <p>Bowl wird angerichtet …</p>
+    </div>
   </div>
 </section>
 
@@ -624,10 +624,15 @@ document.getElementById('followerText').textContent = CONFIG.followers.toLocaleS
 
 /* ---------- Film-Overlays, Ticker & Kennzahlen aus CONFIG rendern ---------- */
 function buildFilmCopy(){
-  /* Video-Fassung: der Hero ist statisches Markup (siehe .film-inner) — es gibt
-     keine scroll-gescrubbten Beats. CONFIG.beats bleibt ungenutzt. */
-  const r = document.getElementById('heroRoute');
-  if (r) r.href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(CONFIG.mapsQuery);
+  const stage = document.getElementById('filmStage');
+  const anchor = document.querySelector('.scrollhint');
+  CONFIG.beats.forEach(b=>{
+    const el=document.createElement('div');
+    el.className='beat '+b.cls;
+    el.dataset.in=b.in; el.dataset.peak=b.peak; el.dataset.out=b.out;
+    el.innerHTML=b.html;
+    stage.insertBefore(el, anchor);
+  });
 }
 function buildTicker(){
   const t=document.getElementById('ticker');
@@ -713,44 +718,191 @@ function initOpenStatus(){
 }
 
 /* =========================================================
-   FILM: Autoplay-Video-Hero (kundenoptimierte Fassung)
-   Kein Scroll-Scrubbing -> deshalb ist <video> hier das richtige Werkzeug:
-   startet von allein, streamt progressiv (faststart) und wiegt ~10x weniger
-   als die Einzelbild-Sequenz.
+   FILM: Canvas-Scrub-Engine (Lane B — echte Frames)
    ========================================================= */
 const IS_NARROW = matchMedia('(max-width:760px)').matches;
 const FILM = CONFIG.film;
+const FRAME_COUNT = FILM.count;
+const SEAM_HEX = FILM.seam;
+const FRAME_DIR = (IS_NARROW && FILM.dirMobile) ? FILM.dirMobile : FILM.dir;
+const framePath = i => FRAME_DIR + '/f_' + String(i+1).padStart(4,'0') + '.jpg';
 
-function initVideo(){
-  const v = document.getElementById('filmVideo');
-  v.poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
-  v.src    = (IS_NARROW && FILM.srcMobile)    ? FILM.srcMobile    : FILM.src;
-  v.muted = true; v.loop = true; v.playsInline = true;
-  /* Autoplay kann blockiert werden (Datensparmodus, Akku-Sparmodus).
-     Dann bleibt das Poster stehen und ein Tap startet den Film. */
-  const tryPlay = () => v.play().catch(() => {
-    document.getElementById('filmStage').classList.add('paused');
-    const start = () => { v.play().then(()=>document.getElementById('filmStage').classList.remove('paused')).catch(()=>{}); };
-    document.getElementById('filmStage').addEventListener('click', start, { once:true });
-  });
-  if (v.readyState >= 2) tryPlay(); else v.addEventListener('loadeddata', tryPlay, { once:true });
+const images = new Array(FRAME_COUNT);
+let loadedCount = 0, filmP = 0, currentFrame = 0, targetFrame = 0, displayed = -1;
+const bitmaps = new Map(), decoding = new Set();
+const B_AHEAD = 18, B_KEEP = 28; let bmpCenter = -999;
+let cv, cx2;
+
+function initCanvas(){
+  cv = document.getElementById('filmCanvas');
+  cx2 = cv.getContext('2d');
+  let lastW = -1, lastH = -1;
+  const sync = () => {
+    const r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);       // DPR-Cap (engine.md)
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (w === lastW && h === lastH) return;                 // keine Neuallokation ohne echte Änderung
+    lastW = w; lastH = h; cv.width = w; cv.height = h;
+    if (displayed >= 0) drawFrame(displayed, true);
+  };
+  /* ResizeObserver statt window-resize: feuert bei JEDER Box-Änderung (Pin-Spacer,
+     Font-Reflow, Adressleiste) — window-resize verpasst genau die Fälle, die auf
+     dem Handy den Canvas-Buffer desynchronisiert haben. */
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(cv);
+  addEventListener('resize', sync);
+  addEventListener('orientationchange', () => setTimeout(sync, 120));
+  sync();
 }
 
+function nearestFrame(idx){                                 // nie ein leeres Canvas
+  for (let d = 0; d < FRAME_COUNT; d++){
+    if (images[idx - d] && images[idx - d].__ok) return idx - d;
+    if (images[idx + d] && images[idx + d].__ok) return idx + d;
+  }
+  return -1;
+}
+
+function drawFrame(idx, force){
+  if (!cv || (idx === displayed && !force)) return;
+  /* Bitmaps bevorzugen — drawImage(HTMLImageElement) erzwingt synchrone JPEG-Decodes (Jank-Spikes) */
+  let src = bitmaps.get(idx);
+  if (!src){
+    for (let d = 1; d <= B_KEEP && !src; d++)
+      src = bitmaps.get(idx - d) || bitmaps.get(idx + d);
+  }
+  if (!src){ const n = nearestFrame(idx); src = n < 0 ? null : images[n]; }
+  if (!src) return;
+  const sw = src.width, sh = src.height, cw = cv.width, ch = cv.height;
+  const coverS = Math.max(cw / sw, ch / sh);
+  const portrait = (cw / ch) < (sw / sh) * 0.92;
+
+  /* Querformat: klassisches Cover.
+     Hochformat: Cover würde ~80 % der Bildbreite wegschneiden (gemessen: nur 21 % sichtbar,
+     Bowl angeschnitten). Reines Fit-Width macht das Bild dagegen zum schmalen Streifen.
+     Deshalb gedeckelter Zoom: so groß wie möglich, solange ~2/3 der Bildbreite sichtbar
+     bleiben — die Bowl steht mittig und bleibt damit immer vollständig im Bild. */
+  const s = portrait ? Math.min(coverS, (cw / sw) * 1.5) : coverS;
+  const dw = sw * s, dh = sh * s;
+  const dx = (cw - dw) / 2;
+  const dy = portrait ? (ch - dh) * 0.55 : (ch - dh) / 2;
+
+  /* Backdrop: saubere 8×8-Ecke des FRAME selbst über die ganze Fläche ziehen.
+     Trifft Farbe und Lichtstimmung des Moments exakt, ohne Pixel-Readback — und ohne
+     die oberste Bildzeile zu strecken (die würde den Guss-Strahl zu einem Balken verschmieren). */
+  if (dy > 0.5 || dx > 0.5) cx2.drawImage(src, 0, 0, 8, 8, 0, 0, cw, ch);
+
+  cx2.drawImage(src, dx, dy, dw, dh);
+  displayed = idx;
+}
+
+function ensureBitmaps(center){                             // ImageBitmap-Sliding-Window
+  if (Math.abs(center - bmpCenter) < 3) return;
+  bmpCenter = center;
+  const lo = Math.max(0, center - B_AHEAD), hi = Math.min(FRAME_COUNT - 1, center + B_AHEAD);
+  for (let i = lo; i <= hi; i++){
+    if (bitmaps.has(i) || decoding.has(i) || !images[i] || !images[i].__ok) continue;
+    decoding.add(i);
+    createImageBitmap(images[i]).then(b => {
+      decoding.delete(i);
+      if (Math.abs(i - bmpCenter) > B_KEEP){ b.close(); return; }
+      bitmaps.set(i, b);
+      if (i === displayed) drawFrame(i, true);
+    }).catch(() => decoding.delete(i));
+  }
+  for (const k of Array.from(bitmaps.keys()))
+    if (k < center - B_KEEP || k > center + B_KEEP){ bitmaps.get(k).close(); bitmaps.delete(k); }
+}
+
+function pumpFrames(startIdx, onWindowReady){               // Loader mit echtem Fortschritt
+  const bar = document.getElementById('loadBar');
+  const order = [];
+  for (let d = 0; d < FRAME_COUNT; d++){                    // von startIdx nach außen
+    if (startIdx - d >= 0) order.push(startIdx - d);
+    if (d > 0 && startIdx + d < FRAME_COUNT) order.push(startIdx + d);
+  }
+  let cursor = 0, windowDone = false;
+  const WINDOW = Math.min(FRAME_COUNT, 16);
+  const checkWindow = () => {
+    if (windowDone) return;
+    for (let d = 0; d < WINDOW; d++){
+      const i = startIdx + (d % 2 ? -((d + 1) >> 1) : (d + 1) >> 1);
+      if (i >= 0 && i < FRAME_COUNT && (!images[i] || !images[i].__ok)) return;
+    }
+    windowDone = true; onWindowReady();
+  };
+  const next = () => {
+    if (cursor >= order.length) return;
+    const i = order[cursor++];
+    const img = new Image();
+    img.onload = () => { img.__ok = true; loadedCount++;
+      if (bar) bar.style.width = Math.round(loadedCount / FRAME_COUNT * 100) + '%';
+      checkWindow(); next(); };
+    img.onerror = () => { loadedCount++; checkWindow(); next(); };
+    img.src = framePath(i);
+    images[i] = img;
+  };
+  for (let k = 0; k < 10; k++) next();                      // ~10 parallel
+}
+
+/* ---- Beat-Overlays (Copy über dem Film) ---- */
+const beats = [];
+function initBeats(){
+  document.querySelectorAll('.beat').forEach(el => {
+    beats.push({ el, in: +el.dataset.in, peak: +el.dataset.peak, out: +el.dataset.out });
+  });
+}
+function beatAlpha(b, p){
+  if (p < b.in || p > b.out) return 0;
+  if (p < b.peak) return (p - b.in) / Math.max(1e-4, b.peak - b.in);
+  if (b.out > 1.5) return 1;                                // Finale bleibt stehen
+  return 1 - (p - b.peak) / Math.max(1e-4, b.out - b.peak);
+}
+function updateBeats(p){
+  for (const b of beats){
+    const a = beatAlpha(b, p);
+    b.el.style.opacity = a.toFixed(3);
+    b.el.style.transform = (b.el.classList.contains('beat-mid') ? 'translateY(-50%) ' : '') +
+      'translateY(' + ((1 - a) * 14).toFixed(1) + 'px)';
+  }
+  const sh = document.querySelector('.scrollhint');
+  if (sh) sh.style.opacity = p > 0.03 ? 0 : '';
+  const fade = document.getElementById('filmFade');
+  if (fade) fade.style.opacity = Math.max(0, (p - 0.86) / 0.14).toFixed(3);
+}
+
+/* ---- Film-Setup: Pin ZUERST (Ordering-Law), dann Tick ---- */
 function buildFilm(){
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.config({ ignoreMobileResize: true });
 
   const wm = document.getElementById('wordmark');
-  if (wm) wm.innerHTML = wm.textContent.split('').map(c => '<span class="wm-char">' + c + '</span>').join('');
+  wm.innerHTML = wm.textContent.split('').map(c => '<span class="wm-char">' + c + '</span>').join('');
 
-  /* Sanftes Wegblenden des Heros beim Wegscrollen - kein Pin, kein Scroll-Lock:
-     der Besucher kommt nach EINER Wischbewegung an die Inhalte. */
-  gsap.to('.film-inner', {
-    opacity: 0, y: -40, ease: 'none',
-    scrollTrigger: { trigger: '#film', start: 'top top', end: 'bottom top', scrub: true }
+  document.getElementById('filmFade').style.setProperty('--seam', SEAM_HEX);
+  document.getElementById('filmFade').style.background =
+    'linear-gradient(to bottom, transparent, ' + SEAM_HEX + ')';
+
+  /* Adressleisten-Resize auf Mobile ignorieren — sonst rechnet ScrollTrigger den Pin
+     mitten im Scrollen neu und die Seite springt. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
+
+  ScrollTrigger.create({
+    trigger: '#film', start: 'top top',
+    end: IS_NARROW ? '+=260%' : '+=340%',              // kürzere Scrollstrecke am Handy
+    pin: true, anticipatePin: 1, pinType: 'transform', fastScrollEnd: true,
+    onUpdate: st => { filmP = st.progress; targetFrame = filmP * (FRAME_COUNT - 1); }
   });
 
-  /* ---- Content-Reveals ---- */
+  gsap.ticker.add(() => {                                   // gelerpter Playhead
+    currentFrame += (targetFrame - currentFrame) * 0.14;
+    if (Math.abs(targetFrame - currentFrame) < 0.01) currentFrame = targetFrame;
+    const idx = Math.round(currentFrame);
+    ensureBitmaps(idx);
+    drawFrame(idx, false);
+    updateBeats(filmP);
+  });
+
+  /* ---- Content-Reveals (NACH dem Pin erstellen) ---- */
   gsap.utils.toArray('.reveal').forEach(el=>{
     gsap.from(el,{y:44,opacity:0,duration:0.85,ease:'power3.out',
       scrollTrigger:{trigger:el,start:'top 86%'}});
@@ -774,14 +926,13 @@ function buildFilm(){
   ScrollTrigger.create({onUpdate:self=>skewTo(gsap.utils.clamp(-10,10,self.getVelocity()/-260))});
 }
 
-/* ---------- Reduced motion: Poster statt bewegtem Film ---------- */
+/* ---------- Reduced motion: statisches Poster, volle Copy ---------- */
 function staticFilm(){
   const poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
   document.documentElement.style.setProperty('--poster', "url('" + poster + "')");
   document.getElementById('filmStage').classList.add('static');
-  const v=document.getElementById('filmVideo'); if(v) v.remove();
   const wm=document.getElementById('wordmark');
-  if (wm) wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
+  wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
 }
 
 /* ---------- Lenis ---------- */
@@ -812,7 +963,8 @@ function boot(){
   if (REDUCE){ staticFilm(); markReady(); return; }
 
   if (JUMP===null) initLenis();
-  initVideo();
+  initCanvas();
+  initBeats();
   buildFilm();
   ScrollTrigger.refresh();
 
@@ -822,7 +974,19 @@ function boot(){
     ScrollTrigger.update();
     ScrollTrigger.getAll().forEach(st=>{ if(st.animation) st.animation.progress(st.progress); });
   }
-  markReady();          // kein Preload-Gate mehr: das Video streamt progressiv
+
+  /* Frames ab der (ggf. gesprungenen) Position laden; ready erst mit gezeichnetem Frame */
+  const startIdx = Math.round(targetFrame);
+  pumpFrames(startIdx, () => {
+    currentFrame = targetFrame;                       // Lerp sofort settlen
+    const idx = Math.round(currentFrame);
+    ensureBitmaps(idx);
+    drawFrame(idx, true);
+    updateBeats(filmP);
+    document.getElementById('filmLoader').classList.add('done');
+    requestAnimationFrame(() => markReady());
+    setTimeout(markReady, 400);                       // Pane-rAF-Falle: Fallback
+  });
 }
 
 function start(){
