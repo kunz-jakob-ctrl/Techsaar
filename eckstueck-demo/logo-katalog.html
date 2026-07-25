@@ -81,10 +81,19 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-si
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="strichFarben" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="var(--sage)"/><stop offset=".28" stop-color="var(--sage)"/>
-      <stop offset=".48" stop-color="var(--blush)"/><stop offset=".56" stop-color="var(--blush)"/>
-      <stop offset=".76" stop-color="var(--butter)"/><stop offset="1" stop-color="var(--butter)"/>
+      <stop offset="0" stop-color="var(--sage)"/><stop offset=".24" stop-color="var(--sage)"/>
+      <stop offset=".5" stop-color="var(--blush)"/>
+      <stop offset=".78" stop-color="var(--butter)"/><stop offset="1" stop-color="var(--butter)"/>
     </linearGradient>
+    <!-- Trockenpinsel-Strich, 1:1 aus der Eckstück-Demo (Logo-Bildzeichen) -->
+    <clipPath id="swashClip">
+      <path d="M7 49Q13 43 21 41.5Q29 40 36 41Q44 39 51 38.4Q59 37.4 66 38.4
+               Q74 36.6 81 36Q89 35 96 36Q104 34.6 111 35.4Q117 36 121 38
+               L127 39.6L123.5 43.4L131 44.6L125 48.2L132.5 50.4L124.6 53
+               L129.4 56.6L120 57.2Q113 59 106 58.4Q98 59.6 91 58.8
+               Q83 60.6 76 60Q68 61.4 61 60.6Q53 62 46 61.2Q38 62.2 31 61.2
+               Q23 60.4 16 58.2Q9.5 56 7 49Z"/>
+    </clipPath>
     <g id="symbolhalter"></g>
   </defs>
 </svg>
@@ -146,25 +155,25 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-si
 const VARIANTEN = [
   {code:'V1', gruppe:'stehend', name:'Die Schlichte', sub:'feiner Pinsel, ohne Zwinge, leicht geneigt',
    tip:{W:17,T:50,n:2.8}, ferrule:null, handle:{ht:3.6,hb:3.6,he:2,L:128},
-   rot:14, pos:[152,30], bar:{x:36,w:248,h:54,y:108,rot:-4}},
+   rot:14, pos:[152,30], swash:{s:2,tx:18,ty:39}},
   {code:'V2', gruppe:'stehend', name:'Mit dezenter Zwinge', sub:'vollere Spitze, feiner Metallabsatz',
    tip:{W:19,T:52,n:5.5}, ferrule:{w:12.5,h:7}, handle:{ht:4.2,hb:4.2,he:2.3,L:118},
-   rot:14, pos:[152,28], bar:{x:36,w:248,h:54,y:108,rot:-4}},
+   rot:14, pos:[152,28], swash:{s:2,tx:18,ty:39}},
   {code:'F1', gruppe:'stehend', name:'Die Feine, aufrecht', sub:'gerader Stiel, nur die Kuppe neigt sich', empfohlen:true,
    tip:{W:17,T:50,n:2.8}, ferrule:null, handle:{ht:3.6,hb:3.6,he:2,L:128},
-   rot:0, tipRot:11, pos:[160,30], bar:{x:36,w:248,h:54,y:108,rot:-4}},
+   rot:0, tipRot:11, pos:[160,30], swash:{s:2,tx:18,ty:39}},
   {code:'N1', gruppe:'voll', name:'Voller Rundpinsel', sub:'satte Spitze, feine Zwinge, Stiel mit Bauch',
    tip:{W:24,T:58,n:9.5}, ferrule:{w:18,h:10}, handle:{ht:6.5,hb:9.5,he:3.2,L:106},
-   rot:12, pos:[154,22], bar:{x:36,w:248,h:54,y:108,rot:-4}},
+   rot:12, pos:[154,22], swash:{s:2,tx:18,ty:39}},
   {code:'N2', gruppe:'voll', name:'Voll &amp; organisch', sub:'breite Spitze, bauchiger Stiel, dünne Zwinge',
    tip:{W:27,T:60,n:10.5}, ferrule:{w:17,h:5}, handle:{ht:7.5,hb:11,he:3.5,L:108},
-   rot:12, pos:[154,20], bar:{x:36,w:248,h:54,y:108,rot:-4}},
+   rot:12, pos:[154,20], swash:{s:2,tx:18,ty:39}},
   {code:'R1', gruppe:'malend', name:'Der Malende, flach', sub:'setzt im 35°-Winkel zum Strich an',
    tip:{W:12,T:38,n:2.4}, ferrule:null, handle:{ht:2.8,hb:2.8,he:1.6,L:88},
-   rot:145, pos:[226,132], bar:{x:56,w:196,h:36,y:130,rot:-6}, tupfer:[110,146]},
+   rot:145, pos:[226,132], swash:{s:1.6,tx:47,ty:71}},
   {code:'R3', gruppe:'malend', name:'Der Malende, steil', sub:'aufrechter, dynamischer',
    tip:{W:14.5,T:46,n:2.6}, ferrule:null, handle:{ht:3.4,hb:3.4,he:1.9,L:112},
-   rot:125, pos:[204,136], bar:{x:36,w:248,h:50,y:116,rot:-4}, tupfer:[104,138]}
+   rot:125, pos:[204,136], swash:{s:2,tx:18,ty:45}}
 ];
 
 /* ---------- SVG-Bau ---------- */
@@ -192,12 +201,32 @@ function pinselPfade(v){
   return g;
 }
 
+// Ausgefranster Trockenpinsel-Strich wie im Demo-Logo: Verlauf im Swash-Umriss,
+// Lücken in Kartenfarbe, zwei Butter-Sprenkel rechts. Nativ 140x96, per swash:{s,tx,ty} platziert.
+const LUECKEN=[
+  ['M93 34C96.5 41 96.5 52 94.5 59L89.5 59C92 51 92 41 89 34.6Z',.9],
+  ['M110 35C112.5 42 112.5 51 111 58L107.5 58C109.5 51 109.5 42 107 35.4Z',.75],
+  ['M28 40C30.5 46 30.5 55 29 60L26 60C28 55 28 46 25.8 40.4Z',.55],
+  ['M63 36C65 43 65 53 63.6 59L61.4 59C63 53 63 43 61 36.4Z',.4]];
+const SPRENKEL=[
+  ['M134 45C137.6 44.2 139.4 47.4 138.4 50.2C137.4 52.4 134.4 52 133.6 49.2C133 46.8 133.2 45.2 134 45Z',.9],
+  ['M136 55.5C138 55 139 56.8 138.5 58.2C138 59.4 136.3 59.2 135.8 57.7C135.5 56.6 135.5 55.9 136 55.5Z',.65]];
+
+function swashGruppe(sw){
+  const g=el('g',{transform:`translate(${sw.tx} ${sw.ty}) scale(${sw.s})`});
+  const rotg=el('g',{transform:'rotate(-3.5 70 48)'});
+  const clip=el('g',{'clip-path':'url(#swashClip)'});
+  clip.appendChild(el('rect',{x:0,y:28,width:140,height:40,fill:'url(#strichFarben)'}));
+  LUECKEN.forEach(([d,o])=>clip.appendChild(el('path',{d,fill:'var(--card)',opacity:o})));
+  rotg.appendChild(clip);
+  SPRENKEL.forEach(([d,o])=>rotg.appendChild(el('path',{d,fill:'var(--butter)',opacity:o})));
+  g.appendChild(rotg);
+  return g;
+}
+
 function symbolFuer(v){
   const sym=el('symbol',{id:'v-'+v.code, viewBox:'0 0 320 240'});
-  const b=v.bar, cx=b.x+b.w/2, cy=b.y+b.h/2;
-  sym.appendChild(el('rect',{x:b.x,y:b.y,width:b.w,height:b.h,rx:b.h/2,
-    fill:'url(#strichFarben)', transform:`rotate(${b.rot} ${cx} ${cy})`}));
-  if(v.tupfer) sym.appendChild(el('circle',{cx:v.tupfer[0],cy:v.tupfer[1],r:2.6,fill:'var(--blush)'}));
+  sym.appendChild(swashGruppe(v.swash));
   const brush=pinselPfade(v);
   brush.setAttribute('transform',`translate(${v.pos[0]} ${v.pos[1]}) rotate(${v.rot})`);
   sym.appendChild(brush);
