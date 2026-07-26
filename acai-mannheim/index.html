@@ -19,11 +19,19 @@
 
    Für einen neuen Laden:
      1. Stammdaten + copy + theme unten anpassen
-     2. Film tauschen: neues Video nach media/ (zwei Groessen!) und Poster erneuern:
+     2. Film tauschen — es braucht ZWEI Schnitte, quer fuer Desktop, hoch fuers Handy:
+          # Desktop (16:9)
           ffmpeg -i roh.mp4 -an -vf scale=854:-2 -c:v libx264 -crf 26 -preset slow \
                  -movflags +faststart media/film-720.mp4
-          ffmpeg -i roh.mp4 -an -vf scale=480:-2 -c:v libx264 -crf 28 -preset slow \
-                 -movflags +faststart media/film-480.mp4
+          # Handy (9:16): Motiv freistellen, Rest mit unscharfer Kopie des Films
+          # auffuellen -> Farben passen garantiert, keine sichtbare Kante.
+          # crop-Werte an das eigene Material anpassen (hier: Motiv liegt bei x=100..764).
+          ffmpeg -i roh.mp4 -an -filter_complex \
+            "[0:v]crop=664:496:100:0,split=2[a][b];\
+             [a]scale=-2:1280,crop=720:1280,boxblur=26:2[bg];\
+             [b]scale=720:-2[fg];[bg][fg]overlay=(W-w)/2:(H-h)*0.42" \
+            -c:v libx264 -crf 28 -preset slow -movflags +faststart media/film-portrait.mp4
+        Poster je Fassung aus dem letzten Frame ziehen (-sseof -0.1 -frames:v 1).
         -movflags +faststart ist Pflicht — sonst startet das Video erst nach dem
         vollstaendigen Download. Danach film.seam auf die Farbe der untersten
         Bildzeile des LETZTEN Frames setzen (Uebergang ins Menue).
@@ -58,10 +66,11 @@ const CONFIG = {
     ink:"#241826", line:"#241826",
   },
 
-  /* --- Hero-Video (zwei Groessen: mobil wird die leichtere ausgeliefert) --- */
+  /* --- Hero-Video. Mobil laeuft ein eigener 9:16-Schnitt (media/film-portrait.mp4):
+         16:9 im Hochformat heisst sonst entweder 80 % weggeschnitten oder Balken. --- */
   film: {
-    src: "media/film-720.mp4", srcMobile: "media/film-480.mp4",
-    poster: "media/poster.jpg", posterMobile: "media/poster-m.jpg",
+    src: "media/film-720.mp4",          poster: "media/poster.jpg",
+    srcMobile: "media/film-portrait.mp4", posterMobile: "media/poster-portrait.jpg",
     seam: "#b4af90",              // Farbe der untersten Bildzeile im letzten Frame
   },
 
@@ -202,11 +211,11 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 .film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:#c7d19d}
 #filmVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* Hochformat: cover wuerde beim 16:9-Film ~80 % der Bildbreite wegschneiden — man
-   sieht dann nur eine formlose Nahaufnahme und erkennt gar nicht, dass etwas laeuft.
-   Deshalb auf die Breite einpassen und mittig setzen; der flache Pistazien-Hintergrund
-   der Buehne fuellt oben/unten unsichtbar auf (gleiche Loesung wie in index.scroll.html). */
-@media(max-aspect-ratio:15/10){
+/* Handys bekommen einen eigenen 9:16-Schnitt (CONFIG.film.srcMobile) — dort fuellt
+   cover die Buehne exakt, ohne die Schale anzuschneiden.
+   Dazwischen (Tablet hochkant o. schmales Fenster) laeuft noch die 16:9-Quelle:
+   die wuerde cover zu einer formlosen Nahaufnahme zerschneiden, also einpassen. */
+@media(min-width:761px) and (max-aspect-ratio:13/10){
   #filmVideo{object-fit:contain;object-position:center 46%}
 }
 /* Scrim unten: haelt Copy und CTAs ueber jedem Footage lesbar */
@@ -444,8 +453,18 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <section id="film" aria-label="acaí — die Zubereitung als Film">
   <div class="film-stage" id="filmStage">
     <span id="top" style="position:absolute;top:0"></span>
-    <!-- src/poster setzt initVideo() aus CONFIG.film (mobil = leichtere Quelle) -->
-    <video id="filmVideo" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    <video id="filmVideo" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+    <script>
+    /* Quelle SOFORT setzen, nicht erst in boot(): iOS/Android starten stummes
+       Autoplay nur im fruehen Ladefenster. Mit spaet gesetzter Quelle bleibt der
+       Film stehen — und mit preload="metadata" feuerte loadeddata teils nie. */
+    (function(){
+      var v = document.getElementById('filmVideo'), f = CONFIG.film,
+          narrow = matchMedia('(max-width:760px)').matches;
+      v.poster = (narrow && f.posterMobile) ? f.posterMobile : f.poster;
+      v.src    = (narrow && f.srcMobile)    ? f.srcMobile    : f.src;
+    })();
+    </script>
 
     <div class="film-inner">
       <h1 class="wordmark" id="wordmark" data-cfg="name">açaí</h1>
@@ -747,9 +766,7 @@ function initVideo(){
   const stage = document.getElementById('filmStage');
   const btn = document.getElementById('filmPlay');
 
-  v.poster = (IS_NARROW && FILM.posterMobile) ? FILM.posterMobile : FILM.poster;
-  v.src    = (IS_NARROW && FILM.srcMobile)    ? FILM.srcMobile    : FILM.src;
-  v.muted = true; v.loop = true; v.playsInline = true;
+  v.muted = true; v.loop = true; v.playsInline = true;   // src/poster stehen schon (inline)
 
   /* Es gibt zwei Gruende, warum der Film nicht von allein laeuft:
      Autoplay ist blockiert (Strom-/Datensparmodus) ODER der Nutzer hat
@@ -757,14 +774,21 @@ function initVideo(){
      stehenbleiben — sonst wirkt die Seite kaputt. Also: Play-Button zeigen. */
   const offer = () => stage.classList.add('paused');
   const hide  = () => stage.classList.remove('paused');
-  const play  = () => v.play().then(hide).catch(offer);
+  const play  = () => { const p = v.play(); if (p && p.catch) p.catch(offer); };
 
   btn.addEventListener('click', play);
   v.addEventListener('pause', offer);
   v.addEventListener('playing', hide);
 
-  if (REDUCE){ offer(); return; }   // Bewegung reduzieren: Poster + Play-Button, kein Autostart
-  if (v.readyState >= 2) play(); else v.addEventListener('loadeddata', play, { once:true });
+  /* Bewegung reduzieren: Poster + Play-Button, kein Autostart. Das autoplay-Attribut
+     muss dafuer aktiv zurueckgenommen werden, sonst laeuft der Film unter dem Knopf weiter. */
+  if (REDUCE){ v.autoplay = false; v.pause(); offer(); return; }
+
+  play();                                              // sofort, nicht auf ein Event warten
+  v.addEventListener('canplay', play, { once:true });  // zweiter Versuch, sobald Daten da sind
+  /* Watchdog: welches Event auch immer ausbleibt — laeuft nach 1,5 s nichts,
+     bekommt der Besucher einen sichtbaren Knopf statt eines toten Bildes. */
+  setTimeout(() => { if (v.paused) offer(); }, 1500);
 }
 
 function buildFilm(){
