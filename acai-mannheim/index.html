@@ -195,12 +195,20 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 .nav-cta:hover{transform:scale(1.05) rotate(-2deg)}
 @media(max-width:760px){.nav-links{display:none}}
 
-/* ---------- FILM / HERO (Lane B: Canvas-Scrub über echte Frames) ---------- */
+/* ---------- FILM / HERO (Autoplay-Video) ---------- */
 /* svh = "small viewport height": bleibt beim Ein-/Ausblenden der mobilen Adressleiste
    konstant. Mit 100vh davor als Fallback für ältere Browser. */
 #film{height:100vh;height:100svh}
-.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:var(--pist-soft)}
+.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:#c7d19d}
 #filmVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* Hochformat: cover wuerde beim 16:9-Film ~80 % der Bildbreite wegschneiden — man
+   sieht dann nur eine formlose Nahaufnahme und erkennt gar nicht, dass etwas laeuft.
+   Deshalb auf die Breite einpassen und mittig setzen; der flache Pistazien-Hintergrund
+   der Buehne fuellt oben/unten unsichtbar auf (gleiche Loesung wie in index.scroll.html). */
+@media(max-aspect-ratio:15/10){
+  #filmVideo{object-fit:contain;object-position:center 46%}
+}
 /* Scrim unten: haelt Copy und CTAs ueber jedem Footage lesbar */
 .film-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(to bottom,rgba(36,24,38,.30) 0%,transparent 26%,transparent 48%,rgba(36,24,38,.62) 100%)}
