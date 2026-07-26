@@ -23,8 +23,8 @@ const CONFIG = {
   sub: "Keramikmalstudio",
   city: "St. Wendel",
   claim: "Keramik bemalen in St. Wendel",
-  address: "Musterstraße 1 · 66606 St. Wendel",
-  mapsQuery: "Sankt Wendel Fußgängerzone",
+  address: "Grabenstraße 19 · 66606 St. Wendel",
+  mapsQuery: "Grabenstraße 19, 66606 St. Wendel",
   phone: "+49 6851 000000",
   phoneLabel: "06851 / 000 000",
   instagram: "https://www.instagram.com/eckstueck_/",
@@ -33,9 +33,9 @@ const CONFIG = {
   // Format: https://connect.shore.com/bookings/<studio-name>/services?locale=de
   shoreUrl: null,
   // Öffnungszeiten: 0=So … 6=Sa · null = Ruhetag · [von, bis] in Stunden
-  hours: { 0:[11,17], 1:null, 2:[12,18], 3:[12,18], 4:[12,18], 5:[12,18], 6:[10,18] },
-  hoursLabel: "Di – Fr 12–18 · Sa 10–18 · So 11–17",
-  closedLabel: "Montag Ruhetag",
+  // Halbe Stunden als Dezimalwert: 12.5 = 12:30 Uhr
+  hours: { 0:[10,16], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
+  longDay: 4,                              // Donnerstag = langer Donnerstag
   // Kindergeburtstage: Mindestalter (im Gespräch am 17.07. festgelegt)
   minAgeParty: 9,
 };
@@ -269,11 +269,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <div class="rv sketch p-7 text-center">
         <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--butter)">2</div>
         <h3 class="serif font-semibold text-[24px] mt-4">Bemalen</h3>
-        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Farben, Pinsel, Stempel &amp; Schablonen liegen bereit — wir helfen bei Ideen. Kaffee oder ein Glas Wein stehen daneben.</p>
+        <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Farben, Pinsel, Stempel &amp; Schablonen liegen bereit — wir helfen bei Ideen.</p>
       </div>
       <div class="rv sketch p-7 text-center">
         <div class="hand mx-auto w-14 h-14 grid place-items-center rounded-full text-[26px] font-bold" style="background:var(--sage)">3</div>
-        <h3 class="serif font-semibold text-[24px] mt-4">Wir brennen's</h3>
+        <h3 class="serif font-semibold text-[24px] mt-4">Glasur und Brand</h3>
         <p class="mt-2 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Glasur &amp; Brand übernehmen wir — dadurch wird alles glänzend und alltagstauglich.</p>
       </div>
       <div class="rv sketch p-7 text-center">
@@ -316,7 +316,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--blush)">
         <span class="text-4xl">🎈</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Kindergeburtstag</h3>
-        <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, matschen — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
+        <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, Spaß haben — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
         <p class="mt-3 text-[13.5px] font-bold">ab <span data-cfg="minAgeParty">9</span> Jahren</p>
         <a href="#reservierung" class="inline-block mt-4 font-bold underline underline-offset-4">Termin anfragen →</a>
       </div>
@@ -329,7 +329,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--sage)">
         <span class="text-4xl">🧑‍🤝‍🧑</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Teamevents &amp; JGA</h3>
-        <p class="mt-2 text-[15px] leading-relaxed">Kreativ statt Konferenzraum — für Gruppen reservieren wir euch gern das ganze Studio, Feierabendbier inklusive.</p>
+        <p class="mt-2 text-[15px] leading-relaxed">Kreativ statt Konferenzraum — für Gruppen reservieren wir euch gern das ganze Studio, auf Wunsch mit Aperitif, Wein oder Prosecco.</p>
         <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
       </div>
     </div>
@@ -372,10 +372,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
     </p>
 
     <p class="mt-8 text-[15px]" style="color:rgba(250,246,237,.7)">
-      Lieber persönlich?
+      Lieber telefonisch? Ruf uns einfach an:
       <a data-cfg-href="phoneHref" href="#" class="font-bold underline underline-offset-4" style="color:var(--paper)" data-cfg="phoneLabel">06851 / 000 000</a>
-      · oder schreib uns bei
-      <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="font-bold underline underline-offset-4" style="color:var(--paper)" data-cfg="instaHandle">@eckstueck_</a>
     </p>
   </div>
 </section>
@@ -387,9 +385,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <p class="hand text-[24px]" style="color:var(--clay)">komm vorbei</p>
       <h2 class="serif font-semibold text-[38px] md:text-[48px]">Mitten in <span data-cfg="city">St. Wendel</span></h2>
       <div class="mt-8 space-y-5 text-[16px]">
-        <p class="flex items-start gap-3"><span class="text-xl">📍</span><span><b data-cfg="address">Musterstraße 1 · 66606 St. Wendel</b><br><a id="routeLink" href="#" target="_blank" rel="noopener" class="underline underline-offset-4 text-[14px]" style="color:var(--clay)">Route planen ↗</a></span></p>
-        <p class="flex items-start gap-3"><span class="text-xl">🕙</span><span><b data-cfg="hoursLabel">Di – Fr 12–18 · Sa 10–18 · So 11–17</b> <span class="text-[14px]" style="color:var(--ink-soft)">(<span data-cfg="closedLabel">Montag Ruhetag</span>)</span><br><span id="openText" class="text-[14px] font-bold"></span></span></p>
-        <p class="flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a><br><span class="text-[14px]" style="color:var(--ink-soft)">oder schreib uns bei Insta: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" data-cfg="instaHandle">@eckstueck_</a></span></span></p>
+        <p class="flex items-start gap-3"><span class="text-xl">📍</span><span><b data-cfg="address">Grabenstraße 19 · 66606 St. Wendel</b><br><a id="routeLink" href="#" target="_blank" rel="noopener" class="underline underline-offset-4 text-[14px]" style="color:var(--clay)">Route planen ↗</a></span></p>
+        <div class="flex items-start gap-3"><span class="text-xl">🕙</span><div>
+          <!-- Liste wird aus CONFIG.hours erzeugt — eine Quelle für alle Zeiten -->
+          <dl id="hoursList" class="grid grid-cols-[2.2rem_1fr] gap-x-4 gap-y-1 text-[15px]"></dl>
+          <p id="openText" class="text-[14px] font-bold mt-2"></p>
+        </div></div>
+        <p class="flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a><br><span class="text-[14px]" style="color:var(--ink-soft)">Folgt uns auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" data-cfg="instaHandle">@eckstueck_</a></span></span></p>
       </div>
       <a href="#reservierung" class="btn-clay inline-block mt-8 rounded-full px-7 py-3.5 font-bold">Platz reservieren</a>
     </div>
@@ -409,7 +411,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
            quadratisch, dort rückt der Text auf den hellsten Teil der Kugel. -->
       <div class="relative" style="color:var(--paper);text-shadow:0 1px 12px rgba(65,73,59,.8)">
         <p class="serif font-semibold text-[26px]">Du findest uns mitten<br>in der Fußgängerzone</p>
-        <p class="hand text-[20px] mt-1" style="color:var(--butter)">nur ein paar Schritte vom Marktplatz ✦</p>
+        <p class="hand text-[20px] mt-1" style="color:var(--butter)">nur ein paar Schritte vom Kugelbrunnen ✦</p>
         <a id="mapOpenLink" href="#" target="_blank" rel="noopener" class="btn-butter inline-block mt-5 rounded-full px-6 py-3 font-bold">Karte bei Google Maps öffnen ↗</a>
       </div>
     </div>
@@ -432,11 +434,15 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
         <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Zum freien Malen dürfen alle mitkommen, kleine Künstler in Begleitung eines Erwachsenen. <b>Kindergeburtstage feiern wir ab <span data-cfg="minAgeParty">9</span> Jahren</b>, da klappt das Bemalen selbstständig am besten.</p>
       </details>
       <details class="rv sketch px-6 py-5 group">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Kann ich auch eine Begleitperson mitbringen?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
+        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Unsere Plätze sind begrenzt, daher berechnen wir für eine Begleitperson einen Unkostenbeitrag von 10,00 €.</p>
+      </details>
+      <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Gibt es etwas zu trinken?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
         <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Klar — bei uns malst du mit Café-Gefühl: Kaffee, Kakao und Kaltgetränke gibt es direkt am Maltisch, abends auch ein Glas Wein, Prosecco oder ein Bier dazu. Einfach ankommen, aussuchen, losmalen.</p>
       </details>
     </div>
-    <p class="hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Schreib uns einfach bei <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" style="color:var(--clay)" data-cfg="instaHandle">@eckstueck_</a> ✦</p>
+    <p class="hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Ruf uns einfach an: <a data-cfg-href="phoneHref" href="#" class="underline" style="color:var(--clay)" data-cfg="phoneLabel">06851 / 000 000</a> ✦</p>
   </div>
 </section>
 
@@ -471,11 +477,30 @@ document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bem
   }
 })();
 
-/* ---------- Offen/Geschlossen-Status ---------- */
+/* ---------- Öffnungszeiten: Liste + Offen/Geschlossen-Status ---------- */
 (function(){
-  const now=new Date(), h=CONFIG.hours[now.getDay()], hr=now.getHours()+now.getMinutes()/60;
-  const el=document.getElementById("openText");
-  if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+h[1]+":00 Uhr"; el.style.color="#5F7F5F"; }
+  /* Dezimalstunde → Uhrzeit. 18.5 wird "18:30", nicht "18.5:00". */
+  const zeit = x => Math.floor(x)+":"+String(Math.round((x%1)*60)).padStart(2,"0");
+  const KURZ = ["So","Mo","Di","Mi","Do","Fr","Sa"];
+  const REIHE = [1,2,3,4,5,6,0];            // Montag zuerst, wie gewohnt gelesen
+  const heute = new Date().getDay();
+
+  const liste = document.getElementById("hoursList");
+  REIHE.forEach(d=>{
+    const oz = CONFIG.hours[d];
+    const dt = document.createElement("dt");
+    const dd = document.createElement("dd");
+    dt.textContent = KURZ[d];
+    dd.textContent = oz ? zeit(oz[0])+"–"+zeit(oz[1]) : "geschlossen";
+    if(d === CONFIG.longDay) dd.textContent += " · langer Donnerstag";
+    if(!oz) dd.style.color = "var(--ink-soft)";
+    if(d === heute){ dt.style.fontWeight="700"; dd.style.fontWeight="700"; }
+    liste.append(dt, dd);
+  });
+
+  const jetzt = new Date(), h = CONFIG.hours[heute], hr = jetzt.getHours()+jetzt.getMinutes()/60;
+  const el = document.getElementById("openText");
+  if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+zeit(h[1])+" Uhr"; el.style.color="#5F7F5F"; }
   else { el.textContent="● Gerade geschlossen"; el.style.color="var(--clay-deep)"; }
 })();
 
