@@ -10,3 +10,6 @@ Thumbs.db
 node_modules/
 __pycache__/
 *.pyc
+
+# Rohmaterial der Demos (Videos, Keyframes) - nur lokal, nicht deployen
+bowl-demo/assets/

@@ -4,30 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>acaí mannheim — Açaí Bowls, Smoothies & Matcha in N4</title>
-<meta name="description" content="Frische Açaí Bowls, Smoothies & Matcha mitten in Mannheim (N4, 10). Täglich 10–19 Uhr. Löffel für Löffel glücklich.">
+<title>BOWLERY — Demo einer bewegten Website | TechSaar</title>
+<meta name="description" content="Beispielseite von TechSaar: Wie sich ein Betrieb mit echtem Film und Bewegung im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%23A7CC6E'/><path d='M10 26 a14 10 0 0 0 28 0 Z' fill='%2343276B'/><text x='24' y='20' font-size='12' font-family='serif' font-weight='700' fill='%2343276B' text-anchor='middle'>a</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%23A7CC6E'/><path d='M10 26 a14 10 0 0 0 28 0 Z' fill='%2343276B'/></svg>">
 
 <script>
-/* =================== HIER ANPASSEN — echte Ladendaten =================== */
+/* ============================================================================
+   VORLAGE — alles Kundenspezifische steht in DIESEM Block.
+   Markup und CSS müssen für einen neuen Kunden NICHT angefasst werden.
+
+   Für einen neuen Laden:
+     1. Stammdaten + copy + theme unten anpassen
+     2. Film tauschen — ZWEI Schnitte noetig, quer fuer Desktop, hoch fuers Handy.
+        Vorskalieren mit lanczos + leichtem unsharp (Browser-Upscaling ist schlechter)
+        und NICHT zu stark komprimieren: Zielwert ~0,08 bit/Pixel, also
+        bitrate / (breite * hoehe * fps). CRF 26+ wirft sichtbar Qualitaet weg.
+          # Desktop
+          ffmpeg -i roh.mp4 -an -vf "scale=1280:736:flags=lanczos,unsharp=5:5:0.7:3:3:0.3" \
+            -c:v libx264 -crf 21 -preset veryslow -movflags +faststart media/film-720.mp4
+          # Handy (9:16): Motiv freistellen, dann oberste/unterste Bildzeile nach oben
+          # bzw. unten strecken (vstack). Ein Unschaerfe-Hintergrund erzeugt eine
+          # sichtbare Kante, die Kantenfortsetzung nicht. crop-Werte ans Material anpassen.
+          ffmpeg -i roh.mp4 -an -filter_complex \
+            "[0:v]split=3[a][b][c];\
+             [a]crop=620:496:122:0,scale=900:720:flags=lanczos,unsharp=5:5:0.8:3:3:0.4[fg];\
+             [b]crop=620:4:122:0,scale=900:150:flags=lanczos[top];\
+             [c]crop=620:4:122:492,scale=900:730:flags=lanczos[bot];\
+             [top][fg][bot]vstack=inputs=3" \
+            -c:v libx264 -crf 20 -preset veryslow -movflags +faststart media/film-portrait.mp4
+        Motiv hoch genug setzen, sonst verdeckt der Textblock unten das Motiv.
+        Poster je Fassung aus dem letzten Frame ziehen (-sseof -0.1 -frames:v 1).
+        -movflags +faststart ist Pflicht — sonst startet das Video erst nach dem
+        vollstaendigen Download. Danach film.seam auf die Farbe der untersten
+        Bildzeile des LETZTEN Frames setzen (Uebergang ins Menue).
+     3. Menü (bowls/drinks/sizes/toppings) ersetzen — Preise vom Betrieb bestätigen lassen
+   Hinweis: assets/ (Rohvideo, Keyframe) wird bewusst NICHT mit deployt.
+
+   Diese Datei = Kundenfassung mit Autoplay-Video (schnell, laeuft von allein).
+   index.scroll.html = Pitch-Fassung mit scroll-gescrubbtem Film (die Wow-Variante).
+   ============================================================================ */
 const CONFIG = {
-  name: "acaí",
-  nameClean: "acaí mannheim",
+  name: "BOWLERY",
+  nameClean: "BOWLERY",
   claim: "Açaí Bowls · Smoothies · Matcha & More",
-  address: "N4, 10 · 68161 Mannheim",
-  addressNote: "2 Min. vom Paradeplatz · mitten in den Quadraten",
-  mapsQuery: "acai mannheim, N4 10, 68161 Mannheim",
-  instagram: "https://www.instagram.com/acai.mannheim/",
-  instaHandle: "@acai.mannheim",
-  followers: 1296,
-  tiktok: "https://www.tiktok.com/@acai_mannheim",
-  tiktokHandle: "@acai_mannheim",
+  address: "Musterstraße 12 · 66111 Saarbrücken",
+  addressNote: "Beispiel-Adresse — hier steht später euer Standort",
+  mapsQuery: "Saarbrücken Innenstadt",
+  instagram: "#",
+  instaHandle: "@bowlery",
+  tiktok: "#",
+  tiktokHandle: "@bowlery",
   hours: { 0:[10,19], 1:[10,19], 2:[10,19], 3:[10,19], 4:[10,19], 5:[10,19], 6:[10,19] },
   hoursLabel: "Mo – So · 10:00 – 19:00 Uhr",
+
+  /* --- Farbwelt: überschreibt die CSS-Variablen in :root --- */
+  theme: {
+    cream:"#FBF7EC", "cream-2":"#F3EAD6", paper:"#FFFDF6",
+    pist:"#A7CC6E", "pist-light":"#D7E9B0", "pist-deep":"#5F7F35", "pist-soft":"#E9F1D8",
+    acai:"#43276B", "acai-2":"#7B45B8", "acai-soft":"#E7DBF5",
+    berry:"#E85C8A", "berry-soft":"#FBDCE7",
+    blue:"#5A4BC7", honey:"#F4B740", mango:"#FBC96A", "mango-soft":"#FDECC9",
+    ink:"#241826", line:"#241826",
+  },
+
+  /* --- Hero-Video. Mobil laeuft ein eigener 9:16-Schnitt (media/film-portrait.mp4):
+         16:9 im Hochformat heisst sonst entweder 80 % weggeschnitten oder Balken. --- */
+  film: {
+    src: "media/film-720.mp4",          poster: "media/poster.jpg",
+    srcMobile: "media/film-portrait.mp4", posterMobile: "media/poster-portrait.jpg",
+    seam: "#b4af90",              // Farbe der untersten Bildzeile im letzten Frame
+  },
+
+  ticker: ["Açaí Bowls 🍇","<b>Frisch gemixt</b> 🥄","Smoothies 🥤","Matcha 🍵","Catering 🎉"],
+
+  stats: [
+    { count:100,  fmt:"percent",  label:"echtes Açaí" },
+    { value:"7/7",                label:"Tage geöffnet" },
+    { count:12,   fmt:"plus",     label:"Toppings" },
+  ],
+
+  /* --- Alle Überschriften & Fließtexte --- */
+  copy: {
+    title: "BOWLERY — Demo einer bewegten Website | TechSaar",
+    metaDesc: "Beispielseite von TechSaar: Wie sich ein Betrieb mit echtem Film und Bewegung im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden.",
+    heroTagline: "Beispielseite · TechSaar",
+    heroClaim: "Löffel für Löffel <em>glücklich.</em>",
+    heroCtaMenu: "Zur Karte ↓",
+    heroCtaRoute: "Route planen ↗",
+    playLabel: "Film abspielen",
+    bowlsEyebrow: "Unsere Klassiker",
+    bowlsHead: "Bowls, die<br>knallen. 💥",
+    bowlsIntro: "Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.",
+    menuNote: "Beispiel-Karte — Sorten und Preise legt der Betrieb selbst fest.",
+    builderEyebrow: "Interaktiv ✦",
+    builderHead: "Bau dir deine Bowl.",
+    builderIntro: "Größe wählen, Toppings antippen — die ersten <b>3 Toppings sind gratis</b>, jedes weitere +0,80 €.",
+    drinksEyebrow: "Zum Trinken",
+    drinksHead: "Smoothies<br>&amp; Matcha. 🍵",
+    bandHead: "Frisch.<br>Jeden Tag.<br>Von Hand.",
+    bandLead: "Açaí täglich frisch gecrushed, jedes Topping selbst geschnitten — keine Fertigmischung, kein Schnickschnack. So klingt eine Marke, die ihr Handwerk ernst nimmt.",
+    cateringEyebrow: "Event geplant? 🎉",
+    cateringHead: "Açaí-Catering für euer Event",
+    cateringText: "Geburtstag, Office-Party oder Uni-Event — wir kommen mit Bowl-Bar &amp; Toppings zu euch. Schreib uns einfach per DM.",
+    cateringCta: "Catering anfragen ↗",
+    socialHead: "Folg uns für Bowl-Content<br>&amp; Specials",
+    locEyebrow: "Komm vorbei 👋",
+    locHead: "Mitten in der Stadt.",
+    toast: "Yum! 🍇 Bestellt wird direkt im Laden.",
+    footerNote: '<b>Demo-Seite von TechSaar.</b> „BOWLERY" ist eine erfundene Marke — Name, Adresse, Karte, Preise und Social-Profile sind frei erfunden und gehören zu keinem realen Betrieb. Diese Seite zeigt, wie eine Website mit echtem Film und Bewegung wirken kann. Für einen echten Auftritt kämen Impressum (§5&nbsp;DDG), Datenschutz (Art.&nbsp;13&nbsp;DSGVO), Self-Hosting von Schriften/Skripten und ein Rechts-Check dazu.',
+  },
 
   /* --- BEISPIEL-KARTE: Namen & Preise vom Laden bestätigen lassen (Platzhalter) --- */
   bowls: [
@@ -120,35 +209,75 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
   transition:transform .25s}
 .nav-cta:hover{transform:scale(1.05) rotate(-2deg)}
 @media(max-width:760px){.nav-links{display:none}}
+/* Enge Handys: Der Markenname kann laenger sein als 'acaí' — Nav sonst umbrechend.
+   Logo, Status-Badge und CTA zusammen so weit verkleinern, dass alles einzeilig bleibt. */
+@media(max-width:460px){
+  .nav-inner{padding:.5rem .55rem .5rem .8rem;gap:.45rem}
+  .logo{gap:.45rem}
+  .logo .mark{width:29px;height:29px}
+  .logo .word{font-size:1.02rem;letter-spacing:-.02em}
+  #openBadge{font-size:.6rem;padding:.32rem .55rem}
+  .nav-cta{font-size:.72rem;padding:.45rem .8rem;white-space:nowrap}
+}
 
-/* ---------- FILM / HERO ---------- */
-#film{height:100vh}
-.film-stage{height:100vh;width:100%;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(120% 90% at 50% 8%,var(--pist-soft) 0%,var(--cream) 46%,var(--cream-2) 100%)}
-.glow{position:absolute;top:50%;left:50%;width:min(120vh,120vw);height:min(120vh,120vw);
-  transform:translate(-50%,-46%) scale(.7);border-radius:50%;pointer-events:none;opacity:.55;
-  background:radial-gradient(circle,rgba(167,204,110,.55) 0%,rgba(123,69,184,.16) 42%,transparent 66%);filter:blur(6px)}
-.film-copy{position:absolute;top:11vh;left:0;right:0;text-align:center;z-index:6;padding:0 1rem;pointer-events:none}
+/* ---------- FILM / HERO (Autoplay-Video) ---------- */
+/* svh = "small viewport height": bleibt beim Ein-/Ausblenden der mobilen Adressleiste
+   konstant. Mit 100vh davor als Fallback für ältere Browser. */
+#film{height:100vh;height:100svh}
+.film-stage{height:100vh;height:100svh;width:100%;position:relative;overflow:hidden;background:#c7d19d}
+#filmVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* Handys bekommen einen eigenen 9:16-Schnitt (CONFIG.film.srcMobile) — dort fuellt
+   cover die Buehne exakt, ohne die Schale anzuschneiden.
+   Dazwischen (Tablet hochkant o. schmales Fenster) laeuft noch die 16:9-Quelle:
+   die wuerde cover zu einer formlosen Nahaufnahme zerschneiden, also einpassen. */
+@media(min-width:761px) and (max-aspect-ratio:13/10){
+  #filmVideo{object-fit:contain;object-position:center 46%}
+}
+/* Scrim unten: haelt Copy und CTAs ueber jedem Footage lesbar */
+.film-stage::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(36,24,38,.30) 0%,transparent 26%,transparent 48%,rgba(36,24,38,.62) 100%)}
+.film-inner{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;text-align:center;padding:0 1.2rem 13vh;
+  will-change:transform,opacity}
 .wordmark{font-family:'Bricolage Grotesque',serif;font-weight:900;letter-spacing:-.04em;
-  font-size:clamp(4.4rem,17vw,13rem);line-height:.8;color:var(--acai)}
-.wordmark .wm-char{display:inline-block;will-change:transform}
-.tagline{margin-top:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  font-size:clamp(.7rem,1.8vw,.95rem);opacity:.72}
-.scene-wrap{position:relative;z-index:4;width:min(78vh,90vw);max-width:560px;will-change:transform,opacity}
-.scene{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 26px 26px rgba(67,39,107,.22))}
-.finale{position:absolute;bottom:9vh;left:0;right:0;text-align:center;z-index:7;padding:0 1rem;pointer-events:none;
-  font-family:'Bricolage Grotesque',serif;font-weight:900;color:var(--ink);
-  font-size:clamp(2.1rem,6.5vw,4.6rem);line-height:.92}
-.finale em{font-style:italic;color:var(--acai)}
-.scrollhint{position:absolute;bottom:2.2vh;left:50%;transform:translateX(-50%);z-index:7;
-  font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.5;pointer-events:none}
+  font-size:clamp(3.6rem,15vw,11rem);line-height:.82;color:#fff;
+  text-shadow:0 4px 40px rgba(36,24,38,.5)}
+.wordmark .wm-char{display:inline-block}
+.tagline{margin-top:.5rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff;
+  font-size:clamp(.7rem,1.9vw,.95rem);text-shadow:0 2px 14px rgba(36,24,38,.7)}
+.film-claim{margin-top:1.1rem;font-family:'Bricolage Grotesque',serif;font-weight:900;color:#fff;
+  font-size:clamp(1.6rem,4.6vw,3rem);line-height:1;text-shadow:0 2px 22px rgba(36,24,38,.65)}
+.film-claim em{font-style:italic;color:var(--pist-light)}
+.film-cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:1.8rem}
+.film-cta .btn{background:#fff;border-color:#fff;color:var(--ink)}
+.film-cta .btn.ghost{background:transparent;border-color:rgba(255,255,255,.75);color:#fff}
+.scrollhint{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);z-index:4;color:#fff;
+  font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.75;pointer-events:none;
+  text-shadow:0 2px 10px rgba(36,24,38,.6)}
 .scrollhint span{display:inline-block;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+/* Video laeuft nicht (Autoplay blockiert ODER "Bewegung reduzieren" aktiv):
+   sichtbarer Play-Button statt eines toten Standbilds. */
+.film-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;
+  display:none;align-items:center;gap:.7rem;cursor:pointer;
+  border:2px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(36,24,38,.45);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:.85rem 1.5rem .85rem 1.15rem;color:#fff;font-weight:800;font-size:.95rem;
+  font-family:inherit;transition:transform .25s,background .25s}
+.film-play:hover{transform:translate(-50%,-50%) scale(1.05);background:rgba(36,24,38,.65)}
+.film-play svg{width:22px;height:22px;flex:none}
+.film-stage.paused .film-play{display:inline-flex}
 
-/* Film-armed: alles außer Wortmarke unsichtbar bis GSAP übernimmt */
-.film-armed .scene-wrap{opacity:0}
-.film-armed .finale{opacity:0}
+/* Kein Video moeglich: Poster als Standbild */
+.film-stage.static{background:var(--poster,url('poster.jpg')) center/cover no-repeat}
+
+
+/* ---------- LANDING (Film → Content, Playbook §7) ---------- */
+/* Gradient startet exakt auf dem gesampelten Final-Frame-Grün (SEAM_HEX) und
+   schmilzt über den Ticker hinweg in die Creme — kein sichtbarer Strich. */
+.landing{background:linear-gradient(to bottom,#b4af90 0%,#d4d2b2 34%,var(--cream-2) 68%,var(--cream) 100%);
+  padding:5rem 0 4rem}
 
 /* ---------- TICKER ---------- */
 .ticker{border-top:2px solid var(--line);border-bottom:2px solid var(--line);background:var(--acai);
@@ -288,6 +417,18 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   .size-row{grid-template-columns:1fr}
 }
 
+/* Mobile: teure Compositing-Effekte raus. backdrop-filter über einem Canvas, das pro
+   Frame neu gezeichnet wird, kostet auf Handy-GPUs am meisten. */
+@media(max-width:760px){
+  .nav-inner{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(251,247,236,.95)}
+  .beat-mid h2{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(36,24,38,.68);
+    padding:.3em .55em;border-radius:20px}
+  body::after{display:none}                 /* Grain-Overlay */
+  .ticker{transform:rotate(-1.4deg) scale(1.06)}
+  .beat-hero{top:7vh}
+  .beat-finale{bottom:12vh}
+}
+
 /* Reduced motion: statischer, vollständiger Zustand */
 @media(prefers-reduced-motion:reduce){
   .scrollhint{display:none}
@@ -301,7 +442,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <!-- ===================== NAV ===================== -->
 <header class="nav">
   <div class="nav-inner">
-    <a href="#top" class="logo" aria-label="acaí mannheim">
+    <a href="#top" class="logo" aria-label="BOWLERY — zum Seitenanfang">
       <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
         <circle cx="24" cy="24" r="22" fill="var(--pist)"/>
         <path d="M11 25 a13 10 0 0 0 26 0 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>
@@ -324,123 +465,47 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   </div>
 </header>
 
-<!-- ===================== FILM / HERO ===================== -->
-<section id="film" aria-label="acaí — Löffel für Löffel glücklich">
-  <div class="film-stage" id="top">
-    <div class="glow"></div>
+<!-- ===================== FILM / HERO (Autoplay-Video) ===================== -->
+<section id="film" aria-label="acaí — die Zubereitung als Film">
+  <div class="film-stage" id="filmStage">
+    <span id="top" style="position:absolute;top:0"></span>
+    <video id="filmVideo" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+    <script>
+    /* Quelle SOFORT setzen, nicht erst in boot(): iOS/Android starten stummes
+       Autoplay nur im fruehen Ladefenster. Mit spaet gesetzter Quelle bleibt der
+       Film stehen — und mit preload="metadata" feuerte loadeddata teils nie. */
+    (function(){
+      var v = document.getElementById('filmVideo'), f = CONFIG.film,
+          narrow = matchMedia('(max-width:760px)').matches;
+      v.poster = (narrow && f.posterMobile) ? f.posterMobile : f.poster;
+      v.src    = (narrow && f.srcMobile)    ? f.srcMobile    : f.src;
+    })();
+    </script>
 
-    <div class="film-copy">
-      <h1 class="wordmark" id="wordmark">açaí</h1>
-      <p class="tagline">Açaí Bowls · N4 · Mannheim</p>
+    <div class="film-inner">
+      <h1 class="wordmark" id="wordmark" data-cfg="name">açaí</h1>
+      <p class="tagline" data-cfg-html="copy.heroTagline">Beispielseite · TechSaar</p>
+      <p class="film-claim" data-cfg-html="copy.heroClaim">Löffel für Löffel <em>glücklich.</em></p>
+      <div class="film-cta">
+        <a class="btn" href="#bowls" data-cfg="copy.heroCtaMenu">Zur Karte ↓</a>
+        <a class="btn ghost" id="heroRoute" href="#" target="_blank" rel="noopener" data-cfg="copy.heroCtaRoute">Route planen ↗</a>
+      </div>
     </div>
 
-    <div class="scene-wrap" id="sceneWrap">
-      <svg class="scene" viewBox="0 0 420 400" role="img" aria-label="Açaí-Bowl mit Toppings">
-        <defs>
-          <linearGradient id="acaiGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="var(--acai-2)"/><stop offset="1" stop-color="var(--acai)"/>
-          </linearGradient>
-          <clipPath id="domeClip"><path d="M62,214 a148,148 0 0 1 296,0 Z"/></clipPath>
-          <clipPath id="pourClip"><rect id="pourRect" x="52" y="66" width="316" height="150"/></clipPath>
-        </defs>
+    <button class="film-play" id="filmPlay" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+      <span data-cfg="copy.playLabel">Film abspielen</span>
+    </button>
 
-        <!-- Fuß -->
-        <rect x="172" y="336" width="76" height="26" rx="9" fill="var(--paper)" stroke="var(--ink)" stroke-width="5"/>
-
-        <!-- Açaí-Kuppel + Mix-Swirl (wird eingegossen) -->
-        <g clip-path="url(#pourClip)">
-          <g clip-path="url(#domeClip)" id="acaiDome">
-            <path d="M62,214 a148,148 0 0 1 296,0 Z" fill="url(#acaiGrad)"/>
-            <g id="swirl" style="transform-origin:210px 150px">
-              <ellipse cx="180" cy="150" rx="120" ry="40" fill="var(--pist)" opacity=".5"/>
-              <ellipse cx="240" cy="170" rx="110" ry="34" fill="var(--acai-2)" opacity=".6"/>
-              <ellipse cx="210" cy="140" rx="70" ry="26" fill="var(--pist-light)" opacity=".45"/>
-            </g>
-            <path d="M118,146 a100,100 0 0 1 58,-56" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="10" stroke-linecap="round"/>
-          </g>
-        </g>
-
-        <!-- Schale -->
-        <path d="M52,214 A158,132 0 0 0 368,214 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="5" stroke-linejoin="round"/>
-        <rect x="40" y="268" width="340" height="26" fill="var(--pist-soft)" clip-path="url(#domeClip)"/>
-
-        <!-- Drips -->
-        <path d="M85,212 v14 a9,9 0 0 0 18,0 v-14 Z" fill="var(--acai)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M150,212 v24 a10,10 0 0 0 20,0 v-24 Z" fill="var(--acai)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M255,212 v18 a10,10 0 0 0 20,0 v-18 Z" fill="var(--acai)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M318,212 v11 a8,8 0 0 0 16,0 v-11 Z" fill="var(--acai)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-
-        <!-- Honig-Drizzle -->
-        <path class="honey" d="M120,150 C160,120 180,180 220,150 C255,124 280,175 315,150" fill="none"
-              stroke="var(--honey)" stroke-width="6" stroke-linecap="round"/>
-
-        <!-- Granola -->
-        <g class="granola" fill="#C69A5B" stroke="var(--ink)" stroke-width="1.4">
-          <circle cx="150" cy="176" r="4"/><circle cx="264" cy="182" r="4.5"/><circle cx="200" cy="186" r="3.6"/>
-          <circle cx="300" cy="170" r="3.6"/><circle cx="128" cy="164" r="3.4"/>
-        </g>
-
-        <!-- FRÜCHTE (fallen herein) -->
-        <g class="fruit"><g transform="translate(138,120)">
-          <circle r="17" fill="#A9CF70" stroke="var(--ink)" stroke-width="4"/>
-          <circle r="11.5" fill="#D9EDAD"/><circle r="3.5" fill="var(--paper)"/>
-          <g fill="var(--ink)"><circle cy="-7.5" r="1.4"/><circle cx="5.5" cy="-4.5" r="1.4"/><circle cx="7.5" cy="2" r="1.4"/><circle cx="3.5" cy="6.5" r="1.4"/><circle cx="-3.5" cy="6.5" r="1.4"/><circle cx="-7.5" cy="2" r="1.4"/><circle cx="-5.5" cy="-4.5" r="1.4"/></g>
-        </g></g>
-        <g class="fruit"><g transform="translate(196,92) rotate(-10)">
-          <path d="M0,-14 C9,-14 16,-7 16,1 C16,11 7,20 0,25 C-7,20 -16,11 -16,1 C-16,-7 -9,-14 0,-14 Z" fill="var(--berry)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M0,-8 C6,-8 10,-4 10,1 C10,8 5,14 0,18 C-5,14 -10,8 -10,1 C-10,-4 -6,-8 0,-8 Z" fill="#F7A8C0"/>
-          <g fill="var(--paper)"><ellipse cx="-4" cy="0" rx="1.4" ry="2"/><ellipse cx="4" cy="0" rx="1.4" ry="2"/><ellipse cy="8" rx="1.4" ry="2"/></g>
-        </g></g>
-        <g class="fruit"><g transform="translate(243,102) rotate(14) scale(.85)">
-          <path d="M0,-14 C9,-14 16,-7 16,1 C16,11 7,20 0,25 C-7,20 -16,11 -16,1 C-16,-7 -9,-14 0,-14 Z" fill="var(--berry)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M0,-8 C6,-8 10,-4 10,1 C10,8 5,14 0,18 C-5,14 -10,8 -10,1 C-10,-4 -6,-8 0,-8 Z" fill="#F7A8C0"/>
-          <g fill="var(--paper)"><ellipse cx="-4" cy="0" rx="1.4" ry="2"/><ellipse cx="4" cy="0" rx="1.4" ry="2"/><ellipse cy="8" rx="1.4" ry="2"/></g>
-        </g></g>
-        <g class="fruit"><g transform="translate(292,124)">
-          <circle r="15" fill="#FFE9A8" stroke="var(--ink)" stroke-width="4"/>
-          <circle r="9.5" fill="#FFF6D8" stroke="#E9CE7E" stroke-width="2.5"/>
-          <g fill="#D9B968"><circle cy="-3" r="1.5"/><circle cx="-3" cy="2.5" r="1.5"/><circle cx="3" cy="2.5" r="1.5"/></g>
-        </g></g>
-        <g class="fruit"><g transform="translate(268,84) scale(.8)">
-          <circle r="15" fill="#FFE9A8" stroke="var(--ink)" stroke-width="4"/>
-          <circle r="9.5" fill="#FFF6D8" stroke="#E9CE7E" stroke-width="2.5"/>
-          <g fill="#D9B968"><circle cy="-3" r="1.5"/><circle cx="-3" cy="2.5" r="1.5"/><circle cx="3" cy="2.5" r="1.5"/></g>
-        </g></g>
-        <g class="fruit"><g transform="translate(172,136)">
-          <circle r="9" fill="var(--blue)" stroke="var(--ink)" stroke-width="3.5"/><circle cx="-3" cy="-3" r="2" fill="#fff" opacity=".6"/>
-        </g></g>
-        <g class="fruit"><g transform="translate(222,132)">
-          <circle r="9" fill="var(--acai)" stroke="var(--ink)" stroke-width="3.5"/><circle cx="-3" cy="-3" r="2" fill="#fff" opacity=".5"/>
-        </g></g>
-        <g class="fruit"><g transform="translate(116,92)">
-          <circle r="8" fill="var(--acai-2)" stroke="var(--ink)" stroke-width="3.5"/><circle cx="-3" cy="-3" r="1.8" fill="#fff" opacity=".55"/>
-        </g></g>
-
-        <!-- Löffel (statisch) -->
-        <g transform="translate(330,118) rotate(30)">
-          <rect x="-5" y="-102" width="10" height="100" rx="5" fill="var(--ink)"/>
-          <ellipse cy="12" rx="16" ry="21" fill="var(--ink)"/>
-          <ellipse cx="-3" cy="8" rx="7" ry="11" fill="var(--acai-2)"/>
-        </g>
-
-        <!-- Sparkles -->
-        <path d="M56,64 l3,8 8,3 -8,3 -3,8 -3,-8 -8,-3 8,-3 Z" fill="var(--mango)"/>
-        <path d="M382,168 l2.5,7 7,2.5 -7,2.5 -2.5,7 -2.5,-7 -7,-2.5 7,-2.5 Z" fill="var(--berry)"/>
-        <path d="M368,58 l2,5.5 5.5,2 -5.5,2 -2,5.5 -2,-5.5 -5.5,-2 5.5,-2 Z" fill="var(--pist)"/>
-      </svg>
-    </div>
-
-    <h2 class="finale" id="finale">Löffel für Löffel<br><em>glücklich.</em></h2>
     <div class="scrollhint"><span>Scroll ↓</span></div>
   </div>
 </section>
 
-<!-- ===================== TICKER ===================== -->
+<!-- ===================== LANDING + TICKER ===================== -->
+<div class="landing">
 <div class="ticker" aria-hidden="true">
-  <div class="ticker-track" id="ticker">
-    <span>Açaí Bowls 🍇</span><span>·</span><span><b>Frisch gemixt</b> 🥄</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Catering 🎉</span><span>·</span>
-    <span>Açaí Bowls 🍇</span><span>·</span><span><b>Frisch gemixt</b> 🥄</span><span>·</span><span>Smoothies 🥤</span><span>·</span><span>Matcha 🍵</span><span>·</span><span>Catering 🎉</span><span>·</span>
-  </div>
+  <div class="ticker-track" id="ticker"><!-- aus CONFIG.ticker --></div>
+</div>
 </div>
 
 <!-- ===================== BOWLS ===================== -->
@@ -448,13 +513,13 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <span class="pill eyebrow" style="background:var(--pist-soft)">Unsere Klassiker</span>
-        <h2>Bowls, die<br>knallen. 💥</h2>
+        <span class="pill eyebrow" style="background:var(--pist-soft)" data-cfg="copy.bowlsEyebrow">Unsere Klassiker</span>
+        <h2 data-cfg-html="copy.bowlsHead">Bowls, die<br>knallen. 💥</h2>
       </div>
-      <p>Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.</p>
+      <p data-cfg-html="copy.bowlsIntro">Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.</p>
     </div>
     <div class="bowl-grid" id="bowlGrid"></div>
-    <p class="menu-note reveal">Sorten &amp; Preise beispielhaft — die echte Karte kommt von acaí mannheim.</p>
+    <p class="menu-note reveal" data-cfg-html="copy.menuNote">Sorten &amp; Preise beispielhaft.</p>
   </div>
 </section>
 
@@ -462,9 +527,9 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <section id="builder" class="sec">
   <div class="wrap">
     <div class="sec-head reveal" style="justify-content:center;text-align:center;flex-direction:column;align-items:center">
-      <span class="pill eyebrow" style="background:var(--acai);color:#fff;border-color:var(--acai)">Interaktiv ✦</span>
-      <h2>Bau dir deine Bowl.</h2>
-      <p style="max-width:30rem">Größe wählen, Toppings antippen — die ersten <b>3 Toppings sind gratis</b>, jedes weitere +0,80 €.</p>
+      <span class="pill eyebrow" style="background:var(--acai);color:#fff;border-color:var(--acai)" data-cfg="copy.builderEyebrow">Interaktiv ✦</span>
+      <h2 data-cfg-html="copy.builderHead">Bau dir deine Bowl.</h2>
+      <p style="max-width:30rem" data-cfg-html="copy.builderIntro">Größe wählen, Toppings antippen.</p>
     </div>
     <div class="builder-card reveal">
       <p class="step-label">1 · Deine Größe</p>
@@ -490,8 +555,8 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <span class="pill eyebrow" style="background:var(--berry);color:#fff;border-color:var(--berry)">Zum Trinken</span>
-        <h2>Smoothies<br>& Matcha. 🍵</h2>
+        <span class="pill eyebrow" style="background:var(--berry);color:#fff;border-color:var(--berry)" data-cfg="copy.drinksEyebrow">Zum Trinken</span>
+        <h2 data-cfg-html="copy.drinksHead">Smoothies<br>&amp; Matcha. 🍵</h2>
       </div>
     </div>
     <div class="drink-grid" id="drinkGrid"></div>
@@ -502,19 +567,15 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <section class="band">
   <div class="wrap">
     <div class="reveal">
-      <h2>Frisch.<br>Jeden Tag.<br>Mitten in N4.</h2>
-      <p class="lead">Wir crushen unser Açaí täglich frisch und schneiden jedes Topping selbst — keine Fertigmischung, kein Schnickschnack. Ehrlich gutes Superfood im Herzen von Mannheim.</p>
-      <div class="stats">
-        <div class="stat"><div class="v" data-count="1296" data-fmt="thousand">0</div><div class="k">Follower auf Insta</div></div>
-        <div class="stat"><div class="v">7/7</div><div class="k">Tage geöffnet</div></div>
-        <div class="stat"><div class="v" data-count="12" data-fmt="plus">0</div><div class="k">Toppings</div></div>
-      </div>
+      <h2 data-cfg-html="copy.bandHead">Frisch.<br>Jeden Tag.<br>Von Hand.</h2>
+      <p class="lead" data-cfg-html="copy.bandLead">Täglich frisch gecrusht.</p>
+      <div class="stats" id="statsRow"><!-- aus CONFIG.stats --></div>
     </div>
     <div class="catering-box reveal">
-      <span class="pill pill-mango">Event geplant? 🎉</span>
-      <h3>Açaí-Catering für euer Event</h3>
-      <p>Geburtstag, Office-Party oder Uni-Event — wir kommen mit Bowl-Bar &amp; Toppings zu euch. Schreib uns einfach per DM.</p>
-      <a class="btn" style="margin-top:1.4rem;background:#fff;border-color:#fff;color:var(--acai)" data-cfg-href="instagram" href="#" target="_blank" rel="noopener">Catering anfragen ↗</a>
+      <span class="pill pill-mango" data-cfg="copy.cateringEyebrow">Event geplant? 🎉</span>
+      <h3 data-cfg-html="copy.cateringHead">Açaí-Catering für euer Event</h3>
+      <p data-cfg-html="copy.cateringText">Wir kommen mit Bowl-Bar zu euch.</p>
+      <a class="btn" style="margin-top:1.4rem;background:#fff;border-color:#fff;color:var(--acai)" data-cfg-href="instagram" data-cfg="copy.cateringCta" href="#" target="_blank" rel="noopener">Catering anfragen ↗</a>
     </div>
   </div>
 </section>
@@ -524,8 +585,8 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="social-card reveal">
       <div style="font-size:3rem">📸</div>
-      <h2>Folg uns für Bowl-Content<br>&amp; Specials</h2>
-      <p class="sub"><span data-cfg="instaHandle">@acai.mannheim</span> · <span id="followerText">1.296</span> Follower 🫶</p>
+      <h2 data-cfg-html="copy.socialHead">Folg uns für Bowl-Content<br>&amp; Specials</h2>
+      <p class="sub"><span data-cfg="instaHandle">@bowlery</span> · Beispiel-Profil, nicht verlinkt</p>
       <div class="social-btns">
         <a class="btn btn-fill" data-cfg-href="instagram" href="#" target="_blank" rel="noopener">Instagram ↗</a>
         <a class="btn" data-cfg-href="tiktok" href="#" target="_blank" rel="noopener">TikTok ↗</a>
@@ -539,13 +600,13 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
   <div class="wrap">
     <div class="loc-grid">
       <div class="loc-card reveal">
-        <span class="pill eyebrow" style="background:var(--pist-soft)">Komm vorbei 👋</span>
-        <h2>Mitten in den Quadraten.</h2>
-        <div class="loc-line"><span class="ic">📍</span><span><b data-cfg="address">N4, 10 · 68161 Mannheim</b><br><span class="muted" data-cfg="addressNote">2 Min. vom Paradeplatz</span></span></div>
+        <span class="pill eyebrow" style="background:var(--pist-soft)" data-cfg="copy.locEyebrow">Komm vorbei 👋</span>
+        <h2 data-cfg-html="copy.locHead">Mitten in der Stadt.</h2>
+        <div class="loc-line"><span class="ic">📍</span><span><b data-cfg="address">Musterstraße 12 · 66111 Saarbrücken</b><br><span class="muted" data-cfg="addressNote">Beispiel-Adresse</span></span></div>
         <div class="loc-line"><span class="ic">🕙</span><span><b data-cfg="hoursLabel">Mo – So · 10:00 – 19:00 Uhr</b><br><span class="muted" id="openText2"></span></span></div>
         <a id="routeLink" class="btn btn-fill" style="margin-top:1.8rem" href="#" target="_blank" rel="noopener">Route planen ↗</a>
       </div>
-      <div class="map-card reveal" aria-label="Standort N4, 10 Mannheim">
+      <div class="map-card reveal" aria-label="Stilisierte Standortkarte (Beispiel)">
         <svg class="map-illu" viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <rect width="600" height="360" fill="var(--pist-soft)"/>
           <g stroke="#C7D9A6" stroke-width="10">
@@ -559,7 +620,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
           <rect x="312" y="210" width="54" height="42" rx="4" fill="#EAF2DA"/>
           <rect x="470" y="100" width="60" height="40" rx="4" fill="#EAF2DA"/>
         </svg>
-        <div class="map-pin"><div class="dot"></div><div class="lbl">acaí · N4, 10</div></div>
+        <div class="map-pin"><div class="dot"></div><div class="lbl" data-cfg="name">BOWLERY</div></div>
       </div>
     </div>
   </div>
@@ -573,20 +634,16 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
         <circle cx="24" cy="24" r="22" fill="var(--pist)"/>
         <path d="M13 25 a11 8 0 0 0 22 0 Z" fill="var(--acai)"/>
       </svg>
-      <span data-cfg="name">acaí</span> <span style="font-weight:400;opacity:.5;font-family:'Schibsted Grotesk'">mannheim</span>
+      <span data-cfg="name">BOWLERY</span> <span style="font-weight:400;opacity:.5;font-family:'Schibsted Grotesk'">Demo</span>
     </div>
-    <p style="opacity:.6;font-size:.9rem" data-cfg="address">N4, 10 · 68161 Mannheim</p>
+    <p style="opacity:.6;font-size:.9rem" data-cfg="address">Musterstraße 12 · 66111 Saarbrücken</p>
     <p style="opacity:.6;font-size:.9rem" data-cfg="hoursLabel">Mo – So · 10:00 – 19:00 Uhr</p>
 
-    <p class="footnote">
-      <b>Unverbindliche Vorschau</b> für acaí mannheim — gestaltet von TechSaar. Diese Seite ist ein Entwurf und noch nicht live
-      (<code>noindex</code>). Vor dem Go-live folgen: echte Speisekarte &amp; Preise, Impressum (§5&nbsp;DDG) &amp; Datenschutz (Art.&nbsp;13&nbsp;DSGVO),
-      Self-Hosting von Schriften/Skripten (DSGVO), plus Rechts-Check. Frucht-Illustrationen &amp; Layout: TechSaar.
-    </p>
+    <p class="footnote" data-cfg-html="copy.footerNote">Unverbindliche Vorschau — gestaltet von TechSaar.</p>
   </div>
 </footer>
 
-<div id="toast">Yum! 🍇 Bestellung geht direkt im Laden — N4, 10.</div>
+<div id="toast" data-cfg="copy.toast">Yum! 🍇 Bestellt wird direkt im Laden.</div>
 
 <!-- ===================== LIBS ===================== -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -595,7 +652,7 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 
 <script>
 /* =================================================================
-   acaí mannheim — Scroll-Film (Lane A, pure code)
+   BOWLERY — Demo einer bewegten Website (TechSaar)
    ================================================================= */
 const params = new URLSearchParams(location.search);
 const JUMP = params.get('jump');
@@ -603,10 +660,42 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (JUMP !== null) history.scrollRestoration = 'manual';
 
 /* ---------- CONFIG in die Seite schreiben ---------- */
-document.querySelectorAll('[data-cfg]').forEach(el=>{ const k=el.dataset.cfg; if(CONFIG[k]!=null) el.textContent=CONFIG[k]; });
-document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k]; });
+const cfg = path => path.split('.').reduce((o,k)=> (o==null ? o : o[k]), CONFIG);
+
+/* Farbwelt aus CONFIG.theme in die CSS-Variablen kippen */
+if (CONFIG.theme) for (const [k,v] of Object.entries(CONFIG.theme))
+  document.documentElement.style.setProperty('--'+k, v);
+
+document.querySelectorAll('[data-cfg]').forEach(el=>{ const v=cfg(el.dataset.cfg); if(v!=null) el.textContent=v; });
+document.querySelectorAll('[data-cfg-html]').forEach(el=>{ const v=cfg(el.dataset.cfgHtml); if(v!=null) el.innerHTML=v; });
+document.querySelectorAll('[data-cfg-href]').forEach(el=>{ const v=cfg(el.dataset.cfgHref); if(v) el.href=v; });
+
+if (CONFIG.copy){
+  if (CONFIG.copy.title) document.title = CONFIG.copy.title;
+  const md = document.querySelector('meta[name="description"]');
+  if (md && CONFIG.copy.metaDesc) md.setAttribute('content', CONFIG.copy.metaDesc);
+}
 document.getElementById('routeLink').href = 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(CONFIG.mapsQuery);
-document.getElementById('followerText').textContent = CONFIG.followers.toLocaleString('de-DE');
+
+/* ---------- Film-Overlays, Ticker & Kennzahlen aus CONFIG rendern ---------- */
+function buildFilmCopy(){
+  /* Video-Fassung: der Hero ist statisches Markup (siehe .film-inner) — es gibt
+     keine scroll-gescrubbten Beats. CONFIG.beats bleibt ungenutzt. */
+  const r = document.getElementById('heroRoute');
+  if (r) r.href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(CONFIG.mapsQuery);
+}
+function buildTicker(){
+  const t=document.getElementById('ticker');
+  const row=CONFIG.ticker.map(s=>'<span>'+s+'</span><span>·</span>').join('');
+  t.innerHTML=row+row;                       // doppelt für den nahtlosen Loop
+}
+function buildStats(){
+  const box=document.getElementById('statsRow');
+  box.innerHTML=CONFIG.stats.map(s=>
+    '<div class="stat"><div class="v"'+
+      (s.count!=null ? ' data-count="'+s.count+'" data-fmt="'+s.fmt+'">0' : '>'+s.value)+
+    '</div><div class="k">'+s.label+'</div></div>').join('');
+}
 
 /* ---------- Menü-Karten aus CONFIG ---------- */
 function buildMenus(){
@@ -678,51 +767,60 @@ function initOpenStatus(){
   const o2=document.getElementById('openText2'); if(o2) o2.textContent=t;
 }
 
-/* ---------- Film + Motion ---------- */
-let heroTL=null;
+/* =========================================================
+   FILM: Autoplay-Video-Hero (kundenoptimierte Fassung)
+   Kein Scroll-Scrubbing -> deshalb ist <video> hier das richtige Werkzeug:
+   startet von allein, streamt progressiv (faststart) und wiegt ~10x weniger
+   als die Einzelbild-Sequenz.
+   ========================================================= */
+const IS_NARROW = matchMedia('(max-width:760px)').matches;
+const FILM = CONFIG.film;
+
+function initVideo(){
+  const v = document.getElementById('filmVideo');
+  const stage = document.getElementById('filmStage');
+  const btn = document.getElementById('filmPlay');
+
+  v.muted = true; v.loop = true; v.playsInline = true;   // src/poster stehen schon (inline)
+
+  /* Es gibt zwei Gruende, warum der Film nicht von allein laeuft:
+     Autoplay ist blockiert (Strom-/Datensparmodus) ODER der Nutzer hat
+     "Bewegung reduzieren" aktiv. In BEIDEN Faellen darf kein totes Standbild
+     stehenbleiben — sonst wirkt die Seite kaputt. Also: Play-Button zeigen. */
+  const offer = () => stage.classList.add('paused');
+  const hide  = () => stage.classList.remove('paused');
+  const play  = () => { const p = v.play(); if (p && p.catch) p.catch(offer); };
+
+  btn.addEventListener('click', play);
+  v.addEventListener('pause', offer);
+  v.addEventListener('playing', hide);
+
+  /* Bewegung reduzieren: Poster + Play-Button, kein Autostart. Das autoplay-Attribut
+     muss dafuer aktiv zurueckgenommen werden, sonst laeuft der Film unter dem Knopf weiter. */
+  if (REDUCE){ v.autoplay = false; v.pause(); offer(); return; }
+
+  play();                                              // sofort, nicht auf ein Event warten
+  v.addEventListener('canplay', play, { once:true });  // zweiter Versuch, sobald Daten da sind
+  /* Watchdog: welches Event auch immer ausbleibt — laeuft nach 1,5 s nichts,
+     bekommt der Besucher einen sichtbaren Knopf statt eines toten Bildes. */
+  setTimeout(() => { if (v.paused) offer(); }, 1500);
+}
+
 function buildFilm(){
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
-  /* Wortmarke in Zeichen splitten */
-  const wm=document.getElementById('wordmark');
-  wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
+  const wm = document.getElementById('wordmark');
+  if (wm) wm.innerHTML = wm.textContent.split('').map(c => '<span class="wm-char">' + c + '</span>').join('');
 
-  /* Honig-Pfad für Draw vorbereiten */
-  const honey=document.querySelector('.honey');
-  const hlen=honey.getTotalLength();
-  honey.style.strokeDasharray=hlen; honey.style.strokeDashoffset=hlen;
-
-  /* Szene sichtbar machen (war per .film-armed versteckt) */
-  gsap.set('#sceneWrap',{opacity:1});
-
-  /* ---- HERO: gepinnte, gescrubbte Timeline (ZUERST erstellen — Ordering-Law) ---- */
-  heroTL = gsap.timeline({
-    scrollTrigger:{ trigger:'#film', start:'top top', end:'+=340%', scrub:1, pin:true, anticipatePin:1, pinType:'transform', fastScrollEnd:true }
+  /* Sanftes Wegblenden des Heros beim Wegscrollen - kein Pin, kein Scroll-Lock:
+     der Besucher kommt nach EINER Wischbewegung an die Inhalte. */
+  gsap.to('.film-inner', {
+    opacity: 0, y: -40, ease: 'none',
+    scrollTrigger: { trigger: '#film', start: 'top top', end: 'bottom top', scrub: true }
   });
 
-  heroTL
-    /* Wortmarke hebt sich weg */
-    .to('.wm-char',{yPercent:-150,opacity:0,stagger:0.03,ease:'power2.in',duration:0.5},0.12)
-    .to('.tagline',{y:-40,opacity:0,duration:0.35},0.12)
-    .to('.scrollhint',{opacity:0,duration:0.15},0.05)
-    /* Der Guss: Açaí wird eingegossen (Clip-Rechteck wächst von unten) */
-    .from('#pourRect',{attr:{y:216,height:0},duration:0.7,ease:'power2.out'},0.18)
-    /* Mix-Swirl dreht & glättet sich, verschwindet */
-    .from('#swirl',{rotate:-40,transformOrigin:'210px 150px',duration:0.9,ease:'none'},0.2)
-    .to('#swirl',{opacity:0,duration:0.5,ease:'power1.in'},0.62)
-    /* Der Regen: Früchte fallen federnd hinein */
-    .from('.fruit',{y:-460,opacity:0,rotate:()=>gsap.utils.random(-70,70),
-        transformOrigin:'center',stagger:0.07,ease:'back.out(1.4)',duration:0.7},0.5)
-    /* Granola stäubt, Honig zieht sich */
-    .from('.granola circle',{y:-50,opacity:0,stagger:0.03,ease:'power1.out',duration:0.4},0.85)
-    .to('.honey',{strokeDashoffset:0,duration:0.5,ease:'power1.inOut'},0.95)
-    /* Zurückziehen + Glow blüht */
-    .to('#sceneWrap',{scale:0.82,y:'-3%',duration:0.8,ease:'power2.inOut'},1.15)
-    .to('.glow',{scale:1.25,opacity:.9,duration:0.8,ease:'power2.out'},1.1)
-    /* Finale */
-    .fromTo('#finale',{opacity:0,y:44},{opacity:1,y:0,duration:0.5,ease:'power2.out'},1.35);
-
-  /* ---- Content-Reveals (NACH dem Pin erstellen) ---- */
+  /* ---- Content-Reveals ---- */
   gsap.utils.toArray('.reveal').forEach(el=>{
     gsap.from(el,{y:44,opacity:0,duration:0.85,ease:'power3.out',
       scrollTrigger:{trigger:el,start:'top 86%'}});
@@ -734,7 +832,10 @@ function buildFilm(){
     ScrollTrigger.create({trigger:el,start:'top 92%',once:true,onEnter(){
       gsap.to({v:0},{v:to,duration:1.4,ease:'power2.out',onUpdate(){
         const n=Math.round(this.targets()[0].v);
-        el.textContent = fmt==='thousand' ? n.toLocaleString('de-DE') : (fmt==='plus'? n+'+' : n);
+        el.textContent = fmt==='thousand' ? n.toLocaleString('de-DE')
+                       : fmt==='plus'    ? n+'+'
+                       : fmt==='percent' ? n+' %'
+                       : n;
       }});
     }});
   });
@@ -746,12 +847,6 @@ function buildFilm(){
   ScrollTrigger.create({onUpdate:self=>skewTo(gsap.utils.clamp(-10,10,self.getVelocity()/-260))});
 }
 
-/* ---------- Reduced motion: statischer Endzustand ---------- */
-function staticFilm(){
-  const honey=document.querySelector('.honey'); honey.style.strokeDashoffset=0;
-  const wm=document.getElementById('wordmark');
-  wm.innerHTML = wm.textContent.split('').map(c=>'<span class="wm-char">'+c+'</span>').join('');
-}
 
 /* ---------- Lenis ---------- */
 let lenis=null;
@@ -770,14 +865,20 @@ function initLenis(){
 function markReady(){ window.__ready = true; }
 
 function boot(){
+  buildFilmCopy();                 // Beats ins Markup, bevor initBeats() sie einliest
+  buildTicker();
+  buildStats();
   buildMenus();
   buildBuilder();
   updateBuilder();
   initOpenStatus();
 
-  if (REDUCE){ staticFilm(); markReady(); return; }
+  /* Bewegung reduzieren: Video bleibt erhalten (Poster + Play-Button),
+     nur die scroll-getriebene Animation entfaellt. */
+  if (REDUCE){ initVideo(); markReady(); return; }
 
   if (JUMP===null) initLenis();
+  initVideo();
   buildFilm();
   ScrollTrigger.refresh();
 
@@ -787,7 +888,7 @@ function boot(){
     ScrollTrigger.update();
     ScrollTrigger.getAll().forEach(st=>{ if(st.animation) st.animation.progress(st.progress); });
   }
-  markReady();
+  markReady();          // kein Preload-Gate mehr: das Video streamt progressiv
 }
 
 function start(){
