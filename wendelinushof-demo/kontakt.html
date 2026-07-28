@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!-- WENDELINUSHOF ST. WENDEL · Design-Demo (TechSaar) · nicht die offizielle Website -->
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt und Reservierung | Wendelinushof St. Wendel</title>
+<meta name="description" content="Kontakt zum Wendelinushof St. Wendel: alle Durchwahlen, Öffnungszeiten, Anfahrt mit Bus und Auto sowie die Reservierungsanfrage für das Restaurant Hofküche.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7F5EF">
+<link rel="preload" href="fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="sticky top-0 z-50 border-b border-line bg-bone/95 backdrop-blur">
+  <div class="container-p flex h-[72px] items-center justify-between gap-4">
+    <a href="index.html" class="flex shrink-0 items-center" aria-label="Wendelinushof, zur Startseite">
+      <img src="img/logo-wendelinushof.png" alt="Logo Wendelinushof St. Wendel" width="360" height="220" class="h-12 w-auto">
+    </a>
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
+      <a class="navlink" href="index.html">Start</a>
+      <a class="navlink" href="wendelinushof.html">Der Hof</a>
+      <div class="relative" data-dropdown>
+        <button type="button" class="navlink gap-1.5" aria-expanded="false" aria-haspopup="true">
+          Bereiche
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div data-dropdown-menu class="absolute left-0 top-full mt-2 hidden w-64 rounded-2xl border border-line bg-white p-2 shadow-soft">
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="hofladen.html">Hofladen</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="hofkueche.html">Restaurant Hofküche</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="gaertnerei.html">Gärtnerei</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="landwirtschaft.html">Landwirtschaft</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="energiewirtschaft.html">Energiewirtschaft</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="rund-um-den-hof.html">Rund um den Hof</a>
+        </div>
+      </div>
+      <a class="navlink" href="veranstaltungen.html">Veranstaltungen</a>
+      <a class="navlink" href="kontakt.html" aria-current="page">Kontakt</a>
+    </nav>
+    <div class="hidden items-center gap-3 lg:flex">
+      <a class="navlink whitespace-nowrap" href="tel:+49685193987">06851 93987-0</a>
+      <a class="btn-primary !min-h-[44px] !px-5 text-[15px]" href="#reservierung">Tisch reservieren</a>
+    </div>
+    <button type="button" data-nav-toggle class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/20 lg:hidden" aria-expanded="false" aria-label="Menü öffnen">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div data-nav-panel class="hidden border-t border-line bg-bone lg:hidden">
+    <nav class="container-p flex flex-col gap-1 py-4" aria-label="Mobile Navigation">
+      <a class="navlink" href="index.html">Start</a>
+      <a class="navlink" href="wendelinushof.html">Der Hof</a>
+      <p class="mt-2 px-3 text-sm font-semibold uppercase tracking-wide text-moss">Bereiche</p>
+      <a class="navlink" href="hofladen.html">Hofladen</a>
+      <a class="navlink" href="hofkueche.html">Restaurant Hofküche</a>
+      <a class="navlink" href="gaertnerei.html">Gärtnerei</a>
+      <a class="navlink" href="landwirtschaft.html">Landwirtschaft</a>
+      <a class="navlink" href="energiewirtschaft.html">Energiewirtschaft</a>
+      <a class="navlink" href="rund-um-den-hof.html">Rund um den Hof</a>
+      <a class="navlink mt-2" href="veranstaltungen.html">Veranstaltungen</a>
+      <a class="navlink" href="kontakt.html" aria-current="page">Kontakt</a>
+      <a class="btn-primary mt-4" href="#reservierung">Tisch reservieren</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inhalt">
+
+  <section class="container-p pb-10 pt-10 md:pt-16">
+    <h1 class="display-1 max-w-[20ch]" data-animate="fade-up">Kontakt und Reservierung</h1>
+    <p class="lede mt-4 max-w-[58ch]" data-animate="fade-up" data-animate-delay="0.1">So erreichen Sie uns: telefonisch, vor Ort oder mit der Reservierungsanfrage für die Hofküche.</p>
+  </section>
+
+  <section class="container-p pb-16 md:pb-20">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-animate-children="fade-up">
+      <a href="tel:+49685193987" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Zentrale</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-0</p>
+      </a>
+      <a href="tel:+4968519398723" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Restaurant Hofküche</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-23</p>
+      </a>
+      <a href="tel:+4968519398722" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Hofladen</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-22</p>
+      </a>
+      <a href="tel:+4968519398745" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Gärtnerei</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-45</p>
+      </a>
+      <a href="tel:+4968519398747" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Landwirtschaft und Energie</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-47</p>
+      </a>
+      <a href="tel:+4968519398711" class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-pine">
+        <p class="font-semibold">Tourismus und Presse</p>
+        <p class="mt-1 font-display text-2xl font-bold text-pine">06851 93987-11</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-cream">
+    <div class="container-p grid gap-10 py-16 md:py-20 lg:grid-cols-2">
+      <div data-animate="fade-up">
+        <h2 class="display-3">So finden Sie uns</h2>
+        <address class="mt-5 not-italic text-lg leading-relaxed">
+          Wendelinushof<br>
+          An der Ostertalstraße L 307<br>
+          66606 St. Wendel
+        </address>
+        <p class="mt-3 text-moss">Oberhalb der Missionshausstraße, gut ausgeschildert.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a class="btn-primary" href="https://goo.gl/maps/hVwm2uA9q5SWMth78">Route bei Google Maps</a>
+        </div>
+      </div>
+      <div data-animate="fade-up" data-animate-delay="0.1">
+        <h2 class="display-3">Mit Bus und Rad</h2>
+        <p class="mt-5 text-lg leading-relaxed text-moss">Die Buslinie 621 hält am Hof. Den aktuellen Fahrplan finden Sie unter <a class="font-semibold text-pine hover:underline" href="https://fahrplan-bus-bahn.de/saarland/sankt-wendel/bus_linie_bus_621#/">fahrplan-bus-bahn.de</a>.</p>
+        <p class="mt-4 text-lg leading-relaxed text-moss">Mit dem Rad erreichen Sie uns über den Ostertal-Höhenradweg, mehr dazu unter <a class="font-semibold text-pine hover:underline" href="rund-um-den-hof.html">Rund um den Hof</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="oeffnungszeiten" class="container-p py-16 md:py-24">
+    <h2 class="display-2" data-animate="fade-up">Öffnungszeiten im Überblick</h2>
+    <div class="mt-10 grid gap-6 lg:grid-cols-3" data-animate-children="fade-up">
+      <div class="panel !bg-white border border-line">
+        <h3 class="font-display text-xl font-semibold">Hofladen</h3>
+        <dl class="mt-4 divide-y divide-line">
+          <div class="hours-row"><dt>Di-Fr</dt><dd>9-18 Uhr</dd></div>
+          <div class="hours-row"><dt>Sa</dt><dd>8-13 Uhr</dd></div>
+          <div class="hours-row"><dt>Mo</dt><dd>geschlossen</dd></div>
+        </dl>
+      </div>
+      <div class="panel !bg-white border border-line">
+        <h3 class="font-display text-xl font-semibold">Restaurant Hofküche</h3>
+        <dl class="mt-4 divide-y divide-line">
+          <div class="hours-row"><dt>Di-So</dt><dd>9-18 Uhr</dd></div>
+          <div class="hours-row"><dt>Warme Küche</dt><dd>11:30-17 Uhr</dd></div>
+          <div class="hours-row"><dt>Mo</dt><dd>Ruhetag</dd></div>
+        </dl>
+      </div>
+      <div class="panel !bg-white border border-line">
+        <h3 class="font-display text-xl font-semibold">Gärtnerei</h3>
+        <dl class="mt-4 divide-y divide-line">
+          <div class="hours-row"><dt>März-Okt, Di-Fr</dt><dd>9-18 Uhr</dd></div>
+          <div class="hours-row"><dt>Nov-Feb, Di-Fr</dt><dd>9-16 Uhr</dd></div>
+          <div class="hours-row"><dt>Sa</dt><dd>saisonal</dd></div>
+        </dl>
+        <a class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-pine hover:underline" href="gaertnerei.html#oeffnungszeiten">Alle Saisonzeiten</a>
+      </div>
+    </div>
+    <p class="mt-6 rounded-xl bg-sage px-4 py-3 font-semibold text-ink" data-animate="fade-up">Verkaufsoffener Sonntag: 22. März 2026, 12-17 Uhr. Änderungen vorbehalten.</p>
+  </section>
+
+  <section id="reservierung" class="bg-white">
+    <div class="container-p grid gap-10 py-16 md:py-24 lg:grid-cols-12">
+      <div class="lg:col-span-5" data-animate="fade-right">
+        <h2 class="display-2">Reservierungsanfrage</h2>
+        <p class="mt-4 text-lg leading-relaxed text-moss">Wir freuen uns auf Ihren Besuch in der Hofküche. Die Bearbeitung Ihrer Anfrage kann bis zu 24 Stunden dauern, Sie erhalten eine Bestätigung vom Team.</p>
+        <ul class="check-list mt-6 space-y-3">
+          <li>Online-Anfragen sind bis drei Tage im Voraus möglich. Kurzfristiger geht es telefonisch unter <a class="font-semibold text-pine hover:underline" href="tel:+4968519398723">06851 93987-23</a>.</li>
+          <li>Änderung oder Storno bitte mindestens einen Tag vorher mitteilen.</li>
+          <li>Bei Gruppen ab 6 Personen behalten wir uns für nicht stornierte Plätze eine Gebühr von 10 Euro pro Person vor.</li>
+          <li>Brunch-Termine sind ausschließlich telefonisch reservierbar.</li>
+        </ul>
+      </div>
+      <div class="lg:col-span-7" data-animate="fade-left">
+        <form data-demo-form class="rounded-2xl border border-line bg-bone p-6 md:p-8" novalidate="">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="field-label" for="f-name">Name<span aria-hidden="true"> *</span></label>
+              <input class="field-input" id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div>
+              <label class="field-label" for="f-tel">Telefon<span aria-hidden="true"> *</span></label>
+              <input class="field-input" id="f-tel" name="tel" type="tel" autocomplete="tel" required>
+              <p class="field-hint">Für Rückfragen zu Ihrer Reservierung.</p>
+            </div>
+            <div>
+              <label class="field-label" for="f-date">Datum<span aria-hidden="true"> *</span></label>
+              <input class="field-input" id="f-date" name="date" type="date" required>
+              <p class="field-hint">Frühestens in drei Tagen.</p>
+            </div>
+            <div>
+              <label class="field-label" for="f-time">Uhrzeit<span aria-hidden="true"> *</span></label>
+              <select class="field-input" id="f-time" name="time" required>
+                <option value="" selected disabled>Bitte wählen</option>
+                <option>9:00</option><option>9:30</option><option>10:00</option><option>10:30</option>
+                <option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option>
+                <option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option>
+                <option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option>
+                <option>17:00</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="f-persons">Personen<span aria-hidden="true"> *</span></label>
+              <input class="field-input" id="f-persons" name="persons" type="number" min="1" max="30" inputmode="numeric" required>
+            </div>
+            <div>
+              <label class="field-label" for="f-mail">E-Mail</label>
+              <input class="field-input" id="f-mail" name="email" type="email" autocomplete="email" spellcheck="false">
+            </div>
+          </div>
+          <div class="mt-5">
+            <label class="field-label" for="f-msg">Ihre Nachricht</label>
+            <textarea class="field-input" id="f-msg" name="message" rows="3" placeholder="Anlass, Kinderstuhl, Terrasse gewünscht …"></textarea>
+          </div>
+          <button type="submit" class="btn-primary mt-6 w-full sm:w-auto">Anfrage senden</button>
+          <p class="mt-4 text-sm text-moss">Demo-Formular: Es werden keine Daten übertragen oder gespeichert. Auf der echten Website stünde hier der Datenschutzhinweis nach Art. 13 DSGVO.</p>
+        </form>
+        <div data-demo-success class="hidden rounded-2xl border border-pine/30 bg-sage p-8" role="status">
+          <h3 class="font-display text-2xl font-semibold text-pine">Vielen Dank für Ihre Anfrage!</h3>
+          <p class="mt-3 text-ink">Das Team der Hofküche meldet sich innerhalb von 24 Stunden mit einer Bestätigung. Bei Rückfragen erreichen Sie uns unter <a class="font-semibold text-pine hover:underline" href="tel:+4968519398723">06851 93987-23</a>.</p>
+          <p class="mt-4 text-sm text-moss">Hinweis zur Demo: Diese Anfrage wurde nicht versendet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-deep text-bone/85">
+  <div class="container-p grid gap-10 py-14 md:grid-cols-3">
+    <div>
+      <p class="font-display text-2xl font-semibold text-bone">Wendelinushof</p>
+      <address class="mt-4 not-italic leading-relaxed text-bone/75">
+        An der Ostertalstraße L 307<br>
+        66606 St. Wendel
+      </address>
+      <p class="mt-3"><a class="font-semibold text-bone hover:underline" href="tel:+49685193987">06851 93987-0</a></p>
+      <p class="mt-2 text-bone/75">Buslinie 621 · <a class="underline hover:text-bone" href="https://goo.gl/maps/hVwm2uA9q5SWMth78">Anfahrt bei Google Maps</a></p>
+      <p class="mt-5 text-bone/75">Eine Einrichtung der <a class="underline hover:text-bone" href="https://vevio.de/">vevio gGmbH</a>, Spiesen-Elversberg</p>
+    </div>
+    <div>
+      <p class="font-semibold uppercase tracking-wide text-bone/60">Öffnungszeiten</p>
+      <dl class="mt-4 space-y-2 text-bone/80">
+        <div class="flex justify-between gap-4"><dt>Hofladen, Di-Fr</dt><dd>9-18 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Hofladen, Sa</dt><dd>8-13 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Hofküche, Di-So</dt><dd>9-18 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Gärtnerei, Di-Fr</dt><dd>9-18 Uhr</dd></div>
+      </dl>
+      <p class="mt-3 text-bone/60">Montag Ruhetag · <a class="underline hover:text-bone" href="kontakt.html#oeffnungszeiten">alle Zeiten</a></p>
+    </div>
+    <div>
+      <p class="font-semibold uppercase tracking-wide text-bone/60">Seiten</p>
+      <ul class="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-bone/80">
+        <li><a class="hover:text-bone hover:underline" href="hofladen.html">Hofladen</a></li>
+        <li><a class="hover:text-bone hover:underline" href="hofkueche.html">Hofküche</a></li>
+        <li><a class="hover:text-bone hover:underline" href="gaertnerei.html">Gärtnerei</a></li>
+        <li><a class="hover:text-bone hover:underline" href="landwirtschaft.html">Landwirtschaft</a></li>
+        <li><a class="hover:text-bone hover:underline" href="energiewirtschaft.html">Energiewirtschaft</a></li>
+        <li><a class="hover:text-bone hover:underline" href="rund-um-den-hof.html">Rund um den Hof</a></li>
+        <li><a class="hover:text-bone hover:underline" href="veranstaltungen.html">Veranstaltungen</a></li>
+        <li><a class="hover:text-bone hover:underline" href="kontakt.html">Kontakt</a></li>
+        <li class="col-span-2 mt-2"><a class="hover:text-bone hover:underline" href="https://www.karriere-wzb.de/">Karriere bei der vevio gGmbH</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-bone/15">
+    <div class="container-p flex flex-col gap-2 py-5 text-sm text-bone/60 md:flex-row md:items-center md:justify-between">
+      <p>© <span data-year>2026</span> Wendelinushof · vevio gGmbH</p>
+      <p><a class="underline hover:text-bone" href="https://wendelinushof.de/impressum/">Impressum</a> · <a class="underline hover:text-bone" href="https://wendelinushof.de/privacy-policy/">Datenschutz</a></p>
+      <p>Design-Demo von TechSaar, nicht die offizielle Website</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta" style="padding-bottom: calc(0.625rem + env(safe-area-inset-bottom));">
+  <a class="btn-ghost bg-white" href="tel:+4968519398723">Anrufen</a>
+  <a class="btn-primary" href="#reservierung">Tisch reservieren</a>
+</div>
+
+<script src="vendor/motion.js" defer></script>
+<script src="animations.js" defer></script>
+<script src="main.js" defer></script>
+</body>
+</html>

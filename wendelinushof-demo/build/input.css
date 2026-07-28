@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  body { @apply bg-bone font-sans text-ink antialiased; }
+  ::selection { background: rgba(46, 90, 51, .22); }
+  :focus-visible { outline: 2px solid #2E5A33; outline-offset: 3px; border-radius: 2px; }
+  a, button, input, select, textarea, label { touch-action: manipulation; }
+  html { -webkit-tap-highlight-color: transparent; }
+  [id] { scroll-margin-top: 88px; }
+  h1, h2, h3 { text-wrap: balance; }
+  footer a { display: inline-block; padding-block: 5px; }
+}
+
+@layer components {
+  .container-p { @apply mx-auto w-full max-w-page px-5 md:px-8; }
+
+  /* Buttons: Pill-Form, Tap-Target >= 48px */
+  .btn { @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition-colors duration-200; }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { @apply btn bg-pine text-bone hover:bg-pined; }
+  .btn-ghost { @apply btn border border-ink/25 text-ink hover:border-pine hover:text-pine; }
+  .btn-light { @apply btn bg-bone text-deep hover:bg-cream; }
+
+  /* Navigation */
+  .navlink { @apply inline-flex min-h-[44px] items-center px-3 text-[15px] font-semibold text-ink/80 transition-colors hover:text-pine; }
+  .navlink[aria-current="page"] { @apply text-pine; }
+
+  /* Typografie-Bausteine */
+  .display-1 { @apply font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl; }
+  .display-2 { @apply font-display text-3xl font-bold leading-[1.12] tracking-tight md:text-4xl; }
+  .display-3 { @apply font-display text-2xl font-semibold leading-snug md:text-3xl; }
+  .lede { @apply text-lg leading-relaxed text-moss md:text-xl; }
+  .eyebrow { @apply text-[13px] font-semibold uppercase tracking-[0.14em] text-pine; }
+
+  /* Karten & Flächen */
+  .card { @apply overflow-hidden rounded-2xl bg-white shadow-card; }
+  .panel { @apply rounded-2xl bg-cream p-6 md:p-8; }
+
+  /* Öffnungszeiten-Zeilen */
+  .hours-row { @apply flex items-baseline justify-between gap-4 py-2; }
+  .hours-row dt { @apply text-moss; }
+  .hours-row dd { @apply text-right font-semibold; font-variant-numeric: tabular-nums; }
+
+  /* Formular */
+  .field-label { @apply mb-1.5 block text-sm font-semibold text-ink; }
+  .field-input { @apply w-full rounded-input border border-ink/25 bg-white px-4 py-3 text-base text-ink placeholder:text-moss/70 focus:border-pine; }
+  .field-hint { @apply mt-1.5 text-sm text-moss; }
+
+  /* Check-Listen */
+  .check-list li { @apply relative pl-7; }
+  .check-list li::before {
+    content: "";
+    @apply absolute left-0 top-[7px] h-4 w-4 rounded-full bg-pine/15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E5A33' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    background-size: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Mobile Sticky-Kontaktleiste */
+  .sticky-cta { @apply fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-line bg-bone/95 p-2.5 backdrop-blur transition-transform duration-300 md:hidden; }
+  .sticky-cta.is-hidden { transform: translateY(110%); }
+
+  .skip-link { @apply absolute left-3 top-3 z-[60] -translate-y-24 rounded-full bg-pine px-5 py-3 font-semibold text-bone transition-transform focus:translate-y-0; }
+}

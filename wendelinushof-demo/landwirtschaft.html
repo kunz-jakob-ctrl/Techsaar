@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!-- WENDELINUSHOF ST. WENDEL · Design-Demo (TechSaar) · nicht die offizielle Website -->
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landwirtschaft | Wendelinushof St. Wendel</title>
+<meta name="description" content="Landwirtschaft auf dem Wendelinushof: über 100 Jahre Ackerbau und Viehzucht, artgerechte Tierhaltung, Futter aus eigenem Anbau und eigene Schlachtung.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7F5EF">
+<link rel="preload" href="fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="sticky top-0 z-50 border-b border-line bg-bone/95 backdrop-blur">
+  <div class="container-p flex h-[72px] items-center justify-between gap-4">
+    <a href="index.html" class="flex shrink-0 items-center" aria-label="Wendelinushof, zur Startseite">
+      <img src="img/logo-wendelinushof.png" alt="Logo Wendelinushof St. Wendel" width="360" height="220" class="h-12 w-auto">
+    </a>
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
+      <a class="navlink" href="index.html">Start</a>
+      <a class="navlink" href="wendelinushof.html">Der Hof</a>
+      <div class="relative" data-dropdown>
+        <button type="button" class="navlink gap-1.5" aria-expanded="false" aria-haspopup="true">
+          Bereiche
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div data-dropdown-menu class="absolute left-0 top-full mt-2 hidden w-64 rounded-2xl border border-line bg-white p-2 shadow-soft">
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="hofladen.html">Hofladen</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="hofkueche.html">Restaurant Hofküche</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="gaertnerei.html">Gärtnerei</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-pine" href="landwirtschaft.html" aria-current="page">Landwirtschaft</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="energiewirtschaft.html">Energiewirtschaft</a>
+          <a class="block rounded-xl px-4 py-2.5 font-semibold text-ink/85 hover:bg-cream hover:text-pine" href="rund-um-den-hof.html">Rund um den Hof</a>
+        </div>
+      </div>
+      <a class="navlink" href="veranstaltungen.html">Veranstaltungen</a>
+      <a class="navlink" href="kontakt.html">Kontakt</a>
+    </nav>
+    <div class="hidden items-center gap-3 lg:flex">
+      <a class="navlink whitespace-nowrap" href="tel:+4968519398747">06851 93987-47</a>
+      <a class="btn-primary !min-h-[44px] !px-5 text-[15px]" href="kontakt.html#reservierung">Tisch reservieren</a>
+    </div>
+    <button type="button" data-nav-toggle class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/20 lg:hidden" aria-expanded="false" aria-label="Menü öffnen">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div data-nav-panel class="hidden border-t border-line bg-bone lg:hidden">
+    <nav class="container-p flex flex-col gap-1 py-4" aria-label="Mobile Navigation">
+      <a class="navlink" href="index.html">Start</a>
+      <a class="navlink" href="wendelinushof.html">Der Hof</a>
+      <p class="mt-2 px-3 text-sm font-semibold uppercase tracking-wide text-moss">Bereiche</p>
+      <a class="navlink" href="hofladen.html">Hofladen</a>
+      <a class="navlink" href="hofkueche.html">Restaurant Hofküche</a>
+      <a class="navlink" href="gaertnerei.html">Gärtnerei</a>
+      <a class="navlink" href="landwirtschaft.html" aria-current="page">Landwirtschaft</a>
+      <a class="navlink" href="energiewirtschaft.html">Energiewirtschaft</a>
+      <a class="navlink" href="rund-um-den-hof.html">Rund um den Hof</a>
+      <a class="navlink mt-2" href="veranstaltungen.html">Veranstaltungen</a>
+      <a class="navlink" href="kontakt.html">Kontakt</a>
+      <a class="btn-primary mt-4" href="kontakt.html#reservierung">Tisch reservieren</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inhalt">
+
+  <section class="container-p pb-8 pt-10 md:pt-16">
+    <h1 class="display-1 max-w-[18ch]" data-animate="fade-up">Landwirtschaft</h1>
+    <p class="lede mt-4 max-w-[58ch]" data-animate="fade-up" data-animate-delay="0.1">Seit über 100 Jahren Ackerbau und Viehzucht, in Verantwortung gegenüber Verbrauchern, Umwelt und Natur.</p>
+  </section>
+  <div class="container-p pb-14 md:pb-20" data-animate="zoom">
+    <img src="img/lw-header2.jpg" alt="Felder des Wendelinushofs bei der Ernte" width="1400" height="724" fetchpriority="high" class="max-h-[440px] w-full rounded-2xl object-cover shadow-soft">
+  </div>
+
+  <section class="container-p grid items-center gap-10 pb-16 md:pb-24 lg:grid-cols-12">
+    <div class="lg:col-span-6" data-animate="fade-right">
+      <h2 class="display-2">160 Hektar, bewirtschaftet mit Augenmaß.</h2>
+      <p class="mt-5 text-lg leading-relaxed text-moss">Auf Acker-, Wiesen- und Weideflächen wachsen Raps, Weizen, Gerste, Mais und Triticale als Tierfutter, dazu Bienen- und Vogelwiesen und Grünland.</p>
+      <ul class="check-list mt-6 space-y-3 text-lg">
+        <li>Erhaltung und Stärkung der regionalen Landwirtschaft</li>
+        <li>Zwischenfruchtanbau und Pflanzenschutz nur nach Bedarf</li>
+        <li>Mist, Gülle und Einstreu vom eigenen Hof als Dünger</li>
+        <li>Enge Zusammenarbeit mit lokalen Betrieben und Lohnunternehmen</li>
+      </ul>
+    </div>
+    <div class="lg:col-span-6" data-animate="fade-left">
+      <img src="img/lw-01.jpg" alt="Traktor bei der Feldarbeit" width="1300" height="900" loading="lazy" class="w-full rounded-2xl object-cover">
+    </div>
+  </section>
+
+  <section class="bg-cream">
+    <div class="container-p py-16 md:py-24">
+      <h2 class="display-2" data-animate="fade-up">Tiere, die Zeit bekommen.</h2>
+      <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-moss" data-animate="fade-up">Umwelt- und ressourcenschonende Tiermast mit zertifiziertem Qualitätsmanagement, regelmäßig überwacht durch Veterinär und Lebensmittelkontrolle.</p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-animate-children="fade-up">
+        <div class="rounded-2xl bg-white p-6">
+          <h3 class="font-display text-lg font-semibold">Hähnchen</h3>
+          <p class="mt-2 text-moss">Langsam wachsende Rasse, mit Auslauf und Tageslicht.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-6">
+          <h3 class="font-display text-lg font-semibold">Legehennen</h3>
+          <p class="mt-2 text-moss">Naturschnabel, ohne synthetische Dotterfärbemittel.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-6">
+          <h3 class="font-display text-lg font-semibold">Schweine</h3>
+          <p class="mt-2 text-moss">Natürlicher Ringelschwanz, Stroheinstreu, viel Platz.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-6">
+          <h3 class="font-display text-lg font-semibold">Rinder</h3>
+          <p class="mt-2 text-moss">Fleckvieh-Bullenmast mit großzügiger Bewegungsfläche.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-p grid items-center gap-10 py-16 md:py-24 lg:grid-cols-12">
+    <div class="order-2 lg:order-1 lg:col-span-6" data-animate="fade-right">
+      <img src="img/lw-schwein.jpg" alt="Schwein im Stroh im offenen Stall" width="1600" height="900" loading="lazy" class="w-full rounded-2xl object-cover">
+    </div>
+    <div class="order-1 lg:order-2 lg:col-span-6" data-animate="fade-left">
+      <h2 class="display-2">Haltung, die man sich anschauen darf.</h2>
+      <p class="mt-5 text-lg leading-relaxed text-moss">Die Ställe sind einsehbar, die Tiere haben Auslauf im Freien, Tageslicht und Beschäftigung: von Futtersuchspielen über Heuraufen bis zum Sandbad. Gefüttert wird mit Getreide und Silage aus Eigenproduktion, gentechnisch unverändert und ohne Masthilfsmittel.</p>
+      <p class="mt-4 text-lg leading-relaxed text-moss">Geschlachtet wird im eigenen Betrieb, nach geltenden Hygienevorschriften und mit kurzen Transportwegen. So bleibt die gesamte Kette vom Feld bis zur Theke in einer Hand.</p>
+    </div>
+  </section>
+
+  <section class="bg-deep">
+    <div class="container-p flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center md:py-16" data-animate="fade-up">
+      <div>
+        <h2 class="font-display text-2xl font-semibold text-bone md:text-3xl">Fragen zur Landwirtschaft?</h2>
+        <p class="mt-2 max-w-[52ch] text-bone/80">Das Team der Landwirtschaft ist werktags für Sie erreichbar.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a class="btn-light" href="tel:+4968519398747">06851 93987-47 anrufen</a>
+        <a class="inline-flex min-h-[48px] items-center font-semibold text-bone hover:underline" href="kontakt.html">Zur Kontaktseite</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-deep text-bone/85">
+  <div class="container-p grid gap-10 border-t border-bone/15 py-14 md:grid-cols-3">
+    <div>
+      <p class="font-display text-2xl font-semibold text-bone">Wendelinushof</p>
+      <address class="mt-4 not-italic leading-relaxed text-bone/75">
+        An der Ostertalstraße L 307<br>
+        66606 St. Wendel
+      </address>
+      <p class="mt-3"><a class="font-semibold text-bone hover:underline" href="tel:+49685193987">06851 93987-0</a></p>
+      <p class="mt-2 text-bone/75">Buslinie 621 · <a class="underline hover:text-bone" href="https://goo.gl/maps/hVwm2uA9q5SWMth78">Anfahrt bei Google Maps</a></p>
+      <p class="mt-5 text-bone/75">Eine Einrichtung der <a class="underline hover:text-bone" href="https://vevio.de/">vevio gGmbH</a>, Spiesen-Elversberg</p>
+    </div>
+    <div>
+      <p class="font-semibold uppercase tracking-wide text-bone/60">Öffnungszeiten</p>
+      <dl class="mt-4 space-y-2 text-bone/80">
+        <div class="flex justify-between gap-4"><dt>Hofladen, Di-Fr</dt><dd>9-18 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Hofladen, Sa</dt><dd>8-13 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Hofküche, Di-So</dt><dd>9-18 Uhr</dd></div>
+        <div class="flex justify-between gap-4"><dt>Gärtnerei, Di-Fr</dt><dd>9-18 Uhr</dd></div>
+      </dl>
+      <p class="mt-3 text-bone/60">Montag Ruhetag · <a class="underline hover:text-bone" href="kontakt.html#oeffnungszeiten">alle Zeiten</a></p>
+    </div>
+    <div>
+      <p class="font-semibold uppercase tracking-wide text-bone/60">Seiten</p>
+      <ul class="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-bone/80">
+        <li><a class="hover:text-bone hover:underline" href="hofladen.html">Hofladen</a></li>
+        <li><a class="hover:text-bone hover:underline" href="hofkueche.html">Hofküche</a></li>
+        <li><a class="hover:text-bone hover:underline" href="gaertnerei.html">Gärtnerei</a></li>
+        <li><a class="hover:text-bone hover:underline" href="landwirtschaft.html">Landwirtschaft</a></li>
+        <li><a class="hover:text-bone hover:underline" href="energiewirtschaft.html">Energiewirtschaft</a></li>
+        <li><a class="hover:text-bone hover:underline" href="rund-um-den-hof.html">Rund um den Hof</a></li>
+        <li><a class="hover:text-bone hover:underline" href="veranstaltungen.html">Veranstaltungen</a></li>
+        <li><a class="hover:text-bone hover:underline" href="kontakt.html">Kontakt</a></li>
+        <li class="col-span-2 mt-2"><a class="hover:text-bone hover:underline" href="https://www.karriere-wzb.de/">Karriere bei der vevio gGmbH</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-bone/15">
+    <div class="container-p flex flex-col gap-2 py-5 text-sm text-bone/60 md:flex-row md:items-center md:justify-between">
+      <p>© <span data-year>2026</span> Wendelinushof · vevio gGmbH</p>
+      <p><a class="underline hover:text-bone" href="https://wendelinushof.de/impressum/">Impressum</a> · <a class="underline hover:text-bone" href="https://wendelinushof.de/privacy-policy/">Datenschutz</a></p>
+      <p>Design-Demo von TechSaar, nicht die offizielle Website</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta" style="padding-bottom: calc(0.625rem + env(safe-area-inset-bottom));">
+  <a class="btn-ghost bg-white" href="tel:+4968519398747">Anrufen</a>
+  <a class="btn-primary" href="kontakt.html#reservierung">Tisch reservieren</a>
+</div>
+
+<script src="vendor/motion.js" defer></script>
+<script src="animations.js" defer></script>
+<script src="main.js" defer></script>
+</body>
+</html>
