@@ -8,9 +8,8 @@
 <!-- Demo-Seite: nicht indexieren -->
 <meta name="robots" content="noindex">
 
-<!-- Favicon: dasselbe Bildzeichen, vereinfacht und mit festen Farben
-     (in einer data-URI sind die CSS-Variablen der Seite nicht verfügbar) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23C8DCBB'/%3E%3Cstop offset='50%25' stop-color='%23F3CBD8'/%3E%3Cstop offset='100%25' stop-color='%23F3E3AE'/%3E%3C/linearGradient%3E%3Cpath d='M6 46Q24 38 48 39Q72 40 90 44Q92 52 88 58Q64 63 40 61Q18 60 8 56Q4 51 6 46Z' fill='url(%23g)'/%3E%3Cg fill='%2341493B'%3E%3Cpath d='M40 6C46 17 49 25 49 30C49 35.5 45 39.5 40 39.5C35 39.5 31 35.5 31 30C31 25 34 17 40 6Z'/%3E%3Cpath d='M37.3 44L42.7 44L40.9 90C40.8 92.6 39.2 92.6 39.1 90Z'/%3E%3C/g%3E%3C/svg%3E">
+<!-- Favicon: das Bildzeichen der Kundin, auf 64px heruntergerechnet -->
+<link rel="icon" href="img/favicon.png">
 
 <!-- Alles lokal ausgeliefert: keine Google-Fonts-, CDN- oder Bild-Requests an Dritte (DSGVO) -->
 <link rel="stylesheet" href="fonts/fonts.css">
@@ -82,8 +81,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 /* Karten mit handgezeichnetem Rand */
 .sketch{border:1.5px dashed rgba(65,73,59,.35);border-radius:22px;background:rgba(255,255,255,.55)}
 
-/* Logo-Bildzeichen */
+/* Logo-Bildzeichen
+   Groessen bewusst hier und nicht als Tailwind-Klassen: styles.css ist ein
+   vorkompiliertes Bundle, neue w-[..]/h-[..] Werte waeren dort nicht enthalten. */
 .mark{display:block}
+.mark-nav{width:52px;height:52px}
+.mark-foot{width:92px;height:92px}
 
 /* Nav */
 #nav{transition:background .3s,box-shadow .3s}
@@ -139,49 +142,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 </head>
 <body>
 
-<!-- ============ LOGO-BILDZEICHEN ============
-     Vorschlag nach der Referenz der Kundin (Pinterest): dunkler Pinsel vor einem
-     ausgefransten Trockenpinsel-Strich. Der eine Strich der Vorlage wird hier zu
-     einem Verlauf durch die drei Ladenfarben (Salbei → Rosé → Butter).
-     Einmal definiert, per <use> in Nav und Footer eingesetzt. -->
-<svg width="0" height="0" aria-hidden="true" style="position:absolute">
-  <defs>
-    <linearGradient id="markFarben" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="var(--sage)"/><stop offset="24%" stop-color="var(--sage)"/>
-      <stop offset="50%" stop-color="var(--blush)"/>
-      <stop offset="78%" stop-color="var(--butter)"/><stop offset="100%" stop-color="var(--butter)"/>
-    </linearGradient>
-    <clipPath id="markSwash">
-      <path d="M7 49Q13 43 21 41.5Q29 40 36 41Q44 39 51 38.4Q59 37.4 66 38.4
-               Q74 36.6 81 36Q89 35 96 36Q104 34.6 111 35.4Q117 36 121 38
-               L127 39.6L123.5 43.4L131 44.6L125 48.2L132.5 50.4L124.6 53
-               L129.4 56.6L120 57.2Q113 59 106 58.4Q98 59.6 91 58.8
-               Q83 60.6 76 60Q68 61.4 61 60.6Q53 62 46 61.2Q38 62.2 31 61.2
-               Q23 60.4 16 58.2Q9.5 56 7 49Z"/>
-    </clipPath>
-    <symbol id="mark" viewBox="0 0 140 96">
-      <g class="mark-swash" transform="rotate(-3.5 70 48)">
-        <g clip-path="url(#markSwash)">
-          <rect x="0" y="28" width="140" height="40" fill="url(#markFarben)"/>
-          <!-- Lücken, wie sie ein trockener Pinsel hinterlässt -->
-          <path fill="var(--paper)" opacity=".9" d="M93 34C96.5 41 96.5 52 94.5 59L89.5 59C92 51 92 41 89 34.6Z"/>
-          <path fill="var(--paper)" opacity=".75" d="M110 35C112.5 42 112.5 51 111 58L107.5 58C109.5 51 109.5 42 107 35.4Z"/>
-          <path fill="var(--paper)" opacity=".55" d="M28 40C30.5 46 30.5 55 29 60L26 60C28 55 28 46 25.8 40.4Z"/>
-          <path fill="var(--paper)" opacity=".4" d="M63 36C65 43 65 53 63.6 59L61.4 59C63 53 63 43 61 36.4Z"/>
-        </g>
-        <g fill="var(--butter)">
-          <path opacity=".9" d="M134 45C137.6 44.2 139.4 47.4 138.4 50.2C137.4 52.4 134.4 52 133.6 49.2C133 46.8 133.2 45.2 134 45Z"/>
-          <path opacity=".65" d="M136 55.5C138 55 139 56.8 138.5 58.2C138 59.4 136.3 59.2 135.8 57.7C135.5 56.6 135.5 55.9 136 55.5Z"/>
-        </g>
-      </g>
-      <g class="mark-brush" fill="var(--ink)">
-        <path d="M50 5C56 15 59 23 59 28C59 33.5 55 37.5 50 37.5C45 37.5 41 33.5 41 28C41 23 44 15 50 5Z"/>
-        <path d="M47.3 42.5L52.7 42.5L50.9 88C50.8 90.6 49.2 90.6 49.1 88Z"/>
-      </g>
-    </symbol>
-  </defs>
-</svg>
-
 <!-- Ribbon -->
 <div class="relative z-40 text-center text-[13px] font-bold tracking-wide py-2 px-3" style="background:var(--ink);color:var(--paper)">
   ✨ Neueröffnung in <span data-cfg="city">St. Wendel</span> — jetzt <a href="#reservierung" class="underline underline-offset-2 hover:opacity-80">Platz zur Eröffnung sichern</a>
@@ -195,7 +155,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <a href="#events" class="hover:opacity-60 transition-opacity">Events</a>
     </div>
     <a href="#" class="justify-self-center text-center leading-none flex items-center gap-2.5">
-      <svg class="mark w-[50px] h-[34px] shrink-0" viewBox="0 0 140 96" aria-hidden="true"><use href="#mark"/></svg>
+      <img src="img/logo-eckstueck-badge.svg" alt="" class="mark mark-nav shrink-0">
       <span>
         <span class="hand text-[15px] block" style="color:var(--ink-soft)" data-cfg="sub">Keramikmalstudio</span>
         <span class="serif font-semibold text-[26px] tracking-[.22em] block mt-0.5"><span data-cfg="name">ECKSTÜCK</span></span>
@@ -448,7 +408,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 
 <!-- Footer -->
 <footer class="py-10 text-center text-[13.5px]" style="background:var(--paper-2);color:var(--ink-soft)">
-  <svg class="mark w-[78px] h-[53px] mx-auto mb-3" viewBox="0 0 140 96" aria-hidden="true"><use href="#mark"/></svg>
+  <img src="img/logo-eckstueck-badge.svg" alt="" class="mark mark-foot mx-auto mb-3">
   <p class="serif font-semibold text-[22px] tracking-[.2em]" style="color:var(--ink)"><span data-cfg="name">ECKSTÜCK</span></p>
   <p class="hand text-[19px] mt-1">Keramik bemalen · <span data-cfg="city">St. Wendel</span></p>
   <p class="mt-4">Demo-Website von <a href="https://tech-saar.de" target="_blank" rel="noopener" class="underline">TechSaar</a> · <a href="impressum.html" class="underline">Impressum</a> · <a href="datenschutz.html" class="underline">Datenschutz</a></p>
