@@ -47,9 +47,10 @@
     .foot{margin-top:3.5rem;padding-top:1.5rem;border-top:1.5px dashed rgba(65,73,59,.28);font-size:14px}
 
     footer{background:var(--paper-2);color:var(--ink-soft);text-align:center;padding:34px 20px;font-size:13.5px}
-    /* Zweites Logo der Kundin (Palette) - klein und dezent, hochformatig,
-       deshalb ueber die Hoehe gesetzt */
-    .siegel{display:block;height:72px;width:auto;margin:0 auto 12px}
+    /* Zweites Logo der Kundin (Palette). Steht bewusst im Textbereich und nicht
+       in der Fusszeile: deren Hintergrund (--paper-2) ist exakt die Fuellfarbe
+       der Palette, dort verschwindet die Flaeche und nur der Pinsel bleibt. */
+    .siegel{display:block;height:104px;width:auto;margin:3rem auto 0}
   </style>
 </head>
 <body>
@@ -125,10 +126,11 @@
     <p class="foot">
       <a href="datenschutz.html">Zur Datenschutzerklärung &rarr;</a>
     </p>
+
+    <img src="img/logo-eckstueck-palette.png" alt="Keramikmalstudio ECKSTÜCK" class="siegel" />
   </main>
 
   <footer>
-    <img src="img/logo-eckstueck-palette.png" alt="Keramikmalstudio ECKSTÜCK" class="siegel" />
     <p class="serif" style="font-weight:600;font-size:21px;letter-spacing:.2em;color:var(--ink);margin:0">ECKSTÜCK</p>
     <p class="hand" style="font-size:18px;margin:.25rem 0 0">Keramik bemalen · St. Wendel</p>
   </footer>
