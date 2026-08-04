@@ -136,9 +136,20 @@ Erst ausführen, wenn Step 4 sauber war. Kein Commit — `~/.claude/` ist kein R
 
 ---
 
-### Task 2: AI Kit isoliert installieren und lesen
+### Task 2: AI Kit isoliert installieren und lesen ✅ erledigt 2026-08-04 (mit Abweichung)
 
 Installation in eine Wegwerf-Kopie, damit weder das Repo noch die globale Konfiguration angefasst wird, bevor der Inhalt bekannt ist.
+
+> **Abweichung:** `npx motion-ai` **verweigert den nicht-interaktiven Lauf**
+> („motion-ai is interactive — run it in a terminal", Exit 1) und kennt laut
+> `--help` keine Flags für ein unbeaufsichtigtes Setup. Ziel des Tasks war das
+> **Lesen** der Skill-Inhalte — das wurde stattdessen über `npm pack motion-ai`
+> und Entpacken des Tarballs erreicht (16 Dateien unter `package/content/`).
+> Ergebnis identisch, ohne Installation.
+>
+> **Folge für Task 4:** Der globale Installationsschritt kann nicht von einem
+> Agenten ausgeführt werden. Jakob muss `npx motion-ai` selbst in einem echten
+> Terminal starten.
 
 **Files:**
 - Create: `<scratchpad>/motion-ai-test/` (Kopie von `bowl-demo`)
