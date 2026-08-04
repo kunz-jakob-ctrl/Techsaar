@@ -273,9 +273,26 @@ Nur diese eine Datei stagen — im Repo liegen unverwandte, unversionierte Ände
 
 ---
 
-### Task 4: Zusammenführen und global installieren
+### Task 4: Zusammenführen und global installieren ✅ erledigt 2026-08-04 (ohne Installation)
 
-Wird nur ausgeführt, wenn das Gesamturteil aus Task 3 **Übernehmen** oder **Teilweise übernehmen** lautet. Bei **Verwerfen** wird stattdessen nur Step 5 dieses Tasks ausgeführt.
+> **Ergebnis:** Gesamturteil aus Task 3 war **Teilweise übernehmen**. Die globale
+> Installation **entfällt bewusst** — das Vanilla-Regelwerk des Kits hat 25 Zeilen,
+> das Gewicht liegt im React-Teil; zwei gehostete MCP-Server hätten in jeder
+> Sitzung Kontext gekostet ohne entsprechenden Gegenwert.
+>
+> Stattdessen umgesetzt:
+> - Die sieben Ergänzungen stehen als **Abschnitt 6** in
+>   `~/.claude/skills/web-animations/SKILL.md`, mit Vorrangregel zugunsten von 4b.
+> - Der WAAPI-Konflikt ist **an beiden Stellen** vermerkt (4b und 6), damit er
+>   nicht bei der nächsten Nutzung wieder auftaucht.
+> - `npx motionscore <url> --no-upload` ist in 4b als kostenloser Prüfschritt
+>   vor dem Live-Gang verankert, inkl. Warnung vor den kostenpflichtigen Flags.
+> - Ein Abschnitt „Bewusst nicht übernommen" hält fest, was verworfen wurde und warum.
+>
+> **Wiedervorlage:** Sobald ein React-Projekt startet, lohnt die Installation —
+> dann greift `react.md`, wo das eigentliche Gewicht des Kits liegt.
+
+Die ursprünglich geplanten Steps (global installieren, Installation verifizieren) sind damit gegenstandslos.
 
 **Files:**
 - Modify: `C:\Users\babok\.claude\skills\web-animations\SKILL.md`
@@ -334,9 +351,24 @@ rm -rf "C:/Users/babok/AppData/Local/Temp/claude/C--Claude-code/cf7b050a-f20c-43
 
 ---
 
-### Task 5: Am echten Projekt gegentesten
+### Task 5: Am echten Projekt gegentesten ✅ erledigt 2026-08-04 (vorgezogen)
 
-Beweist, dass die Zusammenführung trägt — an dem Projekt, das die anspruchsvollsten Animationen hat.
+> **Ergebnis:** Der Praxistest lief bereits in Task 2, weil erst er zeigte, dass
+> das MotionScore-CLI ohne Konto funktioniert — davon hing das gesamte Urteil ab.
+>
+> `npx motionscore https://kunz-jakob-ctrl.github.io/Techsaar/bowl-demo/ --no-upload --desktop-only`
+> → **S-Tier, 95/100.** Animationen S, Scroll-Animationen A (14 erkannt,
+> 4 Scroll-Listener, max. 8 gleichzeitig), Thrashing S, GPU-Druck S.
+>
+> **Einordnung der Befunde:** null echte Funde (die Seite ist sauber), null
+> Falschmeldungen, eine Werkzeug-Macke (`--desktop-only` navigierte trotzdem
+> mobil). Damit ist die Herabstufung auf „Teilweise übernehmen" **nicht** durch
+> Falschmeldungen begründet, sondern allein durch die Dünne des Vanilla-Regelwerks.
+>
+> Details in `docs/motion-ai-kit-abgleich.md`. Playwright/Chromium wurde nicht
+> gebraucht — MotionScore bringt Puppeteer selbst mit.
+
+Die ursprünglich geplanten Steps sind damit abgedeckt.
 
 **Files:**
 - Read: `C:\Users\babok\Techsaar\bowl-demo\index.html`
