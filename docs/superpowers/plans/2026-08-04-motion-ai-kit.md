@@ -18,7 +18,7 @@
 
 ---
 
-### Task 1: Eigenen Skill härten
+### Task 1: Eigenen Skill härten ✅ erledigt 2026-08-04
 
 Das Praxiswissen liegt heute nur im Memory. Solange es nicht im Skill steht, kann der Abgleich in Task 3 es nicht verteidigen. Zusätzlich wird der CDN-Widerspruch behoben.
 
@@ -30,7 +30,7 @@ Das Praxiswissen liegt heute nur im Memory. Solange es nicht im Skill steht, kan
 - Consumes: nichts
 - Produces: einen `SKILL.md`, der zwei neue Abschnitte enthält — „Einbindung: self-hosted, nicht CDN" und „Bekannte Fallen" — auf die Task 3 sich beim Abgleich beruft.
 
-- [ ] **Step 1: Ist-Zustand sichern**
+- [x] **Step 1: Ist-Zustand sichern**
 
 ```bash
 cp "C:/Users/babok/.claude/skills/web-animations/SKILL.md" "C:/Users/babok/.claude/skills/web-animations/SKILL.md.vor-ai-kit"
@@ -38,7 +38,7 @@ cp "C:/Users/babok/.claude/skills/web-animations/SKILL.md" "C:/Users/babok/.clau
 
 Erwartet: keine Ausgabe, Datei existiert danach.
 
-- [ ] **Step 2: CDN-Widerspruch beheben**
+- [x] **Step 2: CDN-Widerspruch beheben**
 
 In `SKILL.md` Abschnitt 2 den Block
 
@@ -58,7 +58,7 @@ ersetzen durch:
 
 Ebenso in der Tabelle in Abschnitt 1 die Zelle `per CDN-<script>, **kein npm**` ersetzen durch `lokal gevendorte `motion.js`, **kein npm, kein CDN**`.
 
-- [ ] **Step 3: Abschnitt „Bekannte Fallen" einfügen**
+- [x] **Step 3: Abschnitt „Bekannte Fallen" einfügen**
 
 Direkt vor „## 5. Mehr ‚Wow' bei Bedarf" einfügen:
 
@@ -117,7 +117,7 @@ sie nicht. Bei Widerspruch zu fremden Motion-Regeln **gilt dieser Abschnitt**.
   setzen**, sonst jagt man Phantome.
 ```
 
-- [ ] **Step 4: Prüfen, dass der Skill noch lädt und konsistent ist**
+- [x] **Step 4: Prüfen, dass der Skill noch lädt und konsistent ist**
 
 ```bash
 head -12 "C:/Users/babok/.claude/skills/web-animations/SKILL.md"
@@ -126,7 +126,7 @@ grep -n "cdn.jsdelivr" "C:/Users/babok/.claude/skills/web-animations/SKILL.md"
 
 Erwartet: Das Frontmatter (`---`, `name: web-animations`, `description:`) ist unversehrt. Der `grep` liefert **keine Treffer** — sonst ist der CDN-Widerspruch nicht vollständig behoben.
 
-- [ ] **Step 5: Sicherungskopie entfernen**
+- [x] **Step 5: Sicherungskopie entfernen**
 
 ```bash
 rm "C:/Users/babok/.claude/skills/web-animations/SKILL.md.vor-ai-kit"
