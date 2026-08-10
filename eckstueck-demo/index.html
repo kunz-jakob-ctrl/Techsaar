@@ -32,6 +32,14 @@ const CONFIG = {
   mapsQuery: "Grabenstraße 19, 66606 St. Wendel",
   phone: "+49 6851 9381349",
   phoneLabel: "06851 / 9381349",
+  // Der Anschluss ist erst etwa eine Woche vor Betriebsaufnahme besetzt. Bis
+  // dahin auf false: alle Telefon-Hinweise verschwinden dann von der Seite,
+  // damit niemand ins Leere anruft. Zum Freischalten NUR diesen Wert auf true
+  // setzen - die Nummer selbst bleibt oben stehen und ist dann sofort ueberall
+  // wieder da (Reservierungs-Block, Kontakt, FAQ, mitlaufende Leiste).
+  // Impressum und Datenschutzerklaerung sind davon NICHT betroffen: das sind
+  // Kanzlei-Texte, dort ist die Nummer eine Pflichtangabe und bleibt stehen.
+  phoneActive: false,
   instagram: "https://www.instagram.com/eckstueck_/",
   instaHandle: "@eckstueck_",
   // Buchungsseite bei Shore (Account „keramikmalstudio-eckstueck", 09.08.2026).
@@ -267,9 +275,9 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <!-- Positionierung steckt in .hero-arch-haupt im style-Block, NICHT in
            Tailwind-Klassen: sie darf kein transform benutzen (siehe dort). -->
       <div class="hero-in arch hero-arch-haupt absolute top-0 w-[240px] md:w-[280px] h-[360px] md:h-[420px] shadow-2xl"
-           style="background-color:var(--blush);background-image:url('img/hero-1.jpg')"></div>
-      <div class="hero-in arch absolute left-2 md:-left-6 bottom-2 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:-4deg;background-color:var(--sky);background-image:url('img/hero-2.jpg')"></div>
-      <div class="hero-in arch absolute right-2 md:right-0 bottom-10 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:4deg;animation-delay:1.2s;background-color:var(--butter);background-image:url('img/hero-3.jpg')"></div>
+           style="background-color:var(--blush);background-image:url('img/hero-1.jpg?v=2026-08-10')"></div>
+      <div class="hero-in arch absolute left-2 md:-left-6 bottom-2 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:-4deg;background-color:var(--sky);background-image:url('img/hero-2.jpg?v=2026-08-10')"></div>
+      <div class="hero-in arch absolute right-2 md:right-0 bottom-10 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:4deg;animation-delay:1.2s;background-color:var(--butter);background-image:url('img/hero-3.jpg?v=2026-08-10')"></div>
       <!-- Neigung liegt auf dem inneren Element, nicht auf dem animierten: sonst
            frisst das inline geschriebene transform der Animation die rotate-6 auf
            und der Zettel haengt gerade statt schraeg. -->
@@ -381,12 +389,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
          ergaenzen. Hintergrund dazu in NOTIZEN.md. -->
     <div class="mt-10 grid grid-cols-2 gap-5 max-w-3xl mx-auto" data-reveal>
       <figure data-parallax="26" class="galerie-figur">
-        <img src="img/galerie-1.jpg" loading="lazy" width="640" height="854"
+        <img src="img/galerie-1.jpg?v=2026-08-10" loading="lazy" width="640" height="854"
              alt="Selbst bemalte Servierplatte mit rotem Hummer und blau getupftem Rand, daneben ein Schälchen mit dem Namen Pablo und Becher voller Pinsel"
              class="rv arch galerie-bild w-full object-cover" style="background-color:var(--sky)">
       </figure>
       <figure data-parallax="-18" class="galerie-figur md:mt-10">
-        <img src="img/galerie-2.jpg" loading="lazy" width="640" height="854"
+        <img src="img/galerie-2.jpg?v=2026-08-10" loading="lazy" width="640" height="854"
              alt="Runder Teller, in bunte Dreiecksfelder aufgeteilt und mit Klebeband-Technik bemalt, dahinter ein Keramikhahn und gelbe Malschwämmchen"
              class="rv arch galerie-bild w-full object-cover" style="background-color:var(--blush)">
       </figure>
@@ -412,7 +420,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       ✎ Demo: Der Button führt später direkt zu eurer Shore-Buchungsseite
     </p>
 
-    <p class="mt-8 text-[15px]" style="color:rgba(250,246,237,.7)">
+    <p class="nur-telefon mt-8 text-[15px]" style="color:rgba(250,246,237,.7)">
       Lieber telefonisch? Ruf uns einfach an:
       <a data-cfg-href="phoneHref" href="#" class="font-bold underline underline-offset-4" style="color:var(--paper)" data-cfg="phoneLabel">06851 / 000 000</a>
     </p>
@@ -432,7 +440,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
           <dl id="hoursList" class="grid grid-cols-[2.2rem_1fr] gap-x-4 gap-y-1 text-[15px]"></dl>
           <p id="openText" class="text-[14px] font-bold mt-2"></p>
         </div></div>
-        <p class="flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a><br><span class="text-[14px]" style="color:var(--ink-soft)">Folgt uns auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" data-cfg="instaHandle">@eckstueck_</a></span></span></p>
+        <!-- Telefon und Instagram bewusst als zwei getrennte Absaetze: solange der
+             Anschluss nicht besetzt ist, faellt nur der obere weg (CONFIG.phoneActive). -->
+        <p class="nur-telefon flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a></span></p>
+        <p class="flex items-start gap-3"><span class="text-xl">✦</span><span class="text-[14px]" style="color:var(--ink-soft)">Schreibt uns auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline font-bold" data-cfg="instaHandle">@eckstueck_</a></span></p>
       </div>
       <!-- Hier stand bis 10.08.2026 ein weiterer "Platz reservieren"-Button.
            Raus, weil der Kontaktbereich HINTER der Reservierungs-Sektion liegt:
@@ -445,7 +456,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <!-- Eigene Aufnahme des Kugelbrunnens in der Fußgängerzone. Bewusst als
            <img> mit alt-Text statt als CSS-Hintergrund, damit Screenreader das
            Motiv mitbekommen (Punkt aus dem Rechts-Check). -->
-      <img src="img/kontakt-brunnen.jpg" loading="lazy" width="1100" height="825"
+      <img src="img/kontakt-brunnen.jpg?v=2026-08-10" loading="lazy" width="1100" height="825"
            alt="Der Kugelbrunnen in der Fußgängerzone von St. Wendel: eine große, gelblich glasierte Steinkugel, über die Wasser in ein flaches Becken läuft"
            class="absolute inset-0 w-full h-full object-cover">
       <!-- Abdunklung nach unten hin: der Text sitzt am unteren Rand, dort muss
@@ -487,7 +498,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
         <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Klar — bei uns malst du mit Café-Gefühl: Kaffee, Kakao und Kaltgetränke gibt es direkt am Maltisch, abends auch ein Glas Wein, Prosecco oder ein Bier dazu. Einfach ankommen, aussuchen, losmalen.</p>
       </details>
     </div>
-    <p class="hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Ruf uns einfach an: <a data-cfg-href="phoneHref" href="#" class="underline" style="color:var(--clay)" data-cfg="phoneLabel">06851 / 000 000</a> ✦</p>
+    <p class="nur-telefon hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Ruf uns einfach an: <a data-cfg-href="phoneHref" href="#" class="underline" style="color:var(--clay)" data-cfg="phoneLabel">06851 / 000 000</a> ✦</p>
+    <!-- Ersatz, solange der Anschluss nicht besetzt ist. Verschwindet, sobald
+         CONFIG.phoneActive auf true steht - dann greift wieder der Satz darueber. -->
+    <p class="ohne-telefon hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Schreib uns auf <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" style="color:var(--clay)"><span data-cfg="instaHandle">@eckstueck_</span></a> ✦</p>
   </div>
 </section>
 
@@ -496,7 +510,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
      Button oder Telefon. Kein Instagram, keine E-Mail. -->
 <div class="cta-leiste" id="ctaLeiste">
   <a id="ctaBuchen" class="cta-leiste-haupt" href="#reservierung">Jetzt reservieren</a>
-  <a class="cta-leiste-tel" data-cfg-href="phoneHref" href="#" aria-label="Studio anrufen">
+  <a class="nur-telefon cta-leiste-tel" data-cfg-href="phoneHref" href="#" aria-label="Studio anrufen">
     <span aria-hidden="true">📞</span>
   </a>
 </div>
@@ -515,6 +529,16 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 <script>
 /* ---------- CONFIG in die Seite schreiben ---------- */
 CONFIG.phoneHref = "tel:" + CONFIG.phone.replace(/\s/g,"");
+
+/* ---------- Telefon an/aus ----------
+   Solange der Anschluss nicht besetzt ist, verschwinden alle Telefon-Hinweise
+   und die Instagram-Ersatztexte treten an ihre Stelle. Die Elemente werden
+   entfernt statt nur ausgeblendet: ein versteckter tel:-Link waere fuer
+   Screenreader und Suchmaschinen weiterhin da. */
+(function(){
+  const raus = CONFIG.phoneActive ? ".ohne-telefon" : ".nur-telefon";
+  document.querySelectorAll(raus).forEach(el=>el.remove());
+})();
 document.querySelectorAll("[data-cfg]").forEach(el=>{const k=el.dataset.cfg; if(CONFIG[k]) el.textContent=CONFIG[k];});
 document.querySelectorAll("[data-cfg-href]").forEach(el=>{const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k];});
 document.getElementById("mapOpenLink").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(CONFIG.mapsQuery);
