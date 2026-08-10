@@ -81,6 +81,22 @@ Besuchers an die Kanzlei, ausgerechnet auf der Datenschutzseite.
       überschreibt nur, er löscht nichts.
 - [ ] E-Mail-Hosting in Anlage 2 des Kundenvertrags aufnehmen
 
+## Zwei Schalter, die man kennen muss
+
+**`CONFIG.phoneActive`** steht auf `false`, weil der Telefonanschluss erst etwa
+eine Woche vor Betriebsaufnahme besetzt ist. Damit verschwinden alle
+Telefon-Hinweise von der Startseite (Reservierungs-Block, Kontakt,
+FAQ-Abschluss, Knopf in der mitlaufenden Leiste), an ihre Stelle treten
+Instagram-Verweise. Zum Freischalten genügt `phoneActive: true` — die Nummer
+selbst steht weiterhin in CONFIG. Impressum und Datenschutzerklärung sind
+davon nicht betroffen, dort ist die Nummer Pflichtangabe.
+
+**`?v=2026-08-10` an den Foto-URLs.** Die `.htaccess` lässt Bilder ein Jahr
+lang zwischenspeichern (`max-age=31536000`), HTML dagegen gar nicht. Ohne diese
+Kennung sehen wiederkehrende Besucher nach einem Bildertausch weiter die alten
+Fotos — genau das ist nach dem ersten Tausch passiert. **Beim Fotoshooting im
+September das Datum hochzählen**, sonst wiederholt sich das.
+
 ## Fallen, die schon Zeit gekostet haben
 
 **`styles.css` ist ein vorkompiliertes Tailwind-Bundle.** Neue Utility-Klassen
