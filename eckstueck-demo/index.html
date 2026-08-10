@@ -407,7 +407,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
         </div></div>
         <p class="flex items-start gap-3"><span class="text-xl">📞</span><span><a data-cfg-href="phoneHref" href="#" class="font-bold hover:underline" data-cfg="phoneLabel">06851 / 000 000</a><br><span class="text-[14px]" style="color:var(--ink-soft)">Folgt uns auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline" data-cfg="instaHandle">@eckstueck_</a></span></span></p>
       </div>
-      <a href="#reservierung" class="btn-clay inline-block mt-8 rounded-full px-7 py-3.5 font-bold">Platz reservieren</a>
+      <!-- Hier stand bis 10.08.2026 ein weiterer "Platz reservieren"-Button.
+           Raus, weil der Kontaktbereich HINTER der Reservierungs-Sektion liegt:
+           der Button haette nach oben zurueckgesprungen, zu einem Block, an dem
+           man gerade vorbeigescrollt ist. Die Telefonnummer darueber ist hier
+           der passendere Weg. -->
     </div>
     <!-- DSGVO: kein automatisches Maps-Embed — Karte öffnet erst auf Klick bei Google -->
     <div class="rounded-[28px] overflow-hidden shadow-xl h-[340px] md:h-[420px] relative grid items-end justify-items-center text-center p-7" style="background:var(--paper-2)">
