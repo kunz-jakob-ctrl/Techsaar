@@ -1,4 +1,33 @@
 <!DOCTYPE html>
+<!--
+  ============================================================================
+  MEDIEN-HERKUNFT (Nachweis nach Muster elektro-demo)
+  - ECHTE KUNDENFOTOS (von der Kundin am 09.08.2026 geliefert, zugeschnitten am 10.08.):
+    hero-1 (Kirschen-Butterdose), hero-2 (Pinsel/Schwaemme), hero-3 (Schuerzen),
+    galerie-1 (Hummer-Platte), galerie-2 (Dreiecks-Teller). EXIF beim Zuschnitt
+    entfernt - WhatsApp-Bilder koennen Geraete- und Standortdaten enthalten.
+  - kontakt-brunnen.jpg zeigt den echten Kugelbrunnen in der St. Wendeler
+    Fussgaengerzone und bleibt dauerhaft drin. HERKUNFT GEKLAERT (10.08.2026):
+    private Aufnahme aus Jakobs Familie (von seiner Mutter geschickt), kein
+    Stockfoto und keine Lizenzfrage. Rechte liegen bei der Fotografin, die
+    Nutzung ist mit ihr abgestimmt.
+  - RAUS seit 10.08.2026: galerie-3.jpg und galerie-4.jpg. Das waren Stockfotos
+    einer FREMDEN Toepferwerkstatt bzw. fremder Haende. Auf einer Demo egal, auf
+    der Kundenseite nicht: fremde Betriebsstaetten als eigene zu zeigen ist
+    wettbewerbsrechtlich angreifbar, und Eckstueck brennt gar keine eigenen
+    Rohlinge. Die Dateien liegen noch in img/, werden aber nirgends mehr
+    eingebunden. Galerie laeuft bis September mit zwei echten Kacheln.
+  - ANFANG SEPTEMBER 2026 kommt ein Fotograf der Stadt ins Studio. Gebraucht
+    werden Innenraum, Rohling-Regal und Ladenfront. Danach Galerie wieder auf
+    vier Kacheln erweitern (Anleitung steht am Galerie-Abschnitt).
+  - KEIN Bild oder Video auf dieser Seite ist KI-generiert. Faellt das je weg,
+    greift Art. 50 Abs. 4 KI-VO und der Hinweis muss sichtbar auf die Seite
+    (Muster: bowl-demo/index.html, .film-ainote).
+  - OFFEN: Auf den Fotos abgebildete Personen brauchen eine Einwilligung nach
+    Art. 6 Abs. 1 lit. a DSGVO / KUG. Vor der Freigabe von der Kundin
+    schriftlich bestaetigen lassen.
+  ============================================================================
+-->
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -28,9 +57,10 @@ const CONFIG = {
   phoneLabel: "06851 / 9381349",
   instagram: "https://www.instagram.com/eckstueck_/",
   instaHandle: "@eckstueck_",
-  // Buchungsseite bei Shore — sobald der Account steht, hier die echte URL eintragen.
-  // Format: https://connect.shore.com/bookings/<studio-name>/services?locale=de
-  shoreUrl: null,
+  // Buchungsseite bei Shore (Account „keramikmalstudio-eckstueck", 09.08.2026).
+  // Shore gibt im Backend https://connect.shore.com/widget/keramikmalstudio-eckstueck?locale=de
+  // aus — das ist nur eine 301-Weiterleitung auf diese Adresse hier.
+  shoreUrl: "https://connect.shore.com/bookings/keramikmalstudio-eckstueck/services?locale=de",
   // Öffnungszeiten: 0=So … 6=Sa · null = Ruhetag · [von, bis] in Stunden
   // Halbe Stunden als Dezimalwert: 12.5 = 12:30 Uhr
   hours: { 0:[10,16], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
@@ -110,6 +140,28 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 .motion .hero-in.shown,
 .motion .mark.shown{opacity:1}
 
+/* Galerie: Hoehe und figure-Reset stehen hier, weil h-[260px], md:h-[380px]
+   und m-0 im vorkompilierten styles.css nicht enthalten sind (siehe Hinweis
+   beim Hero-Bogen unten). Zwei Kacheln statt vier, deshalb groesser. */
+.galerie-figur{margin:0}
+.galerie-bild{height:260px;display:block}
+@media (min-width:768px){ .galerie-bild{height:380px} }
+
+/* Grosser Hero-Bogen: am Handy mittig, ab md links angeschlagen.
+   ZWEI Gruende, warum das hier steht und nicht als Tailwind-Klassen:
+   1. Die Zentrierung darf KEIN transform benutzen. Die Einstiegsanimation
+      schreibt transform inline ins Element und macht ein -translate-x-1/2
+      platt - das Bild sass dann 120px zu weit rechts und wurde am rechten
+      Rand abgeschnitten. Nur mobil sichtbar, weil ab md sowieso links
+      angeschlagen wird. Gleiche Kollision wie bei der Galerie weiter unten.
+   2. styles.css ist ein vorkompiliertes Bundle: left-0, right-0, right-auto
+      und mx-0 sind darin gar nicht enthalten, solche Klassen wirken also
+      einfach nicht. Vor dem Einsatz neuer Utility-Klassen im Bundle nachsehen. */
+.hero-arch-haupt{left:0;right:0;margin-left:auto;margin-right:auto}
+@media (min-width:768px){
+  .hero-arch-haupt{left:2.5rem;right:auto;margin-left:0;margin-right:0}
+}
+
 /* Sanftes Schweben für Deko */
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-9px) rotate(var(--r,0deg))}}
 .floaty{animation:floaty 5s ease-in-out infinite}
@@ -167,7 +219,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <a href="#faq" class="text-[15px] font-bold hover:opacity-60 transition-opacity">FAQ</a>
       <a href="#reservierung" class="btn-clay rounded-full px-5 py-2.5 text-[14px] font-bold">Platz reservieren</a>
     </div>
-    <button id="burger" class="md:hidden justify-self-end text-2xl" aria-label="Menü">☰</button>
+    <!-- Tippflaeche bewusst auf 44px gebracht (war 22x32): kleiner ist am Handy
+         schwer zu treffen. Negative Margins, damit der Knopf optisch an der
+         gleichen Stelle sitzt wie vorher und die Kopfzeile nicht hoeher wird. -->
+    <button id="burger" class="md:hidden justify-self-end text-2xl grid place-items-center"
+            style="min-width:44px;min-height:44px;margin:-6px -10px -6px 0" aria-label="Menü">☰</button>
   </div>
   <div id="mobileMenu" class="hidden md:hidden px-6 pb-5 flex flex-col gap-3 text-[16px] font-bold" style="background:rgba(250,246,237,.97)">
     <a href="#ablauf">So funktioniert's</a><a href="#events">Events</a>
@@ -204,11 +260,18 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 
     <!-- Bogen-Collage -->
     <div class="relative h-[440px] md:h-[520px]">
-      <div class="hero-in arch absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 top-0 w-[240px] md:w-[280px] h-[360px] md:h-[420px] shadow-2xl"
+      <!-- Positionierung steckt in .hero-arch-haupt im style-Block, NICHT in
+           Tailwind-Klassen: sie darf kein transform benutzen (siehe dort). -->
+      <div class="hero-in arch hero-arch-haupt absolute top-0 w-[240px] md:w-[280px] h-[360px] md:h-[420px] shadow-2xl"
            style="background-color:var(--blush);background-image:url('img/hero-1.jpg')"></div>
       <div class="hero-in arch absolute left-2 md:-left-6 bottom-2 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:-4deg;background-color:var(--sky);background-image:url('img/hero-2.jpg')"></div>
       <div class="hero-in arch absolute right-2 md:right-0 bottom-10 w-[130px] md:w-[150px] h-[190px] md:h-[220px] shadow-xl floaty" style="--r:4deg;animation-delay:1.2s;background-color:var(--butter);background-image:url('img/hero-3.jpg')"></div>
-      <div class="hero-in hand absolute -right-1 md:right-6 top-6 rotate-6 rounded-2xl px-4 py-2 text-[20px] shadow-lg" style="background:#fff;color:var(--clay)">handgemacht mit ♥</div>
+      <!-- Neigung liegt auf dem inneren Element, nicht auf dem animierten: sonst
+           frisst das inline geschriebene transform der Animation die rotate-6 auf
+           und der Zettel haengt gerade statt schraeg. -->
+      <div class="hero-in absolute -right-1 md:right-6 top-6">
+        <div class="hand rotate-6 rounded-2xl px-4 py-2 text-[20px] shadow-lg" style="background:#fff;color:var(--clay)">handgemacht mit ♥</div>
+      </div>
       <span class="absolute left-4 top-8 text-2xl floaty" style="animation-delay:.6s">✦</span>
       <span class="absolute right-16 bottom-0 text-xl floaty" style="animation-delay:2s">✦</span>
     </div>
@@ -303,12 +366,30 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
     <h2 class="serif font-semibold text-[38px] md:text-[48px]">Ein bisschen Vorfreude</h2>
     <!-- Der Scroll-Drift sitzt auf den Wrappern, das Reveal auf den Bildern.
          Beides auf demselben Element würde sich über transform gegenseitig
-         überschreiben. -->
-    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-5" data-reveal>
-      <div data-parallax="26"><div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--sky);background-image:url('img/galerie-1.jpg')"></div></div>
-      <div data-parallax="-18"><div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--blush);background-image:url('img/galerie-2.jpg')"></div></div>
-      <div data-parallax="22"><div class="rv arch h-[240px] md:h-[300px]" style="background-color:var(--butter);background-image:url('img/galerie-3.jpg')"></div></div>
-      <div data-parallax="-14"><div class="rv arch h-[240px] md:h-[300px] md:mt-10" style="background-color:var(--sage);background-image:url('img/galerie-4.jpg')"></div></div>
+         überschreiben.
+
+         Bilder liegen als echte img-Elemente mit alt-Text vor, nicht als
+         CSS-Hintergrund (offener Punkt aus dem Rechts-Check: Hintergrundbilder
+         sind fuer Screenreader unsichtbar).
+
+         AKTUELL NUR ZWEI KACHELN, dafuer groesser. Die frueheren Kacheln 3 und 4
+         waren Stockfotos einer FREMDEN Toepferwerkstatt bzw. fremder Haende.
+         Auf der Kundenseite ist das nicht nur unpassend (Eckstueck brennt keine
+         eigenen Rohlinge), sondern als Darstellung fremder Betriebsstaetten als
+         eigene auch wettbewerbsrechtlich angreifbar. Nach dem Fotoshooting
+         (Anfang September 2026) wieder auf vier Kacheln erweitern:
+         md:grid-cols-4 statt md:grid-cols-2 und zwei weitere Figuren ergaenzen. -->
+    <div class="mt-10 grid grid-cols-2 gap-5 max-w-3xl mx-auto" data-reveal>
+      <figure data-parallax="26" class="galerie-figur">
+        <img src="img/galerie-1.jpg" loading="lazy" width="640" height="854"
+             alt="Selbst bemalte Servierplatte mit rotem Hummer und blau getupftem Rand, daneben ein Schälchen mit dem Namen Pablo und Becher voller Pinsel"
+             class="rv arch galerie-bild w-full object-cover" style="background-color:var(--sky)">
+      </figure>
+      <figure data-parallax="-18" class="galerie-figur md:mt-10">
+        <img src="img/galerie-2.jpg" loading="lazy" width="640" height="854"
+             alt="Runder Teller, in bunte Dreiecksfelder aufgeteilt und mit Klebeband-Technik bemalt, dahinter ein Keramikhahn und gelbe Malschwämmchen"
+             class="rv arch galerie-bild w-full object-cover" style="background-color:var(--blush)">
+      </figure>
     </div>
     <p class="mt-8 text-center text-[15px] font-bold">Mehr auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline underline-offset-4" style="color:var(--clay)"><span data-cfg="instaHandle">@eckstueck_</span> ↗</a></p>
   </div>
@@ -411,7 +492,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   <img src="img/logo-eckstueck-badge.svg" alt="" class="mark mark-foot mx-auto mb-3">
   <p class="serif font-semibold text-[22px] tracking-[.2em]" style="color:var(--ink)"><span data-cfg="name">ECKSTÜCK</span></p>
   <p class="hand text-[19px] mt-1">Keramik bemalen · <span data-cfg="city">St. Wendel</span></p>
-  <p class="mt-4">Demo-Website von <a href="https://tech-saar.de" target="_blank" rel="noopener" class="underline">TechSaar</a> · <a href="impressum.html" class="underline">Impressum</a> · <a href="datenschutz.html" class="underline">Datenschutz</a></p>
+  <!-- "Demo-Website von" war fuer die Musterfassung richtig, fuer die Kundenseite
+       nicht mehr - es ist keine Demo. Referenznennung ist im Kundenvertrag
+       vereinbart (mit Widerspruchsrecht der Kundin). -->
+  <p class="mt-4">Umsetzung: <a href="https://tech-saar.de" target="_blank" rel="noopener" class="underline">TechSaar</a> · <a href="impressum.html" class="underline">Impressum</a> · <a href="datenschutz.html" class="underline">Datenschutz</a></p>
 </footer>
 
 <script>
