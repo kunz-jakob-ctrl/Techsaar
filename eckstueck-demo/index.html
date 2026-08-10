@@ -50,8 +50,11 @@ const CONFIG = {
   // Halbe Stunden als Dezimalwert: 12.5 = 12:30 Uhr
   hours: { 0:[10,16], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
   longDay: 4,                              // Donnerstag = langer Donnerstag
-  // Kindergeburtstage: Mindestalter (im Gespräch am 17.07. festgelegt)
-  minAgeParty: 9,
+  // Mindestalter fuers selbststaendige Bemalen. Von der Kundin am 10.08.2026
+  // von 9 auf 6 korrigiert (die 9 stammte aus dem Gespraech am 17.07.).
+  // Ausnahme: Babys duerfen jederzeit mit, wenn Eltern einen Hand- oder
+  // Fussabdruck machen wollen - dafuer gibt es keine Altersgrenze.
+  minAgeParty: 6,
 };
 /* ===================================================== */
 </script>
@@ -105,6 +108,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 
 /* Nav */
 #nav{transition:background .3s,box-shadow .3s}
+/* Am Handy KEIN Drei-Spalten-Raster: die mittlere Spalte (Logo + Schriftzug) ist
+   dort so breit, dass fuer die Aussenspalten kaum Platz bleibt. Der Menueknopf
+   rutschte dadurch bis dicht an den Schriftzug und sah aus wie drei Striche, die
+   zum Namen gehoeren - waehrend rechts daneben 43px leer blieben. Marke links,
+   Knopf rechts, fertig. Ab md greift wieder das zentrierte Raster.
+
+   Der eigentliche Grund fuer das Verrutschen: die linke Navigationsgruppe hat
+   am Handy display:none und faellt damit als Rasterelement komplett weg. Marke
+   und Knopf ruecken in Spalte 1 und 2, die leere dritte Spalte bleibt rechts
+   stehen - deshalb die tote Flaeche neben dem Knopf.
+
+   ACHTUNG: nur die Leiste ansprechen, NICHT "#nav > div". Das Klappmenue ist
+   ebenfalls ein direktes Kind und wuerde durch die ID-Spezifitaet aus seinem
+   display:none geholt - es stuende dann dauerhaft offen. */
+@media (max-width:767px){
+  .nav-leiste{display:flex;align-items:center;justify-content:space-between}
+}
 #nav.scrolled{background:rgba(250,246,237,.94);box-shadow:0 6px 24px -12px rgba(65,73,59,.25);backdrop-filter:blur(8px)}
 
 /* Buttons */
@@ -213,7 +233,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 
 <!-- Nav: Bildzeichen + zentriertes Wortzeichen -->
 <nav id="nav" class="sticky top-0 z-40">
-  <div class="max-w-6xl mx-auto px-5 py-4 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+  <div class="nav-leiste max-w-6xl mx-auto px-5 py-4 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
     <div class="hidden md:flex gap-7 text-[15px] font-bold">
       <a href="#ablauf" class="hover:opacity-60 transition-opacity">So funktioniert's</a>
       <a href="#events" class="hover:opacity-60 transition-opacity">Events</a>
@@ -231,11 +251,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <a href="#faq" class="text-[15px] font-bold hover:opacity-60 transition-opacity">FAQ</a>
       <a href="#reservierung" class="btn-clay rounded-full px-5 py-2.5 text-[14px] font-bold">Platz reservieren</a>
     </div>
-    <!-- Tippflaeche bewusst auf 44px gebracht (war 22x32): kleiner ist am Handy
-         schwer zu treffen. Negative Margins, damit der Knopf optisch an der
-         gleichen Stelle sitzt wie vorher und die Kopfzeile nicht hoeher wird. -->
+    <!-- Tippflaeche bewusst 44px (war 22x32): kleiner ist am Handy schwer zu
+         treffen. Die frueheren negativen Margins sind raus - im Flex-Layout
+         oben braucht es sie nicht mehr, sie haben den Knopf nur verschoben. -->
     <button id="burger" class="md:hidden justify-self-end text-2xl grid place-items-center"
-            style="min-width:44px;min-height:44px;margin:-6px -10px -6px 0" aria-label="Menü">☰</button>
+            style="min-width:44px;min-height:44px" aria-label="Menü">☰</button>
   </div>
   <div id="mobileMenu" class="hidden md:hidden px-6 pb-5 flex flex-col gap-3 text-[16px] font-bold" style="background:rgba(250,246,237,.97)">
     <a href="#ablauf">So funktioniert's</a><a href="#events">Events</a>
@@ -487,7 +507,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       </details>
       <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Ab welchem Alter können Kinder mitmalen?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
-        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Zum freien Malen dürfen alle mitkommen, kleine Künstler in Begleitung eines Erwachsenen. <b>Kindergeburtstage feiern wir ab <span data-cfg="minAgeParty">9</span> Jahren</b>, da klappt das Bemalen selbstständig am besten.</p>
+        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Selbst bemalen klappt <b>ab <span data-cfg="minAgeParty">6</span> Jahren</b> gut — kleine Künstler in Begleitung eines Erwachsenen. Nach unten gibt es aber keine Grenze: Wenn ihr mit eurem Baby kommt, um einen <b>Hand- oder Fußabdruck</b> auf einem Teller oder einer Kachel zu verewigen, seid ihr jederzeit herzlich willkommen.</p>
       </details>
       <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Kann ich auch eine Begleitperson mitbringen?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
