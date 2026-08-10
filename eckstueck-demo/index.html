@@ -139,6 +139,33 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   .hero-arch-haupt{left:2.5rem;right:auto;margin-left:0;margin-right:0}
 }
 
+/* --- Mitlaufende Reservierungsleiste, NUR am Handy ---
+   Der Button in der Kopfzeile steckt in einem hidden/md:flex-Container und ist
+   mobil nicht sichtbar. Zwischen Hero und Reservierungs-Sektion gab es dadurch
+   mehrere Bildschirmlaengen ohne Einstieg - ausgerechnet auf dem Geraet, von dem
+   die meisten Reservierungen kommen. Unten statt oben, weil dort der Daumen liegt.
+   Sichtbar erst nach dem Hero und ausgeblendet, sobald Reservierung oder Fusszeile
+   im Bild sind (sonst stuende der Button doppelt). */
+.cta-leiste{
+  position:fixed;left:0;right:0;bottom:0;z-index:80;display:none;gap:.6rem;
+  padding:.7rem 1rem;padding-bottom:calc(.7rem + env(safe-area-inset-bottom,0px));
+  background:rgba(250,246,237,.96);backdrop-filter:blur(8px);
+  border-top:1.5px dashed rgba(65,73,59,.28);
+  transform:translateY(115%);transition:transform .3s ease;
+}
+.cta-leiste.an{transform:translateY(0)}
+@media (max-width:767px){ .cta-leiste{display:flex} }
+@media (prefers-reduced-motion:reduce){ .cta-leiste{transition:none} }
+.cta-leiste-haupt{
+  flex:1;text-align:center;background:var(--clay);color:#fff;font-weight:700;
+  border-radius:999px;padding:.85rem 1rem;font-size:16px;text-decoration:none;
+  min-height:48px;display:grid;place-items:center;
+}
+.cta-leiste-tel{
+  width:52px;min-height:48px;display:grid;place-items:center;border-radius:999px;
+  border:1.5px solid rgba(65,73,59,.35);font-size:20px;text-decoration:none;color:var(--ink);
+}
+
 /* Sanftes Schweben für Deko */
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-9px) rotate(var(--r,0deg))}}
 .floaty{animation:floaty 5s ease-in-out infinite}
@@ -464,6 +491,16 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   </div>
 </section>
 
+<!-- Mitlaufende Reservierungsleiste (nur Handy, Styling im style-Block oben).
+     Zwei Wege nebeneinander, weil die Kundin genau diese beiden will:
+     Button oder Telefon. Kein Instagram, keine E-Mail. -->
+<div class="cta-leiste" id="ctaLeiste">
+  <a id="ctaBuchen" class="cta-leiste-haupt" href="#reservierung">Jetzt reservieren</a>
+  <a class="cta-leiste-tel" data-cfg-href="phoneHref" href="#" aria-label="Studio anrufen">
+    <span aria-hidden="true">📞</span>
+  </a>
+</div>
+
 <!-- Footer -->
 <footer class="py-10 text-center text-[13.5px]" style="background:var(--paper-2);color:var(--ink-soft)">
   <img src="img/logo-eckstueck-badge.svg" alt="" class="mark mark-foot mx-auto mb-3">
@@ -487,15 +524,49 @@ document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bem
 /* ---------- Reservierung: Shore-Deep-Link ---------- */
 (function(){
   const link=document.getElementById("bookLink"), note=document.getElementById("bookNote");
+  /* Die mitlaufende Leiste am Handy fuehrt direkt zur Buchung, nicht erst zum
+     Abschnitt: wer unten auf "Jetzt reservieren" tippt, will buchen und nicht
+     noch einmal tippen. Faellt auf den Anker zurueck, solange keine URL steht. */
+  const leisteLink=document.getElementById("ctaBuchen");
   if(CONFIG.shoreUrl){
-    link.href=CONFIG.shoreUrl; link.target="_blank"; link.rel="noopener";
+    [link,leisteLink].forEach(a=>{
+      a.href=CONFIG.shoreUrl; a.target="_blank"; a.rel="noopener";
+    });
     note.remove();
   } else {
     /* Solange keine Buchungsseite hinterlegt ist, führt der Button ins Leere —
        also gar nicht erst so tun, als ginge es weiter. */
     link.addEventListener("click",e=>e.preventDefault());
     link.setAttribute("aria-disabled","true");
+    /* Die Leiste bleibt in dem Fall ein reiner Sprung zum Abschnitt. */
   }
+})();
+
+/* ---------- Mitlaufende Leiste: einblenden, wenn sie gebraucht wird ---------- */
+(function(){
+  const leiste=document.getElementById("ctaLeiste");
+  const hero=document.querySelector("header"),
+        reservierung=document.getElementById("reservierung"),
+        fuss=document.querySelector("footer");
+  if(!leiste||!hero||!reservierung||!fuss) return;
+
+  /* Sichtbar nur, wenn der Hero durch ist UND weder Reservierung noch Fusszeile
+     im Bild sind - sonst staende derselbe Aufruf doppelt auf dem Schirm, und
+     ueber der Fusszeile wuerde die Leiste die Rechtslinks verdecken.
+
+     Bewusst direkt beim Scrollen gerechnet statt per IntersectionObserver: der
+     Observer meldete bei grossen Spruengen (Ankerlinks, Sprung ans Seitenende)
+     nicht zuverlaessig nach, die Leiste blieb dann ueber der Fusszeile stehen. */
+  const imBild=el=>{const r=el.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0;};
+  let geplant=false;
+  function pruefen(){
+    geplant=false;
+    leiste.classList.toggle("an", !imBild(hero) && !imBild(reservierung) && !imBild(fuss));
+  }
+  function anstossen(){ if(!geplant){ geplant=true; requestAnimationFrame(pruefen); } }
+  addEventListener("scroll",anstossen,{passive:true});
+  addEventListener("resize",anstossen);
+  pruefen();
 })();
 
 /* ---------- Öffnungszeiten: Liste + Offen/Geschlossen-Status ---------- */
