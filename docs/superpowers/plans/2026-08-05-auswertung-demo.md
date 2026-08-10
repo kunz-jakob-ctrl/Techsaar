@@ -26,7 +26,7 @@
 
 ---
 
-### Task 1: Gerüst, Schriften und Build
+### Task 1: Gerüst, Schriften und Build ✅ erledigt 2026-08-05
 
 **Files:**
 - Create: `auswertung-demo/index.html`
@@ -40,7 +40,7 @@
 - Consumes: nichts
 - Produces: eine ladbare Seite mit Kopfbereich; die leeren Container `#kennzahlen`, `#heatmap`, `#verlauf`, `#ring`, `#verluste`; die CSS-Klassen `.sr-only` und `.ts-tip`; das Prüfskript `tools/verify.mjs`
 
-- [ ] **Step 1: Ordner anlegen und Schriften kopieren**
+- [x] **Step 1: Ordner anlegen und Schriften kopieren**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
@@ -51,7 +51,7 @@ ls auswertung-demo/fonts
 
 Erwartet: sieben Dateien — sechs `.woff2` und `fonts.css`.
 
-- [ ] **Step 2: Tailwind-Konfiguration schreiben**
+- [x] **Step 2: Tailwind-Konfiguration schreiben**
 
 `auswertung-demo/tailwind.config.js`:
 
@@ -85,7 +85,7 @@ module.exports = {
 
 `content` enthält bewusst auch `charts.js`, weil die Renderer Tailwind-Klassen in erzeugtes Markup schreiben. Fehlt das, werden diese Klassen wegoptimiert und die Diagramme sind unsichtbar.
 
-- [ ] **Step 3: Build-Eingang schreiben**
+- [x] **Step 3: Build-Eingang schreiben**
 
 `auswertung-demo/build/input.css`:
 
@@ -95,7 +95,7 @@ module.exports = {
 @tailwind utilities;
 ```
 
-- [ ] **Step 4: `index.html` mit Kopfbereich und leeren Containern schreiben**
+- [x] **Step 4: `index.html` mit Kopfbereich und leeren Containern schreiben**
 
 ```html
 <!DOCTYPE html>
@@ -190,7 +190,7 @@ module.exports = {
 </html>
 ```
 
-- [ ] **Step 5: Tailwind bauen**
+- [x] **Step 5: Tailwind bauen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
@@ -198,13 +198,13 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes tailwindcss@3 -c tailw
 
 Erwartet: `styles.css` entsteht. Warnungen wegen fehlender `data.js`/`charts.js`/`app.js` sind zu diesem Zeitpunkt normal — Tailwind liest nur `index.html` und `charts.js` aus `content`, und beide dürfen fehlen.
 
-- [ ] **Step 6: Prüfskript schreiben**
+- [x] **Step 6: Prüfskript schreiben**
 
 `auswertung-demo/tools/verify.mjs`:
 
 ```js
 /* Verifikation mit echtem Chromium. Ausführen aus auswertung-demo/:
-   npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+   node tools/verify.mjs
    Die eingebaute Browser-Vorschau ist für diese Seite NICHT verlässlich. */
 import { chromium } from 'playwright';
 import { pathToFileURL } from 'node:url';
@@ -245,17 +245,38 @@ console.log('\n' + (fehler.length ? fehler.length + ' Prüfung(en) fehlgeschlage
 process.exit(fehler.length ? 1 : 0);
 ```
 
-- [ ] **Step 7: Chromium bereitstellen und prüfen**
+- [x] **Step 7: Playwright lokal in `tools/` installieren**
 
-```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo"
-npx --yes playwright@1.61.1 install chromium
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+`npx --package=playwright -- node skript.mjs` funktioniert **nicht** — ESM ignoriert `NODE_PATH`, das Skript findet das Paket nicht. Playwright muss dort liegen, von wo Node beim Auflösen nach oben läuft. `node_modules/` ist repo-weit ignoriert, wird also nie mitcommittet.
+
+`auswertung-demo/tools/package.json`:
+
+```json
+{
+  "name": "auswertung-demo-tools",
+  "private": true,
+  "type": "module",
+  "description": "Nur Entwicklungswerkzeuge. Wird nicht ausgeliefert, node_modules ist repo-weit ignoriert.",
+  "devDependencies": { "playwright": "1.61.1" }
+}
 ```
 
-Erwartet: Beide Viewports meldeten „keine externen Requests" und „kein waagerechter Überlauf". Die JS-Fehler-Prüfung schlägt **fehl**, weil `data.js`, `charts.js` und `app.js` noch nicht existieren — das ist in diesem Task korrekt. Notieren und in Task 2 erneut prüfen.
+```bash
+cd "C:/Users/babok/Techsaar/auswertung-demo/tools" && npm install
+cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes playwright@1.61.1 install chromium
+```
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Prüfung ausführen**
+
+```bash
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
+```
+
+Erwartet: „keine externen Requests" und „kein waagerechter Überlauf" bestehen. **„alle Dateien geladen" schlägt fehl** mit `fehlt: data.js, charts.js, app.js` — das ist in diesem Task korrekt und der Beweis, dass die Prüfung greift.
+
+**Nicht auf die JS-Fehler-Prüfung verlassen:** Ein fehlendes `<script src>` löst über `file://` *keinen* `pageerror` aus, es scheitert still. Deshalb die zusätzliche `requestfailed`-Prüfung im Skript — ohne sie sähe eine Seite ganz ohne Skripte „grün" aus. (Der ursprüngliche Plan sagte hier fälschlich einen JS-Fehler voraus.)
+
+- [x] **Step 9: Commit**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
@@ -482,7 +503,7 @@ Vor `await ctx.close();` einfügen:
 - [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: `FEHL Verluste: drei Balken mit Tooltip` (0 statt 3), `FEHL … Datentabelle`, Exit-Code 1.
@@ -667,7 +688,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes tailwindcss@3 -c tailw
 - [ ] **Step 6: Prüfung ausführen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0 — inklusive „keine JS-Fehler", das in Task 1 noch fehlschlug.
@@ -715,7 +736,7 @@ In `tools/verify.mjs` vor `await ctx.close();`:
 - [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: `FEHL Ring: zwei Segmente` (0 statt 2), Exit-Code 1.
@@ -815,7 +836,7 @@ In `zeichne` nach der `renderBars`-Zeile einfügen:
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0.
@@ -863,7 +884,7 @@ git commit -m "feat(auswertung-demo): Ringdiagramm mit Legende"
 - [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: `FEHL Verlauf: zwei Linien` (0 statt 2), Exit-Code 1.
@@ -978,7 +999,7 @@ Und im `return`-Objekt `renderLine: renderLine,` hinzufügen.
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0.
@@ -1027,7 +1048,7 @@ Diese Prüfung ist viewport-abhängig, deshalb nutzt sie die Variable `breite` a
 - [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: `FEHL Heatmap: 84 Zellen (hat 0)` beim Desktop und `FEHL Heatmap: 28 Zellen (hat 0)` beim Handy, Exit-Code 1.
@@ -1106,7 +1127,7 @@ Und im `return`-Objekt `renderHeatmap: renderHeatmap,` hinzufügen.
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0 — insbesondere 84 Zellen beim Desktop und 28 beim Handy.
@@ -1169,7 +1190,7 @@ Die letzte Prüfung ist die wichtige: Sie fängt einen nicht-idempotenten Render
 - [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: `FEHL Kennzahlen: vier Kacheln`, `FEHL Umschalter: drei Schaltflächen in Reihenfolge`, danach Abbruch beim Klick auf eine nicht vorhandene Schaltfläche.
@@ -1280,7 +1301,7 @@ Die Farbe folgt `gutIstWeniger`, nicht dem Vorzeichen — eine sinkende Absagequ
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0. Schlägt „genau vier SR-Tabellen" fehl, ist einer der Renderer nicht idempotent — dort fehlt `leeren(el)` am Anfang.
@@ -1343,7 +1364,7 @@ console.log('\n[tastatur]');
 - [ ] **Step 2: Prüfung ausführen und Ausgangslage festhalten**
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: „Tooltip erscheint bei Tastaturfokus" besteht bereits (`tipBinden` bindet `focus`). Die reduced-motion-Prüfung besteht nur, wenn keine Endlos-Animation läuft — schlägt sie fehl, benennt die Ausgabe die Ursache.
@@ -1367,7 +1388,7 @@ Der Fokusring ist Pflicht: Ohne ihn sind die Diagramme per Tastatur bedienbar, a
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0.
@@ -1394,7 +1415,7 @@ for (const [name, breite, hoehe] of [['desktop', 1280, 1400], ['handy', 375, 160
 Dann ausführen:
 
 ```bash
-cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 ```
 
 Erwartet: beide PNG entstehen. Beide ansehen und beurteilen: Ist die Heatmap auf dem Handy lesbar? Sind die Farben unterscheidbar? Wirkt die Seite ruhig oder überladen?
@@ -1446,7 +1467,7 @@ Falls der Rechts-Check Änderungen verlangt, diese umsetzen und danach:
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
 npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
-npx --yes --package=playwright@1.61.1 -- node tools/verify.mjs
+node tools/verify.mjs
 ```
 
 Erwartet: weiterhin alle Prüfungen bestanden, insbesondere 0 externe Requests.

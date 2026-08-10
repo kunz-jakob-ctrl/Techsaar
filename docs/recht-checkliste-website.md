@@ -1,6 +1,6 @@
 ﻿# Recht-Checkliste: Kundenwebsites (Deutschland)
 
-Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine Anwälte — das ist eine Arbeits-Checkliste, keine Rechtsberatung. Bei Unsicherheit: Generator (z. B. eRecht24) nutzen oder Kunde zum Anwalt schicken, das dokumentieren. Verwandt: [no-gos](no-gos.md), [workflow-neuer-kunde](workflow-neuer-kunde.md).
+Bei **jedem** Projekt vor Go-Live durchgehen. Stand: August 2026 (AI-Act-Abschnitt ergänzt am 02.08.2026, dem Tag an dem Art. 50 KI-VO gilt). Wir sind keine Anwälte — das ist eine Arbeits-Checkliste, keine Rechtsberatung. Bei Unsicherheit: Generator (z. B. eRecht24) nutzen oder Kunde zum Anwalt schicken, das dokumentieren. Verwandt: [no-gos](no-gos.md), [workflow-neuer-kunde](workflow-neuer-kunde.md).
 
 ## Pflicht auf jeder Kundenwebsite
 
@@ -10,9 +10,42 @@ Bei **jedem** Projekt vor Go-Live durchgehen. Stand: Juli 2026. Wir sind keine A
 - [ ] **Cookie-/Consent-Banner (§ 25 TDDDG): nur wenn nötig!** Statische Seite ohne Tracking, ohne fremde Einbettungen = kein Banner nötig (= besser, einfacher, schöner). Sobald Google Analytics, YouTube-Embeds o. ä. drauf sind: Consent-Tool VOR dem Laden der Dienste.
 - [ ] **Fonts lokal hosten** — niemals Google-Fonts-CDN (Urteil LG München I 2022, Abmahnrisiko). Gilt genauso für fremde CDNs (Icons, JS) — alles lokal ausliefern.
 - [ ] **Google Maps einbetten** = personenbezogene Daten fließen zu Google → entweder 2-Klick-Lösung (Karte erst nach Klick laden) oder in Datenschutzerklärung + Consent abdecken. Einfachste Alternative: statisches Kartenbild mit Link zu Google Maps.
-- [ ] **Bilder & Medien:** nur Kundenmaterial oder sauber lizenziert (Lizenz dokumentieren! Quelle + Lizenz in Projektnotiz). KI-generierte Bilder: ok, aber keine erkennbaren Personen/Marken. Personenfotos (Team!): Einwilligung der Abgebildeten.
+- [ ] **Bilder & Medien:** nur Kundenmaterial oder sauber lizenziert (Lizenz dokumentieren! Quelle + Lizenz **als Kommentarblock oben in der index.html**, Muster: `elektro-demo/index.html`). KI-generierte Bilder/Videos: erlaubt, aber **seit 02.08.2026 kennzeichnungspflichtig** — siehe AI-Act-Abschnitt unten. Weiterhin gilt: keine erkennbaren fremden Personen/Marken darin. Personenfotos (Team!): Einwilligung der Abgebildeten.
 - [ ] **Texte:** nie von Konkurrenz-Websites kopieren (Urheberrecht + peinlich).
 - [ ] **Kontaktformular:** TLS (haben wir über SSL), keine unnötigen Pflichtfelder (Datenminimierung), Hinweis auf Datenschutzerklärung.
+
+## KI-Verordnung (AI Act) — seit 02.08.2026 scharf
+
+Verordnung (EU) 2024/1689. In Kraft seit 01.08.2024, aber die für uns relevanten
+**Transparenzpflichten aus Art. 50 gelten seit dem 02.08.2026**. Der „Digital Omnibus"
+(Einigung 07.05.2026) verschiebt **nur** die Hochrisiko-Pflichten auf 12/2027 bzw. 08/2028 —
+Art. 4, Art. 5 und **Art. 50 bleiben unverändert**. Bußgeldrahmen bei Verstoß gegen Art. 50:
+bis 15 Mio. € oder 3 % des Weltumsatzes, für KMU gilt der jeweils niedrigere Wert.
+
+- [ ] **KI-generierte Bilder, Videos, Audio (Art. 50 Abs. 4):** Wenn Material fotorealistisch
+      wirkt und reale Dinge, Orte, Personen oder Vorgänge zeigt, ist es ein „Deepfake" im Sinne
+      des Art. 3 Nr. 60 — der Begriff meint **nicht nur Personen**. Dann muss **sichtbar auf der
+      Seite** stehen, dass der Inhalt KI-generiert ist. Muster: `bowl-demo/index.html`, CSS-Klasse
+      `.film-ainote` + Satz in der Fußnote. Ein Vermerk nur im HTML-Kommentar reicht **nicht**.
+- [ ] **Niemals „echtes Foto/echter Film" schreiben, wenn es KI ist.** Das ist doppelt riskant:
+      Art. 50 Abs. 4 KI-VO *und* § 5 UWG (Irreführung). Ein Fiktions-Disclaimer zur Marke deckt
+      die Herkunft der Medien **nicht** mit ab.
+- [ ] **Chatbot / KI-Telefonassistent auf der Seite (Art. 50 Abs. 1):** Nutzer müssen **bei der
+      ersten Interaktion** erfahren, dass sie mit einer KI sprechen — beim Telefonbot durch
+      Selbstvorstellung zu Gesprächsbeginn, beim Chatbot durch Beschriftung im Fenster.
+      Textmuster: `werkstatt-demo/index.html` (Fußnote „Hinweis zur Telefonannahme").
+- [ ] **Datenschutzerklärung nachziehen:** eigener Abschnitt „Künstliche Intelligenz" —
+      was läuft, welche Daten gehen wohin, Art. 22 DSGVO (keine rein automatisierte Entscheidung).
+      Muster: `datenschutz.html` Abschnitt 9. **Auch dann schreiben, wenn KEINE KI läuft** — dann
+      als klare Negativaussage, das schafft Vertrauen und kostet nichts.
+- [ ] **Achtung Rollenwechsel (Art. 25 Abs. 1 lit. a):** Liefern wir einen KI-Bot unter unserem
+      Namen aus, sind wir nicht mehr nur Betreiber, sondern **Anbieter** — mit voller Art.-50-Pflicht.
+      Vor dem ersten echten Bot-Projekt gesondert prüfen.
+- [ ] **Nicht relevant für uns (geprüft 02.08.2026):** Hochrisiko nach Anhang III, Emotionserkennung,
+      biometrische Kategorisierung, Social Scoring. Falls ein Kundenprojekt das je berührt
+      (Bewerberauswahl, Kreditwürdigkeit, Zugangskontrolle) → **ablehnen oder Anwalt**.
+- [ ] **Art. 4 (KI-Kompetenz), gilt schon seit 02.02.2025:** Wer KI beruflich einsetzt, muss
+      Grundkenntnisse nachweisen können. Für uns: [ki-kompetenz](ki-kompetenz.md) aktuell halten.
 
 ## Je nach Kunde zusätzlich prüfen
 

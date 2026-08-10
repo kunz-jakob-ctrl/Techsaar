@@ -1,0 +1,9 @@
+{
+  "name": "auswertung-demo-tools",
+  "private": true,
+  "type": "module",
+  "description": "Nur Entwicklungswerkzeuge. Wird nicht ausgeliefert, node_modules ist repo-weit ignoriert.",
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

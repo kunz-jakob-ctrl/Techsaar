@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TechSaar Auswertung | Produkt-Demo</title>
+<meta name="description" content="Produkt-Demo: Auswertung der Buchungen eines Betriebs — Auslastung, Entwicklung, Kundenstruktur und entgangener Umsatz auf einer Seite.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+           clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .ts-tip{position:absolute;transform:translate(-50%,-100%);z-index:60;pointer-events:none;
+          background:#EFE6D8;color:#17130F;font:12px/1.3 "IBM Plex Mono",monospace;
+          padding:4px 7px;white-space:nowrap}
+  .ts-tip[hidden]{display:none}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .anim-up{animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) both}
+  @media (prefers-reduced-motion:reduce){
+    .anim-up{animation:none}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body class="bg-ofen font-sans text-ofentext antialiased">
+
+<header class="mx-auto max-w-5xl px-5 pt-14 sm:pt-20">
+  <p class="font-mono text-[11px] uppercase tracking-[0.5em] text-ofenmuted">TechSaar · Produkt-Demo</p>
+  <h1 class="anim-up mt-4 max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl" style="font-weight:800">
+    Auswertung
+  </h1>
+  <p class="mt-5 max-w-2xl text-ofenmuted sm:text-lg">
+    Was aus den Buchungen wird, die über uns hereinkommen: wann bei Ihnen etwas los ist,
+    ob es besser läuft als im Vormonat, wer zu Ihnen kommt und wo Geld liegen bleibt.
+    Vier Fragen, vier Antworten, eine Seite.
+  </p>
+  <p class="mt-4 inline-block border border-senf px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-senf">
+    Alle Zahlen auf dieser Seite sind Beispieldaten
+  </p>
+  <noscript>
+    <p class="mt-6 border border-terra px-4 py-3 text-[13px] text-terra">
+      Für die Diagramme wird JavaScript benötigt — ein Auswertungswerkzeug rechnet im Browser.
+      Ohne JavaScript sehen Sie diese Erklärung, aber keine Zahlen.
+    </p>
+  </noscript>
+</header>
+
+<main class="mx-auto max-w-5xl px-5 pb-24">
+
+  <div id="zeitraum" class="mt-10 flex gap-px border border-ofenlinie bg-ofenlinie" role="group" aria-label="Zeitraum wählen"></div>
+
+  <div id="kennzahlen" class="mt-8 grid grid-cols-2 gap-px border border-ofenlinie bg-ofenlinie sm:grid-cols-4"></div>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl sm:text-3xl">Wann ist bei Ihnen was los?</h2>
+    <p class="mt-2 max-w-xl text-[13px] text-ofenmuted">Buchungen je Wochentag und Uhrzeit. Je heller, desto voller.</p>
+    <div id="heatmap" class="mt-6"></div>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl sm:text-3xl">Läuft es besser als vorher?</h2>
+    <p class="mt-2 max-w-xl text-[13px] text-ofenmuted">Aktueller Zeitraum gegen die Vorperiode.</p>
+    <div id="verlauf" class="mt-6"></div>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl sm:text-3xl">Wer kommt zu Ihnen?</h2>
+    <p class="mt-2 max-w-xl text-[13px] text-ofenmuted">Stammkunden gegen Neukunden.</p>
+    <div id="ring" class="mt-6"></div>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl sm:text-3xl">Wo bleibt Geld liegen?</h2>
+    <p class="mt-2 max-w-xl text-[13px] text-ofenmuted">Entgangener Umsatz nach Ursache.</p>
+    <div id="verluste" class="mt-6"></div>
+  </section>
+
+</main>
+
+<footer class="border-t border-ofenlinie">
+  <div class="mx-auto max-w-5xl px-5 py-10 font-mono text-[11px] uppercase tracking-wider text-ofenmuted">
+    TechSaar · Produkt-Demo · Beispieldaten
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
