@@ -69,6 +69,34 @@ for (const [name, breite, hoehe] of [['desktop', 1280, 900], ['handy', 375, 780]
   pruefe(ring.anzahl > 0 && ring.mitTip, 'Ring: jedes Segment hat einen Tooltip');
   pruefe(ring.tabelle, 'Ring: versteckte Datentabelle vorhanden');
 
+  const verlauf = await page.evaluate(() => {
+    const el = document.getElementById('verlauf');
+    const linien = [...el.querySelectorAll('polyline[data-reihe]')];
+    const punkte = [...el.querySelectorAll('circle[data-punkt]')];
+    const svg = el.querySelector('svg');
+    /* Alle Punkte müssen INNERHALB des viewBox liegen — ein Skalierungsfehler
+       zeigt sich sonst nur optisch als abgeschnittene Kurve. */
+    const vb = svg ? svg.getAttribute('viewBox').split(' ').map(Number) : [0,0,0,0];
+    const drin = punkte.every(c => {
+      const x = +c.getAttribute('cx'), y = +c.getAttribute('cy');
+      return x >= vb[0] && x <= vb[0]+vb[2] && y >= vb[1] && y <= vb[1]+vb[3];
+    });
+    return {
+      linien: linien.length,
+      gestrichelt: linien.filter(l => l.hasAttribute('stroke-dasharray')).length,
+      punkte: punkte.length,
+      drin,
+      mitTip: punkte.every(c => c.hasAttribute('data-tip')),
+      tabelle: !!el.querySelector('table.sr-only'),
+    };
+  });
+  pruefe(verlauf.linien === 2, 'Verlauf: zwei Linien (hat ' + verlauf.linien + ')');
+  pruefe(verlauf.gestrichelt === 1, 'Verlauf: genau die Vergleichslinie ist gestrichelt');
+  pruefe(verlauf.punkte === 7, 'Verlauf: sieben Punkte auf der aktuellen Reihe (hat ' + verlauf.punkte + ')');
+  pruefe(verlauf.punkte > 0 && verlauf.drin, 'Verlauf: alle Punkte liegen im viewBox');
+  pruefe(verlauf.punkte > 0 && verlauf.mitTip, 'Verlauf: jeder Punkt hat einen Tooltip');
+  pruefe(verlauf.tabelle, 'Verlauf: versteckte Datentabelle vorhanden');
+
   await ctx.close();
 }
 

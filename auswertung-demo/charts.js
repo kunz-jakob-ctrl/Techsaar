@@ -239,9 +239,100 @@ window.Charts = (function () {
     }));
   }
 
+  /* --- Verlauf: Polylinie in festem viewBox, Breite skaliert per CSS.
+         Die Skala beginnt bei 0 — eine abgeschnittene Achse würde kleine
+         Unterschiede dramatisch aussehen lassen und wäre bei Geschäftszahlen
+         irreführend. --- */
+  function renderLine(el, daten, opts) {
+    opts = opts || {};
+    var art = opts.format || 'zahl';
+    leeren(el);
+
+    var B = 700, H = 240, L = 16, R = 16, O = 16, Uu = 34;  // Rand links/rechts/oben/unten
+    var alle = daten.reihen.reduce(function (a, r) { return a.concat(r.werte); }, []);
+    var max = Math.max.apply(null, alle) || 1;
+    var n = daten.punkte.length;
+
+    function x(i) { return n < 2 ? L : L + i * (B - L - R) / (n - 1); }
+    function y(v) { return H - Uu - (v / max) * (H - O - Uu); }
+
+    var svg = svgEl('svg', {
+      viewBox: '0 0 ' + B + ' ' + H, class: 'w-full', 'aria-hidden': 'true',
+      preserveAspectRatio: 'xMidYMid meet',
+    });
+
+    svg.appendChild(svgEl('line', {
+      x1: L, y1: H - Uu, x2: B - R, y2: H - Uu, class: 'stroke-ofenlinie', 'stroke-width': 1,
+    }));
+
+    /* Rückwärts zeichnen: die Vergleichsreihe steht hinten und wird zuerst
+       gemalt, damit die aktuelle Reihe obenauf liegt. */
+    daten.reihen.slice().reverse().forEach(function (reihe, umgekehrt) {
+      var istVergleich = (umgekehrt === 0) && daten.reihen.length > 1;
+      var pl = svgEl('polyline', {
+        points: reihe.werte.map(function (v, i) { return x(i) + ',' + y(v); }).join(' '),
+        fill: 'none', 'stroke-width': 2,
+        /* Ohne non-scaling-stroke wird die Linie auf dem Handy dünner als auf
+           dem Laptop, weil das SVG in der Breite skaliert. */
+        'vector-effect': 'non-scaling-stroke',
+        'data-reihe': reihe.name,
+        class: (STRICH[reihe.variante] || STRICH.ofenmuted),
+      });
+      if (istVergleich) pl.setAttribute('stroke-dasharray', '5 5');
+      svg.appendChild(pl);
+    });
+
+    /* Punkte nur auf der aktuellen Reihe — sonst überlagern sich die Tooltips */
+    var erste = daten.reihen[0];
+    erste.werte.forEach(function (v, i) {
+      var c = svgEl('circle', {
+        cx: x(i), cy: y(v), r: 5, 'data-punkt': '',
+        class: (FUELL[erste.variante] || FUELL.ofenmuted),
+      });
+      tipBinden(c, daten.punkte[i] + ': ' + fmt(v, art));
+      svg.appendChild(c);
+    });
+
+    /* Auf schmalen Schirmen nur jede zweite Beschriftung, sonst überlappen sie */
+    var schmal = window.matchMedia('(max-width: 640px)').matches;
+    daten.punkte.forEach(function (p, i) {
+      if (schmal && n > 7 && i % 2 !== 0) return;
+      var t = svgEl('text', {
+        x: x(i), y: H - 12, 'text-anchor': 'middle',
+        class: 'fill-ofenmuted', style: 'font:12px "IBM Plex Mono",monospace',
+      });
+      t.textContent = p;
+      svg.appendChild(t);
+    });
+
+    el.appendChild(svg);
+
+    var legende = document.createElement('ul');
+    legende.className = 'mt-4 flex flex-wrap gap-x-5 gap-y-2';
+    legende.setAttribute('aria-hidden', 'true');
+    daten.reihen.forEach(function (r, i) {
+      var li = document.createElement('li');
+      li.className = 'flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-ofenmuted';
+      var strich = document.createElement('span');
+      strich.className = 'h-0.5 w-6 shrink-0 ' + (FARBE[r.variante] || FARBE.ofenmuted);
+      if (i > 0) strich.style.opacity = '.6';
+      li.appendChild(strich);
+      li.appendChild(document.createTextNode(r.name));
+      legende.appendChild(li);
+    });
+    el.appendChild(legende);
+
+    srTabelle(el,
+      ['Punkt'].concat(daten.reihen.map(function (r) { return r.name; })),
+      daten.punkte.map(function (p, i) {
+        return [p].concat(daten.reihen.map(function (r) { return fmt(r.werte[i], art); }));
+      }));
+  }
+
   return {
     renderBars: renderBars,
     renderDonut: renderDonut,
+    renderLine: renderLine,
     _intern: {
       fmt: fmt, leeren: leeren, tipBinden: tipBinden, srTabelle: srTabelle,
       FARBE: FARBE, STRICH: STRICH, FUELL: FUELL,

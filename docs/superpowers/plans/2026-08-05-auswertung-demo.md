@@ -851,7 +851,7 @@ git commit -m "feat(auswertung-demo): Ringdiagramm mit Legende"
 
 ---
 
-### Task 5: `renderLine`
+### Task 5: `renderLine` ✅ erledigt 2026-08-05
 
 **Files:**
 - Modify: `auswertung-demo/charts.js`
@@ -862,7 +862,7 @@ git commit -m "feat(auswertung-demo): Ringdiagramm mit Legende"
 - Consumes: `fmt`, `leeren`, `tipBinden`, `srTabelle`, `STRICH`, `svgEl` aus Tasks 3 und 4
 - Produces: `Charts.renderLine(el, { punkte, reihen:[{name, werte, variante}] }, opts)`
 
-- [ ] **Step 1: Prüfung ergänzen**
+- [x] **Step 1: Prüfung ergänzen**
 
 ```js
   const verlauf = await page.evaluate(() => {
@@ -881,7 +881,7 @@ git commit -m "feat(auswertung-demo): Ringdiagramm mit Legende"
   pruefe(verlauf.tabelle, 'Verlauf: versteckte Datentabelle vorhanden');
 ```
 
-- [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
+- [x] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
@@ -889,7 +889,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 
 Erwartet: `FEHL Verlauf: zwei Linien` (0 statt 2), Exit-Code 1.
 
-- [ ] **Step 3: `renderLine` in `charts.js` einfügen**
+- [x] **Step 3: `renderLine` in `charts.js` einfügen**
 
 Vor dem `return {` einfügen:
 
@@ -988,13 +988,13 @@ Und im `return`-Objekt `renderLine: renderLine,` hinzufügen.
 
 `vector-effect="non-scaling-stroke"` ist nötig, weil das SVG in der Breite skaliert — ohne das wird die Linie auf dem Handy dünner als auf dem Laptop.
 
-- [ ] **Step 4: In `app.js` aufrufen**
+- [x] **Step 4: In `app.js` aufrufen**
 
 ```js
     Charts.renderLine(document.getElementById('verlauf'), satz.verlauf, { format: 'zahl' });
 ```
 
-- [ ] **Step 5: Tailwind neu bauen und prüfen**
+- [x] **Step 5: Tailwind neu bauen und prüfen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
@@ -1004,7 +1004,7 @@ node tools/verify.mjs
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
@@ -1317,6 +1317,11 @@ git commit -m "feat(auswertung-demo): Kennzahlen-Reihe und Zeitraum-Umschalter"
 ---
 
 ### Task 8: Bewegung, Tastatur und Feinschliff
+
+> **Aus Task 5 vorgemerkt:** Das Verlaufsdiagramm hat keine Y-Achsen-Beschriftung.
+> Man erkennt die Form, aber nicht die Groessenordnung — nur der Tooltip verraet sie.
+> In diesem Task nachruesten: eine dezente Hoechstwert-Marke oben links plus eine
+> Null-Linie, mehr nicht. Volle Achsenteilung waere fuer vier Diagramme zu laut.
 
 **Files:**
 - Modify: `auswertung-demo/index.html`

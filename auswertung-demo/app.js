@@ -7,6 +7,7 @@
   function zeichne(key) {
     var satz = window.DATEN[key];
     if (!satz) return;
+    Charts.renderLine(document.getElementById('verlauf'), satz.verlauf, { format: 'zahl' });
     Charts.renderDonut(document.getElementById('ring'), satz.ring, { format: 'zahl' });
     Charts.renderBars(document.getElementById('verluste'), satz.verluste, { format: 'euro' });
   }
