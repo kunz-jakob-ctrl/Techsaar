@@ -75,8 +75,11 @@ Besuchers an die Kanzlei, ausgerechnet auf der Datenschutzseite.
 - [x] Postfach `info@eckstueck-stwendel.de` angelegt (11.08.2026, Free
       Business Email, kostenlos für 12 Monate, 1 GB). MX, SPF
       (`include:_spf.mail.hostinger.com`) und DMARC (`p=none`) stehen.
-      **Zustelltest steht noch aus** — ein- und ausgehend, bei Gmail auf
-      SPF/DKIM/DMARC = PASS achten.
+      **Zustelltest am 11.08.2026 erfolgreich.** Autoconfig- und
+      Autodiscover-Einträge sind gesetzt, die Kundin richtet das Postfach
+      allein mit Adresse und Passwort ein — hPanel sieht sie nie.
+      Server: `imap.hostinger.com:993` (SSL), `smtp.hostinger.com:465`,
+      Webmail `mail.hostinger.com`.
 - [ ] **Kanzlei-Neuexport braucht die richtige E-Mail-Adresse.** Der gelieferte
       Text nannte `info@eckstueck-sanktwendel.de` — diese Domain existiert nicht
       und wurde nie registriert. Am 10.08. in `impressum.html` und
