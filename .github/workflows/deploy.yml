@@ -43,20 +43,7 @@ jobs:
             --exclude='tailwind.config.js' \
             --exclude='*.md' \
             --exclude='_deploy_eckstueck' \
-            --exclude='eckstueck-demo' \
             ./ ./_deploy/
-
-          # Die alte Adresse tech-saar.de/eckstueck-demo/ bleibt bestehen (der
-          # SFTP-Deploy loescht nichts), wuerde aber dieselbe Seite ein zweites
-          # Mal ausliefern. Deshalb kommt dort nur noch eine Weiterleitung hin.
-          # Ohne sie hiesse es fuer Google: gleicher Inhalt unter zwei Adressen,
-          # und die aeltere gewinnt meist - die Kundenseite wuerde also unter der
-          # Agenturadresse ranken statt unter ihrer eigenen.
-          mkdir -p ./_deploy/eckstueck-demo
-          printf '%s\n' \
-            'RewriteEngine On' \
-            'RewriteRule ^(.*)$ https://eckstueck-stwendel.de/$1 [R=301,L]' \
-            > ./_deploy/eckstueck-demo/.htaccess
 
           echo "Zu deployende Dateien:"; find ./_deploy -maxdepth 2 -type f | sort
 
@@ -73,11 +60,22 @@ jobs:
           overwrite: true
 
       # ------------------------------------------------------------------
-      # Eckstueck laeuft seit 11.08.2026 unter eigener Domain. Der Ordner
-      # eckstueck-demo/ wird deshalb NICHT mehr nach tech-saar.de geliefert
-      # (siehe --exclude oben), sondern in das public_html der Kundendomain -
-      # und zwar dessen INHALT, damit die Startseite direkt unter
-      # https://eckstueck-stwendel.de/ liegt und nicht in einem Unterordner.
+      # Eckstueck bekommt eine eigene Domain. Der INHALT von eckstueck-demo/
+      # geht nach domains/eckstueck-stwendel.de/public_html, damit die
+      # Startseite direkt unter der Kundendomain liegt.
+      #
+      # UEBERGANGSZUSTAND (11.08.2026): Die Domain ist registriert, DNS und
+      # Postfach stehen, aber sie ist im hPanel noch NICHT als Website
+      # angelegt. Hostinger liefert deshalb unter allen Adressen die Parkseite
+      # aus (Server: hcdn), obwohl die Dateien im richtigen Verzeichnis
+      # liegen. Solange das so ist, wird eckstueck-demo/ ZUSAETZLICH weiter
+      # nach tech-saar.de ausgeliefert und die alte Adresse NICHT umgeleitet -
+      # sonst laufen Besucher in die Parkseite.
+      #
+      # Sobald die Domain im hPanel verbunden ist:
+      #   1. --exclude='eckstueck-demo' oben wieder einkommentieren
+      #   2. Weiterleitungs-.htaccess fuer tech-saar.de/eckstueck-demo/
+      #      wieder anlegen (301 auf die neue Domain, siehe Commit 83395e8)
       # ------------------------------------------------------------------
       - name: Eckstueck-Verzeichnis vorbereiten
         run: |
