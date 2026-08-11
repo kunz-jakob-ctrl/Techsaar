@@ -43,7 +43,21 @@ jobs:
             --exclude='tailwind.config.js' \
             --exclude='*.md' \
             --exclude='_deploy_eckstueck' \
+            --exclude='eckstueck-demo' \
             ./ ./_deploy/
+
+          # Eckstueck liegt seit 11.08.2026 unter eigener Domain. Unter der
+          # alten Adresse steht deshalb nur noch eine Weiterleitung. Ohne sie
+          # waere dieselbe Seite unter zwei Adressen erreichbar, und Google
+          # bevorzugt meist die aeltere - die Kundenseite wuerde also unter der
+          # Agenturadresse ranken statt unter ihrer eigenen.
+          # Die alten Dateien bleiben physisch liegen (SFTP loescht nicht),
+          # sind ueber die Weiterleitung aber nicht mehr erreichbar.
+          mkdir -p ./_deploy/eckstueck-demo
+          printf '%s\n' \
+            'RewriteEngine On' \
+            'RewriteRule ^(.*)$ https://eckstueck-stwendel.de/$1 [R=301,L]' \
+            > ./_deploy/eckstueck-demo/.htaccess
 
           echo "Zu deployende Dateien:"; find ./_deploy -maxdepth 2 -type f | sort
 
@@ -64,18 +78,15 @@ jobs:
       # geht nach domains/eckstueck-stwendel.de/public_html, damit die
       # Startseite direkt unter der Kundendomain liegt.
       #
-      # UEBERGANGSZUSTAND (11.08.2026): Die Domain ist registriert, DNS und
-      # Postfach stehen, aber sie ist im hPanel noch NICHT als Website
-      # angelegt. Hostinger liefert deshalb unter allen Adressen die Parkseite
-      # aus (Server: hcdn), obwohl die Dateien im richtigen Verzeichnis
-      # liegen. Solange das so ist, wird eckstueck-demo/ ZUSAETZLICH weiter
-      # nach tech-saar.de ausgeliefert und die alte Adresse NICHT umgeleitet -
-      # sonst laufen Besucher in die Parkseite.
+      # Seit 11.08.2026 ist die Domain im hPanel als Website angelegt und
+      # liefert diese Dateien aus. Die alte Adresse leitet dorthin weiter.
       #
-      # Sobald die Domain im hPanel verbunden ist:
-      #   1. --exclude='eckstueck-demo' oben wieder einkommentieren
-      #   2. Weiterleitungs-.htaccess fuer tech-saar.de/eckstueck-demo/
-      #      wieder anlegen (301 auf die neue Domain, siehe Commit 83395e8)
+      # GELERNT, falls das nochmal ansteht: Erst die Domain verbinden und
+      # nachweislich aufrufen, DANN umleiten. Andersherum landen Besucher auf
+      # der Hostinger-Parkseite, weil die Dateien zwar im public_html liegen,
+      # aber kein Webserver-Eintrag sie ausliefert. Und: Eine einmal
+      # hochgeladene .htaccess verschwindet nicht dadurch, dass man sie aus
+      # dem Ablauf nimmt - der SFTP-Deploy ueberschreibt nur, er loescht nie.
       # ------------------------------------------------------------------
       - name: Eckstueck-Verzeichnis vorbereiten
         run: |
