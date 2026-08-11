@@ -40,6 +40,10 @@ const CONFIG = {
   phoneActive: false,
   instagram: "https://www.instagram.com/eckstueck_/",
   instaHandle: "@eckstueck_",
+  // Postfach der Kundin. Wird fuer die Event-Anfragen gebraucht: Gruppen laufen
+  // NICHT ueber Shore, dort ist nur die Einzelleistung "Keramik bemalen"
+  // angelegt. Termin, Gruppengroesse und Ablauf werden persoenlich abgestimmt.
+  email: "info@eckstueck-stwendel.de",
   // Buchungsseite bei Shore (Account „keramikmalstudio-eckstueck", 09.08.2026).
   // Shore gibt im Backend https://connect.shore.com/widget/keramikmalstudio-eckstueck?locale=de
   // aus — das ist nur eine 301-Weiterleitung auf diese Adresse hier.
@@ -365,27 +369,37 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
   <div class="max-w-6xl mx-auto px-5">
     <p class="hand text-[24px] text-center" style="color:var(--clay)">gemeinsam kreativ</p>
     <h2 class="serif font-semibold text-[38px] md:text-[48px] text-center">Feiern &amp; Events</h2>
+    <!-- max-w-2xl statt max-w-xl: letzteres ist im vorkompilierten styles.css
+         nicht enthalten und haette gar nicht gewirkt. -->
+    <p class="mt-4 text-center text-[15px] max-w-2xl mx-auto" style="color:var(--ink-soft)">Gruppen planen wir persönlich — schreibt uns kurz, dann finden wir gemeinsam einen Termin.</p>
+    <!-- Die Event-Karten fuehren bewusst NICHT zur Reservierungs-Sektion:
+         in Shore ist nur die Einzelleistung "Keramik bemalen" angelegt. Termin,
+         Gruppengroesse und Ablauf muessen abgesprochen werden, deshalb E-Mail.
+         Die mailto-Adressen baut das Skript unten aus CONFIG.email zusammen,
+         damit die Adresse an einer Stelle gepflegt wird - und nicht dreimal
+         im Klartext im HTML steht, wo Spam-Sammler sie abgreifen. -->
     <div class="mt-12 grid md:grid-cols-3 gap-6" data-reveal>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--blush)">
         <span class="text-4xl">🎈</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Kindergeburtstag</h3>
         <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, Spaß haben — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
-        <p class="mt-3 text-[13.5px] font-bold">ab <span data-cfg="minAgeParty">9</span> Jahren</p>
-        <a href="#reservierung" class="inline-block mt-4 font-bold underline underline-offset-4">Termin anfragen →</a>
+        <p class="mt-3 text-[13.5px] font-bold">ab <span data-cfg="minAgeParty">6</span> Jahren</p>
+        <a href="#kontakt" data-anfrage="Kindergeburtstag" class="inline-block mt-4 font-bold underline underline-offset-4">Anfrage schreiben →</a>
       </div>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--butter)">
         <span class="text-4xl">🥂</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Mädelsabend</h3>
         <p class="mt-2 text-[15px] leading-relaxed">Der etwas andere Abend: Musik, ein Glas Prosecco, gute Gespräche — und am Ende ein selbst bemaltes Andenken.</p>
-        <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
+        <a href="#kontakt" data-anfrage="Mädelsabend" class="inline-block mt-5 font-bold underline underline-offset-4">Anfrage schreiben →</a>
       </div>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--sage)">
         <span class="text-4xl">🧑‍🤝‍🧑</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Teamevents &amp; JGA</h3>
         <p class="mt-2 text-[15px] leading-relaxed">Kreativ statt Konferenzraum — für Gruppen reservieren wir euch gern das ganze Studio, auf Wunsch mit Aperitif, Wein oder Prosecco.</p>
-        <a href="#reservierung" class="inline-block mt-5 font-bold underline underline-offset-4">Termin anfragen →</a>
+        <a href="#kontakt" data-anfrage="Teamevent oder JGA" class="inline-block mt-5 font-bold underline underline-offset-4">Anfrage schreiben →</a>
       </div>
     </div>
+    <p class="mt-8 text-center text-[14px]" style="color:var(--ink-soft)">Oder direkt an <a data-cfg-mail href="#kontakt" class="font-bold underline underline-offset-4" style="color:var(--clay)">unsere E-Mail-Adresse</a></p>
   </div>
 </section>
 
@@ -559,6 +573,46 @@ CONFIG.phoneHref = "tel:" + CONFIG.phone.replace(/\s/g,"");
 (function(){
   const raus = CONFIG.phoneActive ? ".ohne-telefon" : ".nur-telefon";
   document.querySelectorAll(raus).forEach(el=>el.remove());
+})();
+
+/* ---------- Event-Anfragen per E-Mail ----------
+   Gruppen laufen nicht ueber Shore: dort ist nur die Einzelleistung "Keramik
+   bemalen" angelegt. Die Karten oeffnen deshalb eine vorbereitete Mail mit
+   Betreff und den Angaben, die sonst per Rueckfrage eingesammelt werden
+   muessten - das spart der Kundin bei jeder Anfrage eine Runde hin und her.
+   Die Adresse wird erst hier eingesetzt und steht nicht im Klartext im HTML,
+   das haelt einfache Spam-Sammler fern. Faellt JavaScript aus, springen die
+   Links auf den Kontaktbereich statt ins Leere. */
+(function(){
+  const adresse = CONFIG.email;
+  if(!adresse) return;
+
+  const zusatzfelder = {
+    "Kindergeburtstag":    ["Anzahl Kinder:", "Alter der Kinder:"],
+    "Mädelsabend":         ["Anzahl Personen:", "Getränkewunsch:"],
+    "Teamevent oder JGA":  ["Anzahl Personen:", "Ganzes Studio gewünscht:"]
+  };
+
+  document.querySelectorAll("[data-anfrage]").forEach(link=>{
+    const anlass = link.dataset.anfrage;
+    const felder = ["Wunschtermin (Datum und Uhrzeit):"].concat(zusatzfelder[anlass] || []);
+    /* Bewusst nicht CONFIG.name: das ist die Logo-Schreibweise in Versalien
+       und wirkt in einer Mail wie Geschrei. */
+    const text = "Hallo Eckstück-Team,\n\n"
+               + "wir interessieren uns für " + anlass + " bei euch.\n\n"
+               + felder.map(f => f + " ").join("\n")
+               + "\n\nViele Grüße\n";
+    link.href = "mailto:" + adresse
+              + "?subject=" + encodeURIComponent("Anfrage: " + anlass)
+              + "&body="    + encodeURIComponent(text);
+  });
+
+  /* Sichtbare Adresse als Ausweg, falls auf dem Geraet kein Mailprogramm
+     eingerichtet ist und der mailto-Link deshalb nichts tut. */
+  document.querySelectorAll("[data-cfg-mail]").forEach(link=>{
+    link.href = "mailto:" + adresse;
+    link.textContent = adresse;
+  });
 })();
 document.querySelectorAll("[data-cfg]").forEach(el=>{const k=el.dataset.cfg; if(CONFIG[k]) el.textContent=CONFIG[k];});
 document.querySelectorAll("[data-cfg-href]").forEach(el=>{const k=el.dataset.cfgHref; if(CONFIG[k]) el.href=CONFIG[k];});
