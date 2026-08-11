@@ -38,6 +38,22 @@ for (const [name, breite, hoehe] of [['desktop', 1280, 900], ['handy', 375, 780]
     document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
   pruefe(!ueberlauf, 'kein waagerechter Überlauf');
 
+  const balken = await page.evaluate(() => {
+    const el = document.getElementById('verluste');
+    return {
+      anzahl:   el.querySelectorAll('[data-balken]').length,
+      mitTip:   [...el.querySelectorAll('[data-balken]')].every(b => b.hasAttribute('data-tip')),
+      tabelle:  !!el.querySelector('table.sr-only'),
+      breiteOk: [...el.querySelectorAll('[data-balken]')].every(b => parseFloat(b.style.width) > 0),
+    };
+  });
+  /* .every() auf leerem Feld ist true — ohne die anzahl-Bedingung wuerden diese
+     Pruefungen bei null Balken "bestehen" und einen echten Ausfall durchwinken. */
+  pruefe(balken.anzahl === 3, 'Verluste: drei Balken (hat ' + balken.anzahl + ')');
+  pruefe(balken.anzahl > 0 && balken.mitTip, 'Verluste: jeder Balken hat einen Tooltip');
+  pruefe(balken.tabelle, 'Verluste: versteckte Datentabelle vorhanden');
+  pruefe(balken.anzahl > 0 && balken.breiteOk, 'Verluste: alle Balken haben eine Breite > 0');
+
   await ctx.close();
 }
 

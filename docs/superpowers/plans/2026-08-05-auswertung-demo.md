@@ -468,7 +468,7 @@ git commit -m "feat(auswertung-demo): Datensatz fuer drei Zeitraeume mit Stimmig
 
 ---
 
-### Task 3: `charts.js` — gemeinsame Basis und `renderBars`
+### Task 3: `charts.js` — gemeinsame Basis und `renderBars` ✅ erledigt 2026-08-05
 
 Der erste Renderer beweist die Basis. Balken sind der einfachste Fall.
 
@@ -481,7 +481,7 @@ Der erste Renderer beweist die Basis. Balken sind der einfachste Fall.
 - Consumes: `window.DATEN` aus Task 2
 - Produces: das globale `window.Charts` mit `renderBars(el, daten, opts)`, und intern `fmt(wert, art)`, `leeren(el)`, `tipBinden(el, text)`, `srTabelle(el, kopf, zeilen)`. Späteren Tasks stehen genau diese Hilfsfunktionen zur Verfügung. `app.js` exportiert nichts, sondern verdrahtet nur.
 
-- [ ] **Step 1: Prüfung in `verify.mjs` ergänzen**
+- [x] **Step 1: Prüfung in `verify.mjs` ergänzen**
 
 Vor `await ctx.close();` einfügen:
 
@@ -500,7 +500,7 @@ Vor `await ctx.close();` einfügen:
   pruefe(balken.breiteOk, 'Verluste: alle Balken haben eine Breite > 0');
 ```
 
-- [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
+- [x] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
@@ -508,7 +508,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 
 Erwartet: `FEHL Verluste: drei Balken mit Tooltip` (0 statt 3), `FEHL … Datentabelle`, Exit-Code 1.
 
-- [ ] **Step 3: `charts.js` mit Basis und `renderBars` schreiben**
+- [x] **Step 3: `charts.js` mit Basis und `renderBars` schreiben**
 
 ```js
 /* charts.js — handgebaute Diagramme für TechSaar.
@@ -659,7 +659,7 @@ window.Charts = (function () {
 
 `liste` trägt `aria-hidden="true"`, weil die Werte direkt darunter als echte Tabelle stehen — sonst liest ein Screenreader alles doppelt.
 
-- [ ] **Step 4: `app.js` schreiben**
+- [x] **Step 4: `app.js` schreiben**
 
 ```js
 /* Verdrahtung: kennt die Inhalte, aber nicht das Zeichnen. */
@@ -677,7 +677,7 @@ window.Charts = (function () {
 })();
 ```
 
-- [ ] **Step 5: Tailwind neu bauen**
+- [x] **Step 5: Tailwind neu bauen**
 
 Die Renderer schreiben Klassen wie `bg-terra` und `h-3`, die Tailwind nur kennt, wenn `charts.js` mitgelesen wurde.
 
@@ -685,7 +685,7 @@ Die Renderer schreiben Klassen wie `bg-terra` und `h-3`, die Tailwind nur kennt,
 cd "C:/Users/babok/Techsaar/auswertung-demo" && npx --yes tailwindcss@3 -c tailwind.config.js -i build/input.css -o styles.css --minify
 ```
 
-- [ ] **Step 6: Prüfung ausführen**
+- [x] **Step 6: Prüfung ausführen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
@@ -693,7 +693,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0 — inklusive „keine JS-Fehler", das in Task 1 noch fehlschlug.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
