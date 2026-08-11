@@ -61,7 +61,16 @@ jobs:
 
           echo "Zu deployende Dateien:"; find ./_deploy -maxdepth 2 -type f | sort
 
+      # Der SFTP-Schritt ist am 11.08.2026 zweimal ohne erkennbaren Grund
+      # fehlgeschlagen und lief beim unveraenderten Wiederholen jedes Mal durch -
+      # eine wacklige Verbindung bei Hostinger, kein Fehler im Ablauf. Deshalb
+      # zwei Versuche mit Pause dazwischen. continue-on-error verhindert, dass
+      # der erste Fehlversuch den Job abbricht; der Pruefschritt danach sorgt
+      # dafuer, dass ein echtes Scheitern trotzdem rot wird und nicht still
+      # durchgeht.
       - name: Per SFTP zu Hostinger deployen
+        id: ts1
+        continue-on-error: true
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.FTP_IP }}
@@ -72,6 +81,34 @@ jobs:
           strip_components: 1
           target: "domains/tech-saar.de/public_html"
           overwrite: true
+
+      - name: Kurz warten vor dem zweiten Versuch (tech-saar.de)
+        if: steps.ts1.outcome == 'failure'
+        run: sleep 20
+
+      - name: Per SFTP zu Hostinger deployen (zweiter Versuch)
+        id: ts2
+        if: steps.ts1.outcome == 'failure'
+        continue-on-error: true
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.FTP_IP }}
+          username: ${{ secrets.FTP_BENUTZERNAME }}
+          password: ${{ secrets.FTP_PASSWORT }}
+          port: 65002
+          source: "_deploy"
+          strip_components: 1
+          target: "domains/tech-saar.de/public_html"
+          overwrite: true
+
+      - name: Ergebnis pruefen (tech-saar.de)
+        if: steps.ts1.outcome == 'failure'
+        run: |
+          if [ "${{ steps.ts2.outcome }}" != "success" ]; then
+            echo "::error::Beide SFTP-Versuche zu tech-saar.de sind fehlgeschlagen."
+            exit 1
+          fi
+          echo "::warning::Erster SFTP-Versuch zu tech-saar.de schlug fehl, der zweite lief durch."
 
       # ------------------------------------------------------------------
       # Eckstueck bekommt eine eigene Domain. Der INHALT von eckstueck-demo/
@@ -106,7 +143,10 @@ jobs:
 
           echo "Zu deployende Dateien (Eckstueck):"; find ./_deploy_eckstueck -maxdepth 1 | sort
 
+      # Zwei Versuche wie oben, gleiche Begruendung.
       - name: Eckstueck per SFTP zur Kundendomain deployen
+        id: ec1
+        continue-on-error: true
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.FTP_IP }}
@@ -117,3 +157,31 @@ jobs:
           strip_components: 1
           target: "domains/eckstueck-stwendel.de/public_html"
           overwrite: true
+
+      - name: Kurz warten vor dem zweiten Versuch (Kundendomain)
+        if: steps.ec1.outcome == 'failure'
+        run: sleep 20
+
+      - name: Eckstueck per SFTP deployen (zweiter Versuch)
+        id: ec2
+        if: steps.ec1.outcome == 'failure'
+        continue-on-error: true
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.FTP_IP }}
+          username: ${{ secrets.FTP_BENUTZERNAME }}
+          password: ${{ secrets.FTP_PASSWORT }}
+          port: 65002
+          source: "_deploy_eckstueck"
+          strip_components: 1
+          target: "domains/eckstueck-stwendel.de/public_html"
+          overwrite: true
+
+      - name: Ergebnis pruefen (Kundendomain)
+        if: steps.ec1.outcome == 'failure'
+        run: |
+          if [ "${{ steps.ec2.outcome }}" != "success" ]; then
+            echo "::error::Beide SFTP-Versuche zur Kundendomain sind fehlgeschlagen."
+            exit 1
+          fi
+          echo "::warning::Erster SFTP-Versuch zur Kundendomain schlug fehl, der zweite lief durch."
