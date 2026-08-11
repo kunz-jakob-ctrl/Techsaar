@@ -286,7 +286,7 @@ git commit -m "feat(auswertung-demo): Geruest, lokale Schriften, Tailwind-Build,
 
 ---
 
-### Task 2: Datensatz mit Stimmigkeitsprüfung
+### Task 2: Datensatz mit Stimmigkeitsprüfung ✅ erledigt 2026-08-05
 
 **Files:**
 - Create: `auswertung-demo/data.js`
@@ -296,7 +296,7 @@ git commit -m "feat(auswertung-demo): Geruest, lokale Schriften, Tailwind-Build,
 - Consumes: nichts
 - Produces: das globale `window.DATEN` mit den Schlüsseln `'7t'`, `'30t'`, `'12m'`. Jeder Satz hat die Felder `kennzahlen` (Feld aus `{label, wert, format, delta, gutIstWeniger?}`), `heatmap` (`{zeilen, spalten, spaltenMobil, werte, werteMobil, max}`), `verlauf` (`{punkte, reihen:[{name, werte, variante}]}`), `ring` (`{segmente:[{label, wert, variante}]}`), `verluste` (`{posten:[{label, wert, variante}]}`).
 
-- [ ] **Step 1: Prüfskript für die Stimmigkeit schreiben**
+- [x] **Step 1: Prüfskript für die Stimmigkeit schreiben**
 
 Dies ist der Test, und er kommt zuerst. Er erzwingt die Regel aus der Spec: Ring-Summe = Buchungen, Verlust-Summe = entgangener Umsatz, Heatmap-Summe = Buchungen, und `werteMobil` summiert sich je Zeile auf denselben Wert wie `werte`.
 
@@ -350,7 +350,7 @@ console.log('\n' + (fehler.length ? fehler.length + ' Prüfung(en) fehlgeschlage
 process.exit(fehler.length ? 1 : 0);
 ```
 
-- [ ] **Step 2: Prüfskript ausführen und Scheitern bestätigen**
+- [x] **Step 2: Prüfskript ausführen und Scheitern bestätigen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
@@ -358,7 +358,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
 
 Erwartet: Abbruch mit einem Fehler beim Lesen von `data.js` („no such file or directory"). Das ist der Beweis, dass der Test etwas prüft.
 
-- [ ] **Step 3: `data.js` schreiben — Satz `7t`**
+- [x] **Step 3: `data.js` schreiben — Satz `7t`**
 
 Die Heatmap-Zeilen summieren sich auf 84 (12+10+11+13+16+18+4). `werteMobil` fasst je Zeile die Spalten 0–2, 3–5, 6–8, 9–11 zusammen.
 
@@ -421,7 +421,7 @@ window.DATEN = {
 };
 ```
 
-- [ ] **Step 4: Prüfskript ausführen — Satz `7t` muss bestehen**
+- [x] **Step 4: Prüfskript ausführen — Satz `7t` muss bestehen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
@@ -429,7 +429,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
 
 Erwartet: Für `7t` alle Zeilen `ok`. Für `30t` und `12m` schlägt „Satz vorhanden" fehl. Falls eine `7t`-Summenprüfung fehlschlägt, die Zahlen im Datensatz korrigieren — **nicht** die Prüfung.
 
-- [ ] **Step 5: Sätze `30t` und `12m` ergänzen**
+- [x] **Step 5: Sätze `30t` und `12m` ergänzen**
 
 Dieselbe Struktur, andere Werte. Damit die Prüfung besteht, ohne zu raten: Die Heatmap wird aus **festen Tagessummen** aufgebaut, die zusammen die Kennzahl „Buchungen" ergeben. Innerhalb einer Zeile werden die zwölf Werte so verteilt, dass die Wochenform erkennbar bleibt — **Samstag am stärksten, Sonntag am schwächsten, Mittagsloch bei 13 und 14 Uhr**. Danach `werteMobil` durch Zusammenfassen der Spalten 0–2, 3–5, 6–8 und 9–11 bilden; die Zeilensumme bleibt dadurch automatisch gleich.
 
@@ -450,7 +450,7 @@ Dieselbe Struktur, andere Werte. Damit die Prüfung besteht, ohne zu raten: Die 
 
 Nach dem Schreiben prüft `tools/check-daten.mjs` jede dieser Summen. Schlägt eine fehl, ist die **Verteilung innerhalb der Zeilen** falsch, nicht die Vorgabe.
 
-- [ ] **Step 6: Prüfskript ausführen — alle drei Sätze müssen bestehen**
+- [x] **Step 6: Prüfskript ausführen — alle drei Sätze müssen bestehen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
@@ -458,7 +458,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/check-daten.mjs
 
 Erwartet: letzte Zeile „Datensatz ist stimmig", Exit-Code 0.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
