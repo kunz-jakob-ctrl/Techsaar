@@ -162,8 +162,86 @@ window.Charts = (function () {
     }));
   }
 
+  /* --- SVG-Helfer --- */
+  var NS = 'http://www.w3.org/2000/svg';
+  function svgEl(name, attr) {
+    var e = document.createElementNS(NS, name);
+    Object.keys(attr || {}).forEach(function (k) { e.setAttribute(k, attr[k]); });
+    return e;
+  }
+
+  /* --- Ring: ein SVG-Kreis je Segment, Länge über stroke-dasharray.
+         Kein <path>-Bogen nötig — dasharray plus dashoffset reiht die
+         Segmente exakt aneinander. --- */
+  function renderDonut(el, daten, opts) {
+    opts = opts || {};
+    var art = opts.format || 'zahl';
+    leeren(el);
+
+    var gesamt = daten.segmente.reduce(function (a, s) { return a + s.wert; }, 0);
+    var R = 60, U = 2 * Math.PI * R;
+
+    var rahmen = document.createElement('div');
+    rahmen.className = 'flex flex-col items-center gap-6 sm:flex-row sm:gap-10';
+
+    var svg = svgEl('svg', {
+      viewBox: '0 0 150 150', width: '150', height: '150',
+      'aria-hidden': 'true', class: 'shrink-0',
+    });
+    /* -90° gedreht, damit das erste Segment oben statt rechts beginnt */
+    var gruppe = svgEl('g', { transform: 'rotate(-90 75 75)' });
+    svg.appendChild(gruppe);
+    gruppe.appendChild(svgEl('circle', {
+      cx: 75, cy: 75, r: R, fill: 'none', 'stroke-width': 18, class: 'stroke-ofenkarte',
+    }));
+
+    var versatz = 0;
+    daten.segmente.forEach(function (s) {
+      var laenge = gesamt ? (s.wert / gesamt) * U : 0;
+      var anteil = gesamt ? Math.round(s.wert / gesamt * 100) : 0;
+      var c = svgEl('circle', {
+        cx: 75, cy: 75, r: R, fill: 'none', 'stroke-width': 18,
+        'stroke-dasharray': laenge + ' ' + (U - laenge),
+        'stroke-dashoffset': -versatz,
+        'data-segment': '',
+        class: (STRICH[s.variante] || STRICH.ofenmuted),
+      });
+      tipBinden(c, s.label + ': ' + fmt(s.wert, art) + ' (' + anteil + ' %)');
+      gruppe.appendChild(c);
+      versatz += laenge;
+    });
+
+    var legende = document.createElement('ul');
+    legende.className = 'grid gap-3';
+    legende.setAttribute('aria-hidden', 'true');
+    daten.segmente.forEach(function (s) {
+      var li = document.createElement('li');
+      li.className = 'flex items-center gap-3';
+      var punkt = document.createElement('span');
+      punkt.className = 'h-3 w-3 shrink-0 ' + (FARBE[s.variante] || FARBE.ofenmuted);
+      var text = document.createElement('span');
+      text.className = 'text-[13px]';
+      text.textContent = s.label;
+      var zahl = document.createElement('span');
+      zahl.className = 'font-mono text-[13px] text-ofenmuted';
+      zahl.textContent = fmt(s.wert, art)
+        + (gesamt ? ' · ' + Math.round(s.wert / gesamt * 100) + ' %' : '');
+      li.appendChild(punkt); li.appendChild(text); li.appendChild(zahl);
+      legende.appendChild(li);
+    });
+
+    rahmen.appendChild(svg);
+    rahmen.appendChild(legende);
+    el.appendChild(rahmen);
+
+    srTabelle(el, ['Gruppe', 'Anzahl', 'Anteil'], daten.segmente.map(function (s) {
+      return [s.label, fmt(s.wert, art), (gesamt ? Math.round(s.wert / gesamt * 100) : 0) + ' %'];
+    }));
+  }
+
   return {
     renderBars: renderBars,
+    renderDonut: renderDonut,
     _intern: {
       fmt: fmt, leeren: leeren, tipBinden: tipBinden, srTabelle: srTabelle,
       FARBE: FARBE, STRICH: STRICH, FUELL: FUELL,

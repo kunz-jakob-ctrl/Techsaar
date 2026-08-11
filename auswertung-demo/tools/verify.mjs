@@ -54,6 +54,21 @@ for (const [name, breite, hoehe] of [['desktop', 1280, 900], ['handy', 375, 780]
   pruefe(balken.tabelle, 'Verluste: versteckte Datentabelle vorhanden');
   pruefe(balken.anzahl > 0 && balken.breiteOk, 'Verluste: alle Balken haben eine Breite > 0');
 
+  const ring = await page.evaluate(() => {
+    const el = document.getElementById('ring');
+    const seg = [...el.querySelectorAll('circle[data-segment]')];
+    return {
+      anzahl:  seg.length,
+      laengen: seg.every(c => parseFloat(c.getAttribute('stroke-dasharray')) > 0),
+      mitTip:  seg.every(c => c.hasAttribute('data-tip')),
+      tabelle: !!el.querySelector('table.sr-only'),
+    };
+  });
+  pruefe(ring.anzahl === 2, 'Ring: zwei Segmente (hat ' + ring.anzahl + ')');
+  pruefe(ring.anzahl > 0 && ring.laengen, 'Ring: jedes Segment hat eine Länge > 0');
+  pruefe(ring.anzahl > 0 && ring.mitTip, 'Ring: jedes Segment hat einen Tooltip');
+  pruefe(ring.tabelle, 'Ring: versteckte Datentabelle vorhanden');
+
   await ctx.close();
 }
 

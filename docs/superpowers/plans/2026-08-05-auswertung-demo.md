@@ -703,7 +703,7 @@ git commit -m "feat(auswertung-demo): charts.js Basis mit Tooltip, SR-Tabelle un
 
 ---
 
-### Task 4: `renderDonut`
+### Task 4: `renderDonut` ✅ erledigt 2026-08-05
 
 **Files:**
 - Modify: `auswertung-demo/charts.js`
@@ -714,7 +714,7 @@ git commit -m "feat(auswertung-demo): charts.js Basis mit Tooltip, SR-Tabelle un
 - Consumes: `fmt`, `leeren`, `tipBinden`, `srTabelle`, `FARBE` aus Task 3
 - Produces: `Charts.renderDonut(el, { segmente:[{label, wert, variante}] }, opts)`
 
-- [ ] **Step 1: Prüfung ergänzen**
+- [x] **Step 1: Prüfung ergänzen**
 
 In `tools/verify.mjs` vor `await ctx.close();`:
 
@@ -733,7 +733,7 @@ In `tools/verify.mjs` vor `await ctx.close();`:
   pruefe(ring.tabelle, 'Ring: versteckte Datentabelle vorhanden');
 ```
 
-- [ ] **Step 2: Prüfung ausführen und Scheitern bestätigen**
+- [x] **Step 2: Prüfung ausführen und Scheitern bestätigen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
@@ -741,7 +741,7 @@ cd "C:/Users/babok/Techsaar/auswertung-demo" && node tools/verify.mjs
 
 Erwartet: `FEHL Ring: zwei Segmente` (0 statt 2), Exit-Code 1.
 
-- [ ] **Step 3: `renderDonut` in `charts.js` einfügen**
+- [x] **Step 3: `renderDonut` in `charts.js` einfügen**
 
 Direkt vor dem `return {` am Dateiende einfügen:
 
@@ -823,7 +823,7 @@ Direkt vor dem `return {` am Dateiende einfügen:
 
 Und im `return`-Objekt `renderDonut: renderDonut,` hinzufügen.
 
-- [ ] **Step 4: In `app.js` aufrufen**
+- [x] **Step 4: In `app.js` aufrufen**
 
 In `zeichne` nach der `renderBars`-Zeile einfügen:
 
@@ -831,7 +831,7 @@ In `zeichne` nach der `renderBars`-Zeile einfügen:
     Charts.renderDonut(document.getElementById('ring'), satz.ring, { format: 'zahl' });
 ```
 
-- [ ] **Step 5: Tailwind neu bauen und prüfen**
+- [x] **Step 5: Tailwind neu bauen und prüfen**
 
 ```bash
 cd "C:/Users/babok/Techsaar/auswertung-demo"
@@ -841,7 +841,7 @@ node tools/verify.mjs
 
 Erwartet: alle Prüfungen bestanden, Exit-Code 0.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd "C:/Users/babok/Techsaar"
