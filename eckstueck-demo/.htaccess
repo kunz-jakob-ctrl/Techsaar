@@ -1,0 +1,26 @@
+# Serverkonfiguration fuer tech-saar.de/eckstueck-demo/
+#
+# WARUM ES DIESE DATEI GIBT: Am 11.08.2026 lag hier kurzzeitig eine
+# 301-Weiterleitung auf eckstueck-stwendel.de. Die kam zu frueh - die Domain
+# war noch nicht mit dem Hosting verbunden, Besucher landeten auf der
+# Hostinger-Parkseite. Sie aus dem Deploy-Ablauf zu nehmen reicht NICHT:
+# der SFTP-Deploy ueberschreibt nur, er loescht nichts. Eine einmal
+# hochgeladene .htaccess bleibt also liegen, bis sie ueberschrieben wird -
+# genau das tut diese Datei.
+#
+# Fuer die Kundendomain gilt eine eigene Konfiguration, siehe
+# htaccess-eckstueck.conf; der Deploy-Ablauf kopiert sie dort ueber diese.
+#
+# Sobald eckstueck-stwendel.de im hPanel als Website angelegt ist, kann hier
+# wieder die Weiterleitung stehen:
+#   RewriteEngine On
+#   RewriteRule ^(.*)$ https://eckstueck-stwendel.de/$1 [R=301,L]
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(jpg|jpeg|png|webp|svg|ico|woff2|woff|css|js)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+</IfModule>
