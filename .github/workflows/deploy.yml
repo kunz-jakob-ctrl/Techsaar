@@ -42,7 +42,22 @@ jobs:
             --exclude='telefon-demo' \
             --exclude='tailwind.config.js' \
             --exclude='*.md' \
+            --exclude='_deploy_eckstueck' \
+            --exclude='eckstueck-demo' \
             ./ ./_deploy/
+
+          # Die alte Adresse tech-saar.de/eckstueck-demo/ bleibt bestehen (der
+          # SFTP-Deploy loescht nichts), wuerde aber dieselbe Seite ein zweites
+          # Mal ausliefern. Deshalb kommt dort nur noch eine Weiterleitung hin.
+          # Ohne sie hiesse es fuer Google: gleicher Inhalt unter zwei Adressen,
+          # und die aeltere gewinnt meist - die Kundenseite wuerde also unter der
+          # Agenturadresse ranken statt unter ihrer eigenen.
+          mkdir -p ./_deploy/eckstueck-demo
+          printf '%s\n' \
+            'RewriteEngine On' \
+            'RewriteRule ^(.*)$ https://eckstueck-stwendel.de/$1 [R=301,L]' \
+            > ./_deploy/eckstueck-demo/.htaccess
+
           echo "Zu deployende Dateien:"; find ./_deploy -maxdepth 2 -type f | sort
 
       - name: Per SFTP zu Hostinger deployen
@@ -55,4 +70,41 @@ jobs:
           source: "_deploy"
           strip_components: 1
           target: "domains/tech-saar.de/public_html"
+          overwrite: true
+
+      # ------------------------------------------------------------------
+      # Eckstueck laeuft seit 11.08.2026 unter eigener Domain. Der Ordner
+      # eckstueck-demo/ wird deshalb NICHT mehr nach tech-saar.de geliefert
+      # (siehe --exclude oben), sondern in das public_html der Kundendomain -
+      # und zwar dessen INHALT, damit die Startseite direkt unter
+      # https://eckstueck-stwendel.de/ liegt und nicht in einem Unterordner.
+      # ------------------------------------------------------------------
+      - name: Eckstueck-Verzeichnis vorbereiten
+        run: |
+          rsync -a --delete \
+            --exclude='build' \
+            --exclude='tailwind.config.js' \
+            --exclude='*.md' \
+            --exclude='*.preview.html' \
+            --exclude='legal-data.json' \
+            ./eckstueck-demo/ ./_deploy_eckstueck/
+
+          # Eigene .htaccess fuer die Kundendomain. Sie liegt im Repo als
+          # htaccess-eckstueck.conf (damit sie nicht schon im Quellordner als
+          # .htaccess wirkt) und wird hier an ihren Platz kopiert.
+          cp ./eckstueck-demo/htaccess-eckstueck.conf ./_deploy_eckstueck/.htaccess
+          rm -f ./_deploy_eckstueck/htaccess-eckstueck.conf
+
+          echo "Zu deployende Dateien (Eckstueck):"; find ./_deploy_eckstueck -maxdepth 1 | sort
+
+      - name: Eckstueck per SFTP zur Kundendomain deployen
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.FTP_IP }}
+          username: ${{ secrets.FTP_BENUTZERNAME }}
+          password: ${{ secrets.FTP_PASSWORT }}
+          port: 65002
+          source: "_deploy_eckstueck"
+          strip_components: 1
+          target: "domains/eckstueck-stwendel.de/public_html"
           overwrite: true

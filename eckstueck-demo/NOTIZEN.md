@@ -66,19 +66,30 @@ Besuchers an die Kanzlei, ausgerechnet auf der Datenschutzseite.
 
 ## Offen vor dem Live-Gang
 
-- [ ] **AV-Vertrag mit Hostinger annehmen.** Die Datenschutzerklärung behauptet
-      ihn bereits als geschlossen. Einziger echter Blocker.
-- [ ] Domain `eckstueck-sanktwendel.de` registrieren, Postfach
-      `info@eckstueck-sanktwendel.de` anlegen (eigener E-Mail-Tarif nötig, der
-      bestehende hängt an `@tech-saar.de`)
-- [ ] `noindex` aus allen drei Seiten entfernen — **erst bei der
-      Domainumstellung.** Vorher würde Google die Kundenseite unter
-      `tech-saar.de/eckstueck-demo/` indexieren und später gegen die eigene
-      Domain ausspielen.
-- [ ] `logo-katalog.html` vom Server löschen. Sie ist aus dem Repo entfernt,
-      liegt aber weiter unter
+- [x] **AV-Vertrag mit Hostinger** — nichts zu tun. Er gilt automatisch mit der
+      Annahme der Nutzungsbedingungen (hostinger.com/legal/dpa: „deemed to have
+      signed"). Als PDF zu den TechSaar-Unterlagen legen.
+- [x] **Domain registriert am 10.08.2026: `eckstueck-stwendel.de`** (kurz, ohne
+      ausgeschriebenes „sankt" — so von der Kundin gewünscht). Aktiv, Ablauf
+      2027-09-01, automatische Verlängerung an.
+- [x] Postfach `info@eckstueck-stwendel.de` angelegt (11.08.2026, Free
+      Business Email, kostenlos für 12 Monate, 1 GB). MX, SPF
+      (`include:_spf.mail.hostinger.com`) und DMARC (`p=none`) stehen.
+      **Zustelltest steht noch aus** — ein- und ausgehend, bei Gmail auf
+      SPF/DKIM/DMARC = PASS achten.
+- [ ] **Kanzlei-Neuexport braucht die richtige E-Mail-Adresse.** Der gelieferte
+      Text nannte `info@eckstueck-sanktwendel.de` — diese Domain existiert nicht
+      und wurde nie registriert. Am 10.08. in `impressum.html` und
+      `datenschutz.html` von Hand auf `info@eckstueck-stwendel.de` korrigiert,
+      weil eine tote Pflichtadresse der schlechtere Zustand ist. Beim Export
+      muss die Kundin die richtige Adresse hinterlegen.
+- [x] `noindex` am 11.08.2026 aus allen drei Seiten entfernt, zusammen mit der
+      Domainumstellung.
+- [ ] `logo-katalog.html` vom alten Server löschen. Sie ist aus dem Repo
+      entfernt, liegt aber weiter unter
       `domains/tech-saar.de/public_html/eckstueck-demo/` — der SFTP-Deploy
-      überschreibt nur, er löscht nichts.
+      überschreibt nur, er löscht nichts. Seit 11.08. greift dort zwar eine
+      301-Weiterleitung, die Datei bleibt aber physisch liegen.
 - [ ] E-Mail-Hosting in Anlage 2 des Kundenvertrags aufnehmen
 
 ## Zwei Schalter, die man kennen muss
