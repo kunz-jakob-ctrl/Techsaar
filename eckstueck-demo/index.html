@@ -587,19 +587,26 @@ CONFIG.phoneHref = "tel:" + CONFIG.phone.replace(/\s/g,"");
   const adresse = CONFIG.email;
   if(!adresse) return;
 
-  const zusatzfelder = {
-    "Kindergeburtstag":    ["Anzahl Kinder:", "Alter der Kinder:"],
-    "Mädelsabend":         ["Anzahl Personen:", "Getränkewunsch:"],
-    "Teamevent oder JGA":  ["Anzahl Personen:", "Ganzes Studio gewünscht:"]
+  /* "satz" ist die gebeugte Form fuer den Fliesstext ("... fuer einen
+     Kindergeburtstag"), der Schluessel bleibt die Kurzform fuer den Betreff
+     ("Anfrage: Kindergeburtstag") - dort waere ein Artikel fehl am Platz. */
+  const anlaesse = {
+    "Kindergeburtstag":   { satz: "einen Kindergeburtstag",
+                            felder: ["Anzahl Kinder:", "Alter der Kinder:"] },
+    "Mädelsabend":        { satz: "einen Mädelsabend",
+                            felder: ["Anzahl Personen:", "Getränkewunsch:"] },
+    "Teamevent oder JGA": { satz: "ein Teamevent oder einen JGA",
+                            felder: ["Anzahl Personen:", "Ganzes Studio gewünscht:"] }
   };
 
   document.querySelectorAll("[data-anfrage]").forEach(link=>{
     const anlass = link.dataset.anfrage;
-    const felder = ["Wunschtermin (Datum und Uhrzeit):"].concat(zusatzfelder[anlass] || []);
+    const eintrag = anlaesse[anlass] || { satz: anlass, felder: [] };
+    const felder = ["Wunschtermin (Datum und Uhrzeit):"].concat(eintrag.felder);
     /* Bewusst nicht CONFIG.name: das ist die Logo-Schreibweise in Versalien
        und wirkt in einer Mail wie Geschrei. */
     const text = "Hallo Eckstück-Team,\n\n"
-               + "wir interessieren uns für " + anlass + " bei euch.\n\n"
+               + "wir interessieren uns für " + eintrag.satz + " bei euch.\n\n"
                + felder.map(f => f + " ").join("\n")
                + "\n\nViele Grüße\n";
     link.href = "mailto:" + adresse
