@@ -58,6 +58,10 @@ const CONFIG = {
   // schaltet die Seite automatisch auf den normalen Offen/Geschlossen-Status.
   // Zum Abschalten des Hinweises: Zeile loeschen oder auf null setzen.
   openingDate: "2026-09-13",
+  // Wie lange nach der Eroeffnung noch "Neu eroeffnet" im Balken oben steht.
+  // Danach verschwindet der Balken ganz - eine Neueroeffnung, die ein halbes
+  // Jahr alt ist, wirkt wie eine vergessene Baustelle.
+  openingBannerDays: 30,
   // Mindestalter fuers selbststaendige Bemalen. Von der Kundin am 10.08.2026
   // von 9 auf 6 korrigiert (die 9 stammte aus dem Gespraech am 17.07.).
   // Ausnahme: Babys duerfen jederzeit mit, wenn Eltern einen Hand- oder
@@ -234,9 +238,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 </head>
 <body>
 
-<!-- Ribbon -->
-<div class="relative z-40 text-center text-[13px] font-bold tracking-wide py-2 px-3" style="background:var(--ink);color:var(--paper)">
-  ✨ Neueröffnung in <span data-cfg="city">St. Wendel</span> — jetzt <a href="#reservierung" class="underline underline-offset-2 hover:opacity-80">Platz zur Eröffnung sichern</a>
+<!-- Ribbon. Der Text wird unten im Skript nach Phase gesetzt (vor der
+     Eroeffnung / frisch eroeffnet / danach weg). Was hier steht, ist der
+     Zustand fuer den Fall, dass JavaScript ausfaellt - dann bleibt eine
+     zeitlose Formulierung ohne Datum stehen. -->
+<div id="ribbon" class="relative z-40 text-center text-[13px] font-bold tracking-wide py-2 px-3" style="background:var(--ink);color:var(--paper)">
+  ✨ Neu in <span data-cfg="city">St. Wendel</span> — jetzt <a href="#reservierung" class="underline underline-offset-2 hover:opacity-80">Platz sichern</a>
 </div>
 
 <!-- Nav: Bildzeichen + zentriertes Wortzeichen -->
@@ -592,6 +599,36 @@ if (CONFIG.openingDate) {
 if(!CONFIG.vorEroeffnung){
   document.querySelectorAll(".nur-vor-eroeffnung").forEach(el=>el.remove());
 }
+
+/* ---------- Balken oben: drei Phasen ----------
+   1. vor der Eroeffnung  -> Datum nennen, das ist die staerkste Information
+   2. bis ca. einen Monat danach -> "Neu eroeffnet"
+   3. danach -> Balken raus. Eine Neueroeffnung, die ein halbes Jahr alt ist,
+      wirkt wie eine vergessene Baustelle und nimmt oben nur Platz weg.
+   Laeuft ohne Zutun ab, niemand muss sich einen Termin notieren. */
+(function(){
+  const balken = document.getElementById("ribbon");
+  if(!balken || !CONFIG.openingDate) return;
+
+  const tag = new Date(CONFIG.openingDate + "T00:00:00");
+  const bisWann = new Date(tag);
+  bisWann.setDate(bisWann.getDate() + (CONFIG.openingBannerDays || 30));
+  const heute = new Date(); heute.setHours(0,0,0,0);
+
+  if(heute >= bisWann){ balken.remove(); return; }
+
+  /* Nur der Tag und der Monat - die Jahreszahl macht den Balken unnoetig lang,
+     und dass es das laufende Jahr ist, versteht sich. */
+  const kurz = tag.toLocaleDateString("de-DE", { day:"numeric", month:"long" });
+  const link = '<a href="#reservierung" class="underline underline-offset-2 hover:opacity-80">';
+
+  /* Ohne "in St. Wendel": auf der eigenen Seite des Studios ist der Ort
+     redundant, er steht im Titel, in der Kopfzeile und im Hero. Am Handy
+     spart das eine Zeile in einem Balken, der ganz oben Platz wegnimmt. */
+  balken.innerHTML = CONFIG.vorEroeffnung
+    ? `✨ Wir eröffnen am ${kurz} — jetzt ${link}Platz sichern</a>`
+    : `✨ Neu eröffnet — jetzt ${link}Platz reservieren</a>`;
+})();
 
 /* ---------- Telefon an/aus ----------
    Solange der Anschluss nicht besetzt ist, verschwinden alle Telefon-Hinweise
