@@ -52,6 +52,12 @@ const CONFIG = {
   // Halbe Stunden als Dezimalwert: 12.5 = 12:30 Uhr
   hours: { 0:[10,16], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
   longDay: 4,                              // Donnerstag = langer Donnerstag
+  // Eroeffnungstag. Solange er in der Zukunft liegt, steht im Laufband und bei
+  // den Oeffnungszeiten ein Eroeffnungshinweis statt "Gerade geschlossen" -
+  // sonst denken Besucher, der Laden habe heute nur zu. Ab dem Tag selbst
+  // schaltet die Seite automatisch auf den normalen Offen/Geschlossen-Status.
+  // Zum Abschalten des Hinweises: Zeile loeschen oder auf null setzen.
+  openingDate: "2026-09-13",
   // Mindestalter fuers selbststaendige Bemalen. Von der Kundin am 10.08.2026
   // von 9 auf 6 korrigiert (die 9 stammte aus dem Gespraech am 17.07.).
   // Ausnahme: Babys duerfen jederzeit mit, wenn Eltern einen Hand- oder
@@ -352,12 +358,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <!-- Teil 1 und Teil 2 sind identisch — nur so ist die Schleife nahtlos -->
       <div class="band-teil">
         <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
-        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag nur-vor-eroeffnung"><span class="hand text-[23px]">Wir eröffnen am</span><span class="serif font-semibold text-[21px] tracking-[.12em]" data-cfg="openingLabel">13. September 2026</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
         <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
       </div>
       <div class="band-teil">
         <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
-        <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
+        <span class="band-eintrag nur-vor-eroeffnung"><span class="hand text-[23px]">Wir eröffnen am</span><span class="serif font-semibold text-[21px] tracking-[.12em]" data-cfg="openingLabel">13. September 2026</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
         <span class="band-eintrag"><span class="serif font-semibold text-[21px] tracking-[.2em]">ECKSTÜCK</span><span class="text-[15px]" style="color:var(--clay)">✦</span><span class="hand text-[23px]">Keramik bemalen in St. Wendel</span><span class="text-[15px]" style="color:var(--clay)">✦</span></span>
       </div>
     </div>
@@ -565,6 +571,28 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 /* ---------- CONFIG in die Seite schreiben ---------- */
 CONFIG.phoneHref = "tel:" + CONFIG.phone.replace(/\s/g,"");
 
+/* ---------- Eröffnungstag ----------
+   Aus dem ISO-Datum in CONFIG wird das lesbare Datum abgeleitet, damit es nur
+   an EINER Stelle gepflegt werden muss. CONFIG.vorEroeffnung sagt dem Rest der
+   Seite, ob der Laden schon offen hat. */
+CONFIG.openingLabel = "";
+CONFIG.vorEroeffnung = false;
+if (CONFIG.openingDate) {
+  const tag = new Date(CONFIG.openingDate + "T00:00:00");
+  CONFIG.openingLabel = tag.toLocaleDateString("de-DE",
+    { day:"numeric", month:"long", year:"numeric" });
+  const heuteNull = new Date(); heuteNull.setHours(0,0,0,0);
+  CONFIG.vorEroeffnung = heuteNull < tag;
+}
+
+/* ---------- Eröffnungshinweise nach dem Eröffnungstag entfernen ----------
+   Sonst ruft das Laufband noch Wochen spaeter ein Datum aus, das vorbei ist.
+   Beide Bandteile enthalten je einen Eintrag, das Entfernen laesst die Schleife
+   also symmetrisch und damit nahtlos. */
+if(!CONFIG.vorEroeffnung){
+  document.querySelectorAll(".nur-vor-eroeffnung").forEach(el=>el.remove());
+}
+
 /* ---------- Telefon an/aus ----------
    Solange der Anschluss nicht besetzt ist, verschwinden alle Telefon-Hinweise
    und die Instagram-Ersatztexte treten an ihre Stelle. Die Elemente werden
@@ -698,7 +726,12 @@ document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bem
 
   const jetzt = new Date(), h = CONFIG.hours[heute], hr = jetzt.getHours()+jetzt.getMinutes()/60;
   const el = document.getElementById("openText");
-  if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+zeit(h[1])+" Uhr"; el.style.color="#5F7F5F"; }
+  /* Vor der Eroeffnung waere "Gerade geschlossen" irrefuehrend: es klingt, als
+     habe der Laden heute nur zu, dabei hat er noch gar nicht aufgemacht.
+     Deshalb steht dort bis zum Eroeffnungstag das Datum. Danach greift wieder
+     der normale Status, ohne dass jemand etwas umstellen muss. */
+  if(CONFIG.vorEroeffnung){ el.textContent="● Wir eröffnen am "+CONFIG.openingLabel; el.style.color="var(--clay-deep)"; }
+  else if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+zeit(h[1])+" Uhr"; el.style.color="#5F7F5F"; }
   else { el.textContent="● Gerade geschlossen"; el.style.color="var(--clay-deep)"; }
 })();
 
