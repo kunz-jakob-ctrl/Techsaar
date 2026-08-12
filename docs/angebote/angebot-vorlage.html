@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<!--
+  ANGEBOTS-VORLAGE fuer neue Kunden. Aus dem Eckstueck-Angebot abgeleitet
+  (eckstueck-angebot-einseiter.html) und am 12.08.2026 mit dem unterschriebenen
+  Kundenvertrag abgeglichen. Die Eckstueck-Fassung bleibt unveraendert stehen -
+  sie ist ein historisches Dokument, der Vertrag geht ihr ohnehin vor.
+
+  Korrigiert gegenueber der alten Fassung, weil sie dem Vertrag widersprach:
+  - Preis 300-400 EUR  ->  ab 600 EUR
+  - "monatlich kuendbar"  ->  12 Monate Mindestlaufzeit
+  - "Domain laeuft auf euren Namen" + 30-50 EUR/Jahr  ->  laeuft ueber TechSaar,
+    in der Betreuung enthalten, Uebertragung auf Verlangen kostenfrei
+  - "Haelfte zum Start"  ->  faellig nach Abnahme, 14 Tage
+  - festes Kontaktformular  ->  Kontaktwege nach Wunsch
+
+  Vor dem Verschicken alle [eckigen Klammern] ersetzen und gegen den Vertrag
+  gegenlesen. Angebot und Vertrag muessen dasselbe sagen.
+-->
+<title>TechSaar – Angebot [Firma]</title>
+<style>
+  /* ====== Druck: genau eine A4-Seite ====== */
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #f4f1ec; }
+  body {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    color: #1c1b22;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; min-height: 297mm;
+    margin: 0 auto; padding: 14mm 16mm 10mm;
+    background: #f9f7f3;
+    display: flex; flex-direction: column;
+  }
+  @media screen { .page { box-shadow: 0 4px 30px rgba(0,0,0,.15); margin: 20px auto; } }
+
+  /* ====== Kopf ====== */
+  .kopf { display: flex; justify-content: space-between; align-items: flex-start; }
+  .marke { font-weight: 800; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; }
+  .marke span { color: #7c6cf0; }
+  .meta { text-align: right; font-size: 9.5px; color: #6b6875; line-height: 1.5; }
+  h1 {
+    margin-top: 7mm; font-size: 26px; line-height: 1.12; font-weight: 800; letter-spacing: -.01em;
+  }
+  h1 em { font-style: normal; color: #7c6cf0; }
+  .intro { margin-top: 3mm; font-size: 11px; color: #45424e; line-height: 1.55; max-width: 165mm; }
+
+  /* ====== Stufen ====== */
+  .stufen { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; margin-top: 7mm; }
+  .karte {
+    background: #ffffff; border: 1px solid #e6e1d8; border-radius: 10px;
+    padding: 5mm 4.5mm; display: flex; flex-direction: column;
+  }
+  .karte.hero { border: 2px solid #7c6cf0; position: relative; }
+  .badge {
+    position: absolute; top: -3.2mm; left: 4.5mm; background: #7c6cf0; color: #fff;
+    font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: 1mm 2.5mm; border-radius: 99px;
+  }
+  .stufe-nr { font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7c6cf0; }
+  .karte h2 { font-size: 13.5px; margin-top: 1mm; }
+  .preis { font-size: 17px; font-weight: 800; margin-top: 1.5mm; }
+  .preis small { display: block; font-size: 9px; font-weight: 600; color: #6b6875; margin-top: .5mm; }
+  .karte ul { list-style: none; margin-top: 2.5mm; font-size: 9.5px; line-height: 1.5; color: #37343f; }
+  .karte li { padding-left: 4mm; position: relative; margin-bottom: 1.2mm; }
+  .karte li::before { content: "✓"; position: absolute; left: 0; color: #7c6cf0; font-weight: 700; }
+  .karte.spaeter li::before { content: "+"; }
+  .karte .fuss { margin-top: auto; padding-top: 2.5mm; font-size: 8.5px; color: #6b6875; font-style: italic; }
+
+  /* ====== Ablauf ====== */
+  .ablauf { margin-top: 6mm; background: #efe9f7; border-radius: 10px; padding: 4mm 5mm; }
+  .ablauf h3, .fair h3 { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #5a4bd4; }
+  .schritte { display: flex; gap: 3mm; margin-top: 2.5mm; font-size: 9.5px; line-height: 1.4; }
+  .schritt { flex: 1; }
+  .schritt b { display: block; font-size: 10px; }
+  .schritt .nr { color: #7c6cf0; font-weight: 800; margin-right: 1mm; }
+
+  /* ====== Fair & transparent ====== */
+  .fair { margin-top: 5mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; font-size: 9.5px; line-height: 1.55; color: #37343f; }
+  .fair ul { list-style: none; margin-top: 1.5mm; }
+  .fair li { padding-left: 4mm; position: relative; margin-bottom: 1mm; }
+  .fair .ja li::before  { content: "✓"; position: absolute; left: 0; color: #2e9e6b; font-weight: 700; }
+  .fair .nein li::before { content: "→"; position: absolute; left: 0; color: #b0894a; font-weight: 700; }
+
+  /* ====== Fuß ====== */
+  .fuss-bereich { margin-top: auto; padding-top: 4mm; border-top: 1.5px solid #e0dacf; }
+  .cta { font-size: 11px; font-weight: 700; }
+  .cta span { color: #7c6cf0; }
+  .kontakt { display: flex; justify-content: space-between; margin-top: 2mm; font-size: 9px; color: #6b6875; line-height: 1.5; }
+  .klein { margin-top: 2mm; font-size: 7.5px; color: #8d8a96; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="kopf">
+    <div class="marke">Tech<span>Saar</span></div>
+    <div class="meta">
+      Angebot · Stand: 17.07.2026<br>
+      Gültig 14 Tage · Für: [Firma], [Ort]
+    </div>
+  </div>
+
+  <h1>Eure Website —<br>damit [Ort] <em>[Firma]</em> findet.</h1>
+  <p class="intro">
+    [Ein bis zwei Sätze zur Ausgangslage des Kunden — was er anbietet, was gerade ansteht.]
+    Wer „[Suchbegriff, den Kunden eingeben]" googelt, soll euch finden, verstehen was ihr macht und
+    direkt Kontakt aufnehmen. Instagram bleibt euer Zuhause; die Website macht euch bei Google &amp;
+    Google&nbsp;Maps sichtbar und fängt alle ein, die nicht auf Instagram sind.
+  </p>
+
+  <div class="stufen">
+    <div class="karte hero">
+      <div class="badge">Zur Eröffnung</div>
+      <div class="stufe-nr">Stufe 1</div>
+      <h2>Eure Website</h2>
+      <div class="preis">ab 600&nbsp;€ <small>einmalig, Festpreis nach Erstgespräch</small></div>
+      <ul>
+        <li>Individuelles Design in eurem Stil — kein Baukasten</li>
+        <li>„So funktioniert's": euer Ablauf in [3–4] verständlichen Schritten</li>
+        <li>Kontakt- und Anfragewege nach eurem Wunsch (Formular, Telefon, Buchungssystem)</li>
+        <li>Preise, Öffnungszeiten, Anfahrt, FAQ</li>
+        <li>Blitzschnell auf jedem Handy</li>
+        <li>Impressum &amp; Datenschutz rechtssicher (DSGVO)</li>
+        <li>Eigene Domain + E-Mail-Adresse, von uns eingerichtet und verwaltet</li>
+      </ul>
+      <div class="fuss">Online vor eurer Eröffnung — garantiert stressfrei für euch.</div>
+    </div>
+
+    <div class="karte">
+      <div class="stufe-nr">Stufe 2 · Betreuung</div>
+      <h2>Wir kümmern uns</h2>
+      <div class="preis">50&nbsp;€ <small>/ Monat, 12 Monate Mindestlaufzeit</small></div>
+      <ul>
+        <li>Google-Unternehmensprofil einrichten &amp; pflegen (Google&nbsp;Maps!)</li>
+        <li>Änderungen per WhatsApp — meist am selben Tag online</li>
+        <li>Öffnungszeiten, Preise, Aktionen, Ferienprogramm, Fotos</li>
+        <li>Technik, Updates &amp; Sicherheit — ihr müsst nie ins System</li>
+        <li>Sichtbar bleiben: „[Suchbegriff] [Ort] / Saarland"</li>
+      </ul>
+      <div class="fuss">Ihr habt den Laden — wir halten die Seite aktuell.</div>
+    </div>
+
+    <div class="karte spaeter">
+      <div class="stufe-nr">Stufe 3 · Später zubuchbar</div>
+      <h2>Mehr Buchungen</h2>
+      <div class="preis">nach Aufwand <small>wenn der Laden läuft</small></div>
+      <ul>
+        <li>Event-Seiten: Kindergeburtstag, JGA, Firmenevents, Mädelsabend</li>
+        <li>Gutschein-Bereich (Weihnachten!)</li>
+        <li>Workshop- &amp; Aktionskalender</li>
+        <li>Foto-Galerie eurer Werke</li>
+        <li>Später: echte Online-Buchung mit Plätzen</li>
+      </ul>
+      <div class="fuss">Wächst mit — nichts davon müsst ihr heute entscheiden.</div>
+    </div>
+  </div>
+
+  <div class="ablauf">
+    <h3>So läuft's ab</h3>
+    <div class="schritte">
+      <div class="schritt"><b><span class="nr">1</span>Ihr sagt Go</b>Kurze schriftliche Bestätigung genügt.</div>
+      <div class="schritt"><b><span class="nr">2</span>Inhalte</b>Logo, Fotos, Preise — wir helfen beim Sammeln.</div>
+      <div class="schritt"><b><span class="nr">3</span>Entwurf</b>Ihr bekommt die Seite zum Anschauen, 2 Feedback-Runden.</div>
+      <div class="schritt"><b><span class="nr">4</span>Live</b>Rechtzeitig zur Eröffnung online.</div>
+      <div class="schritt"><b><span class="nr">5</span>Gefunden werden</b>Google, Maps &amp; Bing — wir richten alles ein.</div>
+    </div>
+  </div>
+
+  <div class="fair">
+    <div>
+      <h3>Immer inklusive</h3>
+      <ul class="ja">
+        <li>Persönliche Ansprechpartner aus der Region — kein Callcenter</li>
+        <li>Die Seite gehört euch: Domain auf euren Namen, ihr bleibt unabhängig</li>
+        <li>Verschlüsselung (SSL) &amp; saubere Technik ohne Cookie-Banner-Chaos</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Transparent gesagt</h3>
+      <ul class="nein">
+        <li>Fotos liefert ihr (Handy reicht oft!) — Texte entwerfen wir, ihr gebt frei</li>
+        <li>Domain &amp; Hosting laufen über uns und sind in der Betreuung enthalten. Ihr wollt sie selbst übernehmen? Wir übertragen sie jederzeit kostenfrei auf euch.</li>
+        <li>Zahlung Stufe 1: erst nach eurer Abnahme fällig, dann 14 Tage Zeit</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fuss-bereich">
+    <div class="cta">Nächster Schritt: <span>Ihr sagt Bescheid — wir legen los, damit alles zur Eröffnung steht.</span></div>
+    <div class="kontakt">
+      <div><b>TechSaar GbR</b> · Jakob Kunz &amp; Leon Thies<br>Hochstattstraße 12 · 66640 Namborn</div>
+      <div style="text-align:right">tech-saar.de · info@tech-saar.de<br>0157 71232099</div>
+    </div>
+    <div class="klein">
+      Alle Preise gemäß §&nbsp;19 UStG ohne Ausweis von Umsatzsteuer (Kleinunternehmerregelung). Angebot freibleibend,
+      gültig 14 Tage ab Ausstellung. Betreuung (Stufe&nbsp;2) mit 12&nbsp;Monaten Mindestlaufzeit, danach
+      monatlich kündbar; bei Aufgabe des Geschäftsbetriebs jederzeit mit einem Monat Frist.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
