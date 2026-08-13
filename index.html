@@ -502,23 +502,31 @@
           </div>
         </article>
 
-        <!-- Saar Döner -->
+        <!-- BOWLERY — Acai-Demo (bowl-demo/). Ersetzt am 13.08.2026 die
+             Doener-Karte: bowl-demo ist die einzige Demo mit echtem Film und
+             einem interaktiven Konfigurator, zeigt also mehr von dem, was wir
+             bauen koennen, als eine weitere statische Speisekarte. Die
+             Doener-Demo bleibt unter doener-demo/ erreichbar, nur nicht mehr
+             hier verlinkt. Farben aus dem theme-Block der Demo uebernommen. -->
         <article data-animate="fade-up" class="card group overflow-hidden rounded-2xl border border-linel bg-white">
           <div class="flex items-center justify-between border-b border-linel px-5 py-3">
-            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">saar-doener.de</span>
-            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Speisekarte</span>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">bowlery.de</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Bowl-Builder</span>
           </div>
-          <div class="relative aspect-[16/10] overflow-hidden bg-[#14100c]">
-            <div class="absolute inset-0 opacity-80" style="background:radial-gradient(circle at 78% 20%,#E1492E5c,transparent 55%),radial-gradient(circle at 18% 92%,#E8A5453d,transparent 52%)"></div>
-            <div class="absolute inset-0 flex flex-col justify-end p-6">
-              <div class="mb-2 flex flex-wrap gap-1.5">
-                <span class="rounded-full bg-black/45 px-2 py-0.5 text-[9px] font-semibold text-white ring-1 ring-white/15 backdrop-blur">100% Halal</span>
-                <span class="inline-flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-[9px] font-semibold text-white ring-1 ring-white/15 backdrop-blur"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Jetzt geöffnet</span>
-              </div>
-              <span class="font-light leading-[0.95] text-white text-2xl xl:text-3xl">Döner, wie er<br>sein soll.</span>
-              <span class="mt-3 w-fit rounded-full bg-white px-4 py-1.5 text-[11px] font-semibold text-[#14100c]">Speisekarte ansehen</span>
+          <!-- Farben stehen hier bewusst inline statt als bg-[#...]-Klassen:
+               styles.css ist ein eingecheckter Tailwind-Build, und der Deploy
+               baut ihn nicht neu. Neue Arbitrary-Value-Klassen waeren also im
+               CSS gar nicht vorhanden und die Karte bliebe ungestylt. Inline
+               gesetzt wirkt sie unabhaengig vom Build-Stand. -->
+          <div class="relative aspect-[16/10] overflow-hidden" style="background:#FBF7EC">
+            <div class="absolute inset-0" style="opacity:.7;background:radial-gradient(circle at 80% 18%,#7B45B84d,transparent 55%),radial-gradient(circle at 14% 88%,#A7CC6E77,transparent 55%)"></div>
+            <div class="absolute inset-0 flex flex-col justify-center px-8">
+              <span class="w-fit rounded-full px-2.5 py-0.5 text-[10px] font-bold" style="background:#A7CC6E33;color:#5F7F35">● 100 % echtes Açaí</span>
+              <span class="mt-3 text-lg font-bold leading-none xl:text-xl" style="font-family:Georgia,serif;color:#241826">Löffel für Löffel</span>
+              <span class="text-lg font-bold italic leading-tight xl:text-xl" style="font-family:Georgia,serif;color:#43276B">glücklich.</span>
+              <span class="mt-4 w-fit rounded-full px-4 py-2 text-xs font-bold text-white" style="background:#43276B">Zur Karte</span>
             </div>
-            <a data-cfg-href="doenerUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+            <a data-cfg-href="bowlUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
               <span class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-inkd">
                 Live ansehen
                 <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
@@ -526,8 +534,8 @@
             </a>
           </div>
           <div class="p-6">
-            <h3 class="font-brand text-xl font-bold text-inkd">Saar Döner</h3>
-            <p class="mt-1 text-sm text-mutedl">Imbiss · Website mit Speisekarte &amp; Vorbestellung</p>
+            <h3 class="font-brand text-xl font-bold text-inkd">BOWLERY</h3>
+            <p class="mt-1 text-sm text-mutedl">Açaí-Bar · Website mit Film &amp; Bowl-Builder</p>
           </div>
         </article>
       </div>
@@ -806,7 +814,7 @@
     eckstueckUrl: "https://eckstueck-stwendel.de",
     demoUrl:      "saar-barber-demo/",
     gelateriaUrl: "gelateria-demo/",
-    doenerUrl:    "doener-demo/",
+    bowlUrl:      "bowl-demo/",
 
     founder1Name: "Jakob",
     founder1Role: "Studiert Rechtspflege · Recht & Struktur",
