@@ -427,13 +427,19 @@
             <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-mutedl">eckstueck-stwendel.de</span>
             <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-lilac">Echter Kunde</span>
           </div>
-          <div class="relative aspect-[16/10] overflow-hidden bg-[#FAF6ED]">
-            <div class="absolute inset-0 opacity-70" style="background:radial-gradient(circle at 78% 22%,#F3CBD866,transparent 55%),radial-gradient(circle at 16% 88%,#C8DCBB66,transparent 55%)"></div>
+          <!-- Farben und Deckkraft stehen inline, nicht als bg-[#...]/opacity-70:
+               styles.css ist ein eingecheckter Tailwind-Build und der Deploy baut
+               ihn nicht neu, diese Klassen existieren im ausgelieferten CSS also
+               nicht. Vorher rendere die Kachel deshalb transparent statt creme,
+               und "Platz reservieren" stand weiss auf hell - Kontrast 1,08:1,
+               praktisch unsichtbar. Gleiche Loesung wie bei der BOWLERY-Karte. -->
+          <div class="relative aspect-[16/10] overflow-hidden" style="background:#FAF6ED">
+            <div class="absolute inset-0" style="opacity:.7;background:radial-gradient(circle at 78% 22%,#F3CBD866,transparent 55%),radial-gradient(circle at 16% 88%,#C8DCBB66,transparent 55%)"></div>
             <div class="absolute inset-0 flex flex-col justify-center px-8">
-              <span class="w-fit rounded-full bg-[#3F614619] px-2.5 py-0.5 text-[10px] font-bold text-[#3F6146]">✦ Neueröffnung in St. Wendel</span>
-              <span class="mt-3 text-lg font-bold leading-none text-[#41493B] xl:text-xl" style="font-family:Georgia,serif">Keramik bemalen,</span>
-              <span class="text-lg font-bold italic leading-tight text-[#3F6146] xl:text-xl" style="font-family:Georgia,serif">wir brennen den Rest.</span>
-              <span class="mt-4 w-fit rounded-full bg-[#3F6146] px-4 py-2 text-xs font-bold text-white">Platz reservieren</span>
+              <span class="w-fit rounded-full px-2.5 py-0.5 text-[10px] font-bold" style="background:#3F614619;color:#3F6146">✦ Neueröffnung in St. Wendel</span>
+              <span class="mt-3 text-lg font-bold leading-none xl:text-xl" style="font-family:Georgia,serif;color:#41493B">Keramik bemalen,</span>
+              <span class="text-lg font-bold italic leading-tight xl:text-xl" style="font-family:Georgia,serif;color:#3F6146">wir brennen den Rest.</span>
+              <span class="mt-4 w-fit rounded-full px-4 py-2 text-xs font-bold text-white" style="background:#3F6146">Platz reservieren</span>
             </div>
             <a data-cfg-href="eckstueckUrl" href="#" target="_blank" rel="noopener" class="absolute inset-0 flex items-center justify-center bg-inkd/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
               <span class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-inkd">
