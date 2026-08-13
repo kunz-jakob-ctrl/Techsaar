@@ -7,9 +7,8 @@
 <title>BOWLERY — Demo einer bewegten Website | TechSaar</title>
 <meta name="description" content="Beispielseite von TechSaar: Wie sich ein Betrieb mit echtem Film und Bewegung im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- Lokal gehostet (DSGVO): keine Requests an Google. Siehe fonts/fonts.css. -->
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%23A7CC6E'/><path d='M10 26 a14 10 0 0 0 28 0 Z' fill='%2343276B'/></svg>">
 
 <script>
@@ -115,7 +114,7 @@ const CONFIG = {
     locEyebrow: "Komm vorbei 👋",
     locHead: "Mitten in der Stadt.",
     toast: "Yum! 🍇 Bestellt wird direkt im Laden.",
-    footerNote: '<b>Demo-Seite von TechSaar.</b> „BOWLERY" ist eine erfundene Marke — Name, Adresse, Karte, Preise und Social-Profile sind frei erfunden und gehören zu keinem realen Betrieb. Diese Seite zeigt, wie eine Website mit echtem Film und Bewegung wirken kann. Für einen echten Auftritt kämen Impressum (§5&nbsp;DDG), Datenschutz (Art.&nbsp;13&nbsp;DSGVO), Self-Hosting von Schriften/Skripten und ein Rechts-Check dazu.',
+    footerNote: '<b>Demo-Seite von TechSaar.</b> „BOWLERY" ist eine erfundene Marke — Name, Adresse, Karte, Preise und Social-Profile sind frei erfunden und gehören zu keinem realen Betrieb. Diese Seite zeigt, wie eine Website mit echtem Film und Bewegung wirken kann. Schriften und Skripte liegen auf unserem eigenen Server, es werden keine Daten an Dritte übertragen. Für einen echten Auftritt kämen Impressum (§5&nbsp;DDG), Datenschutz (Art.&nbsp;13&nbsp;DSGVO) und ein Rechts-Check dazu.',
   },
 
   /* --- BEISPIEL-KARTE: Namen & Preise vom Laden bestätigen lassen (Platzhalter) --- */
@@ -646,9 +645,11 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
 <div id="toast" data-cfg="copy.toast">Yum! 🍇 Bestellt wird direkt im Laden.</div>
 
 <!-- ===================== LIBS ===================== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<!-- Lokal gehostet (DSGVO): frueher von cdnjs.cloudflare.com bzw. cdn.jsdelivr.net.
+     Gleiche Versionen wie vorher (GSAP 3.12.5, ScrollTrigger 3.12.5, Lenis 1.1.14). -->
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
 
 <script>
 /* =================================================================
