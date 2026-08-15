@@ -20,6 +20,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Diese Vorlage zeigt einen ERFUNDENEN Betrieb ("Mustermann Bedachungen").
+     Solange das so ist, darf sie nicht in den Suchindex: sonst konkurrieren
+     Musterdaten mit echten Dachdeckern in der lokalen Suche und Google sieht
+     Bewertungs-Auszeichnungen ohne echte Bewertungen dahinter.
+     Beim Ausrollen fuer einen echten Kunden: diese Zeile loeschen. -->
+<meta name="robots" content="noindex, nofollow">
+
 <!-- ANPASSEN: Title & Description = wichtigster SEO-Hebel. Schema: Leistung + Ort -->
 <title>Dachdecker-Meisterbetrieb in St. Wendel | Mustermann Bedachungen</title>
 <meta name="description" content="Ihr Dachdecker-Meisterbetrieb in St. Wendel & Umgebung. Steildach, Flachdach, Dachfenster & 24h-Notdienst. Festpreis-Angebot kostenlos anfragen.">
@@ -30,7 +37,18 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 
-<!-- ANPASSEN: schema.org LocalBusiness — Pflicht-Hebel für lokale Google-Suche -->
+<!-- ANPASSEN: schema.org LocalBusiness — Pflicht-Hebel für lokale Google-Suche
+
+     BEWUSST OHNE "aggregateRating": Eine Sternebewertung in den strukturierten
+     Daten ist eine maschinenlesbare Tatsachenbehauptung gegenueber Google. Sie
+     darf nur eingetragen werden, wenn es die Bewertungen wirklich gibt und sie
+     auf der Seite sichtbar sind. Erfundene Werte verstossen gegen Googles
+     Richtlinien fuer strukturierte Daten (manuelle Massnahme moeglich) und sind
+     gegenueber Verbrauchern irrefuehrend (§ 5 UWG, Anhang Nr. 23b/c UWG).
+     Beim echten Kunden mit dessen tatsaechlichem Google-Schnitt ergaenzen:
+     "aggregateRating": {"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"32"}
+     Hinweis: JSON-LD erlaubt KEINE Kommentare — solche Notizen gehoeren hierher,
+     nicht in den Script-Block, sonst wird das ganze Markup ungueltig. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -57,8 +75,7 @@
   "openingHoursSpecification": [
     {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:30","closes":"17:00"},
     {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"12:00"}
-  ],
-  "aggregateRating": {"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"87"}
+  ]
 }
 </script>
 
@@ -500,15 +517,18 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       Seit über 25 Jahren
     </div>
+    <!-- ANPASSEN: Google-Bewertung. Erst einbauen, wenn der Kunde ein Google-Profil
+         mit echtem Schnitt hat — dann Sterne und Zahl unten eintragen und diesen
+         Block gegen den Festpreis-Baustein tauschen. Eine erfundene Sternezahl im
+         wichtigsten Sichtfeld der Seite ist der klassische Abmahnfall
+         (Anhang Nr. 23b/c UWG). Vorlage:
+         <div class="trust-item">
+           <span class="stars" aria-label="4,8 von 5 Sternen">…5x Stern-SVG…</span>
+           4,8 · 32 Google-Bewertungen
+         </div> -->
     <div class="trust-item">
-      <span class="stars" aria-label="4,9 von 5 Sternen">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
-      </span>
-      4,9 · 87 Google-Bewertungen
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      Festpreis-Garantie
     </div>
     <div class="trust-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -607,24 +627,30 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
     <div class="reveal">
       <p class="eyebrow">Bewertungen</p>
       <h2 class="section-title">Das sagen unsere Kunden</h2>
-      <p class="section-intro">Echte Google-Rezensionen aus der Region.</p>
+      <p class="section-intro">So wirken Kundenstimmen auf Ihrer Seite. <strong>Die folgenden drei Texte sind Platzhalter</strong> und stammen von keinem realen Kunden.</p>
     </div>
     <div class="reviews">
-      <!-- ANPASSEN: Google-Rezensionen (Text, Name, Ort) -->
+      <!-- ANPASSEN: Hier die ECHTEN Google-Rezensionen des Kunden eintragen.
+           Bis dahin bleiben Texte, Namen und Orte Platzhalter und die Seite sagt
+           das oben ausdruecklich. Nicht zurueck auf "Echte Google-Rezensionen"
+           aendern, solange hier Erfundenes steht: erfundene oder ungeprueft als
+           echt ausgegebene Bewertungen sind nach Anhang Nr. 23b/c UWG unzulaessig.
+           Auch das Google-Logo gehoert erst wieder dazu, wenn die Rezensionen
+           tatsaechlich von Google stammen — sonst ist die Quelle vorgetaeuscht. -->
       <div class="review reveal">
         <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
         <p>„Nach dem Sturm war unser Dach undicht – das Team war noch am selben Tag da und hat alles gesichert. Festpreis-Angebot kam transparent, Ausführung top sauber."</p>
-        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>Familie Becker</strong><span>St. Wendel</span></div></div>
+        <div class="who"><div><strong>Familie Becker</strong><span>St. Wendel</span></div></div>
       </div>
       <div class="review reveal">
         <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
         <p>„Komplette Neueindeckung inklusive Dämmung. Termine wurden exakt eingehalten, die Baustelle war jeden Abend besenrein. Absolute Empfehlung!"</p>
-        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>M. Schneider</strong><span>Tholey</span></div></div>
+        <div class="who"><div><strong>M. Schneider</strong><span>Tholey</span></div></div>
       </div>
       <div class="review reveal">
         <div class="stars" aria-label="5 von 5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
         <p>„Faire Beratung – man hat uns von der teuren Komplettsanierung abgeraten und nur das Nötige gemacht. So etwas findet man selten. Danke!"</p>
-        <div class="who"><svg class="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg><div><strong>J. Wagner</strong><span>Marpingen</span></div></div>
+        <div class="who"><div><strong>J. Wagner</strong><span>Marpingen</span></div></div>
       </div>
     </div>
   </div>
@@ -773,17 +799,30 @@ footer { background: #11161f; color: var(--on-dark-mu); padding: 3rem 0 1.5rem; 
         <a href="tel:+4968511234567">06851 123 45 67</a>
         <a href="mailto:info@ihre-domain.de">info@ihre-domain.de</a>
         <a href="https://wa.me/4968511234567" target="_blank" rel="noopener">WhatsApp</a>
-        <!-- ANPASSEN: Social-Links -->
-        <a href="#" target="_blank" rel="noopener">Facebook</a>
-        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <!-- ANPASSEN: Social-Links des Kunden hier eintragen und dann erst anzeigen.
+             Leere href="#"-Links wurden entfernt: sie fuehren ins Nichts und wirken
+             auf Besucher wie eine unfertige Seite. -->
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Mustermann Bedachungen GmbH</span>
       <span>
-        <!-- PFLICHT in Deutschland – sonst Abmahngefahr! Eigene Seiten verlinken. -->
-        <a href="impressum.html">Impressum</a> ·
-        <a href="datenschutz.html">Datenschutz</a>
+        <!-- PFLICHT in Deutschland (§ 5 DDG) – sonst Abmahngefahr.
+             Solange die Vorlage unter tech-saar.de liegt, ist TechSaar der
+             Anbieter dieser Seite; darum zeigen die Links auf TechSaars
+             Rechtstexte (gleiches Muster wie elektro- und gelateria-demo).
+             Beim Ausrollen fuer einen echten Kunden auf dessen eigene
+             Impressums- und Datenschutzseite umstellen. -->
+        <a href="https://tech-saar.de/impressum.html" rel="noopener">Impressum</a> ·
+        <a href="https://tech-saar.de/datenschutz.html" rel="noopener">Datenschutz</a>
+      </span>
+    </div>
+    <div class="footer-bottom">
+      <span style="opacity:.75">
+        <strong>Beispielseite von TechSaar.</strong> „Mustermann Bedachungen GmbH“ ist ein
+        erfundener Betrieb — Name, Anschrift, Telefonnummer, Team, Referenzen und Bewertungen
+        sind Platzhalter und gehören zu keinem realen Unternehmen. Diese Seite zeigt den Aufbau
+        einer Handwerker-Website. <a href="https://tech-saar.de/" rel="noopener">tech-saar.de</a>
       </span>
     </div>
   </div>
