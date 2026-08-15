@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <title>BOWLERY — Demo einer bewegten Website | TechSaar</title>
-<meta name="description" content="Beispielseite von TechSaar: Wie sich ein Betrieb mit echtem Film und Bewegung im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden.">
+<meta name="description" content="Beispielseite von TechSaar: Wie sich ein Betrieb mit filmischem Bewegtbild im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden, Hero-Film KI-generiert.">
 
 <!-- Lokal gehostet (DSGVO): keine Requests an Google. Siehe fonts/fonts.css. -->
 <link rel="stylesheet" href="fonts/fonts.css">
@@ -89,12 +89,16 @@ const CONFIG = {
   /* --- Alle Überschriften & Fließtexte --- */
   copy: {
     title: "BOWLERY — Demo einer bewegten Website | TechSaar",
-    metaDesc: "Beispielseite von TechSaar: Wie sich ein Betrieb mit echtem Film und Bewegung im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden.",
+    metaDesc: "Beispielseite von TechSaar: Wie sich ein Betrieb mit filmischem Bewegtbild im Netz zeigen kann. Fiktive Marke, alle Inhalte frei erfunden, Hero-Film KI-generiert.",
     heroTagline: "Beispielseite · TechSaar",
     heroClaim: "Löffel für Löffel <em>glücklich.</em>",
     heroCtaMenu: "Zur Karte ↓",
     heroCtaRoute: "Route planen ↗",
     playLabel: "Film abspielen",
+    /* PFLICHT, nicht kosmetisch: Art. 50 Abs. 4 AI Act (seit 02.08.2026) verlangt bei
+       KI-erzeugtem Bild-/Videomaterial eine Offenlegung. Beim Tausch gegen echtes
+       Filmmaterial diese Zeile auf "" setzen — der Hinweis verschwindet dann. */
+    aiNotice: "Film KI-generiert",
     bowlsEyebrow: "Unsere Klassiker",
     bowlsHead: "Bowls, die<br>knallen. 💥",
     bowlsIntro: "Basis aus 100 % Açaí, frisch gecrushed mit Banane — dazu Toppings, so viel das Herz will.",
@@ -114,7 +118,7 @@ const CONFIG = {
     locEyebrow: "Komm vorbei 👋",
     locHead: "Mitten in der Stadt.",
     toast: "Yum! 🍇 Bestellt wird direkt im Laden.",
-    footerNote: '<b>Demo-Seite von TechSaar.</b> „BOWLERY" ist eine erfundene Marke — Name, Adresse, Karte, Preise und Social-Profile sind frei erfunden und gehören zu keinem realen Betrieb. Diese Seite zeigt, wie eine Website mit echtem Film und Bewegung wirken kann. Schriften und Skripte liegen auf unserem eigenen Server, es werden keine Daten an Dritte übertragen. Für einen echten Auftritt kämen Impressum (§5&nbsp;DDG), Datenschutz (Art.&nbsp;13&nbsp;DSGVO) und ein Rechts-Check dazu.',
+    footerNote: '<b>Demo-Seite von TechSaar.</b> „BOWLERY" ist eine erfundene Marke — Name, Adresse, Karte, Preise und Social-Profile sind frei erfunden und gehören zu keinem realen Betrieb. Diese Seite zeigt, wie eine Website mit filmischem Bewegtbild wirken kann. <b>Der Film im Kopfbereich wurde mit künstlicher Intelligenz erzeugt</b> und zeigt keine reale Aufnahme (Kennzeichnung nach Art.&nbsp;50 Abs.&nbsp;4 KI-Verordnung). Schriften und Skripte liegen auf unserem eigenen Server, es werden keine Daten an Dritte übertragen. Für einen echten Auftritt kämen Impressum (§5&nbsp;DDG), Datenschutz (Art.&nbsp;13&nbsp;DSGVO) und ein Rechts-Check dazu.',
   },
 
   /* --- BEISPIEL-KARTE: Namen & Preise vom Laden bestätigen lassen (Platzhalter) --- */
@@ -251,6 +255,14 @@ header.nav{position:fixed;top:1rem;left:0;right:0;z-index:120;padding:0 1rem;
 .film-cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:1.8rem}
 .film-cta .btn{background:#fff;border-color:#fff;color:var(--ink)}
 .film-cta .btn.ghost{background:transparent;border-color:rgba(255,255,255,.75);color:#fff}
+/* KI-Kennzeichnung (Art. 50 Abs. 4 KI-VO). Bewusst als stille Ecken-Beschriftung:
+   Art. 50 Abs. 5 verlangt "klar und unterscheidbar spaetestens bei der ersten
+   Exposition" — das heisst lesbar ab Seitenaufruf, nicht laut. Nur im Footer waere
+   zu spaet (Besucher sieht den Film vorher). CONFIG.copy.aiNotice auf "" => aus. */
+.film-ainote{position:absolute;bottom:2.4vh;left:1.1rem;z-index:4;pointer-events:none;
+  margin:0;color:#fff;opacity:.62;font-size:clamp(.58rem,1.4vw,.68rem);font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 10px rgba(36,24,38,.85)}
+.film-ainote:empty{display:none}
 .scrollhint{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);z-index:4;color:#fff;
   font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.75;pointer-events:none;
   text-shadow:0 2px 10px rgba(36,24,38,.6)}
@@ -490,6 +502,8 @@ footer .word{font-family:'Bricolage Grotesque',serif;font-weight:900;font-size:1
         <a class="btn ghost" id="heroRoute" href="#" target="_blank" rel="noopener" data-cfg="copy.heroCtaRoute">Route planen ↗</a>
       </div>
     </div>
+
+    <p class="film-ainote" data-cfg="copy.aiNotice">Film KI-generiert</p>
 
     <button class="film-play" id="filmPlay" type="button">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
