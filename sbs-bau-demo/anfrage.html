@@ -87,6 +87,9 @@ const CONFIG = {
             <label class="kachel"><input type="radio" name="objekt" value="Eigentumswohnung"><span><b>Eigentumswohnung</b><em>Einzelne Einheit im Bestand</em></span></label>
             <label class="kachel"><input type="radio" name="objekt" value="Gewerbeobjekt"><span><b>Gewerbeobjekt</b><em>Praxis, Büro, Ladenfläche, Betriebsgebäude</em></span></label>
           </div>
+          <div class="schalt">
+            <button type="button" class="btn" data-weiter hidden>Weiter <span class="pfeil">→</span></button>
+          </div>
         </fieldset>
 
         <!-- 2 Vorhaben -->
@@ -101,7 +104,10 @@ const CONFIG = {
             <label class="kachel"><input type="radio" name="vorhaben" value="Dachgeschossausbau oder Aufstockung"><span><b>Dachgeschoss oder Aufstockung</b><em>Neuer Wohnraum über dem Bestand</em></span></label>
             <label class="kachel abseits"><input type="radio" name="vorhaben" value="Einzelne Reparatur oder Montage" data-stopp="klein"><span><b>Einzelne Reparatur oder Montage</b><em>Ein Handgriff, eine Ausbesserung, ein Gerät anschließen</em></span></label>
           </div>
-          <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+          <div class="schalt">
+            <button type="button" class="btn" data-weiter hidden>Weiter <span class="pfeil">→</span></button>
+            <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+          </div>
         </fieldset>
 
         <!-- 3 Umfang -->
@@ -154,6 +160,10 @@ const CONFIG = {
             <label class="kachel"><input type="radio" name="volumen" value="über 400.000 €"><span><b>über 400.000 €</b><em>Mehrfamilienhaus, Gewerbeobjekt, Aufstockung</em></span></label>
             <label class="kachel"><input type="radio" name="volumen" value="noch offen"><span><b>Noch offen</b><em>Bitte beim Ortstermin gemeinsam einschätzen</em></span></label>
           </div>
+          <div class="schalt">
+            <button type="button" class="btn" data-weiter hidden>Weiter <span class="pfeil">→</span></button>
+            <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+          </div>
         </fieldset>
 
         <!-- 5 Kontakt -->
@@ -172,12 +182,12 @@ const CONFIG = {
           </div>
 
           <div class="feld-paar">
-            <div class="feld"><label for="person">Name</label><input type="text" id="person" name="person" autocomplete="name" required></div>
-            <div class="feld"><label for="ort">Ort des Objekts</label><input type="text" id="ort" name="ort" autocomplete="address-level2" required></div>
+            <div class="feld"><label for="person">Name</label><input type="text" id="person" name="person" autocomplete="name" required><p class="fehler" id="person-fehler" hidden></p></div>
+            <div class="feld"><label for="ort">Ort des Objekts</label><input type="text" id="ort" name="ort" autocomplete="address-level2" required><p class="fehler" id="ort-fehler" hidden></p></div>
           </div>
           <div class="feld-paar">
-            <div class="feld"><label for="telefon">Telefon</label><input type="tel" id="telefon" name="telefon" autocomplete="tel" required></div>
-            <div class="feld"><label for="email">E-Mail</label><input type="email" id="email" name="email" autocomplete="email"></div>
+            <div class="feld"><label for="telefon">Telefon</label><input type="tel" id="telefon" name="telefon" autocomplete="tel" required><p class="fehler" id="telefon-fehler" hidden></p></div>
+            <div class="feld"><label for="email">E-Mail</label><input type="email" id="email" name="email" autocomplete="email"><p class="fehler" id="email-fehler" hidden></p></div>
           </div>
           <div class="feld">
             <label for="nachricht">Was sollen wir vorher wissen? (freiwillig)</label>
@@ -221,9 +231,14 @@ const CONFIG = {
             weder Ihnen noch der laufenden Baustelle gerecht.
           </p>
         </div>
+        <p class="rueckruf">
+          Sie sind unsicher, ob das passt? Rufen Sie kurz an:
+          <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+        </p>
         <div class="hinweis-kasten" style="border-color:var(--linie-hell)">
-          <b>Was jetzt schneller hilft:</b> Über die Betriebssuche der Handwerkskammer des
-          Saarlandes finden Sie kurzfristig einen Betrieb für einzelne Leistungen.
+          <b>Was jetzt schneller hilft:</b> Über die
+          <a href="https://www.hwk-saarland.de/" target="_blank" rel="noopener">Betriebssuche der Handwerkskammer des Saarlandes</a>
+          finden Sie kurzfristig einen Betrieb für einzelne Leistungen.
           Und wenn später ein größeres Vorhaben ansteht: Wir sind gern wieder im Gespräch.
         </div>
         <div class="schalt" style="margin-top:28px">
