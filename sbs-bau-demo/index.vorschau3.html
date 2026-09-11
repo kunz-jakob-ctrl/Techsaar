@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBS Bau · Komplettsanierung im Saarpfalz-Kreis</title>
+<meta name="description" content="SBS Bau saniert ganze Objekte im Saarpfalz-Kreis: Komplettsanierung, Innenausbau, Trockenbau, Bäder und Dachgeschossausbau. Ein Ansprechpartner, alle Gewerke, fester Bauzeitenplan.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<!-- Alles lokal ausgeliefert: keine Google-Fonts-, CDN- oder Bild-Anfragen an Dritte (DSGVO) -->
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/bauzeitenplan.css">
+<link rel="stylesheet" href="css/fuerwen.css">
+<script>
+/* ================= CONFIG — hier stehen alle Kundendaten =================
+   Alles, was pro Kunde wechselt, steht an dieser einen Stelle. Die Werte
+   werden beim Laden in Elemente mit data-cfg / data-cfg-href eingesetzt.
+   ACHTUNG: Die mit PLATZHALTER markierten Angaben vor der Übergabe ersetzen.
+   ======================================================================== */
+const CONFIG = {
+  name:        "SBS Bau",
+  rechtsform:  "SBS Bau GmbH",                       // PLATZHALTER
+  claim:       "Komplettsanierung im Saarpfalz-Kreis",
+  strasse:     "Musterstraße 1",                     // PLATZHALTER
+  plzOrt:      "66424 Homburg",                      // PLATZHALTER
+  telefon:     "+49 6841 0000000",                   // PLATZHALTER
+  telefonText: "06841 / 000 00 00",                  // PLATZHALTER
+  mail:        "bauleitung@sbs-bau.de",              // PLATZHALTER
+  zeiten:      "Mo–Do 7–16 Uhr · Fr 7–13 Uhr",       // PLATZHALTER
+  radius:      "40 km",
+  mindestvolumen: "50.000 €",
+  jahr:        new Date().getFullYear(),
+};
+</script>
+</head>
+<body>
+
+<div class="demo-band"><b>Demo-Ansicht</b> · Beispielinhalte<span class="band-lang"> und Beispielbilder · gebaut für das Gespräch mit SBS Bau · Vorschau 3: Bauzeitenplan + „Für wen wir bauen“ + Texte</span></div>
+
+<div class="fortschritt" id="fortschritt" aria-hidden="true"></div>
+
+<header class="kopf" id="kopf">
+  <div class="wrap kopf-innen">
+    <a class="logo" href="index.html">
+      <b data-cfg="name">SBS Bau</b>
+      <span>Saarpfalz-Kreis</span>
+    </a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="leistungen.html">Leistungen</a>
+      <a href="projekte.html">Projekte</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-linie kopf-cta" href="anfrage.html">Projekt anfragen <span class="pfeil">→</span></a>
+    <button class="menue-schalter" id="menue-schalter" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue">
+      <i></i><i></i>
+    </button>
+  </div>
+</header>
+
+<nav class="menue" id="menue" aria-label="Menü">
+  <a href="leistungen.html">Leistungen <em>01</em></a>
+  <a href="projekte.html">Projekte <em>02</em></a>
+  <a href="index.html#ablauf">Ablauf <em>03</em></a>
+  <a href="anfrage.html">Projektanfrage <em>04</em></a>
+  <a href="index.html#kontakt">Kontakt <em>05</em></a>
+  <div class="menue-fuss">
+    <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+    <span data-cfg="zeiten">Mo–Do 7–16 Uhr</span>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="hero-bild">
+    <img src="img/hero.jpg" alt="Baustelle bei Sonnenuntergang mit Kran über einem Rohbau" fetchpriority="high" width="2000" height="1250">
+  </div>
+  <div class="wrap hero-innen">
+    <span class="marke">SBS Bau · Saarpfalz-Kreis</span>
+    <h1>
+      <span class="zeile1">Wir sanieren ganze Häuser.</span>
+      <span class="zeile2">Im Saarpfalz-Kreis, ab 50.000&nbsp;€.</span>
+    </h1>
+    <p class="lead hero-text">
+      Wir entkernen, bauen neu auf und übergeben den Schlüssel. Ihr Ansprechpartner
+      ist der Bauleiter, der beim ersten Termin dabei war.
+    </p>
+    <div class="hero-knoepfe">
+      <a class="btn btn-gross" href="anfrage.html">Projekt anfragen <span class="pfeil">→</span></a>
+      <a class="btn btn-linie btn-gross" href="projekte.html">Referenzen ansehen</a>
+    </div>
+
+    <dl class="hero-daten">
+      <div><dt>Projektvolumen</dt><dd>ab <span data-cfg="mindestvolumen">50.000 €</span></dd></div>
+      <div><dt>Leistungstiefe</dt><dd>bis zu 12 Gewerke aus einer Hand</dd></div>
+      <div><dt>Einsatzgebiet</dt><dd>Saarpfalz-Kreis + <span data-cfg="radius">40 km</span></dd></div>
+    </dl>
+  </div>
+  <span class="scroll-hinweis">Scrollen</span>
+</section>
+
+<!-- ======================= BAUZEITENPLAN (Vorschau) ======================= -->
+<!-- Ersetzt die gepinnte Bauszene. Zwölf Gewerke als Balken, darüber die Linie
+     des Bauleiters. Läuft zeitgesteuert, sobald die Sektion sichtbar wird, und
+     kostet keinen zusätzlichen Scrollweg. Logik in js/bauzeitenplan.js. -->
+<section class="plan-huelle ohne-js" id="bauzeitenplan" data-wochen="28" aria-labelledby="plan-titel">
+  <div class="wrap plan-raster">
+
+    <div class="plan-text">
+      <span class="marke">Vom Bestand zur Übergabe</span>
+      <h2 id="plan-titel">Zwölf Gewerke.<br><em>Ein Bauleiter, ein Termin.</em></h2>
+      <p class="plan-info">
+        So sieht Ihr Bauzeitenplan aus, bevor der erste Bautag beginnt: jede Zeile ein Gewerk,
+        jede Woche ein Bautagebuch-Eintrag, der Übergabetermin steht im Vertrag.
+      </p>
+      <p class="plan-status" aria-live="polite">
+        <b id="plan-woche">Woche 28 von 28</b>
+        <span id="plan-gewerke">Übergabe. Abnahmeprotokoll, Schlüssel, Gewährleistung.</span>
+      </p>
+      <dl class="plan-fakten">
+        <div><dt>Bauzeit</dt><dd>28 Wochen</dd></div>
+        <div><dt>Gewerke</dt><dd>12</dd></div>
+        <div><dt>Ansprechpartner</dt><dd>1</dd></div>
+      </dl>
+      <button type="button" class="plan-nochmal" id="plan-nochmal">Ablauf noch einmal abspielen</button>
+    </div>
+
+    <div class="plan" aria-label="Bauzeitenplan einer Komplettsanierung über 28 Wochen">
+      <div class="plan-kopf">
+        <span class="plan-kopf-label">Ihr Bauleiter</span>
+        <div class="plan-leitung">
+          <span class="plan-tagebuch-text">Wöchentlicher Bautagebuch-Eintrag mit Fotos</span>
+          <i aria-hidden="true"></i>
+          <div class="plan-tagebuch" id="plan-tagebuch" aria-hidden="true"></div>
+          <div class="plan-uebergabe" id="plan-uebergabe">
+            <svg class="haus" viewBox="110 148 762 448" role="img" aria-label="Fertig saniertes Haus mit erleuchteten Fenstern" xmlns="http://www.w3.org/2000/svg"><ellipse cx="520" cy="557" rx="360" ry="19" fill="#000" opacity=".12"/><polygon points="665.0,545.0 815.0,467.0 815.0,222.0 665.0,300.0" fill="#CBC6BD"/><polygon points="215.0,545.0 665.0,545.0 665.0,300.0 215.0,300.0" fill="#E7E3DC"/><polygon points="665.0,300.0 815.0,222.0 740.0,156.0" fill="#E7E3DC"/><polygon points="215.0,300.0 665.0,300.0 740.0,156.0 290.0,156.0" fill="#8A5330"/><line x1="224.4" y1="282.0" x2="674.4" y2="282.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="233.8" y1="264.0" x2="683.8" y2="264.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="243.1" y1="246.0" x2="693.1" y2="246.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="252.5" y1="228.0" x2="702.5" y2="228.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="261.9" y1="210.0" x2="711.9" y2="210.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="271.3" y1="192.0" x2="721.3" y2="192.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="280.6" y1="174.0" x2="730.6" y2="174.0" stroke="#5E3419" stroke-width=".8" opacity=".7"/><line x1="290.0" y1="152.0" x2="740.0" y2="152.0" stroke="#8A5330" stroke-width="9" stroke-linecap="round"/><polygon points="492.8,220.8 512.3,210.7 512.3,136.7 492.8,146.8" fill="#BAB5AC" stroke="#8A8479" stroke-width="1.2"/><polygon points="458.8,220.8 492.8,220.8 492.8,146.8 458.8,146.8" fill="#D6D1C8" stroke="#8A8479" stroke-width="1.2"/><polygon points="458.8,146.8 492.8,146.8 512.3,136.7 478.3,136.7" fill="#3A3F45"/><line x1="215" y1="545" x2="665" y2="545" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="665" y1="545" x2="665" y2="300" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="665" y1="300" x2="215" y2="300" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="215" y1="300" x2="215" y2="545" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="665" y1="545" x2="815" y2="467" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="815" y1="467" x2="815" y2="222" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="815" y1="222" x2="665" y2="300" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="665" y1="300" x2="740" y2="156" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="815" y1="222" x2="740" y2="156" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="215" y1="300" x2="290" y2="156" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="290" y1="156" x2="740" y2="156" stroke="#8A8479" stroke-width="1.4" stroke-linejoin="round"/><line x1="207" y1="305" x2="673" y2="305" stroke="#9AA0A6" stroke-width="6" stroke-linecap="round"/><line x1="670" y1="306" x2="670" y2="545" stroke="#9AA0A6" stroke-width="4"/><polygon points="255.0,398.0 317.0,398.0 317.0,324.0 255.0,324.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="357.0,398.0 419.0,398.0 419.0,324.0 357.0,324.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="459.0,398.0 521.0,398.0 521.0,324.0 459.0,324.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="561.0,398.0 623.0,398.0 623.0,324.0 561.0,324.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="255.0,545.0 327.0,545.0 327.0,425.0 255.0,425.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="380.0,505.0 442.0,505.0 442.0,425.0 380.0,425.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="470.0,505.0 532.0,505.0 532.0,425.0 470.0,425.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="560.0,505.0 622.0,505.0 622.0,425.0 560.0,425.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="689.0,385.5 728.0,365.2 728.0,296.6 689.0,316.9" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="749.0,354.3 788.0,334.0 788.0,265.4 749.0,285.7" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="689.0,488.4 728.0,468.1 728.0,399.5 689.0,419.8" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="749.0,457.2 788.0,436.9 788.0,368.3 749.0,388.6" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/><polygon points="718.0,240.0 762.0,240.0 762.0,210.0 718.0,210.0" fill="#E8B26A" stroke="#B9BDC1" stroke-width="2"/></svg>
+            <b>Übergabe</b>
+            <span>Woche 28 · Termin im Vertrag</span>
+          </div>
+        </div>
+      </div>
+
+      <ol class="plan-zeilen">
+        <li tabindex="0" data-von="1" data-bis="2" data-kurz="Bestand" style="--von:1;--bis:2">
+          <span class="gewerk"><b>01</b><span class="gewerk-lang">Bestand &amp; Statik</span><span class="gewerk-kurz">Bestand</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Aufmaß, Statiker, Feuchte- und Schadstoffprüfung. Wir wissen, was uns erwartet, bevor der erste Schlag fällt.</span>
+        </li>
+        <li tabindex="0" data-von="2" data-bis="4" data-kurz="Entkernung" style="--von:2;--bis:4">
+          <span class="gewerk"><b>02</b><span class="gewerk-lang">Entkernung</span><span class="gewerk-kurz">Entkernung</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Rückbau bis auf den tragenden Kern, Entsorgung mit Nachweis. Container und Gerüst stehen ab Tag 1.</span>
+        </li>
+        <li tabindex="0" data-von="4" data-bis="7" data-kurz="Rohbau" style="--von:4;--bis:7">
+          <span class="gewerk"><b>03</b><span class="gewerk-lang">Rohbau &amp; Durchbrüche</span><span class="gewerk-kurz">Rohbau</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Grundrissänderungen, Unterzüge, neue Öffnungen. Der Statiker nimmt jeden Durchbruch ab.</span>
+        </li>
+        <li tabindex="0" data-von="6" data-bis="9" data-kurz="Dach" style="--von:6;--bis:9">
+          <span class="gewerk"><b>04</b><span class="gewerk-lang">Dach &amp; Zimmerer</span><span class="gewerk-kurz">Dach</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Dachstuhl prüfen, verstärken, eindecken. Ab hier ist das Haus wieder dicht.</span>
+        </li>
+        <li tabindex="0" data-von="9" data-bis="10" data-kurz="Fenster" style="--von:9;--bis:10">
+          <span class="gewerk"><b>05</b><span class="gewerk-lang">Fenster &amp; Außentüren</span><span class="gewerk-kurz">Fenster</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Neue Fenster in den fertigen Laibungen, Abdichtung nach RAL. Danach kann innen gearbeitet werden.</span>
+        </li>
+        <li tabindex="0" data-von="8" data-bis="11" data-kurz="Elektro" style="--von:8;--bis:11">
+          <span class="gewerk"><b>06</b><span class="gewerk-lang">Elektro Rohinstallation</span><span class="gewerk-kurz">Elektro</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Schlitze, Leerrohre, Verteiler. Netzwerk und Ladepunkt gleich mit, statt später nachzurüsten.</span>
+        </li>
+        <li tabindex="0" data-von="8" data-bis="12" data-kurz="Sanitär/Heizung" style="--von:8;--bis:12">
+          <span class="gewerk"><b>07</b><span class="gewerk-lang">Sanitär &amp; Heizung roh</span><span class="gewerk-kurz">Sanitär/Heizung</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Neue Leitungen, Wärmepumpe oder Kessel, Fußbodenheizung. Läuft parallel zum Elektriker, ein Bauleiter koordiniert.</span>
+        </li>
+        <li tabindex="0" data-von="11" data-bis="15" data-kurz="Trockenbau" style="--von:11;--bis:15">
+          <span class="gewerk"><b>08</b><span class="gewerk-lang">Trockenbau</span><span class="gewerk-kurz">Trockenbau</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Ständerwände, Vorsatzschalen, Decken, Schall- und Brandschutz. Unsere eigene Kolonne, kein Zubringer.</span>
+        </li>
+        <li tabindex="0" data-von="15" data-bis="17" data-kurz="Estrich" style="--von:15;--bis:17">
+          <span class="gewerk"><b>09</b><span class="gewerk-lang">Estrich</span><span class="gewerk-kurz">Estrich</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Estrich einbringen und trocknen lassen. Die Trockenzeit steht im Plan, damit niemand zu früh fliest.</span>
+        </li>
+        <li tabindex="0" data-von="18" data-bis="22" data-kurz="Fliesen, Bad" style="--von:18;--bis:22">
+          <span class="gewerk"><b>10</b><span class="gewerk-lang">Fliesen &amp; Bäder</span><span class="gewerk-kurz">Fliesen, Bad</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Abdichtung nach DIN 18534, Fliesen, Sanitärobjekte, Möbel, Licht. Ein Bad, sechs Gewerke, ein Termin.</span>
+        </li>
+        <li tabindex="0" data-von="21" data-bis="25" data-kurz="Maler, Böden" style="--von:21;--bis:25">
+          <span class="gewerk"><b>11</b><span class="gewerk-lang">Maler &amp; Böden</span><span class="gewerk-kurz">Maler, Böden</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Spachteln bis Q4, streichen, Böden legen. Erst wenn kein Gewerk mehr staubt.</span>
+        </li>
+        <li tabindex="0" data-von="25" data-bis="28" data-kurz="Endmontage" style="--von:25;--bis:28">
+          <span class="gewerk"><b>12</b><span class="gewerk-lang">Endmontage &amp; Abnahme</span><span class="gewerk-kurz">Endmontage</span></span>
+          <span class="spur"><i></i></span>
+          <span class="gewerk-info" role="note">Schalter, Armaturen, Türen, Reinigung. Gemeinsame Begehung mit Protokoll, Restpunkte mit Termin.</span>
+        </li>
+        <i class="plan-cursor" aria-hidden="true"></i>
+      </ol>
+
+      <div class="plan-achse" aria-hidden="true">
+        <span class="plan-achse-titel">Woche</span>
+        <div class="plan-achse-skala"><span style="--w:1">1</span><span style="--w:4">4</span><span style="--w:8">8</span><span style="--w:12">12</span><span style="--w:16">16</span><span style="--w:20">20</span><span style="--w:24">24</span><span style="--w:28">28</span><span class="mobil" style="--w:1">1</span><span class="mobil" style="--w:7">7</span><span class="mobil" style="--w:14">14</span><span class="mobil" style="--w:21">21</span><span class="mobil" style="--w:28">28</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================== LEISTUNGEN ========================== -->
+<section class="abschnitt hell" id="leistungen">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Leistungen</span>
+        <h2 style="margin-top:18px">Was wir machen.</h2>
+      </div>
+      <p class="lead auf" data-verzug="1">
+        Vier Bereiche, die wir komplett übernehmen. Mit Planung, Terminen
+        und einem Verantwortlichen.
+      </p>
+    </div>
+
+    <div class="leistungsliste" id="leistungsliste">
+      <a class="leistung auf" href="leistungen.html#komplettsanierung" data-bild="img/leistung-sanierung.jpg">
+        <span class="nr">01</span>
+        <h3>Komplettsanierung</h3>
+        <p>Entkernen, neu aufbauen, schlüsselfertig übergeben. Ein- und Mehrfamilienhäuser, ganze Wohneinheiten.</p>
+        <span class="pfeil">→</span>
+        <span class="leistung-bild"><img src="img/leistung-sanierung.jpg" alt="Eingerüstete Fassade eines Gebäudes in Sanierung" loading="lazy" width="1200" height="1500"></span>
+      </a>
+      <a class="leistung auf" data-verzug="1" href="leistungen.html#innenausbau" data-bild="img/leistung-trockenbau.jpg">
+        <span class="nr">02</span>
+        <h3>Innenausbau &amp; Trockenbau</h3>
+        <p>Wände, Decken, Vorsatzschalen, Schall- und Brandschutz. Auf ganzen Etagen.</p>
+        <span class="pfeil">→</span>
+        <span class="leistung-bild"><img src="img/leistung-trockenbau.jpg" alt="Trockenbauwand im Rohbau" loading="lazy" width="1200" height="1500"></span>
+      </a>
+      <a class="leistung auf" data-verzug="2" href="leistungen.html#baeder" data-bild="img/leistung-bad.jpg">
+        <span class="nr">03</span>
+        <h3>Bäder komplett</h3>
+        <p>Von der Demontage bis zur letzten Fuge: Rohinstallation, Abdichtung, Estrich, Fliesen, Möbel, Licht.</p>
+        <span class="pfeil">→</span>
+        <span class="leistung-bild"><img src="img/leistung-bad.jpg" alt="Fertiggestelltes Badezimmer" loading="lazy" width="1200" height="1500"></span>
+      </a>
+      <a class="leistung auf" data-verzug="3" href="leistungen.html#dach" data-bild="img/leistung-dach.jpg">
+        <span class="nr">04</span>
+        <h3>Dachgeschoss &amp; Aufstockung</h3>
+        <p>Neuer Wohnraum, wo bisher Dachboden war. Statik, Dachstuhl, Dämmung, Fenster, Ausbau.</p>
+        <span class="pfeil">→</span>
+        <span class="leistung-bild"><img src="img/leistung-dach.jpg" alt="Dachstuhl aus Holz" loading="lazy" width="1200" height="1500"></span>
+      </a>
+    </div>
+  </div>
+  <!-- Kein src: sonst löst ein leeres src eine Anfrage auf die Seite selbst aus.
+       Die Quelle setzt js/site.js beim ersten Überfahren einer Zeile. -->
+  <div class="leistung-vorschau" id="leistung-vorschau" aria-hidden="true"><img alt=""></div>
+</section>
+
+<!-- ============================ ZAHLEN ============================ -->
+<section class="hell" id="zahlen" aria-label="Kennzahlen">
+  <div class="wrap">
+    <div class="zahlen">
+      <div class="auf">Über <b data-zahl="140" data-suffix="">140</b><span>sanierte Objekte</span></div>
+      <div class="auf" data-verzug="1"><b data-zahl="12">12</b><span>koordinierte Gewerke</span></div>
+      <div class="auf" data-verzug="2"><b data-zahl="1">1</b><span>Ansprechpartner je Objekt</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FÜR WEN WIR BAUEN (Vorschau 2) ===================== -->
+<!-- Ersetzt die Ja/Nein-Abgrenzung. Drei Kundensituationen sagen, wofür SBS Bau
+     die Richtigen sind. Was nicht angeboten wird, steht als ein Satz am Fuß.
+     Der harte Filter bleibt im Anfrage-Funnel (anfrage.html), wo er hingehört. -->
+<section class="abschnitt fuerwen dunkel" id="abgrenzung">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Für wen wir bauen</span>
+        <h2 style="margin-top:18px">Für wen wir bauen.</h2>
+      </div>
+      <p class="lead auf" data-verzug="1">
+        Wir übernehmen ganze Bauabschnitte mit Leistungsverzeichnis, Bauzeitenplan und Festpreis.
+        Drei Situationen, in denen das passt:
+      </p>
+    </div>
+
+    <div class="fuerwen-raster">
+      <a class="fuerwen-karte auf" href="leistungen.html#komplettsanierung">
+        <span class="nr">01</span>
+        <span class="rolle">Eigentümer</span>
+        <h3>Sie übernehmen ein ganzes Haus <em>oder eine ganze Einheit.</em></h3>
+        <p>
+          Geerbt, gekauft oder seit Jahrzehnten bewohnt. Wir entkernen den Bestand und geben
+          ihn schlüsselfertig zurück: Statik, Leitungen, Dach, Bäder, Ausbau. Auch eine
+          einzelne Etage, ein Dachgeschoss oder ein Bad, wenn es komplett gemacht wird.
+        </p>
+        <span class="kennzahl"><span>ab <span data-cfg="mindestvolumen">50.000 €</span></span><span>3 Wochen bis 11 Monate</span></span>
+        <span class="weiter" aria-hidden="true">→</span>
+      </a>
+
+      <a class="fuerwen-karte auf" data-verzug="1" href="leistungen.html#innenausbau">
+        <span class="nr">02</span>
+        <span class="rolle">Vermieter &amp; Verwalter</span>
+        <h3>Mehrere Einheiten, <em>ein Bauzeitenplan.</em></h3>
+        <p>
+          Energetische Sanierung, Bäder in mehreren Wohnungen, Etagen im Leerstand. Wir planen
+          die Reihenfolge so, dass Mieter bleiben können. Freitags bekommen Sie den Stand
+          mit Fotos. Eine Rechnung, ein Ansprechpartner.
+        </p>
+        <span class="kennzahl"><span>ab 2 Einheiten</span><span>1 Ansprechpartner für alle Gewerke</span></span>
+        <span class="weiter" aria-hidden="true">→</span>
+      </a>
+
+      <a class="fuerwen-karte auf" data-verzug="2" href="leistungen.html#innenausbau">
+        <span class="nr">03</span>
+        <span class="rolle">Praxen, Büros, Betriebe</span>
+        <h3>Ein Eröffnungstermin, <em>der hält.</em></h3>
+        <p>
+          Umbau bei pausiertem oder laufendem Betrieb, Brand- und Schallschutz nach Konzept,
+          Abnahme mit Protokoll. Der Eröffnungstermin steht im Vertrag. Wir richten die Gewerke danach aus.
+        </p>
+        <span class="kennzahl"><span>ab 150 m²</span><span>Festpreis und Fixtermin</span></span>
+        <span class="weiter" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="fuerwen-fuss auf">
+      <span class="marke">Nicht bei uns</span>
+      <p>
+        Einzelne Reparaturen, Montagen und Notdienste übernehmen wir nicht. Dafür vermittelt die
+        <a href="https://www.hwk-saarland.de/" rel="noopener" target="_blank">Handwerkskammer des Saarlandes</a>
+        schnell den passenden Betrieb in Ihrer Nähe.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================== PROJEKTE =========================== -->
+<section class="abschnitt hell" id="projekte">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Referenzen</span>
+        <h2 style="margin-top:18px">Vorher. Nachher.</h2>
+      </div>
+      <p class="lead auf" data-verzug="1">
+        Ziehen Sie den Regler. Links der Bestand bei Übernahme, rechts das Objekt
+        bei der Schlüsselübergabe.
+      </p>
+    </div>
+
+    <figure class="auf" style="margin:0">
+      <div class="vn" data-vn>
+        <img class="vorher" src="img/p1-vorher.jpg" alt="Wohnraum im Bestand vor der Sanierung" loading="lazy" width="1500" height="1000">
+        <img class="nachher" src="img/p1-nachher.jpg" alt="Derselbe Wohnraum nach der Komplettsanierung" loading="lazy" width="1500" height="1000">
+        <span class="vn-etikett links">Bestand</span>
+        <span class="vn-etikett rechts">Übergabe</span>
+        <span class="vn-griff" aria-hidden="true"></span>
+        <input type="range" min="0" max="100" value="50" aria-label="Vergleich Bestand und Übergabe verschieben">
+      </div>
+      <figcaption class="projekt-kopf">
+        <h3>Komplettsanierung Einfamilienhaus, Baujahr 1968</h3>
+        <span class="projekt-ort">Homburg</span>
+      </figcaption>
+      <div class="projekt-daten">
+        <span>Wohnfläche <b>186 m²</b></span>
+        <span>Bauzeit <b>7 Monate</b></span>
+        <span>Gewerke <b>11</b></span>
+        <span>Umfang <b>Kernsanierung inkl. Dach</b></span>
+      </div>
+    </figure>
+
+    <div class="projekt-raster drei" style="margin-top:clamp(36px,4vw,64px)">
+      <a class="projekt auf" href="projekte.html#p2">
+        <div class="projekt-bild">
+          <span class="projekt-marke">Bad komplett</span>
+          <img src="img/p2-nachher.jpg" alt="Fertiggestelltes Badezimmer mit Doppelwaschtisch" loading="lazy" width="1500" height="1000">
+        </div>
+        <div class="projekt-kopf"><h3>Zwei Bäder, ein Zeitfenster</h3><span class="projekt-ort">Blieskastel</span></div>
+        <div class="projekt-daten"><span>Bauzeit <b>6 Wochen</b></span><span>Gewerke <b>6</b></span></div>
+      </a>
+      <a class="projekt auf" data-verzug="1" href="projekte.html#p3">
+        <div class="projekt-bild">
+          <span class="projekt-marke">Innenausbau</span>
+          <img src="img/p3-nachher.jpg" alt="Heller Flur nach dem Innenausbau" loading="lazy" width="1500" height="1000">
+        </div>
+        <div class="projekt-kopf"><h3>Bürofläche auf zwei Etagen</h3><span class="projekt-ort">Zweibrücken</span></div>
+        <div class="projekt-daten"><span>Fläche <b>640 m²</b></span><span>Bauzeit <b>4 Monate</b></span></div>
+      </a>
+      <a class="projekt auf" data-verzug="2" href="projekte.html#p4">
+        <div class="projekt-bild">
+          <span class="projekt-marke">Dachgeschoss</span>
+          <img src="img/p4-nachher.jpg" alt="Ausgebautes Dachgeschoss mit sichtbaren Balken" loading="lazy" width="1500" height="1000">
+        </div>
+        <div class="projekt-kopf"><h3>Aus Dachboden wird Wohnung</h3><span class="projekt-ort">St. Ingbert</span></div>
+        <div class="projekt-daten"><span>Fläche <b>94 m²</b></span><span>Bauzeit <b>5 Monate</b></span></div>
+      </a>
+    </div>
+
+    <p style="margin-top:38px" class="auf">
+      <a class="btn btn-linie" href="projekte.html">Alle Projekte ansehen <span class="pfeil">→</span></a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ ABLAUF ============================ -->
+<section class="abschnitt hell" id="ablauf" style="padding-top:0">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Ablauf</span>
+        <h2 style="margin-top:18px">So läuft es ab.</h2>
+      </div>
+      <p class="lead auf" data-verzug="1">
+        Vor dem ersten Bautag liegen Leistungsverzeichnis, Bauzeitenplan und Festpreis auf dem Tisch.
+      </p>
+    </div>
+
+    <ol class="ablauf">
+      <li class="auf"><span class="nr">01</span><h3>Ortstermin</h3><p>Zwei Stunden vor Ort, mit dem Bauleiter, der später auch die Baustelle führt. Kostenfrei.</p></li>
+      <li class="auf" data-verzug="1"><span class="nr">02</span><h3>Konzept &amp; Festpreis</h3><p>Leistungsverzeichnis, Bauzeitenplan, Festpreis. Nachträge nur, wenn Sie sie beauftragen.</p></li>
+      <li class="auf" data-verzug="2"><span class="nr">03</span><h3>Bauphase</h3><p>Alle Gewerke laufen über uns. Wöchentlicher Bautagebuch-Eintrag mit Fotos für Sie.</p></li>
+      <li class="auf" data-verzug="3"><span class="nr">04</span><h3>Abnahme</h3><p>Gemeinsame Begehung, Protokoll, Restpunkte mit Termin. Keine offenen Gewerke.</p></li>
+      <li class="auf" data-verzug="4"><span class="nr">05</span><h3>Gewährleistung</h3><p>Derselbe Bauleiter bleibt Ihr Ansprechpartner, auch nach der Abnahme.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ ZITAT ============================ -->
+<section class="abschnitt hell" id="zitat" style="padding-top:0">
+  <div class="wrap">
+    <figure class="zitat">
+      <div class="zitat-bild auf"><img src="img/team.jpg" alt="Bauleiter auf einer Baustelle" loading="lazy" width="1600" height="1000"></div>
+      <div class="auf" data-verzug="1">
+        <!-- NAME EINSETZEN: Zitat nur mit Vor- und Nachname des Bauleiters veröffentlichen -->
+        <blockquote>„Wer ein ganzes Haus saniert, will nicht mit zwölf Firmen telefonieren.
+          Er will einen Namen, eine Nummer und einen Termin, der hält.“</blockquote>
+        <figcaption>Bauleitung · <span data-cfg="rechtsform">SBS Bau GmbH</span></figcaption>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ REGION ============================ -->
+<section class="abschnitt hell" id="region" style="padding-top:0">
+  <div class="wrap">
+    <div class="region">
+      <div class="auf">
+        <span class="marke">Einsatzgebiet</span>
+        <h2 style="margin:18px 0 20px">Wir bauen im<br>Saarpfalz-Kreis.</h2>
+        <p class="lead">
+          Innerhalb von <span data-cfg="radius">40 km</span> ist der Bauleiter in einer
+          halben Stunde auf der Baustelle. Das hält die Bauzeiten, auch wenn ein Gewerk
+          kurzfristig etwas braucht.
+        </p>
+        <ul class="orte">
+          <li class="kern">Homburg</li><li class="kern">Blieskastel</li><li class="kern">St. Ingbert</li>
+          <li class="kern">Bexbach</li><li class="kern">Kirkel</li><li class="kern">Mandelbachtal</li>
+          <li class="kern">Gersheim</li><li>Neunkirchen</li><li>Zweibrücken</li><li>Saarbrücken</li>
+        </ul>
+      </div>
+      <div class="region-bild auf" data-verzug="1">
+        <img src="img/region.jpg" alt="Wohnstraße im Saarpfalz-Kreis aus der Vogelperspektive" loading="lazy" width="1200" height="1500">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= CTA ============================= -->
+<section class="abschnitt cta dunkel" id="kontakt">
+  <div class="wrap cta-innen">
+    <div class="auf">
+      <span class="marke">Projektanfrage</span>
+      <h2 style="margin:18px 0 22px">Erzählen Sie uns <em>vom Objekt.</em></h2>
+      <p class="lead" style="max-width:46ch">
+        Fünf Fragen, zwei Minuten. Danach wissen beide Seiten, ob es passt.
+      </p>
+      <div class="hero-knoepfe" style="margin-top:32px">
+        <a class="btn btn-gross" href="anfrage.html">Projektanfrage starten <span class="pfeil">→</span></a>
+        <a class="btn btn-linie btn-gross" href="#" data-cfg-href="tel"><span data-cfg="telefonText">06841 / 000 00 00</span></a>
+      </div>
+    </div>
+    <ul class="mono-liste auf" data-verzug="1">
+      <li><b>Antwort</b><span>binnen zwei Werktagen</span></li>
+      <li><b>Ortstermin</b><span>kostenfrei, mit Bauleiter</span></li>
+      <li><b>Ab</b><span><span data-cfg="mindestvolumen">50.000 €</span> Projektvolumen</span></li>
+      <li><b>Zeiten</b><span data-cfg="zeiten">Mo–Do 7–16 Uhr</span></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <b data-cfg="name">SBS Bau</b>
+        <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
+          <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
+          <li><span data-cfg="strasse">Musterstraße 1</span></li>
+          <li><span data-cfg="plzOrt">66424 Homburg</span></li>
+          <li><span data-cfg="zeiten">Mo–Do 7–16 Uhr</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Seiten</h4>
+        <ul>
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="projekte.html">Projekte</a></li>
+          <li><a href="anfrage.html">Projektanfrage</a></li>
+          <li><a href="intern.html">Projektverwaltung (Vorschau)</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span data-cfg="jahr">2026</span> <span data-cfg="rechtsform">SBS Bau GmbH</span></span>
+      <span>Demo-Website · Beispielinhalte, Beispielbilder</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/bauzeitenplan.js"></script>
+</body>
+</html>
