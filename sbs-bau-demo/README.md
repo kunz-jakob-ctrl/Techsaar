@@ -155,3 +155,21 @@ durch einen **zeitgesteuerten Bauzeitenplan** ersetzt ist. Das Original bleibt u
 - **Prüfhilfe:** `?plan=0.6` friert den Plan auf diesem Stand ein.
 - **Übernehmen:** `index.vorschau.html` nach `index.html` kopieren; `js/bauszene.js` und der
   Bauszene-Block in `css/bereiche.css` werden dann nicht mehr gebraucht.
+
+## Vorschau 2: „Für wen wir bauen“ statt Ja/Nein-Liste (2026-09-11)
+
+`index.vorschau2.html` baut auf Vorschau 1 auf (Bauzeitenplan bleibt) und ersetzt die Sektion
+„Wofür Sie uns anrufen sollten und wofür nicht“ durch drei Kundensituationen:
+Eigentümer (ganzes Haus oder ganze Einheit), Vermieter und Verwalter (mehrere Einheiten),
+Praxen/Büros/Betriebe (fester Eröffnungstermin). Jede Karte verlinkt auf den passenden
+Leistungsbereich. Das Nein steht nur noch als ein Satz am Fuß („Nicht bei uns“) mit Hinweis
+auf die Handwerkskammer des Saarlandes, ohne Minus-Raster und ohne den „Arroganz“-Absatz.
+
+- **Warum:** Aus Kundensicht (Eigentümer, Vermieter, Praxis, junge Familie, Kleinauftrag)
+  sagte die Startseite an vier Stellen Nein. Die Liste traf mit „kurzfristige Zwischentermine“
+  und „Stundenbasis“ auch Wunschkunden. Der harte Filter bleibt im Anfrage-Funnel.
+- **Dateien:** `index.vorschau2.html`, `css/fuerwen.css`. Kein neues JavaScript.
+- **Unverändert:** Hero-Kennzahl „ab 50.000 €“, Leistungsseite (Rubrik „Grenzen“),
+  Anfrage-Sackgassen, Sektions-ID `abgrenzung` (Anker bleiben gültig).
+- Beide Varianten sind im Gespräch nebeneinander zeigbar: `index.vorschau.html` mit der
+  Ja/Nein-Liste, `index.vorschau2.html` mit der positiven Fassung.
