@@ -23,7 +23,7 @@
   font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer-hell);
 }
 .fuerwen-karte .rolle{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl-dunkel);
   margin-top:-6px;
 }
 .fuerwen-karte h3{font-size:clamp(1.45rem,2vw,1.9rem);line-height:1.12;margin-top:4px}
@@ -37,7 +37,7 @@
 .fuerwen-karte .kennzahl span{white-space:nowrap}
 .fuerwen-karte .weiter{
   position:absolute;right:clamp(22px,2.4vw,34px);top:clamp(26px,3vw,40px);
-  font-family:var(--mono);font-size:13px;color:var(--stahl);
+  font-family:var(--mono);font-size:13px;color:var(--stahl-dunkel);
   transition:transform .28s var(--weich),color .28s var(--weich);
 }
 .fuerwen-karte:hover .weiter{transform:translateX(4px);color:var(--kupfer-hell)}
@@ -48,7 +48,7 @@
   display:grid;gap:10px 40px;grid-template-columns:1fr;align-items:baseline;
 }
 @media(min-width:900px){.fuerwen-fuss{grid-template-columns:auto 1fr}}
-.fuerwen-fuss .marke{color:var(--stahl)}
+.fuerwen-fuss .marke{color:var(--stahl-dunkel)}
 .fuerwen-fuss .marke::before{opacity:.4}
 .fuerwen-fuss p{margin:0;color:var(--nebel);font-size:15.5px;max-width:72ch}
 .fuerwen-fuss a{color:var(--nebel-hell);text-decoration:underline;text-decoration-color:var(--kupfer);text-underline-offset:3px}

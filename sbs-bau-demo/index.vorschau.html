@@ -144,65 +144,65 @@ const CONFIG = {
       </div>
 
       <ol class="plan-zeilen">
-        <li tabindex="0" data-von="1" data-bis="2" data-kurz="Bestand" style="--von:1;--bis:2">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-01" data-von="1" data-bis="2" data-kurz="Bestand" style="--von:1;--bis:2">
           <span class="gewerk"><b>01</b><span class="gewerk-lang">Bestand &amp; Statik</span><span class="gewerk-kurz">Bestand</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Aufmaß, Statiker, Feuchte- und Schadstoffprüfung. Wir wissen, was uns erwartet, bevor der erste Schlag fällt.</span>
+          <span class="gewerk-info" id="gewerk-info-01" role="note">Aufmaß, Statiker, Feuchte- und Schadstoffprüfung. Wir wissen, was uns erwartet, bevor der erste Schlag fällt.</span>
         </li>
-        <li tabindex="0" data-von="2" data-bis="4" data-kurz="Entkernung" style="--von:2;--bis:4">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-02" data-von="2" data-bis="4" data-kurz="Entkernung" style="--von:2;--bis:4">
           <span class="gewerk"><b>02</b><span class="gewerk-lang">Entkernung</span><span class="gewerk-kurz">Entkernung</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Rückbau bis auf den tragenden Kern, Entsorgung mit Nachweis. Container und Gerüst stehen ab Tag 1.</span>
+          <span class="gewerk-info" id="gewerk-info-02" role="note">Rückbau bis auf den tragenden Kern, Entsorgung mit Nachweis. Container und Gerüst stehen ab Tag 1.</span>
         </li>
-        <li tabindex="0" data-von="4" data-bis="7" data-kurz="Rohbau" style="--von:4;--bis:7">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-03" data-von="4" data-bis="7" data-kurz="Rohbau" style="--von:4;--bis:7">
           <span class="gewerk"><b>03</b><span class="gewerk-lang">Rohbau &amp; Durchbrüche</span><span class="gewerk-kurz">Rohbau</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Grundrissänderungen, Unterzüge, neue Öffnungen. Der Statiker nimmt jeden Durchbruch ab.</span>
+          <span class="gewerk-info" id="gewerk-info-03" role="note">Grundrissänderungen, Unterzüge, neue Öffnungen. Der Statiker nimmt jeden Durchbruch ab.</span>
         </li>
-        <li tabindex="0" data-von="6" data-bis="9" data-kurz="Dach" style="--von:6;--bis:9">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-04" data-von="6" data-bis="9" data-kurz="Dach" style="--von:6;--bis:9">
           <span class="gewerk"><b>04</b><span class="gewerk-lang">Dach &amp; Zimmerer</span><span class="gewerk-kurz">Dach</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Dachstuhl prüfen, verstärken, eindecken. Ab hier ist das Haus wieder dicht.</span>
+          <span class="gewerk-info" id="gewerk-info-04" role="note">Dachstuhl prüfen, verstärken, eindecken. Ab hier ist das Haus wieder dicht.</span>
         </li>
-        <li tabindex="0" data-von="9" data-bis="10" data-kurz="Fenster" style="--von:9;--bis:10">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-05" data-von="9" data-bis="10" data-kurz="Fenster" style="--von:9;--bis:10">
           <span class="gewerk"><b>05</b><span class="gewerk-lang">Fenster &amp; Außentüren</span><span class="gewerk-kurz">Fenster</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Neue Fenster in den fertigen Laibungen, Abdichtung nach RAL. Danach kann innen gearbeitet werden.</span>
+          <span class="gewerk-info" id="gewerk-info-05" role="note">Neue Fenster in den fertigen Laibungen, Abdichtung nach RAL. Danach kann innen gearbeitet werden.</span>
         </li>
-        <li tabindex="0" data-von="8" data-bis="11" data-kurz="Elektro" style="--von:8;--bis:11">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-06" data-von="8" data-bis="11" data-kurz="Elektro" style="--von:8;--bis:11">
           <span class="gewerk"><b>06</b><span class="gewerk-lang">Elektro Rohinstallation</span><span class="gewerk-kurz">Elektro</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Schlitze, Leerrohre, Verteiler. Netzwerk und Ladepunkt gleich mit, statt später nachzurüsten.</span>
+          <span class="gewerk-info" id="gewerk-info-06" role="note">Schlitze, Leerrohre, Verteiler. Netzwerk und Ladepunkt gleich mit, statt später nachzurüsten.</span>
         </li>
-        <li tabindex="0" data-von="8" data-bis="12" data-kurz="Sanitär/Heizung" style="--von:8;--bis:12">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-07" data-von="8" data-bis="12" data-kurz="Sanitär/Heizung" style="--von:8;--bis:12">
           <span class="gewerk"><b>07</b><span class="gewerk-lang">Sanitär &amp; Heizung roh</span><span class="gewerk-kurz">Sanitär/Heizung</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Neue Leitungen, Wärmepumpe oder Kessel, Fußbodenheizung. Läuft parallel zum Elektriker, ein Bauleiter koordiniert.</span>
+          <span class="gewerk-info" id="gewerk-info-07" role="note">Neue Leitungen, Wärmepumpe oder Kessel, Fußbodenheizung. Läuft parallel zum Elektriker, ein Bauleiter koordiniert.</span>
         </li>
-        <li tabindex="0" data-von="11" data-bis="15" data-kurz="Trockenbau" style="--von:11;--bis:15">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-08" data-von="11" data-bis="15" data-kurz="Trockenbau" style="--von:11;--bis:15">
           <span class="gewerk"><b>08</b><span class="gewerk-lang">Trockenbau</span><span class="gewerk-kurz">Trockenbau</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Ständerwände, Vorsatzschalen, Decken, Schall- und Brandschutz. Unsere eigene Kolonne, kein Zubringer.</span>
+          <span class="gewerk-info" id="gewerk-info-08" role="note">Ständerwände, Vorsatzschalen, Decken, Schall- und Brandschutz. Unsere eigene Kolonne, kein Zubringer.</span>
         </li>
-        <li tabindex="0" data-von="15" data-bis="17" data-kurz="Estrich" style="--von:15;--bis:17">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-09" data-von="15" data-bis="17" data-kurz="Estrich" style="--von:15;--bis:17">
           <span class="gewerk"><b>09</b><span class="gewerk-lang">Estrich</span><span class="gewerk-kurz">Estrich</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Estrich einbringen und trocknen lassen. Die Trockenzeit steht im Plan, damit niemand zu früh fliest.</span>
+          <span class="gewerk-info" id="gewerk-info-09" role="note">Estrich einbringen und trocknen lassen. Die Trockenzeit steht im Plan, damit niemand zu früh fliest.</span>
         </li>
-        <li tabindex="0" data-von="18" data-bis="22" data-kurz="Fliesen, Bad" style="--von:18;--bis:22">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-10" data-von="18" data-bis="22" data-kurz="Fliesen, Bad" style="--von:18;--bis:22">
           <span class="gewerk"><b>10</b><span class="gewerk-lang">Fliesen &amp; Bäder</span><span class="gewerk-kurz">Fliesen, Bad</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Abdichtung nach DIN 18534, Fliesen, Sanitärobjekte, Möbel, Licht. Ein Bad, sechs Gewerke, ein Termin.</span>
+          <span class="gewerk-info" id="gewerk-info-10" role="note">Abdichtung nach DIN 18534, Fliesen, Sanitärobjekte, Möbel, Licht. Ein Bad, sechs Gewerke, ein Termin.</span>
         </li>
-        <li tabindex="0" data-von="21" data-bis="25" data-kurz="Maler, Böden" style="--von:21;--bis:25">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-11" data-von="21" data-bis="25" data-kurz="Maler, Böden" style="--von:21;--bis:25">
           <span class="gewerk"><b>11</b><span class="gewerk-lang">Maler &amp; Böden</span><span class="gewerk-kurz">Maler, Böden</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Spachteln bis Q4, streichen, Böden legen. Erst wenn kein Gewerk mehr staubt.</span>
+          <span class="gewerk-info" id="gewerk-info-11" role="note">Spachteln bis Q4, streichen, Böden legen. Erst wenn kein Gewerk mehr staubt.</span>
         </li>
-        <li tabindex="0" data-von="25" data-bis="28" data-kurz="Endmontage" style="--von:25;--bis:28">
+        <li tabindex="0" role="button" aria-expanded="false" aria-controls="gewerk-info-12" data-von="25" data-bis="28" data-kurz="Endmontage" style="--von:25;--bis:28">
           <span class="gewerk"><b>12</b><span class="gewerk-lang">Endmontage &amp; Abnahme</span><span class="gewerk-kurz">Endmontage</span></span>
           <span class="spur"><i></i></span>
-          <span class="gewerk-info" role="note">Schalter, Armaturen, Türen, Reinigung. Gemeinsame Begehung mit Protokoll, Restpunkte mit Termin.</span>
+          <span class="gewerk-info" id="gewerk-info-12" role="note">Schalter, Armaturen, Türen, Reinigung. Gemeinsame Begehung mit Protokoll, Restpunkte mit Termin.</span>
         </li>
         <i class="plan-cursor" aria-hidden="true"></i>
       </ol>
@@ -489,7 +489,7 @@ const CONFIG = {
         <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
       </div>
       <div>
-        <h4>Kontakt</h4>
+        <h2 class="fuss-titel">Kontakt</h2>
         <ul>
           <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
           <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
@@ -499,7 +499,7 @@ const CONFIG = {
         </ul>
       </div>
       <div>
-        <h4>Seiten</h4>
+        <h2 class="fuss-titel">Seiten</h2>
         <ul>
           <li><a href="leistungen.html">Leistungen</a></li>
           <li><a href="projekte.html">Projekte</a></li>

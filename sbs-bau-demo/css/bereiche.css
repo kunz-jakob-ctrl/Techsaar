@@ -32,7 +32,7 @@
   display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
   padding:9px 0;border-top:1px solid var(--linie-dunkel);
   font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--stahl);transition:color .3s var(--weich);
+  color:var(--stahl-dunkel);transition:color .3s var(--weich);
 }
 .phasen li:last-child{border-bottom:1px solid var(--linie-dunkel)}
 .phasen li b{font-weight:500;font-size:10px;opacity:.6}
@@ -62,9 +62,9 @@
 .szene-buehne.hell-szene{color:var(--tinte)}
 .szene-buehne.hell-szene .szene-titel{color:var(--tinte)}
 .szene-buehne.hell-szene .szene-info{color:var(--tinte-weich)}
-.szene-buehne.hell-szene .marke{color:var(--kupfer)}
+.szene-buehne.hell-szene .marke{color:var(--kupfer-text-hell)}
 .szene-buehne.hell-szene .phasen li{border-color:var(--linie-hell);color:var(--tinte-weich)}
-.szene-buehne.hell-szene .phasen li.aktiv{color:var(--kupfer)}
+.szene-buehne.hell-szene .phasen li.aktiv{color:var(--kupfer-text-hell)}
 .szene-buehne.hell-szene .szene-balken{background:var(--linie-hell)}
 .szene-buehne.hell-szene .szene-balken i{background:var(--kupfer)}
 
@@ -87,7 +87,7 @@
   .leistung .pfeil{grid-area:pfeil;justify-self:end}
   .leistung .leistung-bild{grid-area:bild}
 }
-.leistung .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer)}
+.leistung .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer-text-hell)}
 .leistung h3{transition:transform .4s var(--weich)}
 .leistung p{margin:0;color:var(--tinte-weich);font-size:15.5px}
 .leistung .pfeil{font-family:var(--mono);font-size:18px;color:var(--tinte-weich);transition:transform .4s var(--weich)}
@@ -126,8 +126,8 @@
 .abgrenzung ul{list-style:none;margin:0;padding:0;display:grid;gap:13px}
 .abgrenzung li{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:baseline;font-size:16px}
 .abgrenzung li i{font-style:normal;font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--kupfer-hell)}
-.abgrenzung .nein li i{color:var(--stahl)}
-.abgrenzung .nein li{color:var(--stahl)}
+.abgrenzung .nein li i{color:var(--stahl-dunkel)}
+.abgrenzung .nein li{color:var(--stahl-dunkel)}
 .abgrenzung-fuss{margin-top:26px;padding-top:22px;border-top:1px solid var(--linie-dunkel);color:var(--nebel);font-size:15.5px}
 
 /* ---------- Projektkarten ---------- */
@@ -185,7 +185,7 @@
 .ablauf{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--linie-hell);border-block:1px solid var(--linie-hell)}
 @media(min-width:980px){.ablauf{grid-template-columns:repeat(5,1fr)}}
 .ablauf li{background:var(--papier);padding:clamp(24px,2.6vw,34px) clamp(18px,2vw,26px);position:relative}
-.ablauf .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer);display:block;margin-bottom:16px}
+.ablauf .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer-text-hell);display:block;margin-bottom:16px}
 .ablauf h3{font-size:1.35rem;margin-bottom:10px}
 .ablauf p{margin:0;font-size:15px;color:var(--tinte-weich)}
 
@@ -197,7 +197,7 @@
   font-family:var(--mono);font-size:12px;letter-spacing:.08em;
   border:1px solid var(--linie-hell);padding:8px 14px;border-radius:2px;color:var(--tinte-weich);
 }
-.orte li.kern{border-color:var(--kupfer);color:var(--kupfer)}
+.orte li.kern{border-color:var(--kupfer);color:var(--kupfer-text-hell)}
 .region-bild{aspect-ratio:3/4;overflow:hidden;border-radius:2px}
 .region-bild img{width:100%;height:100%;object-fit:cover}
 
@@ -207,7 +207,7 @@
 .zitat-bild{aspect-ratio:1/1;overflow:hidden;border-radius:2px;background:var(--beton-700)}
 .zitat-bild img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) contrast(1.05)}
 .zitat blockquote{margin:0;font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.16;letter-spacing:-.015em}
-.zitat figcaption{margin-top:24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--stahl)}
+.zitat figcaption{margin-top:24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--stahl-hell)}
 
 /* ---------- Aufforderung ---------- */
 .cta{background:var(--beton-900);color:var(--nebel-hell);position:relative;overflow:hidden}
@@ -223,7 +223,8 @@
 .fuss{background:var(--beton-900);color:var(--nebel);border-top:1px solid var(--linie-dunkel);padding-block:clamp(50px,6vw,84px) 34px}
 .fuss-raster{display:grid;gap:34px;grid-template-columns:1fr}
 @media(min-width:760px){.fuss-raster{grid-template-columns:1.4fr 1fr 1fr}}
-.fuss h4{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl);margin-bottom:16px}
+/* Spaltentitel sind semantisch h2 (kein Sprung von h2 auf h4), optisch bleibt es die kleine Mono-Zeile */
+.fuss h4,.fuss .fuss-titel{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.16em;line-height:1.25;text-transform:uppercase;color:var(--stahl-dunkel);margin-bottom:16px}
 .fuss ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .fuss a{text-decoration:none;font-size:15px;transition:color .25s}
 .fuss a:hover{color:var(--kupfer-hell)}
@@ -232,7 +233,7 @@
 .fuss-unten{
   margin-top:clamp(36px,5vw,60px);padding-top:22px;border-top:1px solid var(--linie-dunkel);
   display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;
-  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--stahl);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--stahl-dunkel);
 }
 
 /* ---------- Demo-Hinweis ---------- */
@@ -242,7 +243,7 @@
      "Ansicht · Beispielinhalte und" wurde "Ansicht· Beispielinhalteund".
      Mit line-height sitzt der Text genauso mittig. */
   position:fixed;top:0;left:0;right:0;height:var(--band);line-height:var(--band);
-  background:var(--kupfer);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  background:var(--kupfer-tief);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
   text-align:center;padding:0 14px;z-index:130;
   white-space:nowrap;overflow:hidden;
 }
@@ -261,4 +262,4 @@
 .mono-liste li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--linie-hell)}
 .dunkel .mono-liste li{border-color:var(--linie-dunkel)}
 .mono-liste b{font-weight:500;color:var(--tinte-weich)}
-.dunkel .mono-liste b{color:var(--stahl)}
+.dunkel .mono-liste b{color:var(--stahl-dunkel)}

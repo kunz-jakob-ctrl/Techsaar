@@ -63,11 +63,15 @@
       document.body.style.overflow = auf ? "hidden" : "";
       schalter.setAttribute("aria-expanded", auf ? "true" : "false");
       schalter.setAttribute("aria-label", auf ? "Menü schließen" : "Menü öffnen");
+      // Geschlossen ist das Menü nur per clip-path unsichtbar; inert nimmt die Links
+      // zusätzlich aus Tab-Reihenfolge und Screenreader.
+      if (auf) feld.removeAttribute("inert"); else feld.setAttribute("inert", "");
       // Verzögertes Einlaufen der Zeilen
       feld.querySelectorAll("a").forEach(function (a, i) {
         a.style.transitionDelay = auf ? (0.09 + i * 0.055).toFixed(2) + "s" : "0s";
       });
     }
+    feld.setAttribute("inert", "");   // Startzustand: geschlossen
     schalter.addEventListener("click", function () {
       setzen(!document.body.classList.contains("menue-offen"));
     });

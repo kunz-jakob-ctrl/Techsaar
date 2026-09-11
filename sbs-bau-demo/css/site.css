@@ -13,7 +13,9 @@
   --beton-800:#151719;
   --beton-700:#1D2023;
   --beton-600:#2A2E32;
-  --stahl:#6E747A;
+  --stahl:#6E747A;          /* Linien, Rahmen; als Textfarbe nur noch die zwei Varianten darunter */
+  --stahl-dunkel:#8A9097;   /* Kleintext auf dunklem Grund: 5,95:1 auf beton-900 */
+  --stahl-hell:#5F656D;     /* Kleintext auf hellem Grund: 5,22:1 auf papier, 4,60:1 auf papier-2 */
   --nebel:#A9AEB3;
   --nebel-hell:#D6D8DA;
 
@@ -25,6 +27,8 @@
 
   --kupfer:#A96A34;
   --kupfer-hell:#D39B62;
+  --kupfer-tief:#96592A;      /* gefüllte Flächen mit weißem Text: 5,59:1 */
+  --kupfer-text-hell:#8F5526; /* Kupfer als Kleintext auf Papier: 5,33:1 */
 
   --linie-dunkel:rgba(243,241,237,.14);
   --linie-hell:rgba(20,22,26,.14);
@@ -72,7 +76,7 @@ section{position:relative}
   display:inline-flex;align-items:center;gap:.7em;
 }
 .marke::before{content:"";width:26px;height:1px;background:currentColor;opacity:.65}
-.hell .marke{color:var(--kupfer)}
+.hell .marke{color:var(--kupfer-text-hell)}
 
 h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;margin:0}
 h1{font-size:clamp(2.9rem,7.4vw,6.4rem);line-height:.96}
@@ -84,7 +88,8 @@ h1 em,h2 em,h3 em{font-style:italic;color:var(--kupfer-hell)}
 p{margin:0 0 1.1em}
 .lead{font-size:clamp(1.05rem,1.5vw,1.28rem);line-height:1.6;color:var(--nebel)}
 .hell .lead{color:var(--tinte-weich)}
-.klein{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--stahl)}
+.klein{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--stahl-dunkel)}
+.hell .klein{color:var(--stahl-hell)}
 
 .abschnitt{padding-block:clamp(76px,10vw,150px)}
 .abschnitt-kopf{display:grid;gap:26px;grid-template-columns:1fr;margin-bottom:clamp(40px,5vw,72px)}
@@ -94,14 +99,14 @@ p{margin:0 0 1.1em}
 
 /* ---------- Schaltflaechen ---------- */
 .btn{
-  --bg:var(--kupfer);--fg:#fff;--bd:var(--kupfer);
+  --bg:var(--kupfer-tief);--fg:#fff;--bd:var(--kupfer-tief);
   display:inline-flex;align-items:center;gap:.7em;padding:15px 26px;
   background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:2px;
   font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
   text-decoration:none;cursor:pointer;transition:.28s var(--weich);
   transition-property:background,color,border-color,transform;
 }
-.btn:hover{transform:translateY(-2px);--bg:var(--kupfer-hell);--bd:var(--kupfer-hell)}
+.btn:hover{transform:translateY(-2px);--bg:var(--kupfer);--bd:var(--kupfer)}
 .btn .pfeil{transition:transform .28s var(--weich)}
 .btn:hover .pfeil{transform:translateX(4px)}
 .btn-linie{--bg:transparent;--fg:currentColor;--bd:var(--linie-dunkel)}
@@ -138,7 +143,7 @@ p{margin:0 0 1.1em}
 .nav a:hover{opacity:1}
 .nav a:hover::after,.nav a[aria-current="page"]::after{width:100%}
 .nav a[aria-current="page"]{opacity:1;color:var(--kupfer-hell)}
-.kopf.fest .nav a[aria-current="page"]{color:var(--kupfer)}
+.kopf.fest .nav a[aria-current="page"]{color:var(--kupfer-text-hell)}
 
 .kopf-cta{display:none}
 @media(min-width:1040px){.kopf-cta{display:inline-flex}}
@@ -157,9 +162,12 @@ body.menue-offen .menue-schalter i:nth-child(2){width:26px;transform:translateY(
   position:fixed;inset:var(--band) 0 0;z-index:105;background:var(--beton-900);color:var(--nebel-hell);
   display:flex;flex-direction:column;justify-content:center;gap:6px;
   padding:110px var(--rand) 44px;
-  clip-path:inset(0 0 100% 0);transition:clip-path .55s var(--weich);
+  /* Geschlossen zusätzlich unsichtbar (visibility) und per JS inert, damit die Links
+     nicht per Tab erreichbar sind; die Verzögerung erhält die Ausblendanimation. */
+  clip-path:inset(0 0 100% 0);visibility:hidden;
+  transition:clip-path .55s var(--weich),visibility 0s .55s;
 }
-body.menue-offen .menue{clip-path:inset(0 0 0 0)}
+body.menue-offen .menue{clip-path:inset(0 0 0 0);visibility:visible;transition-delay:0s}
 .menue a{
   font-family:var(--serif);font-size:clamp(1.9rem,7.5vw,3rem);text-decoration:none;
   color:var(--nebel-hell);padding-block:5px;border-bottom:1px solid var(--linie-dunkel);
@@ -167,8 +175,8 @@ body.menue-offen .menue{clip-path:inset(0 0 0 0)}
   opacity:0;transform:translateY(18px);transition:opacity .4s var(--weich),transform .4s var(--weich);
 }
 body.menue-offen .menue a{opacity:1;transform:none}
-.menue a em{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.16em;color:var(--stahl)}
-.menue-fuss{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--mono);font-size:12px;color:var(--stahl)}
+.menue a em{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.16em;color:var(--stahl-dunkel)}
+.menue-fuss{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--mono);font-size:12px;color:var(--stahl-dunkel)}
 .menue-fuss a{font-family:var(--mono);font-size:12px;border:0;padding:0;color:var(--kupfer-hell);opacity:1;transform:none;display:inline}
 
 /* ---------- Hero ---------- */
@@ -201,12 +209,12 @@ body.menue-offen .menue a{opacity:1;transform:none}
   .hero-daten div:first-child{padding-left:0}
   .hero-daten div+div{border-left:1px solid var(--linie-dunkel)}
 }
-.hero-daten dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl);margin-bottom:7px}
+.hero-daten dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl-dunkel);margin-bottom:7px}
 .hero-daten dd{margin:0;font-family:var(--serif);font-size:clamp(1.25rem,2.2vw,1.7rem);color:var(--papier)}
 
 .scroll-hinweis{
   position:absolute;right:var(--rand);bottom:34px;z-index:3;display:none;
-  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--stahl);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--stahl-dunkel);
   writing-mode:vertical-rl;align-items:center;gap:12px;
 }
 @media(min-width:1040px){.scroll-hinweis{display:flex}}

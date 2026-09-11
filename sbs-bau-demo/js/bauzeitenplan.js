@@ -100,19 +100,29 @@
   /* ------------------------------------------------------------------ */
   /* Anbindung                                                           */
   /* ------------------------------------------------------------------ */
-  // Erklärung je Gewerk: auf Touch-Geräten per Antippen auf- und zuklappen
+  // Erklärung je Gewerk: auf Touch-Geräten per Antippen auf- und zuklappen.
+  // aria-expanded läuft synchron zur Klasse .offen (Zeilen sind role="button").
+  function alleSchliessen() {
+    zeilen.forEach(function (x) {
+      x.classList.remove("offen");
+      x.setAttribute("aria-expanded", "false");
+    });
+  }
   zeilen.forEach(function (li) {
     li.addEventListener("click", function () {
       var offen = li.classList.contains("offen");
-      zeilen.forEach(function (x) { x.classList.remove("offen"); });
-      if (!offen) li.classList.add("offen");
+      alleSchliessen();
+      if (!offen) {
+        li.classList.add("offen");
+        li.setAttribute("aria-expanded", "true");
+      }
     });
     li.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); li.click(); }
     });
   });
   document.addEventListener("click", function (e) {
-    if (!e.target.closest(".plan-zeilen li")) zeilen.forEach(function (x) { x.classList.remove("offen"); });
+    if (!e.target.closest(".plan-zeilen li")) alleSchliessen();
   });
 
   // Prüfhilfe für Screenshots

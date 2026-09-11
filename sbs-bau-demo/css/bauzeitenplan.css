@@ -13,7 +13,7 @@ section[id]{scroll-margin-top:calc(var(--band) + 84px)}
 .plan-huelle{
   --plan-fg:var(--nebel-hell);
   --plan-weich:var(--nebel);
-  --plan-stahl:var(--stahl);
+  --plan-stahl:var(--stahl-dunkel);
   --plan-linie:var(--linie-dunkel);
   --plan-raster:rgba(243,241,237,.07);
   --plan-balken:#8E959C;
@@ -35,7 +35,7 @@ section[id]{scroll-margin-top:calc(var(--band) + 84px)}
   --plan-raster:rgba(20,22,26,.07);
   --plan-balken:#8A8479;
   --plan-balken-fertig:var(--tinte);
-  --plan-akzent:var(--kupfer);
+  --plan-akzent:var(--kupfer-text-hell);
   background:var(--papier);
 }
 .plan-huelle .marke{color:var(--plan-akzent);transition:color .9s var(--weich)}

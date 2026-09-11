@@ -59,11 +59,11 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 @media(min-width:620px){.feld-paar{grid-template-columns:1fr 1fr;gap:20px}}
 
 /* Fehlerzeile unter Pflichtfeldern (Text setzt anfrage.js) */
-.feld .fehler{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.45;color:var(--kupfer)}
+.feld .fehler{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.45;color:var(--kupfer-text-hell)}
 .feld.ungueltig input,.feld.ungueltig textarea,.feld.ungueltig select{border-color:var(--kupfer)}
 
 .schalt{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:8px}
-.zurueck{background:none;border:0;padding:8px 0;cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tinte-weich)}
+.zurueck{background:none;border:0;padding:8px 0;min-height:44px;cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tinte-weich)}
 .zurueck:hover{color:var(--tinte)}
 
 /* Profilspalte */
@@ -73,19 +73,19 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 }
 @media(min-width:1000px){.profil{position:sticky;top:calc(var(--band) + 92px)}}
 .profil h3{font-size:1.25rem;margin-bottom:4px}
-.profil .klein{margin-bottom:20px;display:block}
+.profil .klein{margin-bottom:20px;display:block;color:var(--stahl-dunkel)}  /* dunkler Kasten in heller Sektion */
 .profil dl{margin:0;display:grid;gap:0}
-.profil dt{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--stahl);padding-top:13px}
+.profil dt{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--stahl-dunkel);padding-top:13px}
 .profil dd{margin:0 0 13px;padding-bottom:13px;border-bottom:1px solid var(--linie-dunkel);font-size:15.5px}
-.profil dd.leer{color:var(--stahl)}
-.profil .fuss{margin-top:20px;font-size:13.5px;color:var(--stahl);line-height:1.55}
+.profil dd.leer{color:var(--stahl-dunkel)}
+.profil .fuss{margin-top:20px;font-size:13.5px;color:var(--stahl-dunkel);line-height:1.55}
 
 /* Ergebnis */
 .ergebnis{border:1px solid var(--linie-hell);border-radius:2px;padding:clamp(26px,3.4vw,44px);background:#fff}
 .ergebnis.abgelehnt{background:var(--papier-2)}
 .ergebnis .zeichen{
   width:52px;height:52px;border-radius:50%;display:grid;place-items:center;margin-bottom:22px;
-  font-family:var(--mono);font-size:20px;color:#fff;background:var(--kupfer);
+  font-family:var(--mono);font-size:20px;color:#fff;background:var(--kupfer-tief);
 }
 .ergebnis.abgelehnt .zeichen{background:var(--tinte-weich)}
 .ergebnis h2{margin-bottom:14px}
@@ -99,7 +99,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .zusammenfassung b{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tinte-weich)}
 /* Sackgasse: Rückruf-Zeile und Verweise */
 .ergebnis .rueckruf{margin-top:18px;font-size:15.5px;color:var(--tinte-weich)}
-.ergebnis .rueckruf a{font-family:var(--mono);font-size:14px;letter-spacing:.04em;color:var(--kupfer);text-decoration:none;white-space:nowrap}
+.ergebnis .rueckruf a{font-family:var(--mono);font-size:14px;letter-spacing:.04em;color:var(--kupfer-text-hell);text-decoration:none;white-space:nowrap}
 .ergebnis .rueckruf a:hover{text-decoration:underline;text-underline-offset:3px}
 .ergebnis .hinweis-kasten a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--kupfer)}
 .ergebnis .hinweis-kasten a:hover{color:var(--tinte)}
@@ -107,7 +107,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- Projektseite: Filter und Detailfenster ---------- */
 .filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:clamp(30px,3.4vw,48px)}
 .filter button{
-  border:1px solid var(--linie-hell);background:none;border-radius:2px;padding:10px 18px;cursor:pointer;
+  border:1px solid var(--linie-hell);background:none;border-radius:2px;padding:10px 18px;min-height:44px;cursor:pointer;
   font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinte-weich);
   transition:.25s var(--weich);transition-property:border-color,color,background;
 }
@@ -146,11 +146,11 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .stube-kopf .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .stube-marke{display:flex;align-items:baseline;gap:12px}
 .stube-marke b{font-family:var(--serif);font-size:22px;font-weight:400}
-.stube-marke span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--stahl)}
+.stube-marke span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--stahl-dunkel)}
 
 .anmeldung{max-width:400px;margin:clamp(60px,12vh,120px) auto;padding-inline:var(--rand)}
 .anmeldung .feld input{background:var(--beton-800);border-color:var(--linie-dunkel);color:var(--nebel-hell);width:100%}
-.anmeldung .feld > label{color:var(--stahl)}
+.anmeldung .feld > label{color:var(--stahl-dunkel)}
 
 .stube-raster{display:grid;gap:clamp(22px,3vw,44px);grid-template-columns:1fr;padding-block:clamp(30px,4vw,56px)}
 @media(min-width:980px){.stube-raster{grid-template-columns:300px minmax(0,1fr)}}
@@ -163,13 +163,13 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .stube-liste button:hover{background:var(--beton-800);color:var(--nebel-hell)}
 .stube-liste button[aria-current="true"]{border-left-color:var(--kupfer);background:var(--beton-800);color:var(--nebel-hell)}
 .stube-liste .titel{display:block;font-family:var(--serif);font-size:1.15rem}
-.stube-liste .meta{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stahl);margin-top:3px}
+.stube-liste .meta{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stahl-dunkel);margin-top:3px}
 
 .stube-karte{border:1px solid var(--linie-dunkel);border-radius:2px;padding:clamp(20px,2.6vw,32px)}
 .stube-karte + .stube-karte{margin-top:20px}
 .stube-karte h2{font-size:1.5rem;margin-bottom:18px}
 .stube .feld input,.stube .feld select,.stube .feld textarea{background:var(--beton-800);border-color:var(--linie-dunkel);color:var(--nebel-hell)}
-.stube .feld > label{color:var(--stahl)}
+.stube .feld > label{color:var(--stahl-dunkel)}
 
 /* Ablagefläche für Fotos */
 .ablage{
@@ -178,7 +178,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 }
 .ablage:hover,.ablage.bereit{border-color:var(--kupfer);background:rgba(169,106,52,.07)}
 .ablage b{display:block;font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:6px}
-.ablage span{font-size:14.5px;color:var(--stahl)}
+.ablage span{font-size:14.5px;color:var(--stahl-dunkel)}
 
 .bilder{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);margin-top:20px}
 @media(min-width:700px){.bilder{grid-template-columns:repeat(4,1fr)}}
@@ -204,7 +204,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 
 /* Meldung unten rechts */
 .meldung{
-  position:fixed;right:20px;bottom:20px;z-index:160;background:var(--kupfer);color:#fff;
+  position:fixed;right:20px;bottom:20px;z-index:160;background:var(--kupfer-tief);color:#fff;
   padding:15px 22px;border-radius:2px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;
   opacity:0;transform:translateY(14px);transition:.35s var(--weich);pointer-events:none;max-width:min(92vw,420px);
 }
