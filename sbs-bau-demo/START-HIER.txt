@@ -65,7 +65,8 @@ WICHTIG: WAS NOCH NICHT STIMMT
 Alle veraenderlichen Angaben stehen im CONFIG-Block oben in jeder HTML-Datei.
 
   - Anschrift, Telefon, E-Mail, Oeffnungszeiten sind Platzhalter.
-  - Die Kennzahlen (140 Objekte, 12 Gewerke) sind erfunden.
+  - Die Kennzahlen (ueber 140 Objekte, bis zu 12 Gewerke) stammen von SBS Bau;
+    Zeitraum/Quelle vor Veroeffentlichung ergaenzen.
   - Mindestvolumen 50.000 EUR und Radius 40 km sind GERATEN und stehen sehr
     prominent auf der Seite. Muss mit den Geschaeftsfuehrern abgestimmt werden.
   - Alle Projekte und Fotos sind Beispiele (Unsplash).

@@ -64,7 +64,7 @@ section[id]{scroll-margin-top:calc(var(--band) + 84px)}
 .plan-fakten{margin:24px 0 0;display:grid;grid-template-columns:repeat(3,auto);gap:8px 28px;justify-content:start}
 .plan-fakten div{display:grid;gap:4px}
 .plan-fakten dt{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--plan-stahl);transition:color .9s var(--weich)}
-.plan-fakten dd{margin:0;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.7rem);line-height:1;color:var(--plan-fg);transition:color .9s var(--weich)}
+.plan-fakten dd{margin:0;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.7rem);line-height:1;white-space:nowrap;color:var(--plan-fg);transition:color .9s var(--weich)} /* "28 Wochen" bleibt auf der Grundlinie von "12" und "1" */
 
 .plan-nochmal{
   margin-top:26px;background:none;border:0;padding:0;cursor:pointer;
@@ -224,3 +224,7 @@ li:focus-visible .gewerk{color:var(--plan-akzent)}
 @media(prefers-reduced-motion:reduce){
   .plan-huelle,.plan-huelle *{transition:none !important}
 }
+
+/* Zwischen 980 und 1199 px ist die Planspalte schmal: Das Haus-Emblem würde
+   die Bautagebuch-Zeile überdecken, deshalb dort nur das Emblem zeigen. */
+@media(min-width:980px) and (max-width:1199px){.plan-tagebuch-text{display:none}}

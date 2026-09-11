@@ -115,7 +115,9 @@
 @media(min-width:760px){.zahlen{grid-template-columns:repeat(3,1fr)}}
 .zahlen div{background:var(--papier);padding:clamp(24px,3.4vw,44px) clamp(16px,2vw,28px)}
 .zahlen b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,4rem);line-height:1;letter-spacing:-.02em}
-.zahlen span{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--tinte-weich)}
+.zahlen div > span{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--tinte-weich)}
+/* Vorsatz "Über" in der Zahlenzeile, damit die Serifen-Zahl auf gleicher Grundlinie wie die Nachbarn bleibt */
+.zahlen b small{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;vertical-align:middle;margin-right:.3em;color:var(--tinte-weich)}
 
 /* ---------- Abgrenzung: was wir machen / was nicht ---------- */
 .abgrenzung{background:var(--beton-900);color:var(--nebel-hell)}

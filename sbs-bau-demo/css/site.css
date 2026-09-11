@@ -56,6 +56,7 @@ a{color:inherit}
 button,input,select,textarea{font:inherit;color:inherit}
 button{-webkit-appearance:none;appearance:none}
 :focus-visible{outline:2px solid var(--kupfer-hell);outline-offset:3px}
+.hell :focus-visible,.plan-huelle.fertig :focus-visible{outline-color:var(--kupfer)} /* auf Papier 3,88:1 statt 2,16:1 */
 ::selection{background:var(--kupfer);color:#fff}
 
 /* Feine Koernung ueber der ganzen Seite - nimmt Farbflaechen das Digitale */

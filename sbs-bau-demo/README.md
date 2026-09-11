@@ -105,7 +105,7 @@ Mit `PLATZHALTER` markiert sind:
 
 Ebenfalls offen:
 
-- Alle **Kennzahlen** auf der Startseite (140 Objekte, 12 Gewerke, seit …) sind erfunden.
+- Die **Kennzahlen** (über 140 Objekte, bis zu 12 Gewerke) stammen von SBS Bau; Zeitraum/Quelle vor Veröffentlichung ergänzen.
 - Alle **Projekte** in `js/projekte-daten.js` sind Beispiele, Bilder von Unsplash.
   Sobald SBS Bau eigene Fotos liefert, in `img/` ablegen und die Datei anpassen.
 - **Rechtstexte** sind Platzhalter und müssen geprüft werden.
@@ -173,3 +173,21 @@ auf die Handwerkskammer des Saarlandes, ohne Minus-Raster und ohne den „Arroga
   Anfrage-Sackgassen, Sektions-ID `abgrenzung` (Anker bleiben gültig).
 - Beide Varianten sind im Gespräch nebeneinander zeigbar: `index.vorschau.html` mit der
   Ja/Nein-Liste, `index.vorschau2.html` mit der positiven Fassung.
+
+## Vorschau 3 und Qualitätsrunde (2026-09-11)
+
+`index.vorschau3.html` baut auf Vorschau 2 auf und schärft die Texte: Hero, Leistungen,
+Kennzahlen, Ablauf und Kontakt sind im Ton der Bauleitung geschrieben (kurz, konkret, ohne
+Werbevokabular). Die kursiven Pointen stehen nur noch an drei Stellen: Hero, Bauzeitenplan,
+Kontakt. Im Zahlenband steht „Über 140“ in einer Zeile mit gleicher Grundlinie wie „12“ und „1“.
+
+Vier Qualitätsfixes gelten für alle Seiten:
+
+- **Leistungsliste mobil:** Nummer, Titel und Text per `grid-template-areas` geordnet, kein
+  Umbruch mehr zwischen Nummer und Titel (`css/bereiche.css`).
+- **Anfrage-Funnel gehärtet:** eigene Weiter-Knöpfe je Schritt, Fehlerzeile bei fehlender
+  Auswahl, Sackgassen mit Telefonnummer (`anfrage.html`, `js/anfrage.js`, `css/module.css`).
+- **Kontrast und ARIA:** neue Tokens `--stahl-dunkel`, `--stahl-hell`, `--kupfer-tief`,
+  `--kupfer-text-hell` in `css/site.css`; Footer-Titel als `h2.fuss-titel`; Planzeilen im
+  Bauzeitenplan mit ARIA-Beschriftung; geschlossenes Mobilmenü ist `inert`.
+- **Fokusring:** auf hellem Grund `--kupfer` statt `--kupfer-hell` (3,88:1 statt 2,16:1).
