@@ -78,6 +78,15 @@
 @media(min-width:900px){
   .leistung{grid-template-columns:88px minmax(0,1fr) minmax(0,1fr) auto;align-items:center;gap:30px}
 }
+/* Unter 900px: Nummer und Pfeil in einer Zeile, darunter Titel, Text und Bild jeweils volle Breite */
+@media(max-width:899px){
+  .leistung{grid-template-areas:"nr pfeil" "titel titel" "text text" "bild bild"}
+  .leistung .nr{grid-area:nr}
+  .leistung h3{grid-area:titel}
+  .leistung p{grid-area:text}
+  .leistung .pfeil{grid-area:pfeil;justify-self:end}
+  .leistung .leistung-bild{grid-area:bild}
+}
 .leistung .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer)}
 .leistung h3{transition:transform .4s var(--weich)}
 .leistung p{margin:0;color:var(--tinte-weich);font-size:15.5px}
