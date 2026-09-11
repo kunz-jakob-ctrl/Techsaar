@@ -133,14 +133,37 @@
   huelle.classList.remove("ohne-js");
   setzen(0);
 
+  var gestartet = false;
+  function starten() {
+    if (gestartet) return;
+    gestartet = true;
+    beobachter.disconnect();
+    window.removeEventListener("scroll", pruefen);
+    abspielen();
+  }
+
   var beobachter = new IntersectionObserver(function (eintraege) {
-    eintraege.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      beobachter.unobserve(e.target);
-      abspielen();
-    });
+    eintraege.forEach(function (e) { if (e.isIntersecting) starten(); });
   }, { threshold: 0.35 });
   beobachter.observe(huelle);
+
+  // Rückfallebene: Manche eingebetteten Browser liefern den Observer erst mit
+  // dem nächsten Bild oder gar nicht. Deshalb zusätzlich beim Scrollen die
+  // Lage selbst prüfen: Sobald mindestens ein Drittel der Sektion im Bild ist,
+  // geht es los.
+  var offen = false;
+  function messen() {
+    offen = false;
+    if (gestartet) return;
+    var r = huelle.getBoundingClientRect();
+    var hoehe = window.innerHeight || document.documentElement.clientHeight;
+    var sichtbar = Math.min(r.bottom, hoehe) - Math.max(r.top, 0);
+    if (sichtbar > 0 && sichtbar / Math.min(r.height, hoehe) >= 0.35) starten();
+  }
+  function pruefen() { if (!offen) { offen = true; requestAnimationFrame(messen); } }
+  window.addEventListener("scroll", pruefen, { passive: true });
+  window.addEventListener("resize", pruefen);
+  setTimeout(messen, 400);        // falls die Seite schon mitten in der Sektion öffnet
 
   if (nochmal) nochmal.addEventListener("click", abspielen);
 })();
