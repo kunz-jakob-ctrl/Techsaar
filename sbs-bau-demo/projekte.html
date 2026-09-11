@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projekte · SBS Bau</title>
+<meta name="description" content="Referenzprojekte von SBS Bau: Komplettsanierungen, Bäder, Innenausbau, Dachgeschossausbau und Gewerbeobjekte im Saarpfalz-Kreis — mit Vorher/Nachher-Vergleich.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/module.css">
+<script>
+const CONFIG = {
+  name:"SBS Bau", rechtsform:"SBS Bau GmbH",
+  strasse:"Musterstraße 1", plzOrt:"66424 Homburg",
+  telefon:"+49 6841 0000000", telefonText:"06841 / 000 00 00",
+  mail:"bauleitung@sbs-bau.de", zeiten:"Mo–Do 7–16 Uhr · Fr 7–13 Uhr",
+  radius:"40 km", mindestvolumen:"50.000 €", jahr:new Date().getFullYear(),
+};
+</script>
+</head>
+<body>
+
+<div class="demo-band"><b>Demo-Ansicht</b> · Beispielprojekte<span class="band-lang"> mit Beispielbildern</span></div>
+<div class="fortschritt" id="fortschritt" aria-hidden="true"></div>
+
+<header class="kopf" id="kopf">
+  <div class="wrap kopf-innen">
+    <a class="logo" href="index.html"><b data-cfg="name">SBS Bau</b><span>Saarpfalz-Kreis</span></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="leistungen.html">Leistungen</a>
+      <a href="projekte.html" aria-current="page">Projekte</a>
+      <a href="index.html#ablauf">Ablauf</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-linie kopf-cta" href="anfrage.html">Projekt anfragen <span class="pfeil">→</span></a>
+    <button class="menue-schalter" id="menue-schalter" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue"><i></i><i></i></button>
+  </div>
+</header>
+
+<nav class="menue" id="menue" aria-label="Menü">
+  <a href="leistungen.html">Leistungen <em>01</em></a>
+  <a href="projekte.html">Projekte <em>02</em></a>
+  <a href="index.html#ablauf">Ablauf <em>03</em></a>
+  <a href="anfrage.html">Projektanfrage <em>04</em></a>
+  <a href="index.html#kontakt">Kontakt <em>05</em></a>
+  <div class="menue-fuss">
+    <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+    <span data-cfg="zeiten">Mo–Do 7–16 Uhr</span>
+  </div>
+</nav>
+
+<main>
+
+<section class="seitenkopf">
+  <div class="wrap">
+    <span class="marke">Referenzen</span>
+    <h1>Objekte, die wir <em>ganz übernommen haben.</em></h1>
+    <p class="lead">
+      Jedes Projekt mit Eckdaten, Bauzeit und Gewerken — und mit dem Vergleich
+      zwischen Übernahme und Übergabe. Auf ein Projekt tippen für die Details.
+    </p>
+  </div>
+</section>
+
+<section class="abschnitt hell">
+  <div class="wrap">
+    <div class="filter" id="filter" role="group" aria-label="Projekte filtern">
+      <button type="button" data-kategorie="" aria-pressed="true">Alle</button>
+      <!-- weitere Filter werden aus den Projektdaten ergänzt -->
+    </div>
+
+    <div class="projekt-raster drei" id="projekt-raster">
+      <noscript><p class="lead">Die Projektübersicht benötigt JavaScript. Rufen Sie uns gern an — wir schicken Ihnen Referenzen als PDF.</p></noscript>
+    </div>
+
+    <div class="hinweis-kasten" style="margin-top:48px;max-width:70ch">
+      <b>Für das Gespräch:</b> Diese Projekte stehen in einer Datei, die die Bauleitung
+      selbst pflegt. Neue Objekte werden über die
+      <a href="intern.html" style="color:var(--kupfer)">Projektverwaltung</a> angelegt —
+      Fotos hochladen, Vorher/Nachher zuordnen, veröffentlichen. Ohne Agentur, ohne Wartezeit.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Detailfenster -->
+<div class="fenster" id="fenster" role="dialog" aria-modal="true" aria-label="Projektdetails">
+  <div class="fenster-blatt">
+    <button type="button" class="fenster-zu" aria-label="Schließen">✕</button>
+    <div class="fenster-blatt-inhalt"></div>
+  </div>
+</div>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <b data-cfg="name">SBS Bau</b>
+        <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
+          <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
+          <li><span data-cfg="strasse">Musterstraße 1</span></li>
+          <li><span data-cfg="plzOrt">66424 Homburg</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Seiten</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="anfrage.html">Projektanfrage</a></li>
+          <li><a href="intern.html">Projektverwaltung (Vorschau)</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span data-cfg="jahr">2026</span> <span data-cfg="rechtsform">SBS Bau GmbH</span></span>
+      <span>Demo-Website · Beispielinhalte, Beispielbilder</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/projekte-daten.js"></script>
+<script src="js/projekte.js"></script>
+</body>
+</html>

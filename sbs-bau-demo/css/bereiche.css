@@ -1,0 +1,255 @@
+/* =========================================================================
+   SBS BAU - Abschnitte der Startseite und wiederkehrende Bausteine
+   ========================================================================= */
+
+/* ---------- Bauszene: gepinnte Scroll-Sequenz ---------- */
+/* Die Szene liegt in einer hohen Huelle; der Buehnenbereich klebt darin fest.
+   Der Scrollfortschritt wird in js/bauszene.js zu t (0..1) verrechnet.      */
+.szene-huelle{position:relative;background:var(--beton-900)}
+.szene-buehne{
+  position:sticky;top:var(--band);height:calc(100svh - var(--band));overflow:hidden;
+  display:flex;align-items:center;
+  background:var(--beton-900);
+  transition:background .1s linear;
+}
+.szene-raster{
+  width:100%;max-width:var(--breite);margin-inline:auto;padding-inline:var(--rand);
+  display:grid;gap:26px;grid-template-columns:1fr;align-items:center;
+}
+@media(min-width:980px){
+  .szene-raster{grid-template-columns:minmax(240px,.62fr) minmax(0,1.6fr);gap:56px}
+}
+
+.szene-text .marke{margin-bottom:18px}
+.szene-titel{font-family:var(--serif);font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.04;margin:0 0 14px}
+.szene-info{color:var(--nebel);max-width:38ch;font-size:15.5px;min-height:4.4em}
+@media(max-width:979px){.szene-info{min-height:5.6em;font-size:14.5px}}
+
+/* Phasenliste */
+.phasen{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:0}
+@media(max-width:979px){.phasen{display:none}}
+.phasen li{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
+  padding:9px 0;border-top:1px solid var(--linie-dunkel);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--stahl);transition:color .3s var(--weich);
+}
+.phasen li:last-child{border-bottom:1px solid var(--linie-dunkel)}
+.phasen li b{font-weight:500;font-size:10px;opacity:.6}
+.phasen li.aktiv{color:var(--kupfer-hell)}
+.phasen li.fertig{color:var(--nebel)}
+
+/* Fortschrittsbalken der Szene (auch mobil sichtbar) */
+.szene-balken{margin-top:22px;height:2px;background:var(--linie-dunkel);position:relative;overflow:hidden}
+.szene-balken i{position:absolute;inset:0 auto 0 0;width:0;background:var(--kupfer-hell)}
+
+.szene-bild{position:relative}
+.szene-bild svg{width:100%;height:auto;display:block;overflow:visible}
+.szene-fallback{display:none;padding:40px 0}
+
+/* Ohne JavaScript (Klasse steht im HTML und wird von js/bauszene.js entfernt)
+   und bei reduzierter Bewegung laeuft die Szene ohne Pinnung. */
+.szene-huelle.statisch,.szene-huelle.ohne-js{height:auto !important}
+.szene-huelle.statisch .szene-buehne,
+.szene-huelle.ohne-js .szene-buehne{position:static;height:auto;padding-block:clamp(60px,9vw,110px)}
+.szene-huelle.ohne-js #szene,
+.szene-huelle.ohne-js .phasen,
+.szene-huelle.ohne-js .szene-balken{display:none}
+.szene-huelle.ohne-js .szene-fallback{display:block}
+.szene-huelle.ohne-js .szene-info{min-height:0}
+
+/* Letzte Phase: die Buehne kippt ins Helle und uebergibt an den hellen Teil */
+.szene-buehne.hell-szene{color:var(--tinte)}
+.szene-buehne.hell-szene .szene-titel{color:var(--tinte)}
+.szene-buehne.hell-szene .szene-info{color:var(--tinte-weich)}
+.szene-buehne.hell-szene .marke{color:var(--kupfer)}
+.szene-buehne.hell-szene .phasen li{border-color:var(--linie-hell);color:var(--tinte-weich)}
+.szene-buehne.hell-szene .phasen li.aktiv{color:var(--kupfer)}
+.szene-buehne.hell-szene .szene-balken{background:var(--linie-hell)}
+.szene-buehne.hell-szene .szene-balken i{background:var(--kupfer)}
+
+/* ---------- Leistungen als redaktionelle Liste ---------- */
+.leistungsliste{border-top:1px solid var(--linie-hell)}
+.leistung{
+  display:grid;grid-template-columns:auto 1fr;gap:14px 22px;align-items:baseline;
+  padding:clamp(22px,3vw,38px) 0;border-bottom:1px solid var(--linie-hell);
+  text-decoration:none;position:relative;
+}
+@media(min-width:900px){
+  .leistung{grid-template-columns:88px minmax(0,1fr) minmax(0,1fr) auto;align-items:center;gap:30px}
+}
+.leistung .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer)}
+.leistung h3{transition:transform .4s var(--weich)}
+.leistung p{margin:0;color:var(--tinte-weich);font-size:15.5px}
+.leistung .pfeil{font-family:var(--mono);font-size:18px;color:var(--tinte-weich);transition:transform .4s var(--weich)}
+@media(min-width:900px){
+  .leistung:hover h3{transform:translateX(10px)}
+  .leistung:hover .pfeil{transform:translateX(8px)}
+}
+/* Bildvorschau, die dem Zeiger folgt (nur Desktop, nur bei feinem Zeiger) */
+.leistung-vorschau{
+  position:fixed;top:0;left:0;width:280px;height:350px;pointer-events:none;z-index:60;
+  opacity:0;transform:translate(-50%,-50%) scale(.92);transition:opacity .3s var(--weich),transform .45s var(--weich);
+  border-radius:2px;overflow:hidden;box-shadow:0 30px 70px rgba(20,22,26,.28);
+}
+.leistung-vorschau img{width:100%;height:100%;object-fit:cover}
+.leistung-vorschau.sichtbar{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@media(max-width:899px),(pointer:coarse){.leistung-vorschau{display:none}}
+/* Auf Mobil: Bild direkt in der Zeile */
+.leistung-bild{display:block;margin-top:12px;aspect-ratio:16/10;overflow:hidden;border-radius:2px}
+.leistung-bild img{width:100%;height:100%;object-fit:cover}
+@media(min-width:900px){.leistung-bild{display:none}}
+
+/* ---------- Zahlenband ---------- */
+/* Drei Kennzahlen: mobil untereinander, ab Tablet gleichmäßig gedrittelt */
+.zahlen{display:grid;grid-template-columns:1fr;gap:1px;background:var(--linie-hell)}
+@media(min-width:760px){.zahlen{grid-template-columns:repeat(3,1fr)}}
+.zahlen div{background:var(--papier);padding:clamp(24px,3.4vw,44px) clamp(16px,2vw,28px)}
+.zahlen b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,4rem);line-height:1;letter-spacing:-.02em}
+.zahlen span{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--tinte-weich)}
+
+/* ---------- Abgrenzung: was wir machen / was nicht ---------- */
+.abgrenzung{background:var(--beton-900);color:var(--nebel-hell)}
+.abgrenzung-raster{display:grid;gap:1px;background:var(--linie-dunkel);margin-top:clamp(34px,4vw,56px);border:1px solid var(--linie-dunkel)}
+@media(min-width:880px){.abgrenzung-raster{grid-template-columns:1fr 1fr}}
+.abgrenzung-raster > div{background:var(--beton-900);padding:clamp(26px,3.4vw,44px)}
+.abgrenzung h3{margin-bottom:20px}
+.abgrenzung ul{list-style:none;margin:0;padding:0;display:grid;gap:13px}
+.abgrenzung li{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:baseline;font-size:16px}
+.abgrenzung li i{font-style:normal;font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--kupfer-hell)}
+.abgrenzung .nein li i{color:var(--stahl)}
+.abgrenzung .nein li{color:var(--stahl)}
+.abgrenzung-fuss{margin-top:26px;padding-top:22px;border-top:1px solid var(--linie-dunkel);color:var(--nebel);font-size:15.5px}
+
+/* ---------- Projektkarten ---------- */
+.projekt-raster{display:grid;gap:clamp(20px,2.6vw,34px);grid-template-columns:1fr}
+@media(min-width:720px){.projekt-raster{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.projekt-raster.drei{grid-template-columns:repeat(3,1fr)}}
+
+.projekt{
+  display:block;text-decoration:none;color:inherit;background:none;border:0;padding:0;
+  text-align:left;cursor:pointer;width:100%;
+}
+.projekt-bild{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--papier-2);border-radius:2px}
+.projekt-bild img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--weich)}
+.projekt:hover .projekt-bild img{transform:scale(1.045)}
+.projekt-marke{
+  position:absolute;left:14px;top:14px;z-index:2;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  background:rgba(14,15,16,.72);color:var(--papier);padding:6px 11px;border-radius:2px;backdrop-filter:blur(6px);
+}
+.projekt-kopf{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:18px}
+.projekt h3{font-size:clamp(1.3rem,1.8vw,1.65rem)}
+.projekt-ort{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinte-weich);white-space:nowrap}
+.projekt-daten{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:11.5px;color:var(--tinte-weich)}
+.projekt-daten span{display:inline-flex;gap:7px}
+.projekt-daten b{font-weight:500;color:var(--tinte)}
+
+/* ---------- Vorher / Nachher ---------- */
+.vn{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--beton-800);border-radius:2px;touch-action:pan-y;user-select:none}
+.vn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vn .nachher{clip-path:inset(0 0 0 var(--pos,50%))}
+.vn-etikett{
+  position:absolute;bottom:14px;z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;background:rgba(14,15,16,.7);color:var(--papier);padding:6px 11px;border-radius:2px;
+  backdrop-filter:blur(6px);pointer-events:none;
+}
+.vn-etikett.links{left:14px}
+.vn-etikett.rechts{right:14px}
+.vn-griff{
+  position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;background:var(--papier);
+  z-index:4;transform:translateX(-1px);cursor:ew-resize;
+}
+.vn-griff::after{
+  content:"";position:absolute;left:50%;top:50%;width:46px;height:46px;transform:translate(-50%,-50%);
+  border:1px solid var(--papier);border-radius:50%;background:rgba(14,15,16,.45);backdrop-filter:blur(4px);
+}
+.vn-griff::before{
+  content:"< >";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--papier);white-space:nowrap;
+}
+.vn input[type="range"]{
+  position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;z-index:5;cursor:ew-resize;
+}
+
+/* ---------- Ablauf ---------- */
+.ablauf{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--linie-hell);border-block:1px solid var(--linie-hell)}
+@media(min-width:980px){.ablauf{grid-template-columns:repeat(5,1fr)}}
+.ablauf li{background:var(--papier);padding:clamp(24px,2.6vw,34px) clamp(18px,2vw,26px);position:relative}
+.ablauf .nr{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--kupfer);display:block;margin-bottom:16px}
+.ablauf h3{font-size:1.35rem;margin-bottom:10px}
+.ablauf p{margin:0;font-size:15px;color:var(--tinte-weich)}
+
+/* ---------- Region ---------- */
+.region{display:grid;gap:clamp(28px,4vw,60px);grid-template-columns:1fr;align-items:center}
+@media(min-width:900px){.region{grid-template-columns:1.1fr .9fr}}
+.orte{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px;padding:0;list-style:none}
+.orte li{
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;
+  border:1px solid var(--linie-hell);padding:8px 14px;border-radius:2px;color:var(--tinte-weich);
+}
+.orte li.kern{border-color:var(--kupfer);color:var(--kupfer)}
+.region-bild{aspect-ratio:3/4;overflow:hidden;border-radius:2px}
+.region-bild img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- Zitat / Bauleitung ---------- */
+.zitat{display:grid;gap:clamp(28px,4vw,64px);grid-template-columns:1fr;align-items:center}
+@media(min-width:900px){.zitat{grid-template-columns:.85fr 1.15fr}}
+.zitat-bild{aspect-ratio:1/1;overflow:hidden;border-radius:2px;background:var(--beton-700)}
+.zitat-bild img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) contrast(1.05)}
+.zitat blockquote{margin:0;font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.16;letter-spacing:-.015em}
+.zitat figcaption{margin-top:24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--stahl)}
+
+/* ---------- Aufforderung ---------- */
+.cta{background:var(--beton-900);color:var(--nebel-hell);position:relative;overflow:hidden}
+.cta::before{
+  content:"";position:absolute;inset:auto -10% -60% 40%;height:120%;
+  background:radial-gradient(closest-side,rgba(169,106,52,.22),transparent 72%);pointer-events:none;
+}
+.cta-innen{position:relative;z-index:2;display:grid;gap:36px;grid-template-columns:1fr;align-items:end}
+@media(min-width:900px){.cta-innen{grid-template-columns:1.3fr .7fr}}
+.cta h2{max-width:16ch}
+
+/* ---------- Fussbereich ---------- */
+.fuss{background:var(--beton-900);color:var(--nebel);border-top:1px solid var(--linie-dunkel);padding-block:clamp(50px,6vw,84px) 34px}
+.fuss-raster{display:grid;gap:34px;grid-template-columns:1fr}
+@media(min-width:760px){.fuss-raster{grid-template-columns:1.4fr 1fr 1fr}}
+.fuss h4{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl);margin-bottom:16px}
+.fuss ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.fuss a{text-decoration:none;font-size:15px;transition:color .25s}
+.fuss a:hover{color:var(--kupfer-hell)}
+.fuss-marke b{font-family:var(--serif);font-size:30px;font-weight:400;display:block;color:var(--nebel-hell)}
+.fuss-marke p{margin-top:14px;max-width:34ch;font-size:15px}
+.fuss-unten{
+  margin-top:clamp(36px,5vw,60px);padding-top:22px;border-top:1px solid var(--linie-dunkel);
+  display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--stahl);
+}
+
+/* ---------- Demo-Hinweis ---------- */
+.demo-band{
+  /* Bewusst kein Flexbox: Flex macht aus jedem Textstück ein eigenes Element
+     und schneidet dabei die Leerzeichen an dessen Rändern weg — aus
+     "Ansicht · Beispielinhalte und" wurde "Ansicht· Beispielinhalteund".
+     Mit line-height sitzt der Text genauso mittig. */
+  position:fixed;top:0;left:0;right:0;height:var(--band);line-height:var(--band);
+  background:var(--kupfer);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-align:center;padding:0 14px;z-index:130;
+  white-space:nowrap;overflow:hidden;
+}
+.demo-band b{font-weight:500;white-space:nowrap}
+/* Auf schmalen Bildschirmen nur den Kern zeigen, sonst bräche die Leiste
+   in zwei Zeilen und schöbe sich unter die Kopfzeile. */
+@media(max-width:719px){
+  .demo-band{font-size:10px;letter-spacing:.06em}
+  .band-lang{display:none}
+}
+
+/* ---------- Kleinteile ---------- */
+.trenner{height:1px;background:var(--linie-hell);border:0;margin:0}
+.dunkel .trenner{background:var(--linie-dunkel)}
+.mono-liste{list-style:none;margin:0;padding:0;display:grid;gap:11px;font-family:var(--mono);font-size:12.5px;letter-spacing:.05em}
+.mono-liste li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--linie-hell)}
+.dunkel .mono-liste li{border-color:var(--linie-dunkel)}
+.mono-liste b{font-weight:500;color:var(--tinte-weich)}
+.dunkel .mono-liste b{color:var(--stahl)}

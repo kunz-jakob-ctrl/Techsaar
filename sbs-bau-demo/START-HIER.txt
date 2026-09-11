@@ -1,0 +1,76 @@
+SBS BAU - DEMO-WEBSITE
+======================
+
+Demo fuer SBS Bau, ein Bauunternehmen im Saarpfalz-Kreis (Komplettsanierung,
+Trockenbau, Komplettbaeder). Gebaut als Gespraechsgrundlage fuer den Termin.
+
+Der Kunde hatte frueher eine Website und hat sie abgeschaltet, weil Leute
+anriefen, um eine Lampe aufhaengen zu lassen. Die ganze Seite ist darauf
+ausgelegt, das zu verhindern.
+
+
+SO SCHAUST DU ES AN
+-------------------
+
+Am besten mit einem kleinen lokalen Server, im entpackten Ordner:
+
+    npx -y http-server . -p 8136 -c-1
+
+Dann http://localhost:8136 im Browser oeffnen.
+
+index.html laesst sich zwar auch direkt per Doppelklick oeffnen, aber Firefox
+blockiert dann die Schriften aus dem Unterordner fonts/ (file://-Regel).
+In Chrome geht der Doppelklick meistens.
+
+
+WAS DU DIR ANSEHEN SOLLTEST
+---------------------------
+
+1. Startseite, gleich nach dem Hero: die Bauszene.
+   Beim Scrollen baut sich ein Objekt auf - Bestand mit Rissen, Entkernung,
+   Geruest, Dachstuhl, Ziegel fliegen einzeln aufs Dach, Fassade, Uebergabe.
+   Am Ende kippt der Hintergrund von dunkel nach hell und uebergibt in den
+   hellen Teil der Seite. Reines SVG, keine Bibliothek (js/bauszene.js).
+
+2. anfrage.html - die Projektanfrage mit Filter.
+   Fuenf Schritte, rechts fuellt sich das Projektprofil mit. Drei Antworten
+   landen in einer freundlichen Sackgasse statt beim Telefon:
+     - Vorhaben "Einzelne Reparatur oder Montage"
+     - Groessenordnung "unter 50.000 EUR"
+     - Objekt weiter als 40 km entfernt
+   Zum Ausprobieren: Schritt 2, die gestrichelte Kachel anklicken.
+
+3. intern.html - die Projektverwaltung.
+   Anmelden (jede Eingabe funktioniert), Projekt anlegen, Fotos per Drag & Drop
+   reinziehen, je Foto "Bestand" oder "Uebergabe" antippen, veroeffentlichen.
+   Das Projekt steht danach sofort ganz oben auf projekte.html, mit
+   funktionierendem Vorher/Nachher-Regler. Laeuft ohne Server, speichert im
+   localStorage des Browsers.
+
+
+TECHNIK
+-------
+
+Reines HTML, CSS und JavaScript. Kein Build-Schritt, keine Abhaengigkeiten.
+Alle Schriften und Bilder liegen lokal - null Anfragen an Dritte, keine
+Cookies, kein Consent-Banner noetig.
+
+Schrift:  Instrument Serif (Aussagen), Geist (Text), Geist Mono (Daten)
+Farben:   Beton-Anthrazit, warmes Papierweiss, Kupfer als einziger Akzent
+
+
+WICHTIG: WAS NOCH NICHT STIMMT
+------------------------------
+
+Alle veraenderlichen Angaben stehen im CONFIG-Block oben in jeder HTML-Datei.
+
+  - Anschrift, Telefon, E-Mail, Oeffnungszeiten sind Platzhalter.
+  - Die Kennzahlen (140 Objekte, 12 Gewerke) sind erfunden.
+  - Mindestvolumen 50.000 EUR und Radius 40 km sind GERATEN und stehen sehr
+    prominent auf der Seite. Muss mit den Geschaeftsfuehrern abgestimmt werden.
+  - Alle Projekte und Fotos sind Beispiele (Unsplash).
+  - Impressum und Datenschutz sind Platzhalter und ungeprueft.
+
+Mehr Details stehen in README.md, inklusive der Pruef-Parameter
+(?szene=0.62, ?stopp=klein, ?offen=1), mit denen man direkt an eine
+bestimmte Stelle springen kann.

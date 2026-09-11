@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datenschutz · SBS Bau</title>
+<meta name="description" content="Datenschutzhinweise der Demo-Website für SBS Bau.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/module.css">
+<script>
+const CONFIG = {
+  name:"SBS Bau", rechtsform:"SBS Bau GmbH",
+  strasse:"Musterstraße 1", plzOrt:"66424 Homburg",
+  telefon:"+49 6841 0000000", telefonText:"06841 / 000 00 00",
+  mail:"bauleitung@sbs-bau.de", zeiten:"Mo–Do 7–16 Uhr · Fr 7–13 Uhr",
+  radius:"40 km", mindestvolumen:"50.000 €", jahr:new Date().getFullYear(),
+};
+</script>
+</head>
+<body>
+
+<div class="demo-band"><b>Demo-Ansicht</b> · Rechtstexte sind Platzhalter<span class="band-lang"> und vor dem Start zu prüfen</span></div>
+<div class="fortschritt" id="fortschritt" aria-hidden="true"></div>
+
+<header class="kopf" id="kopf">
+  <div class="wrap kopf-innen">
+    <a class="logo" href="index.html"><b data-cfg="name">SBS Bau</b><span>Saarpfalz-Kreis</span></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="leistungen.html">Leistungen</a>
+      <a href="projekte.html">Projekte</a>
+      <a href="index.html#ablauf">Ablauf</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-linie kopf-cta" href="anfrage.html">Projekt anfragen <span class="pfeil">→</span></a>
+    <button class="menue-schalter" id="menue-schalter" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue"><i></i><i></i></button>
+  </div>
+</header>
+
+<nav class="menue" id="menue" aria-label="Menü">
+  <a href="leistungen.html">Leistungen <em>01</em></a>
+  <a href="projekte.html">Projekte <em>02</em></a>
+  <a href="index.html#ablauf">Ablauf <em>03</em></a>
+  <a href="anfrage.html">Projektanfrage <em>04</em></a>
+  <a href="index.html#kontakt">Kontakt <em>05</em></a>
+  <div class="menue-fuss">
+    <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+    <span data-cfg="zeiten">Mo–Do 7–16 Uhr</span>
+  </div>
+</nav>
+
+<main>
+<section class="seitenkopf">
+  <div class="wrap">
+    <span class="marke">Rechtliches</span>
+    <h1>Datenschutz</h1>
+  </div>
+</section>
+
+<section class="abschnitt hell">
+  <div class="wrap recht">
+
+    <div class="hinweis-kasten" style="margin:0 0 34px">
+      <b>Platzhalter.</b> Dieser Text beschreibt den technischen Stand dieser Demo.
+      Vor der Veröffentlichung ist eine an den tatsächlichen Betrieb angepasste
+      Datenschutzerklärung nötig — am besten anwaltlich geprüft.
+    </div>
+
+    <h2>Verantwortlich</h2>
+    <p>
+      <span data-cfg="rechtsform">SBS Bau GmbH</span>,
+      <span data-cfg="strasse">Musterstraße 1</span>,
+      <span data-cfg="plzOrt">66424 Homburg</span>,
+      <a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a>
+    </p>
+
+    <h2>Was diese Website technisch tut</h2>
+    <ul>
+      <li>Alle Schriften, Bilder und Skripte werden vom eigenen Server ausgeliefert.
+          Es werden keine Inhalte von Google Fonts, CDNs oder anderen Drittanbietern nachgeladen.</li>
+      <li>Es werden keine Cookies gesetzt und keine Analyse- oder Werbedienste eingebunden.
+          Deshalb erscheint auch kein Einwilligungsbanner.</li>
+      <li>Die Projektanfrage läuft in dieser Demo ausschließlich im Browser.
+          Es werden keine Daten übertragen oder gespeichert.</li>
+      <li>Die interne Projektverwaltung speichert Eingaben und Bilder ausschließlich lokal
+          im Browser des jeweiligen Geräts. Die Daten verlassen den Rechner nicht.</li>
+    </ul>
+
+    <h2>Server-Logdateien</h2>
+    <p>
+      Der Hoster erhebt beim Abruf der Seiten automatisch Daten in Server-Logfiles
+      (Browsertyp, Betriebssystem, Referrer, Uhrzeit, IP-Adresse). Rechtsgrundlage ist
+      Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einem technisch fehlerfreien
+      und sicheren Betrieb. Die Daten werden nach [X] Tagen gelöscht.
+    </p>
+
+    <h2>Kontaktaufnahme</h2>
+    <p>
+      Wenn Sie uns per Telefon, E-Mail oder über ein Formular kontaktieren, verarbeiten wir
+      Ihre Angaben zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b bzw. f DSGVO).
+      Die Daten bleiben bei uns, bis der Zweck entfällt oder Sie uns zur Löschung auffordern —
+      gesetzliche Aufbewahrungsfristen bleiben unberührt.
+    </p>
+
+    <h2>Ihre Rechte</h2>
+    <p>
+      Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
+      Datenübertragbarkeit und Widerspruch. Außerdem können Sie sich bei der zuständigen
+      Aufsichtsbehörde beschweren: Unabhängiges Datenschutzzentrum Saarland, Saarbrücken.
+    </p>
+  </div>
+</section>
+</main>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <b data-cfg="name">SBS Bau</b>
+        <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
+          <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
+          <li><span data-cfg="strasse">Musterstraße 1</span></li>
+          <li><span data-cfg="plzOrt">66424 Homburg</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Seiten</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="projekte.html">Projekte</a></li>
+          <li><a href="anfrage.html">Projektanfrage</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span data-cfg="jahr">2026</span> <span data-cfg="rechtsform">SBS Bau GmbH</span></span>
+      <span>Demo-Website · Beispielinhalte, Beispielbilder</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+</body>
+</html>

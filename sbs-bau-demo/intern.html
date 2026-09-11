@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projektverwaltung · SBS Bau</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/module.css">
+<script>
+const CONFIG = { name:"SBS Bau", rechtsform:"SBS Bau GmbH", jahr:new Date().getFullYear() };
+</script>
+</head>
+<body class="stube">
+
+<div class="demo-band"><b>Vorschau</b> · nichts wird hochgeladen<span class="band-lang"> · so würde SBS Bau eigene Projekte einpflegen</span></div>
+
+<!-- ------------------------------ Anmeldung ------------------------------ -->
+<section id="anmeldung">
+  <div class="anmeldung">
+    <div class="stube-marke" style="margin-bottom:34px">
+      <b data-cfg="name">SBS Bau</b><span>Projektverwaltung</span>
+    </div>
+    <h1 style="font-size:2rem;margin-bottom:8px">Anmeldung</h1>
+    <p class="klein" style="margin-bottom:28px">
+      Vorschau — jede Eingabe funktioniert. In der echten Fassung mit eigenem Zugang je Mitarbeiter.
+    </p>
+    <form id="anmelde-form">
+      <div class="feld">
+        <label for="benutzer">Benutzer</label>
+        <input type="text" id="benutzer" value="bauleitung" autocomplete="username">
+      </div>
+      <div class="feld">
+        <label for="kennwort">Kennwort</label>
+        <input type="password" id="kennwort" value="demo" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-gross" style="width:100%;justify-content:center">
+        Anmelden <span class="pfeil">→</span>
+      </button>
+    </form>
+    <p style="margin-top:26px"><a href="index.html" class="klein">← Zurück zur Website</a></p>
+  </div>
+</section>
+
+<!-- ----------------------------- Arbeitsbereich ---------------------------- -->
+<div id="arbeitsbereich" hidden>
+
+  <header class="stube-kopf">
+    <div class="wrap">
+      <div class="stube-marke"><b data-cfg="name">SBS Bau</b><span>Projektverwaltung</span></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn-linie" href="projekte.html" target="_blank" rel="noopener">Website ansehen</a>
+        <button type="button" class="btn btn-linie" id="abmelden">Abmelden</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap stube-raster">
+
+    <!-- Projektliste -->
+    <aside>
+      <h2 style="font-size:1.3rem">Projekte</h2>
+      <p class="klein" id="anzahl">0 Objekte</p>
+      <ul class="stube-liste" id="liste"></ul>
+      <button type="button" class="btn" id="neu" style="margin-top:20px;width:100%;justify-content:center">
+        + Neues Projekt
+      </button>
+      <div class="hinweis-kasten">
+        <b style="color:var(--nebel-hell)">Nur in diesem Browser</b><br>
+        Diese Vorschau speichert im Browser des Rechners, auf dem sie geöffnet ist.
+        In der echten Fassung liegen die Daten auf einem Server in Deutschland,
+        mit Zugang für mehrere Mitarbeiter.
+      </div>
+    </aside>
+
+    <!-- Formular -->
+    <div>
+      <div class="stube-karte">
+        <h2 id="karten-titel">Neues Projekt</h2>
+        <form id="projekt-form">
+          <div class="feld-paar">
+            <div class="feld"><label for="titel">Projekttitel</label>
+              <input type="text" id="titel" placeholder="z. B. Komplettsanierung Einfamilienhaus, Baujahr 1972"></div>
+            <div class="feld"><label for="ort">Ort</label>
+              <input type="text" id="ort" placeholder="Homburg"></div>
+          </div>
+          <div class="feld-paar">
+            <div class="feld"><label for="kategorie">Kategorie</label>
+              <select id="kategorie">
+                <option>Komplettsanierung</option><option>Bäder</option><option>Innenausbau</option>
+                <option>Dachgeschoss</option><option>Gewerbe</option>
+              </select></div>
+            <div class="feld"><label for="jahr">Fertigstellung</label>
+              <input type="text" id="jahr" placeholder="2026"></div>
+          </div>
+          <div class="feld-paar">
+            <div class="feld"><label for="flaeche">Fläche</label>
+              <input type="text" id="flaeche" placeholder="186 m²"></div>
+            <div class="feld"><label for="bauzeit">Bauzeit</label>
+              <input type="text" id="bauzeit" placeholder="7 Monate"></div>
+          </div>
+          <div class="feld-paar">
+            <div class="feld"><label for="gewerke">Gewerke</label>
+              <input type="text" id="gewerke" placeholder="11"></div>
+            <div class="feld"><label for="umfang">Umfang</label>
+              <input type="text" id="umfang" placeholder="Kernsanierung inkl. Dach"></div>
+          </div>
+          <div class="feld"><label for="beschreibung">Beschreibung</label>
+            <textarea id="beschreibung" placeholder="Was war der Ausgangszustand, was wurde gemacht, was war besonders?"></textarea></div>
+        </form>
+      </div>
+
+      <div class="stube-karte">
+        <h2>Fotos</h2>
+        <p class="klein" style="margin-bottom:18px">
+          Bilder hierher ziehen oder auswählen. Danach je Bild festlegen, ob es den
+          Bestand oder die Übergabe zeigt — daraus entsteht der Vergleichsregler auf der Website.
+        </p>
+        <div class="ablage" id="ablage" tabindex="0" role="button" aria-label="Fotos auswählen">
+          <b>Fotos hierher ziehen</b>
+          <span>oder klicken zum Auswählen · JPG, PNG · mehrere gleichzeitig möglich</span>
+        </div>
+        <input type="file" id="dateien" accept="image/*" multiple hidden>
+        <div class="bilder" id="bilder"></div>
+      </div>
+
+      <div class="stube-karte">
+        <h2>Veröffentlichen</h2>
+        <p class="klein" style="margin-bottom:20px">
+          Gespeicherte Projekte sind nur intern sichtbar. Erst mit „Veröffentlichen“
+          erscheint das Projekt auf der Website.
+        </p>
+        <div class="schalt">
+          <button type="button" class="btn btn-linie" id="speichern">Entwurf speichern</button>
+          <button type="button" class="btn" id="veroeffentlichen">Veröffentlichen <span class="pfeil">→</span></button>
+          <button type="button" class="zurueck" id="loeschen" style="color:var(--stahl)">Projekt löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="meldung" id="meldung" role="status" aria-live="polite"></div>
+
+<script src="js/site.js"></script>
+<script src="js/intern.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projektanfrage · SBS Bau</title>
+<meta name="description" content="Projektanfrage bei SBS Bau: fünf Fragen zu Objekt, Vorhaben, Umfang und Größenordnung. Danach wissen beide Seiten, ob es passt.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/module.css">
+<script>
+const CONFIG = {
+  name:"SBS Bau", rechtsform:"SBS Bau GmbH",
+  strasse:"Musterstraße 1", plzOrt:"66424 Homburg",
+  telefon:"+49 6841 0000000", telefonText:"06841 / 000 00 00",
+  mail:"bauleitung@sbs-bau.de", zeiten:"Mo–Do 7–16 Uhr · Fr 7–13 Uhr",
+  radius:"40 km", mindestvolumen:"50.000 €", jahr:new Date().getFullYear(),
+};
+</script>
+</head>
+<body>
+
+<div class="demo-band"><b>Demo-Ansicht</b> · wird nicht verschickt<span class="band-lang"> · Beispielinhalte</span></div>
+<div class="fortschritt" id="fortschritt" aria-hidden="true"></div>
+
+<header class="kopf" id="kopf">
+  <div class="wrap kopf-innen">
+    <a class="logo" href="index.html"><b data-cfg="name">SBS Bau</b><span>Saarpfalz-Kreis</span></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="leistungen.html">Leistungen</a>
+      <a href="projekte.html">Projekte</a>
+      <a href="index.html#ablauf">Ablauf</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-linie kopf-cta" href="anfrage.html" aria-current="page">Projekt anfragen <span class="pfeil">→</span></a>
+    <button class="menue-schalter" id="menue-schalter" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue"><i></i><i></i></button>
+  </div>
+</header>
+
+<nav class="menue" id="menue" aria-label="Menü">
+  <a href="leistungen.html">Leistungen <em>01</em></a>
+  <a href="projekte.html">Projekte <em>02</em></a>
+  <a href="index.html#ablauf">Ablauf <em>03</em></a>
+  <a href="anfrage.html">Projektanfrage <em>04</em></a>
+  <a href="index.html#kontakt">Kontakt <em>05</em></a>
+  <div class="menue-fuss">
+    <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+    <span data-cfg="zeiten">Mo–Do 7–16 Uhr</span>
+  </div>
+</nav>
+
+<main>
+
+<section class="seitenkopf">
+  <div class="wrap">
+    <span class="marke">Projektanfrage</span>
+    <h1>Fünf Fragen. Dann wissen wir, <em>ob es passt.</em></h1>
+    <p class="lead">
+      Wir nehmen im Jahr eine begrenzte Zahl an Objekten an. Damit Sie nicht auf eine
+      Absage warten und wir keine Termine blockieren, klären wir den Rahmen vorab.
+    </p>
+  </div>
+</section>
+
+<section class="abschnitt hell">
+  <div class="wrap anfrage">
+
+    <!-- ------------------------- Fragestrecke ------------------------- -->
+    <div>
+      <div class="schrittleiste" id="schrittleiste">
+        <span class="zahl" id="schritt-zahl">Schritt 1 von 5</span>
+        <span class="spur"><i id="schritt-spur"></i></span>
+      </div>
+
+      <form id="anfrage-form" novalidate>
+
+        <!-- 1 Objekt -->
+        <fieldset class="schritt aktiv" data-schritt="1">
+          <h2>Um welches Objekt geht es?</h2>
+          <p class="hinweis">Damit wir wissen, mit welcher Statik, welchen Leitungen und welchem Genehmigungsweg wir es zu tun haben.</p>
+          <div class="kacheln" data-frage="objekt">
+            <label class="kachel"><input type="radio" name="objekt" value="Einfamilienhaus"><span><b>Einfamilienhaus</b><em>Freistehend, Doppelhaushälfte oder Reihenhaus</em></span></label>
+            <label class="kachel"><input type="radio" name="objekt" value="Mehrfamilienhaus"><span><b>Mehrfamilienhaus</b><em>Zwei oder mehr Wohneinheiten</em></span></label>
+            <label class="kachel"><input type="radio" name="objekt" value="Eigentumswohnung"><span><b>Eigentumswohnung</b><em>Einzelne Einheit im Bestand</em></span></label>
+            <label class="kachel"><input type="radio" name="objekt" value="Gewerbeobjekt"><span><b>Gewerbeobjekt</b><em>Praxis, Büro, Ladenfläche, Betriebsgebäude</em></span></label>
+          </div>
+        </fieldset>
+
+        <!-- 2 Vorhaben -->
+        <fieldset class="schritt" data-schritt="2">
+          <h2>Was soll passieren?</h2>
+          <p class="hinweis">Mehrfachnennung nicht nötig — nennen Sie den größten Teil des Vorhabens.</p>
+          <div class="kacheln" data-frage="vorhaben">
+            <label class="kachel"><input type="radio" name="vorhaben" value="Komplettsanierung"><span><b>Komplettsanierung</b><em>Das ganze Objekt, entkernt und neu aufgebaut</em></span></label>
+            <label class="kachel"><input type="radio" name="vorhaben" value="Kernsanierung einzelner Etagen"><span><b>Kernsanierung einzelner Etagen</b><em>Ein Geschoss oder ein Gebäudeteil</em></span></label>
+            <label class="kachel"><input type="radio" name="vorhaben" value="Bad komplett"><span><b>Bad komplett</b><em>Ein Bad oder mehrere, von der Demontage bis zur Fuge</em></span></label>
+            <label class="kachel"><input type="radio" name="vorhaben" value="Innenausbau und Trockenbau"><span><b>Innenausbau &amp; Trockenbau</b><em>Wände, Decken, Brandschutz auf ganzen Flächen</em></span></label>
+            <label class="kachel"><input type="radio" name="vorhaben" value="Dachgeschossausbau oder Aufstockung"><span><b>Dachgeschoss oder Aufstockung</b><em>Neuer Wohnraum über dem Bestand</em></span></label>
+            <label class="kachel abseits"><input type="radio" name="vorhaben" value="Einzelne Reparatur oder Montage" data-stopp="klein"><span><b>Einzelne Reparatur oder Montage</b><em>Ein Handgriff, eine Ausbesserung, ein Gerät anschließen</em></span></label>
+          </div>
+          <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+        </fieldset>
+
+        <!-- 3 Umfang -->
+        <fieldset class="schritt" data-schritt="3">
+          <h2>Wie groß ist das Vorhaben?</h2>
+          <p class="hinweis">Eine Schätzung genügt. Wir messen beim Ortstermin nach.</p>
+
+          <div class="feld">
+            <label for="flaeche">Betroffene Fläche</label>
+            <div class="mit">
+              <input type="range" id="flaeche" name="flaeche" min="20" max="1200" step="10" value="180">
+              <output class="wert" id="flaeche-wert">180 m²</output>
+            </div>
+          </div>
+
+          <div class="feld-paar">
+            <div class="feld">
+              <label for="einheiten">Wohn- oder Nutzeinheiten</label>
+              <select id="einheiten" name="einheiten">
+                <option>1</option><option>2</option><option>3–5</option><option>6–12</option><option>mehr als 12</option>
+              </select>
+            </div>
+            <div class="feld">
+              <label for="lage">Liegt das Objekt im Saarpfalz-Kreis oder max. 40 km entfernt?</label>
+              <select id="lage" name="lage">
+                <option value="Ja">Ja</option>
+                <option value="Nein" data-stopp="entfernung">Nein, weiter weg</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="schalt">
+            <button type="button" class="btn" data-weiter>Weiter <span class="pfeil">→</span></button>
+            <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+          </div>
+        </fieldset>
+
+        <!-- 4 Größenordnung -->
+        <fieldset class="schritt" data-schritt="4">
+          <h2>Welche Größenordnung haben Sie eingeplant?</h2>
+          <p class="hinweis">
+            Wir arbeiten mit festen Gewerken und Festpreisen. Unter
+            <span data-cfg="mindestvolumen">50.000 €</span> Projektvolumen bekommen wir
+            keinen Bauablauf zusammen, der für Sie günstiger wäre als einzelne Betriebe.
+          </p>
+          <div class="kacheln" data-frage="volumen">
+            <label class="kachel abseits"><input type="radio" name="volumen" value="unter 50.000 €" data-stopp="volumen"><span><b>unter 50.000 €</b><em>Einzelgewerke oder kleinere Maßnahmen</em></span></label>
+            <label class="kachel"><input type="radio" name="volumen" value="50.000 – 150.000 €"><span><b>50.000 – 150.000 €</b><em>Etage, Bäder, größerer Innenausbau</em></span></label>
+            <label class="kachel"><input type="radio" name="volumen" value="150.000 – 400.000 €"><span><b>150.000 – 400.000 €</b><em>Komplettsanierung eines Einfamilienhauses</em></span></label>
+            <label class="kachel"><input type="radio" name="volumen" value="über 400.000 €"><span><b>über 400.000 €</b><em>Mehrfamilienhaus, Gewerbeobjekt, Aufstockung</em></span></label>
+            <label class="kachel"><input type="radio" name="volumen" value="noch offen"><span><b>Noch offen</b><em>Bitte beim Ortstermin gemeinsam einschätzen</em></span></label>
+          </div>
+        </fieldset>
+
+        <!-- 5 Kontakt -->
+        <fieldset class="schritt" data-schritt="5">
+          <h2>Wie erreichen wir Sie?</h2>
+          <p class="hinweis">Die Bauleitung meldet sich binnen zwei Werktagen — telefonisch, nicht per Serienmail.</p>
+
+          <div class="feld">
+            <label for="zeitraum">Gewünschter Baubeginn</label>
+            <select id="zeitraum" name="zeitraum">
+              <option>So bald wie möglich</option>
+              <option>In den nächsten 3 Monaten</option>
+              <option>In 6 bis 12 Monaten</option>
+              <option>Später / noch offen</option>
+            </select>
+          </div>
+
+          <div class="feld-paar">
+            <div class="feld"><label for="person">Name</label><input type="text" id="person" name="person" autocomplete="name" required></div>
+            <div class="feld"><label for="ort">Ort des Objekts</label><input type="text" id="ort" name="ort" autocomplete="address-level2" required></div>
+          </div>
+          <div class="feld-paar">
+            <div class="feld"><label for="telefon">Telefon</label><input type="tel" id="telefon" name="telefon" autocomplete="tel" required></div>
+            <div class="feld"><label for="email">E-Mail</label><input type="email" id="email" name="email" autocomplete="email"></div>
+          </div>
+          <div class="feld">
+            <label for="nachricht">Was sollen wir vorher wissen? (freiwillig)</label>
+            <textarea id="nachricht" name="nachricht" placeholder="Baujahr, bekannte Schäden, Denkmalschutz, bereits vorliegende Planung …"></textarea>
+          </div>
+
+          <div class="schalt">
+            <button type="submit" class="btn btn-gross">Anfrage absenden <span class="pfeil">→</span></button>
+            <button type="button" class="zurueck" data-zurueck>← Zurück</button>
+          </div>
+          <p class="klein" style="margin-top:18px">
+            Demo-Seite: Es werden keine Daten übertragen oder gespeichert.
+          </p>
+        </fieldset>
+      </form>
+
+      <!-- Ergebnis: passend -->
+      <div class="ergebnis" id="ergebnis-ja" hidden>
+        <div class="zeichen">✓</div>
+        <h2>Das passt zu uns.</h2>
+        <p class="lead">
+          Ihre Anfrage liegt bei der Bauleitung. Wir melden uns binnen zwei Werktagen
+          und schlagen einen Ortstermin vor — kostenfrei und unverbindlich.
+        </p>
+        <div class="referenz">Vorgangsnummer <b id="referenz-nr">SBS-2026-0000</b></div>
+        <ul class="zusammenfassung" id="zusammenfassung"></ul>
+        <div class="schalt" style="margin-top:28px">
+          <a class="btn btn-linie" href="projekte.html">Projekte ansehen</a>
+          <a class="btn btn-linie" href="index.html">Zur Startseite</a>
+        </div>
+      </div>
+
+      <!-- Ergebnis: nicht passend -->
+      <div class="ergebnis abgelehnt" id="ergebnis-nein" hidden>
+        <div class="zeichen">—</div>
+        <h2 id="nein-titel">Dafür sind wir nicht der richtige Partner.</h2>
+        <div id="nein-text">
+          <p class="lead">
+            Wir übernehmen ganze Objekte und planen mit festen Gewerken über Monate.
+            Einzelne Aufträge können wir dazwischen nicht sauber terminieren — das würde
+            weder Ihnen noch der laufenden Baustelle gerecht.
+          </p>
+        </div>
+        <div class="hinweis-kasten" style="border-color:var(--linie-hell)">
+          <b>Was jetzt schneller hilft:</b> Über die Betriebssuche der Handwerkskammer des
+          Saarlandes finden Sie kurzfristig einen Betrieb für einzelne Leistungen.
+          Und wenn später ein größeres Vorhaben ansteht: Wir sind gern wieder im Gespräch.
+        </div>
+        <div class="schalt" style="margin-top:28px">
+          <button type="button" class="btn btn-linie" id="neu-starten">Anfrage neu beginnen</button>
+          <a class="btn btn-linie" href="index.html">Zur Startseite</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------- Profil --------------------------- -->
+    <aside class="profil" aria-live="polite">
+      <h3>Ihr Projektprofil</h3>
+      <span class="klein">Füllt sich mit Ihren Angaben</span>
+      <dl id="profil-liste">
+        <dt>Objekt</dt><dd class="leer" data-profil="objekt">—</dd>
+        <dt>Vorhaben</dt><dd class="leer" data-profil="vorhaben">—</dd>
+        <dt>Fläche</dt><dd class="leer" data-profil="flaeche">—</dd>
+        <dt>Einheiten</dt><dd class="leer" data-profil="einheiten">—</dd>
+        <dt>Größenordnung</dt><dd class="leer" data-profil="volumen">—</dd>
+        <dt>Baubeginn</dt><dd class="leer" data-profil="zeitraum">—</dd>
+      </dl>
+      <p class="fuss">
+        Diese Angaben gehen direkt an die Bauleitung — kein Callcenter,
+        kein Weiterverkauf an Vermittlungsportale.
+      </p>
+    </aside>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <b data-cfg="name">SBS Bau</b>
+        <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
+          <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
+          <li><span data-cfg="strasse">Musterstraße 1</span></li>
+          <li><span data-cfg="plzOrt">66424 Homburg</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Seiten</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="projekte.html">Projekte</a></li>
+          <li><a href="intern.html">Projektverwaltung (Vorschau)</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span data-cfg="jahr">2026</span> <span data-cfg="rechtsform">SBS Bau GmbH</span></span>
+      <span>Demo-Website · Beispielinhalte, Beispielbilder</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/anfrage.js"></script>
+</body>
+</html>

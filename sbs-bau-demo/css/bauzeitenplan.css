@@ -1,0 +1,226 @@
+/* =========================================================================
+   SBS BAU — Bauzeitenplan (Vorschau, ersetzt die gepinnte Bauszene)
+   Eine Sektion, eine Bildschirmhöhe, kein Scroll-Pinning. Zwölf Gewerke als
+   Balken, darüber die durchgehende Linie des Bauleiters, rechts die Übergabe.
+   Die Balken füllen sich zeitgesteuert (js/bauzeitenplan.js). Ohne JavaScript
+   und bei reduzierter Bewegung steht sofort der fertige Plan.
+   Am Ende kippt die Bühne ins Helle und übergibt an den hellen Teil der Seite.
+   ========================================================================= */
+
+/* Anker landen nicht mehr unter der fixierten Kopfzeile */
+section[id]{scroll-margin-top:calc(var(--band) + 84px)}
+
+.plan-huelle{
+  --plan-fg:var(--nebel-hell);
+  --plan-weich:var(--nebel);
+  --plan-stahl:var(--stahl);
+  --plan-linie:var(--linie-dunkel);
+  --plan-raster:rgba(243,241,237,.07);
+  --plan-balken:#8E959C;
+  --plan-balken-fertig:var(--nebel-hell);
+  --plan-akzent:var(--kupfer-hell);
+  --plan-label:212px;
+  --wochen:28;
+  --t:0;
+  position:relative;background:var(--beton-900);color:var(--plan-fg);
+  min-height:calc(100svh - var(--band));display:flex;align-items:center;
+  padding-block:clamp(56px,7vw,96px);
+  transition:background .9s var(--weich),color .9s var(--weich);
+}
+.plan-huelle.fertig{
+  --plan-fg:var(--tinte);
+  --plan-weich:var(--tinte-weich);
+  --plan-stahl:var(--tinte-weich);
+  --plan-linie:var(--linie-hell);
+  --plan-raster:rgba(20,22,26,.07);
+  --plan-balken:#8A8479;
+  --plan-balken-fertig:var(--tinte);
+  --plan-akzent:var(--kupfer);
+  background:var(--papier);
+}
+.plan-huelle .marke{color:var(--plan-akzent);transition:color .9s var(--weich)}
+.plan-huelle h2 em{color:var(--plan-akzent);transition:color .9s var(--weich)}
+
+.plan-raster{
+  width:100%;display:grid;gap:34px;grid-template-columns:1fr;align-items:center;
+}
+@media(min-width:980px){
+  .plan-raster{grid-template-columns:minmax(240px,.58fr) minmax(0,1.5fr);gap:64px}
+}
+
+/* ---------- linke Spalte: Text ---------- */
+.plan-text h2{margin-top:18px;font-size:clamp(1.9rem,3.6vw,3.2rem);line-height:1.04}
+.plan-info{color:var(--plan-weich);max-width:40ch;font-size:15.5px;margin-top:18px;transition:color .9s var(--weich)}
+
+.plan-status{
+  margin:26px 0 0;padding:14px 0;border-top:1px solid var(--plan-linie);border-bottom:1px solid var(--plan-linie);
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--plan-weich);
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;
+  transition:border-color .9s var(--weich),color .9s var(--weich);
+}
+.plan-status b{font-weight:500;color:var(--plan-fg);white-space:nowrap;font-variant-numeric:tabular-nums;transition:color .9s var(--weich)}
+.plan-status span{min-height:1.6em}
+
+.plan-fakten{margin:24px 0 0;display:grid;grid-template-columns:repeat(3,auto);gap:8px 28px;justify-content:start}
+.plan-fakten div{display:grid;gap:4px}
+.plan-fakten dt{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--plan-stahl);transition:color .9s var(--weich)}
+.plan-fakten dd{margin:0;font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.7rem);line-height:1;color:var(--plan-fg);transition:color .9s var(--weich)}
+
+.plan-nochmal{
+  margin-top:26px;background:none;border:0;padding:0;cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--plan-akzent);
+  display:inline-flex;align-items:center;gap:.7em;opacity:0;transition:opacity .6s var(--weich),color .9s var(--weich);
+}
+.plan-nochmal.sichtbar{opacity:1}
+.plan-nochmal::before{content:"↻";font-size:14px}
+
+/* ---------- rechte Spalte: der Plan ---------- */
+.plan{position:relative}
+
+/* Kopfzeile: Linie des Bauleiters + Übergabe */
+.plan-kopf{
+  display:grid;grid-template-columns:var(--plan-label) 1fr;align-items:end;gap:0;
+  padding-bottom:14px;margin-bottom:10px;border-bottom:1px solid var(--plan-linie);
+  transition:border-color .9s var(--weich);
+}
+.plan-kopf-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--plan-akzent);
+  align-self:end;padding-bottom:5px;padding-right:12px;transition:color .9s var(--weich);
+}
+.plan-leitung{position:relative;height:132px}  /* Platz für das Haus-Emblem über der Linie */
+/* Spur der Leitungs-Linie */
+.plan-leitung::before{
+  content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:var(--plan-linie);
+  transition:background .9s var(--weich);
+}
+/* gefüllter Teil: Bauleiter ist von Woche 1 bis zur Übergabe da */
+.plan-leitung > i{
+  position:absolute;left:0;bottom:7px;height:3px;width:calc(var(--t) * 100%);
+  background:var(--plan-akzent);border-radius:2px;transition:background .9s var(--weich);
+}
+/* Bautagebuch: ein Punkt je Woche */
+.plan-tagebuch{position:absolute;left:0;right:0;bottom:4px;height:9px;pointer-events:none}
+.plan-tagebuch i{
+  position:absolute;top:0;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;
+  background:var(--beton-900);border:1.5px solid var(--plan-akzent);
+  left:calc(var(--w) / var(--wochen) * 100%);
+  opacity:0;transform:scale(.4);transition:opacity .35s var(--weich),transform .35s var(--weich),background .9s var(--weich),border-color .9s var(--weich);
+}
+.plan-huelle.fertig .plan-tagebuch i{background:var(--papier)}
+.plan-tagebuch i.da{opacity:1;transform:scale(1)}
+.plan-tagebuch-text{
+  position:absolute;left:0;bottom:22px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  color:var(--plan-stahl);white-space:nowrap;transition:color .9s var(--weich);
+}
+
+/* Übergabe rechts oben: Haus-Emblem + Termin */
+.plan-uebergabe{
+  position:absolute;right:0;bottom:16px;display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  text-align:right;opacity:0;transform:translateY(8px);
+  transition:opacity .7s var(--weich),transform .7s var(--weich);
+}
+.plan-uebergabe.da{opacity:1;transform:none}
+.plan-uebergabe .haus{width:92px;height:auto;display:block;margin-bottom:6px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.18))}
+.plan-uebergabe b{font-family:var(--serif);font-weight:400;font-size:1.25rem;line-height:1;color:var(--plan-fg);transition:color .9s var(--weich)}
+.plan-uebergabe span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--plan-akzent);transition:color .9s var(--weich)}
+
+/* Zeilen */
+.plan-zeilen{list-style:none;margin:0;padding:0;position:relative}
+.plan-zeilen li{
+  display:grid;grid-template-columns:var(--plan-label) 1fr;align-items:center;
+  min-height:30px;position:relative;outline:0;
+}
+.plan-zeilen li + li{border-top:1px solid var(--plan-raster);transition:border-color .9s var(--weich)}
+.gewerk{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--plan-stahl);
+  padding-right:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:color .35s var(--weich);
+}
+.gewerk b{font-weight:500;color:var(--plan-akzent);margin-right:8px;opacity:.85;font-size:10px}
+.gewerk-kurz{display:none}
+li.aktiv .gewerk,li.fertig .gewerk{color:var(--plan-fg)}
+
+/* Spur mit Wochenraster */
+.spur{
+  position:relative;height:100%;min-height:30px;
+  background-image:linear-gradient(90deg,var(--plan-raster) 1px,transparent 1px);
+  background-size:calc(100% / var(--wochen)) 100%;
+  transition:background-image .9s var(--weich);
+}
+.spur i{
+  position:absolute;top:8px;bottom:8px;
+  left:calc((var(--von) - 1) / var(--wochen) * 100%);
+  width:calc((var(--bis) - var(--von) + 1) / var(--wochen) * 100% * var(--fuell,1));
+  background:var(--plan-balken);border-radius:2px;
+  transition:background .5s var(--weich);
+}
+li.fertig .spur i{background:var(--plan-balken-fertig)}
+li.aktiv .spur i{background:var(--plan-akzent)}
+
+/* Erklärung je Gewerk: Desktop bei Zeiger/Fokus, Mobil per Antippen */
+.gewerk-info{
+  position:absolute;left:var(--plan-label);top:calc(100% - 4px);z-index:5;
+  max-width:36ch;padding:9px 12px;border-radius:2px;
+  background:var(--beton-700);color:var(--nebel-hell);font-size:13px;line-height:1.45;
+  box-shadow:0 14px 30px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .25s var(--weich),transform .25s var(--weich);
+}
+.plan-huelle.fertig .gewerk-info{background:var(--tinte);color:var(--papier)}
+li:hover .gewerk-info,li:focus-visible .gewerk-info,li.offen .gewerk-info{opacity:1;transform:none}
+li:focus-visible{outline:0}
+li:focus-visible .gewerk{color:var(--plan-akzent)}
+
+/* Laufende Woche (senkrechte Linie über alle Zeilen) */
+.plan-cursor{
+  position:absolute;top:0;bottom:0;width:1px;pointer-events:none;
+  left:calc(var(--plan-label) + (100% - var(--plan-label)) * var(--t));
+  background:var(--plan-akzent);opacity:.55;transition:background .9s var(--weich);
+}
+.plan-huelle.fertig .plan-cursor,.plan-huelle.ohne-js .plan-cursor{opacity:0}
+
+/* Wochenachse */
+.plan-achse{
+  display:grid;grid-template-columns:var(--plan-label) 1fr;margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--plan-linie);transition:border-color .9s var(--weich);
+}
+.plan-achse-titel{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--plan-stahl);transition:color .9s var(--weich)}
+.plan-achse-skala{position:relative;height:16px}
+.plan-achse-skala span{
+  position:absolute;top:0;left:calc((var(--w) - 1) / var(--wochen) * 100%);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--plan-stahl);
+  font-variant-numeric:tabular-nums;transition:color .9s var(--weich);
+}
+.plan-achse-skala span:last-child{left:auto;right:0}
+.plan-achse-skala span.mobil{display:none}
+
+/* ---------- schmale Bildschirme ---------- */
+@media(max-width:719px){
+  .plan-huelle{--plan-label:128px;min-height:0}
+  .plan-raster{gap:22px}
+  .plan-nochmal{display:none}   /* Wiederholen nur am Desktop (Gesprächssituation) */
+  .plan-fakten{grid-template-columns:repeat(3,auto);gap:8px 18px}
+  .plan-fakten dd{font-size:1.2rem}
+  .gewerk{font-size:10.5px;letter-spacing:.03em}
+  .gewerk b{display:none}
+  .gewerk-lang{display:none}
+  .gewerk-kurz{display:inline}
+  .plan-zeilen li,.spur{min-height:26px}
+  .spur i{top:7px;bottom:7px}
+  .plan-leitung{height:58px}
+  .plan-uebergabe .haus{display:none}   /* Emblem nur am Desktop, mobil zählt der Termin */
+  .plan-tagebuch i{width:7px;height:7px;margin-left:-3.5px}
+  .plan-uebergabe b{font-size:1.05rem}
+  .plan-tagebuch-text{display:none}
+  .plan-achse-skala span{display:none}
+  .plan-achse-skala span.mobil{display:block}
+  .gewerk-info{left:0;max-width:none;right:0}
+}
+
+/* ---------- ohne JavaScript / reduzierte Bewegung ---------- */
+.plan-huelle.ohne-js{--t:1}
+.plan-huelle.ohne-js .plan-uebergabe,.plan-huelle.ohne-js .plan-tagebuch i{opacity:1;transform:none}
+.plan-huelle.ohne-js .plan-nochmal{display:none}
+@media(prefers-reduced-motion:reduce){
+  .plan-huelle,.plan-huelle *{transition:none !important}
+}

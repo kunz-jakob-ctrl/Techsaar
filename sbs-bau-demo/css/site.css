@@ -1,0 +1,229 @@
+/* =========================================================================
+   SBS BAU — Demo-Website
+   Gestaltungsidee: Die Seite vollzieht selbst die Sanierung. Sie beginnt
+   dunkel und schwer (Bestand, Baustelle) und kippt in der Bauszene ins
+   Helle (fertiges Objekt). Danach bleibt sie hell und architektonisch,
+   der Fussbereich schliesst wieder dunkel.
+   Typografie: Instrument Serif (Aussagen) - Geist (Text) - Geist Mono (Daten)
+   ========================================================================= */
+
+/* ---------- Tokens ---------- */
+:root{
+  --beton-900:#0E0F10;
+  --beton-800:#151719;
+  --beton-700:#1D2023;
+  --beton-600:#2A2E32;
+  --stahl:#6E747A;
+  --nebel:#A9AEB3;
+  --nebel-hell:#D6D8DA;
+
+  --papier:#F3F1ED;
+  --papier-2:#E7E3DC;
+  --papier-3:#D9D4CB;
+  --tinte:#14161A;
+  --tinte-weich:#565C63;
+
+  --kupfer:#A96A34;
+  --kupfer-hell:#D39B62;
+
+  --linie-dunkel:rgba(243,241,237,.14);
+  --linie-hell:rgba(20,22,26,.14);
+
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Geist Mono',ui-monospace,Consolas,monospace;
+
+  --rand:clamp(20px,5vw,72px);
+  --breite:1360px;
+  --weich:cubic-bezier(.22,.61,.36,1);
+  --band:34px;              /* Höhe des Demo-Hinweises ganz oben */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;padding-top:var(--band);background:var(--beton-900);color:var(--nebel-hell);
+  font-family:var(--sans);font-size:17px;line-height:1.65;
+  overflow-x:clip;
+}
+img{max-width:100%;display:block}
+[hidden]{display:none !important}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{-webkit-appearance:none;appearance:none}
+:focus-visible{outline:2px solid var(--kupfer-hell);outline-offset:3px}
+::selection{background:var(--kupfer);color:#fff}
+
+/* Feine Koernung ueber der ganzen Seite - nimmt Farbflaechen das Digitale */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Grundbausteine ---------- */
+.wrap{max-width:var(--breite);margin-inline:auto;padding-inline:var(--rand)}
+.hell{background:var(--papier);color:var(--tinte)}
+.dunkel{background:var(--beton-900);color:var(--nebel-hell)}
+section{position:relative}
+
+.marke{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--kupfer-hell);
+  display:inline-flex;align-items:center;gap:.7em;
+}
+.marke::before{content:"";width:26px;height:1px;background:currentColor;opacity:.65}
+.hell .marke{color:var(--kupfer)}
+
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;margin:0}
+h1{font-size:clamp(2.9rem,7.4vw,6.4rem);line-height:.96}
+h2{font-size:clamp(2.1rem,4.6vw,4rem);line-height:1.03}
+h3{font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.15}
+h4{font-size:1.2rem;line-height:1.25}
+h1 em,h2 em,h3 em{font-style:italic;color:var(--kupfer-hell)}
+.hell h1 em,.hell h2 em,.hell h3 em{color:var(--kupfer)}
+p{margin:0 0 1.1em}
+.lead{font-size:clamp(1.05rem,1.5vw,1.28rem);line-height:1.6;color:var(--nebel)}
+.hell .lead{color:var(--tinte-weich)}
+.klein{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--stahl)}
+
+.abschnitt{padding-block:clamp(76px,10vw,150px)}
+.abschnitt-kopf{display:grid;gap:26px;grid-template-columns:1fr;margin-bottom:clamp(40px,5vw,72px)}
+@media(min-width:900px){
+  .abschnitt-kopf{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:60px;align-items:end}
+}
+
+/* ---------- Schaltflaechen ---------- */
+.btn{
+  --bg:var(--kupfer);--fg:#fff;--bd:var(--kupfer);
+  display:inline-flex;align-items:center;gap:.7em;padding:15px 26px;
+  background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:2px;
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;transition:.28s var(--weich);
+  transition-property:background,color,border-color,transform;
+}
+.btn:hover{transform:translateY(-2px);--bg:var(--kupfer-hell);--bd:var(--kupfer-hell)}
+.btn .pfeil{transition:transform .28s var(--weich)}
+.btn:hover .pfeil{transform:translateX(4px)}
+.btn-linie{--bg:transparent;--fg:currentColor;--bd:var(--linie-dunkel)}
+.btn-linie:hover{--bg:rgba(243,241,237,.08);--bd:currentColor}
+.hell .btn-linie{--bd:var(--linie-hell)}
+.hell .btn-linie:hover{--bg:rgba(20,22,26,.05)}
+.btn-gross{padding:19px 34px;font-size:13px}
+.btn[disabled]{opacity:.4;pointer-events:none}
+
+/* ---------- Kopfzeile ---------- */
+.fortschritt{position:fixed;inset:var(--band) auto auto 0;height:2px;width:0;background:var(--kupfer-hell);z-index:120}
+
+.kopf{
+  position:fixed;top:var(--band);left:0;right:0;z-index:110;
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--weich),border-color .4s var(--weich),color .4s var(--weich),padding .3s var(--weich);
+  padding-block:22px;color:var(--nebel-hell);
+}
+.kopf.fest{background:rgba(243,241,237,.94);backdrop-filter:blur(14px);color:var(--tinte);border-bottom-color:var(--linie-hell);padding-block:13px}
+.kopf.fest .btn-linie{--bd:var(--linie-hell)}
+.kopf-innen{display:flex;align-items:center;justify-content:space-between;gap:24px}
+
+.logo{display:flex;align-items:baseline;gap:11px;text-decoration:none;flex-shrink:0}
+.logo b{font-family:var(--serif);font-weight:400;font-size:26px;letter-spacing:.01em;line-height:1}
+.logo span{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+
+.nav{display:none;gap:34px;align-items:center}
+@media(min-width:1040px){.nav{display:flex}}
+.nav a{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;opacity:.72;transition:opacity .25s;position:relative;padding-block:4px;
+}
+.nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:currentColor;transition:width .3s var(--weich)}
+.nav a:hover{opacity:1}
+.nav a:hover::after,.nav a[aria-current="page"]::after{width:100%}
+.nav a[aria-current="page"]{opacity:1;color:var(--kupfer-hell)}
+.kopf.fest .nav a[aria-current="page"]{color:var(--kupfer)}
+
+.kopf-cta{display:none}
+@media(min-width:1040px){.kopf-cta{display:inline-flex}}
+
+/* 46x46: bequeme Antippfläche auf dem Handy (unter 44 px wird es fummelig) */
+.menue-schalter{display:inline-flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:5px;width:46px;height:46px;background:none;border:0;cursor:pointer;padding:0}
+@media(min-width:1040px){.menue-schalter{display:none}}
+.menue-schalter i{display:block;height:1.5px;background:currentColor;transition:.3s var(--weich)}
+.menue-schalter i:nth-child(1){width:26px}
+.menue-schalter i:nth-child(2){width:18px}
+body.menue-offen .menue-schalter{color:var(--nebel-hell)}
+body.menue-offen .menue-schalter i:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+body.menue-offen .menue-schalter i:nth-child(2){width:26px;transform:translateY(-3.25px) rotate(-45deg)}
+
+.menue{
+  position:fixed;inset:var(--band) 0 0;z-index:105;background:var(--beton-900);color:var(--nebel-hell);
+  display:flex;flex-direction:column;justify-content:center;gap:6px;
+  padding:110px var(--rand) 44px;
+  clip-path:inset(0 0 100% 0);transition:clip-path .55s var(--weich);
+}
+body.menue-offen .menue{clip-path:inset(0 0 0 0)}
+.menue a{
+  font-family:var(--serif);font-size:clamp(1.9rem,7.5vw,3rem);text-decoration:none;
+  color:var(--nebel-hell);padding-block:5px;border-bottom:1px solid var(--linie-dunkel);
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  opacity:0;transform:translateY(18px);transition:opacity .4s var(--weich),transform .4s var(--weich);
+}
+body.menue-offen .menue a{opacity:1;transform:none}
+.menue a em{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.16em;color:var(--stahl)}
+.menue-fuss{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--mono);font-size:12px;color:var(--stahl)}
+.menue-fuss a{font-family:var(--mono);font-size:12px;border:0;padding:0;color:var(--kupfer-hell);opacity:1;transform:none;display:inline}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:calc(100svh - var(--band));display:flex;align-items:flex-end;overflow:hidden;background:var(--beton-900)}
+.hero-bild{position:absolute;inset:0}
+.hero-bild img{width:100%;height:100%;object-fit:cover;object-position:center 42%;opacity:.5;filter:grayscale(.35) contrast(1.06)}
+.hero-bild::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(14,15,16,.86) 0%,rgba(14,15,16,.28) 34%,rgba(14,15,16,.74) 74%,var(--beton-900) 100%),
+    radial-gradient(120% 78% at 78% 22%,rgba(169,106,52,.24) 0%,transparent 62%);
+}
+.hero-innen{position:relative;z-index:2;width:100%;padding-block:clamp(120px,16vh,190px) clamp(30px,5vh,54px)}
+/* Beide Zeilen sind eigene Blöcke. Dadurch bleibt der Zweizeiler ein
+   Zweizeiler, solange die Breite reicht — und bricht auf dem Handy sauber
+   innerhalb der jeweiligen Zeile um. */
+/* Etwas kleinere Untergrenze als sonst bei h1: So bleibt "Wir sanieren Häuser."
+   auch auf einem 375-px-Handy in einer Zeile und die Pointe wird nicht zerrissen. */
+.hero h1{margin-block:26px 0;font-size:clamp(2.5rem,7.2vw,6.4rem)}
+.hero h1 .zeile1,.hero h1 .zeile2{display:block}
+.hero h1 .zeile2{font-style:italic;color:var(--papier)}
+.hero-text{max-width:52ch;margin-top:30px}
+.hero-knoepfe{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
+
+.hero-daten{margin-top:clamp(48px,8vh,84px);border-top:1px solid var(--linie-dunkel);display:grid;grid-template-columns:1fr}
+@media(min-width:760px){.hero-daten{grid-template-columns:repeat(3,1fr)}}
+.hero-daten div{padding:20px 0 4px;border-bottom:1px solid var(--linie-dunkel)}
+@media(min-width:760px){
+  .hero-daten div{border-bottom:0;padding:24px 30px 6px}
+  .hero-daten div:first-child{padding-left:0}
+  .hero-daten div+div{border-left:1px solid var(--linie-dunkel)}
+}
+.hero-daten dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stahl);margin-bottom:7px}
+.hero-daten dd{margin:0;font-family:var(--serif);font-size:clamp(1.25rem,2.2vw,1.7rem);color:var(--papier)}
+
+.scroll-hinweis{
+  position:absolute;right:var(--rand);bottom:34px;z-index:3;display:none;
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--stahl);
+  writing-mode:vertical-rl;align-items:center;gap:12px;
+}
+@media(min-width:1040px){.scroll-hinweis{display:flex}}
+.scroll-hinweis::after{content:"";width:1px;height:56px;background:linear-gradient(var(--stahl),transparent);animation:rutsch 2.4s var(--weich) infinite}
+@keyframes rutsch{0%{transform:scaleY(.15);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- Einblenden beim Scrollen ---------- */
+.auf{opacity:0;transform:translateY(26px);transition:opacity .8s var(--weich),transform .8s var(--weich)}
+.auf.da{opacity:1;transform:none}
+.auf[data-verzug="1"]{transition-delay:.09s}
+.auf[data-verzug="2"]{transition-delay:.18s}
+.auf[data-verzug="3"]{transition-delay:.27s}
+.auf[data-verzug="4"]{transition-delay:.36s}
+.auf[data-verzug="5"]{transition-delay:.45s}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .auf{opacity:1;transform:none;transition:none}
+  .scroll-hinweis::after{animation:none}
+}

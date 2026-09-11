@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leistungen · SBS Bau</title>
+<meta name="description" content="Komplettsanierung, Innenausbau und Trockenbau, Bäder komplett, Dachgeschossausbau und Aufstockung — was SBS Bau übernimmt, was enthalten ist und wo die Grenze liegt.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.svg">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/bereiche.css">
+<link rel="stylesheet" href="css/module.css">
+<style>
+/* Nur auf dieser Seite: abwechselnd gesetzte Leistungsblöcke */
+.block{display:grid;gap:clamp(26px,4vw,64px);grid-template-columns:1fr;align-items:center;
+  padding-block:clamp(50px,7vw,96px);border-top:1px solid var(--linie-hell)}
+@media(min-width:900px){
+  .block{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .block:nth-child(even) .block-bild{order:-1}
+}
+.block-bild{aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--papier-2)}
+.block-bild img{width:100%;height:100%;object-fit:cover}
+.block h2{margin:16px 0 16px}
+.tiefe{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--linie-hell)}
+.tiefe li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--linie-hell);font-size:15.5px}
+.tiefe i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--kupfer);line-height:1.6}
+.eck{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:24px;font-family:var(--mono);font-size:12px;color:var(--tinte-weich)}
+.eck b{color:var(--tinte);font-weight:500}
+
+.fragen{border-top:1px solid var(--linie-hell)}
+.frage{border-bottom:1px solid var(--linie-hell)}
+.frage summary{
+  cursor:pointer;list-style:none;padding:24px 0;display:flex;gap:20px;align-items:baseline;
+  justify-content:space-between;font-family:var(--serif);font-size:clamp(1.2rem,2vw,1.55rem);
+}
+.frage summary::-webkit-details-marker{display:none}
+.frage summary::after{content:"+";font-family:var(--mono);font-size:20px;color:var(--kupfer);transition:transform .3s var(--weich)}
+.frage[open] summary::after{transform:rotate(45deg)}
+.frage p{max-width:70ch;color:var(--tinte-weich);padding-bottom:22px;margin:0}
+</style>
+<script>
+const CONFIG = {
+  name:"SBS Bau", rechtsform:"SBS Bau GmbH",
+  strasse:"Musterstraße 1", plzOrt:"66424 Homburg",
+  telefon:"+49 6841 0000000", telefonText:"06841 / 000 00 00",
+  mail:"bauleitung@sbs-bau.de", zeiten:"Mo–Do 7–16 Uhr · Fr 7–13 Uhr",
+  radius:"40 km", mindestvolumen:"50.000 €", jahr:new Date().getFullYear(),
+};
+</script>
+</head>
+<body>
+
+<div class="demo-band"><b>Demo-Ansicht</b> · Beispielinhalte<span class="band-lang"> und Beispielbilder</span></div>
+<div class="fortschritt" id="fortschritt" aria-hidden="true"></div>
+
+<header class="kopf" id="kopf">
+  <div class="wrap kopf-innen">
+    <a class="logo" href="index.html"><b data-cfg="name">SBS Bau</b><span>Saarpfalz-Kreis</span></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="leistungen.html" aria-current="page">Leistungen</a>
+      <a href="projekte.html">Projekte</a>
+      <a href="index.html#ablauf">Ablauf</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-linie kopf-cta" href="anfrage.html">Projekt anfragen <span class="pfeil">→</span></a>
+    <button class="menue-schalter" id="menue-schalter" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue"><i></i><i></i></button>
+  </div>
+</header>
+
+<nav class="menue" id="menue" aria-label="Menü">
+  <a href="leistungen.html">Leistungen <em>01</em></a>
+  <a href="projekte.html">Projekte <em>02</em></a>
+  <a href="index.html#ablauf">Ablauf <em>03</em></a>
+  <a href="anfrage.html">Projektanfrage <em>04</em></a>
+  <a href="index.html#kontakt">Kontakt <em>05</em></a>
+  <div class="menue-fuss">
+    <a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a>
+    <span data-cfg="zeiten">Mo–Do 7–16 Uhr</span>
+  </div>
+</nav>
+
+<main>
+
+<section class="seitenkopf">
+  <div class="wrap">
+    <span class="marke">Leistungen</span>
+    <h1>Vier Bereiche. <em>Ein Verantwortlicher.</em></h1>
+    <p class="lead">
+      Wir liefern keine einzelnen Gewerke zu, sondern übernehmen den ganzen Bauabschnitt —
+      mit Leistungsverzeichnis, Bauzeitenplan und Festpreis.
+    </p>
+  </div>
+</section>
+
+<section class="hell" style="padding-bottom:clamp(40px,6vw,80px)">
+  <div class="wrap">
+
+    <!-- 01 -->
+    <article class="block" id="komplettsanierung" style="border-top:0">
+      <div class="auf">
+        <span class="marke">01 · Komplettsanierung</span>
+        <h2>Das ganze Haus,<br><em>bis zur Schlüsselübergabe.</em></h2>
+        <p class="lead">
+          Wir übernehmen den Bestand, entkernen ihn und bauen ihn neu auf: Statik,
+          Leitungen, Grundriss, Dach, Fassade, Innenausbau. Am Ende steht ein
+          Abnahmeprotokoll, keine Liste offener Gewerke.
+        </p>
+        <ul class="tiefe">
+          <li><i>+</i> Bestandsaufnahme mit Statiker, Schadstoff- und Feuchteprüfung</li>
+          <li><i>+</i> Entkernung, Rückbau und Entsorgung</li>
+          <li><i>+</i> Grundrissänderungen, Durchbrüche, Unterzüge</li>
+          <li><i>+</i> Elektro, Sanitär, Heizung — komplett neu</li>
+          <li><i>+</i> Estrich, Trockenbau, Innentüren, Bodenbeläge</li>
+          <li><i>+</i> Dach, Fassade, Fenster, Dämmung</li>
+          <li><i>+</i> Übergabe mit Dokumentation und Gewährleistung</li>
+        </ul>
+        <div class="eck">
+          <span>Typische Bauzeit <b>5–11 Monate</b></span>
+          <span>Ab <b>150.000 €</b></span>
+          <span>Gewerke <b>bis 12</b></span>
+        </div>
+      </div>
+      <div class="block-bild auf" data-verzug="1">
+        <img src="img/leistung-sanierung.jpg" alt="Eingerüstetes Gebäude während der Sanierung" loading="lazy" width="1200" height="1500">
+      </div>
+    </article>
+
+    <!-- 02 -->
+    <article class="block" id="innenausbau">
+      <div class="auf">
+        <span class="marke">02 · Innenausbau &amp; Trockenbau</span>
+        <h2>Wände, Decken,<br><em>ganze Geschosse.</em></h2>
+        <p class="lead">
+          Trockenbau ist bei uns kein Zubringer, sondern eine eigene Kolonne — inklusive
+          Schall- und Brandschutznachweis, wenn das Objekt ihn braucht.
+        </p>
+        <ul class="tiefe">
+          <li><i>+</i> Ständerwände, Vorsatzschalen, Schachtverkleidungen</li>
+          <li><i>+</i> Abgehängte Decken, auch mit Akustikelementen</li>
+          <li><i>+</i> Brandschutzbekleidungen nach Konzept</li>
+          <li><i>+</i> Dachschrägen- und Zwischensparrendämmung</li>
+          <li><i>+</i> Spachtelqualität bis Q4, Malerarbeiten</li>
+          <li><i>+</i> Türen, Zargen, Glaselemente</li>
+        </ul>
+        <div class="eck">
+          <span>Typische Bauzeit <b>4 Wochen – 5 Monate</b></span>
+          <span>Ab <b>50.000 €</b></span>
+          <span>Ab <b>ca. 150 m²</b></span>
+        </div>
+      </div>
+      <div class="block-bild auf" data-verzug="1">
+        <img src="img/leistung-trockenbau.jpg" alt="Trockenbauwand im Rohbau" loading="lazy" width="1200" height="1500">
+      </div>
+    </article>
+
+    <!-- 03 -->
+    <article class="block" id="baeder">
+      <div class="auf">
+        <span class="marke">03 · Bäder komplett</span>
+        <h2>Von der Demontage<br><em>bis zur letzten Fuge.</em></h2>
+        <p class="lead">
+          Ein Bad hat sechs Gewerke. Bei uns koordiniert sie ein Bauleiter — und Sie
+          bekommen einen Termin, an dem das Bad wieder benutzbar ist.
+        </p>
+        <ul class="tiefe">
+          <li><i>+</i> Planung mit Aufmaß und 3D-Ansicht</li>
+          <li><i>+</i> Demontage und Entsorgung</li>
+          <li><i>+</i> Rohinstallation Sanitär, Elektro, Lüftung</li>
+          <li><i>+</i> Abdichtung nach DIN 18534</li>
+          <li><i>+</i> Estrich, Fliesen, Naturstein</li>
+          <li><i>+</i> Sanitärobjekte, Möbel, Licht, Heizkörper</li>
+          <li><i>+</i> Barrierefreie Ausführung auf Wunsch</li>
+        </ul>
+        <div class="eck">
+          <span>Typische Bauzeit <b>3–7 Wochen</b></span>
+          <span>Ab <b>50.000 €</b> (auch mehrere Bäder)</span>
+        </div>
+      </div>
+      <div class="block-bild auf" data-verzug="1">
+        <img src="img/leistung-bad.jpg" alt="Fertiggestelltes Badezimmer" loading="lazy" width="1200" height="1500">
+      </div>
+    </article>
+
+    <!-- 04 -->
+    <article class="block" id="dach">
+      <div class="auf">
+        <span class="marke">04 · Dachgeschoss &amp; Aufstockung</span>
+        <h2>Neuer Wohnraum,<br><em>ohne neues Grundstück.</em></h2>
+        <p class="lead">
+          Der günstigste Quadratmeter ist der, den Sie schon besitzen. Wir prüfen Statik
+          und Genehmigungsfähigkeit, bevor Sie planen lassen.
+        </p>
+        <ul class="tiefe">
+          <li><i>+</i> Statische Prüfung und Genehmigungsplanung</li>
+          <li><i>+</i> Dachstuhl verstärken oder neu aufbauen</li>
+          <li><i>+</i> Gauben, Dachflächenfenster, Balkone</li>
+          <li><i>+</i> Dämmung nach aktuellem Gebäudeenergiegesetz</li>
+          <li><i>+</i> Eindeckung, Spenglerarbeiten, Entwässerung</li>
+          <li><i>+</i> Kompletter Innenausbau inklusive Bad</li>
+        </ul>
+        <div class="eck">
+          <span>Typische Bauzeit <b>4–8 Monate</b></span>
+          <span>Ab <b>120.000 €</b></span>
+        </div>
+      </div>
+      <div class="block-bild auf" data-verzug="1">
+        <img src="img/leistung-dach.jpg" alt="Dachstuhl aus Holz" loading="lazy" width="1200" height="1500">
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Grenze -->
+<section class="abschnitt abgrenzung dunkel">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Grenzen</span>
+        <h2 style="margin-top:18px">Wo unsere Leistung <em>aufhört.</em></h2>
+      </div>
+      <p class="lead auf" data-verzug="1">
+        Damit Sie nicht anfragen und dann warten: Diese Aufträge nehmen wir nicht an.
+      </p>
+    </div>
+    <div class="abgrenzung-raster">
+      <div class="nein auf">
+        <h3>Nicht im Programm</h3>
+        <ul>
+          <li><i>—</i><span>Einzelne Reparaturen, Ausbesserungen, Montagen</span></li>
+          <li><i>—</i><span>Arbeiten auf Stundenbasis ohne Leistungsverzeichnis</span></li>
+          <li><i>—</i><span>Notdienste und Termine zwischen laufenden Baustellen</span></li>
+          <li><i>—</i><span>Reine Planung ohne Ausführung</span></li>
+        </ul>
+      </div>
+      <div class="nein auf" data-verzug="1">
+        <h3>Nicht in unserem Gebiet</h3>
+        <ul>
+          <li><i>—</i><span>Objekte weiter als <span data-cfg="radius">40 km</span> entfernt</span></li>
+          <li><i>—</i><span>Projekte unter <span data-cfg="mindestvolumen">50.000 €</span> Volumen</span></li>
+          <li><i>—</i><span>Objekte ohne geklärte Eigentums- oder Genehmigungslage</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fragen -->
+<section class="abschnitt hell">
+  <div class="wrap">
+    <div class="abschnitt-kopf">
+      <div class="auf">
+        <span class="marke">Häufige Fragen</span>
+        <h2 style="margin-top:18px">Was Bauherren <em>vorher wissen wollen.</em></h2>
+      </div>
+    </div>
+
+    <div class="fragen auf">
+      <details class="frage">
+        <summary>Bekomme ich einen Festpreis?</summary>
+        <p>Ja. Nach dem Ortstermin und der Bestandsaufnahme erstellen wir ein Leistungsverzeichnis
+        mit Festpreis und Bauzeitenplan. Nachträge entstehen nur, wenn Sie zusätzliche Leistungen
+        beauftragen oder wenn hinter einer geöffneten Wand etwas auftaucht, das vorher niemand
+        sehen konnte — und auch dann bekommen Sie vorher ein schriftliches Angebot.</p>
+      </details>
+      <details class="frage">
+        <summary>Kann ich während der Sanierung im Haus wohnen?</summary>
+        <p>Bei einer Komplettsanierung in aller Regel nicht — es gibt Phasen ohne Wasser, Strom
+        und Heizung. Bei einer Etagensanierung oder einem Badumbau planen wir das gemeinsam:
+        Wir haben schon Provisorien eingerichtet, damit Familien im Haus bleiben konnten.</p>
+      </details>
+      <details class="frage">
+        <summary>Wie erfahre ich, was auf der Baustelle passiert?</summary>
+        <p>Sie bekommen einmal pro Woche einen Eintrag aus dem Bautagebuch mit Fotos und dem
+        Stand gegenüber dem Bauzeitenplan. Ihr Ansprechpartner ist derselbe Bauleiter, der
+        beim Ortstermin da war — Sie rufen nicht in einer Zentrale an.</p>
+      </details>
+      <details class="frage">
+        <summary>Übernehmen Sie auch nur einzelne Gewerke?</summary>
+        <p>Nein. Unser Vorteil für Sie entsteht daraus, dass wir alle Gewerke koordinieren und
+        dafür geradestehen. Bei einem einzelnen Gewerk wären wir teurer als ein spezialisierter
+        Betrieb und hätten keinen Einfluss auf den Gesamtablauf.</p>
+      </details>
+      <details class="frage">
+        <summary>Was kostet der Ortstermin?</summary>
+        <p>Nichts. Wir sehen uns das Objekt an, hören zu und sagen ehrlich, ob wir der richtige
+        Partner sind. Erst wenn wir gemeinsam weitermachen, entstehen Kosten — und die stehen
+        vorher schriftlich fest.</p>
+      </details>
+      <details class="frage">
+        <summary>Arbeiten Sie mit Fördermitteln?</summary>
+        <p>Wir liefern die technischen Nachweise, die Ihr Energieberater für KfW- oder BAFA-Anträge
+        braucht, und stimmen die Ausführung darauf ab. Die Antragstellung selbst läuft über einen
+        zertifizierten Energieberater — den empfehlen wir Ihnen gern.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="abschnitt cta dunkel">
+  <div class="wrap cta-innen">
+    <div class="auf">
+      <span class="marke">Projektanfrage</span>
+      <h2 style="margin:18px 0 22px">Passt Ihr Vorhaben <em>zu uns?</em></h2>
+      <p class="lead" style="max-width:46ch">Fünf Fragen, zwei Minuten — und Sie haben eine klare Antwort.</p>
+      <div class="hero-knoepfe" style="margin-top:32px">
+        <a class="btn btn-gross" href="anfrage.html">Projektanfrage starten <span class="pfeil">→</span></a>
+        <a class="btn btn-linie btn-gross" href="projekte.html">Projekte ansehen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-raster">
+      <div class="fuss-marke">
+        <b data-cfg="name">SBS Bau</b>
+        <p>Komplettsanierung, Innenausbau und Bäder für ganze Objekte im Saarpfalz-Kreis.</p>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#" data-cfg-href="tel" data-cfg="telefonText">06841 / 000 00 00</a></li>
+          <li><a href="#" data-cfg-href="mail" data-cfg="mail">bauleitung@sbs-bau.de</a></li>
+          <li><span data-cfg="strasse">Musterstraße 1</span></li>
+          <li><span data-cfg="plzOrt">66424 Homburg</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Seiten</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="projekte.html">Projekte</a></li>
+          <li><a href="anfrage.html">Projektanfrage</a></li>
+          <li><a href="intern.html">Projektverwaltung (Vorschau)</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span data-cfg="jahr">2026</span> <span data-cfg="rechtsform">SBS Bau GmbH</span></span>
+      <span>Demo-Website · Beispielinhalte, Beispielbilder</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+</body>
+</html>
