@@ -413,6 +413,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       </div>
     </div>
     <p class="mt-8 text-center text-[14px]" style="color:var(--ink-soft)">Oder direkt an <a data-cfg-mail href="#kontakt" class="font-bold underline underline-offset-4" style="color:var(--clay)">unsere E-Mail-Adresse</a></p>
+
+    <!-- Gutschein-Hinweis (17.09.2026): bewusst nur ein Zettel, keine eigene
+         Sektion. Gutscheine gibt es ausschliesslich im Studio, Wert frei
+         waehlbar - kein Bestellweg, deshalb kein Link auf E-Mail oder Shore.
+         Klassen wie beim Reservierungszettel, alle im Bundle vorhanden. -->
+    <p id="gutschein" class="hand mx-auto mt-8 max-w-md text-center rounded-2xl border-[1.5px] border-dashed px-5 py-2.5 text-[19px] rotate-[-1deg]" style="border-color:var(--clay);color:var(--ink)">
+      🎁 Verschenkt einen Nachmittag bei uns: Gutscheine gibt es bei uns im Studio, den Wert bestimmt ihr selbst.
+    </p>
   </div>
 </section>
 
@@ -544,6 +552,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
       <details class="rv sketch px-6 py-5 group">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Gibt es etwas zu trinken?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
         <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Klar — bei uns malst du mit Café-Gefühl: Kaffee, Kakao und Kaltgetränke gibt es direkt am Maltisch, abends auch ein Glas Wein, Prosecco oder ein Bier dazu. Einfach ankommen, aussuchen, losmalen.</p>
+      </details>
+      <details class="rv sketch px-6 py-5 group">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 font-bold text-[16.5px]">Gibt es Gutscheine?<span class="hand text-[22px] transition-transform group-open:rotate-45" style="color:var(--clay)">+</span></summary>
+        <p class="mt-3 text-[15px] leading-relaxed" style="color:var(--ink-soft)">Ja, direkt bei uns im Studio, mit frei wählbarem Wert. Einlösbar für alles, was wir anbieten: Keramik, Malgebühr und Getränke. Kommt einfach zu den <a href="#kontakt" class="font-bold underline underline-offset-4" style="color:var(--clay)">Öffnungszeiten</a> vorbei.</p>
       </details>
     </div>
     <p class="nur-telefon hand text-[21px] text-center mt-8" style="color:var(--ink-soft)">noch eine Frage? Ruf uns einfach an: <a data-cfg-href="phoneHref" href="#" class="underline" style="color:var(--clay)" data-cfg="phoneLabel">06851 / 000 000</a> ✦</p>
