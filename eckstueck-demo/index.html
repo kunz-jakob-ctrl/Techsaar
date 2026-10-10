@@ -67,6 +67,20 @@ const CONFIG = {
   // Ausnahme: Babys duerfen jederzeit mit, wenn Eltern einen Hand- oder
   // Fussabdruck machen wollen - dafuer gibt es keine Altersgrenze.
   minAgeParty: 6,
+  // Hinweis-Leiste oben (Events, Schliesstage). Erscheint ab "von", verschwindet
+  // nach "bis" von selbst - beides einschliesslich, Format JJJJ-MM-TT.
+  // Mehrere gleichzeitig: "geschlossen" geht vor, sonst der, der zuerst endet.
+  // Bei "geschlossen" zeigt auch die Oeffnungsanzeige "Heute geschlossen";
+  // soll die Schliessung vorab angekuendigt werden, die echten Schliesstage
+  // zusaetzlich als zu: ["JJJJ-MM-TT","JJJJ-MM-TT"] angeben.
+  // link (optional): "#kontakt" oder eine https-Adresse, dazu linkText.
+  // Beispiel:
+  // { art:"event", von:"2026-10-20", bis:"2026-10-31",
+  //   text:"Sa 31.10. · Halloween-Malabend ab 18 Uhr", link:"#kontakt", linkText:"Platz anfragen" },
+  // { art:"geschlossen", von:"2026-12-15", bis:"2026-12-27", zu:["2026-12-24","2026-12-27"],
+  //   text:"Vom 24. bis 27.12. haben wir geschlossen – frohe Feiertage!" },
+  // Abgelaufene Eintraege beim naechsten Pflege-Durchgang loeschen.
+  hinweise: [],
 };
 /* ===================================================== */
 </script>
@@ -75,6 +89,7 @@ const CONFIG = {
      fehlt sie (kein JS, Motion nicht geladen, reduzierte Bewegung), ist die Seite
      schlicht sofort vollständig sichtbar. -->
 <script src="vendor/motion.js"></script>
+<script src="hinweise.js?v=2026-10-10"></script>
 <script>
   if (window.Motion && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     document.documentElement.classList.add("motion");
@@ -624,7 +639,27 @@ if(!CONFIG.vorEroeffnung){
    Laeuft ohne Zutun ab, niemand muss sich einen Termin notieren. */
 (function(){
   const balken = document.getElementById("ribbon");
-  if(!balken || !CONFIG.openingDate) return;
+  if(!balken) return;
+
+  /* Ein aktueller Hinweis (Event, Schliessung) geht vor dem Eroeffnungstext.
+     Text per textContent, Link als eigenes Element: Pflegetext landet so nie
+     als HTML in der Seite. */
+  const hinweis = window.Hinweise && Hinweise.aktiverHinweis(CONFIG.hinweise, new Date());
+  if(hinweis){
+    balken.textContent = (hinweis.art === "event" ? "✨ " : "") + hinweis.text;
+    const ziel = Hinweise.sichererLink(hinweis.link);
+    if(ziel){
+      const a = document.createElement("a");
+      a.href = ziel;
+      a.textContent = hinweis.linkText || "mehr";
+      a.className = "underline underline-offset-2 hover:opacity-80";
+      if(ziel.startsWith("https://")){ a.target = "_blank"; a.rel = "noopener"; }
+      balken.append(" — ", a);
+    }
+    return;
+  }
+
+  if(!CONFIG.openingDate) return;
 
   const tag = new Date(CONFIG.openingDate + "T00:00:00");
   const bisWann = new Date(tag);
@@ -784,6 +819,9 @@ document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bem
      Deshalb steht dort bis zum Eroeffnungstag das Datum. Danach greift wieder
      der normale Status, ohne dass jemand etwas umstellen muss. */
   if(CONFIG.vorEroeffnung){ el.textContent="● Wir eröffnen am "+CONFIG.openingLabel; el.style.color="var(--clay-deep)"; }
+  /* Schliesstage aus CONFIG.hinweise schlagen die regulaeren Zeiten, sonst
+     stuende an einem Urlaubstag "Jetzt geoeffnet" auf der Seite. */
+  else if(window.Hinweise && Hinweise.istGeschlossen(CONFIG.hinweise, jetzt)){ el.textContent="● Heute geschlossen"; el.style.color="var(--clay-deep)"; }
   else if(h && hr>=h[0] && hr<h[1]){ el.textContent="● Jetzt geöffnet — bis "+zeit(h[1])+" Uhr"; el.style.color="#5F7F5F"; }
   else { el.textContent="● Gerade geschlossen"; el.style.color="var(--clay-deep)"; }
 })();
