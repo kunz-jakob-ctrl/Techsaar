@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ECKSTÜCK · Keramikmalstudio St. Wendel — Keramik bemalen</title>
-<meta name="description" content="ECKSTÜCK — dein Keramikmalstudio in St. Wendel. Rohling aussuchen, bemalen, wir glasieren & brennen. Jetzt Tisch reservieren — auch für Kindergeburtstage & Events.">
+<meta name="description" content="ECKSTÜCK — dein Keramikmalstudio in St. Wendel. Rohling aussuchen, bemalen, wir glasieren & brennen. Jetzt Tisch reservieren — auch für Gruppen & Events.">
 
 <!-- Favicon: das Bildzeichen der Kundin, auf 64px heruntergerechnet -->
 <link rel="icon" href="img/favicon.png">
@@ -412,7 +412,9 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
         <h3 class="serif font-semibold text-[26px] mt-3">Kindergeburtstag</h3>
         <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, Spaß haben — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
         <p class="mt-3 text-[13.5px] font-bold">ab <span data-cfg="minAgeParty">6</span> Jahren</p>
-        <a href="#kontakt" data-anfrage="Kindergeburtstag" class="inline-block mt-4 font-bold underline underline-offset-4">Anfrage schreiben →</a>
+        <!-- Kein Anfrage-Link mehr (26.10.2026): die Inhaberinnen wollen keine
+             Terminanfragen fuer Kindergeburtstage, nur den Hinweis auf die Malbox. -->
+        <p class="mt-4 text-[15px] leading-relaxed">✨ Dafür gibt es bei uns eine eigene Malbox.</p>
       </div>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--butter)">
         <span class="text-4xl">🥂</span>
@@ -478,7 +480,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
     <h2 class="serif font-semibold text-[38px] md:text-[48px]" style="color:var(--paper)">Reserviere deinen Maltisch</h2>
     <p class="mt-4 text-[16px] leading-relaxed" style="color:rgba(250,246,237,.7)">
       Such dir online Tag und Uhrzeit aus. Dauert eine Minute, und dein Tisch steht bereit.
-      Für Kindergeburtstage, JGA und größere Gruppen meldet euch am besten direkt bei uns.
+      Für JGA und größere Gruppen meldet euch am besten direkt bei uns.
     </p>
 
     <a id="bookLink" href="#" class="btn-butter inline-block mt-9 rounded-full px-9 py-4 font-bold text-[17px]">Jetzt Tisch reservieren ↗</a>
@@ -704,11 +706,9 @@ if(!CONFIG.vorEroeffnung){
   if(!adresse) return;
 
   /* "satz" ist die gebeugte Form fuer den Fliesstext ("... fuer einen
-     Kindergeburtstag"), der Schluessel bleibt die Kurzform fuer den Betreff
-     ("Anfrage: Kindergeburtstag") - dort waere ein Artikel fehl am Platz. */
+     Mädelsabend"), der Schluessel bleibt die Kurzform fuer den Betreff
+     ("Anfrage: Mädelsabend") - dort waere ein Artikel fehl am Platz. */
   const anlaesse = {
-    "Kindergeburtstag":   { satz: "einen Kindergeburtstag",
-                            felder: ["Anzahl Kinder:", "Alter der Kinder:"] },
     "Mädelsabend":        { satz: "einen Mädelsabend",
                             felder: ["Anzahl Personen:", "Getränkewunsch:"] },
     "Teamevent oder JGA": { satz: "ein Teamevent oder einen JGA",
