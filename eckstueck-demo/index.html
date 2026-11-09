@@ -50,7 +50,7 @@ const CONFIG = {
   shoreUrl: "https://connect.shore.com/bookings/keramikmalstudio-eckstueck/services?locale=de",
   // Öffnungszeiten: 0=So … 6=Sa · null = Ruhetag · [von, bis] in Stunden
   // Halbe Stunden als Dezimalwert: 12.5 = 12:30 Uhr
-  hours: { 0:[10,16], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
+  hours: { 0:[10,18.5], 1:null, 2:null, 3:[11,20], 4:[12.5,21], 5:[11,20], 6:[10,18.5] },
   longDay: 4,                              // Donnerstag = langer Donnerstag
   // Eroeffnungstag. Solange er in der Zukunft liegt, steht im Laufband und bei
   // den Oeffnungszeiten ein Eroeffnungshinweis statt "Gerade geschlossen" -
@@ -81,6 +81,41 @@ const CONFIG = {
   //   text:"Vom 24. bis 27.12. haben wir geschlossen – frohe Feiertage!" },
   // Abgelaufene Eintraege beim naechsten Pflege-Durchgang loeschen.
   hinweise: [],
+  // Galerie "Ein bisschen Vorfreude": zeigt 4 Bilder und rueckt alle 14 Tage
+  // (montags) um 4 weiter - Logik in galerie.js. Die Reihenfolge hier legt
+  // fest, was zusammen erscheint. Gleiche "gruppe" = aehnliches Motiv, muss
+  // mindestens 4 Plaetze auseinander stehen (auch ueber das Listenende
+  // hinweg), sonst schlaegt build/galerie.test.cjs an.
+  // Nur Fotos ohne erkennbare Gaeste. Die Inhaberinnen haben eingewilligt.
+  // Neues Bild: img/galerie-N.jpg (640x854), Zeile ergaenzen, ?v= auf heute.
+  galerie: [
+    { src:"img/galerie-12.jpg?v=2026-11-09",
+      alt:"Die beiden Inhaberinnen in blau gestreiften Schürzen, Arm in Arm und lachend, vor der grünen Säule im Studio" },
+    { src:"img/galerie-3.jpg?v=2026-11-09", gruppe:"farbregal",
+      alt:"Regal mit Glasurfarben in Pastelltönen: große Flaschen und kleine Malflaschen mit Nadelspitze, jede Farbe nummeriert" },
+    { src:"img/galerie-6.jpg?v=2026-11-09", gruppe:"aufsteller",
+      alt:"Grüner Aufsteller mit goldenen Buchstaben ECKSTÜCK vor der hellen Hauswand, davor rosa Hortensien" },
+    { src:"img/galerie-13.jpg?v=2026-11-09",
+      alt:"Wolkenförmige Papierlampen über den Hochtischen am großen Fenster, draußen grüne Bäume" },
+    { src:"img/galerie-7.jpg?v=2026-11-09",
+      alt:"Blick über die Schulter: Eine Besucherin bemalt eine runde Schale innen rosa gestreift und malt Buchstaben hinein" },
+    { src:"img/galerie-10.jpg?v=2026-11-09",
+      alt:"Unbemalte Rohlinge im Schaufenster: hohe Henkelbecher, Teekannen und Schälchen auf einem Holzbrett und Schaffell" },
+    { src:"img/galerie-1.jpg?v=2026-08-10",
+      alt:"Selbst bemalte Servierplatte mit rotem Hummer und blau getupftem Rand, daneben ein Schälchen mit dem Namen Pablo und Becher voller Pinsel" },
+    { src:"img/galerie-11.jpg?v=2026-11-09", gruppe:"farbregal",
+      alt:"Glasurfarben von Gelb über Lachs bis Altrosa, nummeriert im Regal, darüber rosa Keramikschalen" },
+    { src:"img/galerie-4.jpg?v=2026-11-09",
+      alt:"Zwei Hände halten ein weißes Keramik-Ei und setzen mit einem gelben Tupfwerkzeug blaue Punkte darauf" },
+    { src:"img/galerie-8.jpg?v=2026-11-09", gruppe:"aufsteller",
+      alt:"Grüner ECKSTÜCK-Aufsteller im Sonnenlicht vor dem Eingang, daneben Ziergras und rosa Hortensien" },
+    { src:"img/galerie-9.jpg?v=2026-11-09",
+      alt:"Das Studio vom Eingang aus: Maltische mit schwarzen Stühlen, Regale mit weißen Rohlingen und große Fenster zur Straße" },
+    { src:"img/galerie-2.jpg?v=2026-08-10",
+      alt:"Runder Teller, in bunte Dreiecksfelder aufgeteilt und mit Klebeband-Technik bemalt, dahinter ein Keramikhahn und gelbe Malschwämmchen" },
+    { src:"img/galerie-5.jpg?v=2026-11-09",
+      alt:"Unbemalte Teller und Schalen im Regal vor grüner Wand, daneben eine Vase mit rosa Kirschblüten" },
+  ],
 };
 /* ===================================================== */
 </script>
@@ -90,6 +125,7 @@ const CONFIG = {
      schlicht sofort vollständig sichtbar. -->
 <script src="vendor/motion.js"></script>
 <script src="hinweise.js?v=2026-10-10"></script>
+<script src="galerie.js?v=2026-11-09"></script>
 <script>
   if (window.Motion && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     document.documentElement.classList.add("motion");
@@ -406,16 +442,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
          Die mailto-Adressen baut das Skript unten aus CONFIG.email zusammen,
          damit die Adresse an einer Stelle gepflegt wird - und nicht dreimal
          im Klartext im HTML steht, wo Spam-Sammler sie abgreifen. -->
-    <div class="mt-12 grid md:grid-cols-3 gap-6" data-reveal>
-      <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--blush)">
-        <span class="text-4xl">🎈</span>
-        <h3 class="serif font-semibold text-[26px] mt-3">Kindergeburtstag</h3>
-        <p class="mt-2 text-[15px] leading-relaxed">2 Stunden malen, lachen, Spaß haben — und jedes Kind nimmt sein eigenes Kunstwerk mit nach Hause.</p>
-        <p class="mt-3 text-[13.5px] font-bold">ab <span data-cfg="minAgeParty">6</span> Jahren</p>
-        <!-- Kein Anfrage-Link mehr (26.10.2026): die Inhaberinnen wollen keine
-             Terminanfragen fuer Kindergeburtstage, nur den Hinweis auf die Malbox. -->
-        <p class="mt-4 text-[15px] leading-relaxed">✨ Dafür gibt es bei uns eine eigene Malbox.</p>
-      </div>
+    <!-- Kindergeburtstag-Karte am 09.11.2026 ganz entfernt (Wunsch der
+         Inhaberinnen, vorher schon ohne Anfrage-Button). Zwei Karten, deshalb
+         md:grid-cols-2 und schmaler, damit sie nicht in die Breite laufen. -->
+    <div class="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto" data-reveal>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--butter)">
         <span class="text-4xl">🥂</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Mädelsabend</h3>
@@ -454,19 +484,31 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
          CSS-Hintergrund (offener Punkt aus dem Rechts-Check: Hintergrundbilder
          sind fuer Screenreader unsichtbar).
 
-         Aktuell zwei Kacheln, dafuer groesser. Nach dem Fotoshooting wieder auf
-         vier erweitern: grid-cols-2 -> md:grid-cols-4 und zwei weitere Figuren
-         ergaenzen. Hintergrund dazu in NOTIZEN.md. -->
-    <div class="mt-10 grid grid-cols-2 gap-5 max-w-3xl mx-auto" data-reveal>
+         Vier Kacheln, die Bilder kommen aus CONFIG.galerie und wechseln alle
+         14 Tage (galerie.js, Skript unten). Im HTML steht die Auswahl des
+         ersten Zeitraums - die sieht, wer kein JavaScript hat.
+         lg:grid-cols-4 statt md:: auf Tablets waeren vier Hochformate zu
+         schmal, dort bleibt es bei 2x2. -->
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-5" data-reveal>
       <figure data-parallax="26" class="galerie-figur">
-        <img src="img/galerie-1.jpg?v=2026-08-10" loading="lazy" width="640" height="854"
-             alt="Selbst bemalte Servierplatte mit rotem Hummer und blau getupftem Rand, daneben ein Schälchen mit dem Namen Pablo und Becher voller Pinsel"
+        <img src="img/galerie-12.jpg?v=2026-11-09" loading="lazy" width="640" height="854"
+             alt="Die beiden Inhaberinnen in blau gestreiften Schürzen, Arm in Arm und lachend, vor der grünen Säule im Studio"
              class="rv arch galerie-bild w-full object-cover" style="background-color:var(--sky)">
       </figure>
       <figure data-parallax="-18" class="galerie-figur md:mt-10">
-        <img src="img/galerie-2.jpg?v=2026-08-10" loading="lazy" width="640" height="854"
-             alt="Runder Teller, in bunte Dreiecksfelder aufgeteilt und mit Klebeband-Technik bemalt, dahinter ein Keramikhahn und gelbe Malschwämmchen"
+        <img src="img/galerie-3.jpg?v=2026-11-09" loading="lazy" width="640" height="854"
+             alt="Regal mit Glasurfarben in Pastelltönen: große Flaschen und kleine Malflaschen mit Nadelspitze, jede Farbe nummeriert"
              class="rv arch galerie-bild w-full object-cover" style="background-color:var(--blush)">
+      </figure>
+      <figure data-parallax="26" class="galerie-figur">
+        <img src="img/galerie-6.jpg?v=2026-11-09" loading="lazy" width="640" height="854"
+             alt="Grüner Aufsteller mit goldenen Buchstaben ECKSTÜCK vor der hellen Hauswand, davor rosa Hortensien"
+             class="rv arch galerie-bild w-full object-cover" style="background-color:var(--butter)">
+      </figure>
+      <figure data-parallax="-18" class="galerie-figur md:mt-10">
+        <img src="img/galerie-13.jpg?v=2026-11-09" loading="lazy" width="640" height="854"
+             alt="Wolkenförmige Papierlampen über den Hochtischen am großen Fenster, draußen grüne Bäume"
+             class="rv arch galerie-bild w-full object-cover" style="background-color:var(--sage)">
       </figure>
     </div>
     <p class="mt-8 text-center text-[15px] font-bold">Mehr auf Instagram: <a data-cfg-href="instagram" href="#" target="_blank" rel="noopener" class="underline underline-offset-4" style="color:var(--clay)"><span data-cfg="instaHandle">@eckstueck_</span> ↗</a></p>
@@ -789,6 +831,18 @@ document.title = CONFIG.name+" · "+CONFIG.sub+" "+CONFIG.city+" — Keramik bem
   addEventListener("scroll",anstossen,{passive:true});
   addEventListener("resize",anstossen);
   pruefen();
+})();
+
+/* ---------- Galerie: alle 14 Tage andere Bilder aus CONFIG.galerie ---------- */
+/* Laeuft, bevor die lazy-Bilder laden, also wird nichts doppelt geholt.
+   Fehlt galerie.js, bleibt einfach die Auswahl aus dem HTML stehen. */
+(function(){
+  if(!window.Galerie) return;
+  const bilder = document.querySelectorAll("#galerie .galerie-bild");
+  Galerie.auswahl(CONFIG.galerie, new Date(), bilder.length).forEach((b,i)=>{
+    bilder[i].src = b.src;
+    bilder[i].alt = b.alt;
+  });
 })();
 
 /* ---------- Öffnungszeiten: Liste + Offen/Geschlossen-Status ---------- */

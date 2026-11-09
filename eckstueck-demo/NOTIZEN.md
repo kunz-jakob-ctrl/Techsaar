@@ -5,38 +5,48 @@
 in HTML-Kommentare — die kann jeder Besucher über „Seitenquelltext anzeigen"
 mitlesen.
 
-## Bildbestand (Stand 10.08.2026)
+## Bildbestand (Stand 09.11.2026)
 
-**Echte Kundenfotos**, am 09.08.2026 per WhatsApp geliefert, am 10.08.
-zugeschnitten. EXIF wurde beim Zuschnitt entfernt — WhatsApp-Bilder können
-Geräte- und Standortdaten enthalten.
+Die Galerie zeigt 4 Kacheln (Start am 09.11.2026 nur mit neuen Fotos) und wechselt alle 14 Tage montags automatisch
+(`galerie.js`, Pool in `CONFIG.galerie`, Test `build/galerie.test.cjs`).
+Ähnliche Motive tragen dieselbe `gruppe` und dürfen nie zusammen erscheinen.
 
-| Datei | Motiv |
-|---|---|
-| `hero-1.jpg` | Butterdose mit roten Kirschen, Schablonen davor |
-| `hero-2.jpg` | Pinsel und Schwämmchen im Rosa-Becher |
-| `hero-3.jpg` | Gestreifte Schürzen mit Pinseln |
-| `galerie-1.jpg` | Hummer-Platte mit „Pablo"-Näpfchen |
-| `galerie-2.jpg` | Bunter Dreiecks-Teller mit Keramikhahn |
+**Echte Kundenfotos.** Hero und Galerie 1–2 kamen am 09.08.2026 per WhatsApp.
+Galerie 3–13 sind Fotos der Inhaberinnen, geliefert am 01.11.2026. EXIF wurde
+beim Zuschnitt entfernt.
+
+| Datei | Motiv | Hinweis |
+|---|---|---|
+| `hero-1.jpg` | Butterdose mit roten Kirschen, Schablonen davor | |
+| `hero-2.jpg` | Pinsel und Schwämmchen im Rosa-Becher | |
+| `hero-3.jpg` | Gestreifte Schürzen mit Pinseln | |
+| `galerie-1.jpg` | Hummer-Platte mit „Pablo"-Näpfchen | |
+| `galerie-2.jpg` | Bunter Dreiecks-Teller mit Keramikhahn | |
+| `galerie-3.jpg` | Glasurregal Pastell, nummeriert | gruppe farbregal |
+| `galerie-4.jpg` | Hände tupfen blaue Punkte auf Keramik-Ei | Person nur von hinten, nicht erkennbar |
+| `galerie-5.jpg` | Rohlinge im Regal mit Kirschblüten | Preisschild lesbar (von Kundin geliefert) |
+| `galerie-6.jpg` | ECKSTÜCK-Aufsteller, Hortensien | gruppe aufsteller |
+| `galerie-7.jpg` | Besucherin bemalt Schale mit Schrift | Person nur von hinten, nicht erkennbar |
+| `galerie-8.jpg` | ECKSTÜCK-Aufsteller im Sonnenlicht | gruppe aufsteller |
+| `galerie-9.jpg` | Studio vom Eingang, Blick zum Fenster | Person klein im Hintergrund, nicht erkennbar |
+| `galerie-10.jpg` | Henkelbecher und Teekannen im Schaufenster | Preisschild lesbar (von Kundin geliefert) |
+| `galerie-11.jpg` | Glasurregal Gelb–Altrosa | gruppe farbregal |
+| `galerie-12.jpg` | Die beiden Inhaberinnen in Schürzen | Einwilligung der Inhaberinnen bestätigt am 2026-11-09 |
+| `galerie-13.jpg` | Wolkenlampen am Fenster | |
+
+**Bewusst nicht verwendet** (Lieferung 01.11.2026): vier Fotos mit
+erkennbaren Gästen (Frauengruppe am Tisch, zwei ältere Damen, Innenraum mit
+Gästen, Ladenfront mit Gast). Ohne schriftliche Einwilligung der Abgebildeten
+nicht nutzbar.
 
 `kontakt-brunnen.jpg` zeigt den Kugelbrunnen in der St. Wendeler
 Fußgängerzone. Private Aufnahme aus Jakobs Familie, kein Stockfoto, Nutzung
 abgestimmt. Bleibt dauerhaft.
 
-**Entfernt am 10.08.2026:** `galerie-3.jpg` und `galerie-4.jpg`. Das waren
-Stockfotos einer fremden Töpferwerkstatt beziehungsweise fremder Hände. Auf
-einer Demo unkritisch, auf der Kundenseite nicht: fremde Betriebsstätten als
-eigene zu zeigen ist wettbewerbsrechtlich angreifbar, und Eckstück brennt gar
-keine eigenen Rohlinge. Die Dateien liegen noch in `img/`, werden aber nirgends
-mehr eingebunden.
-
-**Anfang September 2026** kommt ein Fotograf der Stadt ins Studio. Gebraucht
-werden Innenraum, Rohling-Regal und Ladenfront. Danach:
-
-- Galerie wieder auf vier Kacheln (`grid-cols-2` → `md:grid-cols-4`)
-- Alt-Texte für die neuen Bilder schreiben
-- Falls Personen erkennbar sind: schriftliche Einwilligung nach Art. 6 Abs. 1
-  lit. a DSGVO / KUG von der Kundin einholen, bei Kindern von den Eltern
+**Keine Stockfotos:** Fremde Betriebsstätten als eigene zu zeigen ist
+wettbewerbsrechtlich angreifbar, und Eckstück brennt keine eigenen Rohlinge.
+Die alten Stock-Dateien `galerie-3.jpg`/`galerie-4.jpg` wurden am 09.11.2026
+durch Kundenfotos überschrieben.
 
 ## Rechtstexte
 
