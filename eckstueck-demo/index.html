@@ -132,6 +132,11 @@ const CONFIG = {
 </script>
 
 <style>
+/* Malkorb-Karte: Pfeil dreht beim Aufklappen, Safari-Dreieck ausblenden
+   (list-none reicht dort nicht). Klassen dafuer fehlen im Tailwind-Bundle. */
+.malkorb summary::-webkit-details-marker{display:none}
+.malkorb-pfeil{transition:transform .2s}
+.malkorb[open] .malkorb-pfeil{transform:rotate(180deg)}
 :root{
   --paper:#FAF6ED; --paper-2:#F4EDDD;
   --ink:#41493B; --ink-soft:#6B7562;
@@ -443,9 +448,9 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
          damit die Adresse an einer Stelle gepflegt wird - und nicht dreimal
          im Klartext im HTML steht, wo Spam-Sammler sie abgreifen. -->
     <!-- Kindergeburtstag-Karte am 09.11.2026 ganz entfernt (Wunsch der
-         Inhaberinnen, vorher schon ohne Anfrage-Button). Zwei Karten, deshalb
-         md:grid-cols-2 und schmaler, damit sie nicht in die Breite laufen. -->
-    <div class="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto" data-reveal>
+         Inhaberinnen, vorher schon ohne Anfrage-Button). Seit 15.11.2026
+         dritte Karte Malkorb fuer zuhause. -->
+    <div class="mt-12 grid md:grid-cols-3 gap-6" data-reveal>
       <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--butter)">
         <span class="text-4xl">🥂</span>
         <h3 class="serif font-semibold text-[26px] mt-3">Mädelsabend</h3>
@@ -457,6 +462,25 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
         <h3 class="serif font-semibold text-[26px] mt-3">Teamevents &amp; JGA</h3>
         <p class="mt-2 text-[15px] leading-relaxed">Kreativ statt Konferenzraum — für Gruppen reservieren wir euch gern das ganze Studio, auf Wunsch mit Aperitif, Wein oder Prosecco.</p>
         <a href="#kontakt" data-anfrage="Teamevent oder JGA" class="inline-block mt-5 font-bold underline underline-offset-4">Anfrage schreiben →</a>
+      </div>
+      <!-- Malkorb (15.11.2026): gibt es nur im Studio, wie die Gutscheine -
+           deshalb kein Anfrage-Link, sondern die Schritte zum Aufklappen.
+           details statt Skript: geht ohne JavaScript und mit Tastatur. -->
+      <div class="rv rounded-3xl p-8 relative overflow-hidden" style="background:var(--sky)">
+        <span class="text-4xl">🧺</span>
+        <h3 class="serif font-semibold text-[26px] mt-3">Malkorb für zuhause</h3>
+        <p class="mt-2 text-[15px] leading-relaxed">Rohling und Farben bei uns aussuchen, daheim ganz in Ruhe bemalen — wir brennen es für euch.</p>
+        <p class="mt-3 text-[13.5px] font-bold">Ihr zahlt nur den Rohling</p>
+        <details class="malkorb mt-4">
+          <summary class="cursor-pointer list-none inline-block font-bold underline underline-offset-4">So läuft's <span class="malkorb-pfeil inline-block">↓</span></summary>
+          <ol class="mt-3 text-[15px] leading-relaxed" style="list-style:decimal;padding-left:1.25rem">
+            <li>Rohling und bis zu 6 Farben bei uns im Studio aussuchen</li>
+            <li>Pinsel, Material und Anleitung kommen mit in den Korb</li>
+            <li>Zuhause bemalen</li>
+            <li>Wieder zu uns bringen</li>
+            <li>Wir glasieren und brennen, ihr holt euer Stück ab</li>
+          </ol>
+        </details>
       </div>
     </div>
     <p class="mt-8 text-center text-[14px]" style="color:var(--ink-soft)">Oder direkt an <a data-cfg-mail href="#kontakt" class="font-bold underline underline-offset-4" style="color:var(--clay)">unsere E-Mail-Adresse</a></p>
