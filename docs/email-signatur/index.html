@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>E-Mail-Signatur · TechSaar intern</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<!--
+  Interne Seite, wird NICHT deployt (docs/ ist im Deploy ausgeschlossen).
+  Öffnen per Doppelklick, Variante wählen, "Signatur kopieren", in Outlook einfügen.
+
+  Das Logo für die Mails liegt unter /mail/signatur-logo-v1.png und MUSS auf
+  tech-saar.de online sein, sonst sehen Empfänger ein leeres Kästchen.
+  Bilder werden dort ein Jahr gecacht. Neues Logo = neuer Dateiname (v2).
+-->
+<style>
+  :root{
+    --night:#0F0F14; --panel:#16161D; --line:rgba(255,255,255,.09);
+    --ink:#F2F1F7; --muted:#9897A5; --lilac:#8B7CF6; --lavend:#C4B5FD;
+    --ok:#34D399; --warn:#FBBF24;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--night);color:var(--ink);font-family:Inter,system-ui,sans-serif;
+       -webkit-font-smoothing:antialiased;line-height:1.55}
+  a{color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:40px 24px 96px}
+
+  /* Kopf */
+  .kopf{display:flex;align-items:center;justify-content:space-between;gap:16px;
+        padding-bottom:28px;border-bottom:1px solid var(--line)}
+  .marke{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .marke svg{width:34px;height:34px}
+  .marke b{display:block;font-family:'Space Grotesk',system-ui,sans-serif;font-size:19px;letter-spacing:-.02em}
+  .marke small{display:block;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .intern{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+          border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+
+  .label{display:flex;align-items:center;gap:14px;font-size:11px;font-weight:600;letter-spacing:.28em;
+         text-transform:uppercase;color:var(--lilac);margin:56px 0 0}
+  .label::before{content:"";width:40px;height:1px;background:currentColor;opacity:.6}
+  h1{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;letter-spacing:-.03em;
+     font-size:clamp(34px,5vw,54px);line-height:1.02;margin:18px 0 0}
+  h1 span{color:var(--muted)}
+  .lead{max-width:600px;margin:18px 0 0;color:var(--muted);font-size:17px}
+
+  /* Variante */
+  .steuer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:40px}
+  .segment{display:inline-flex;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+  .segment button{all:unset;cursor:pointer;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;
+                  color:var(--muted);transition:background-color .2s,color .2s}
+  .segment button:hover{color:var(--ink)}
+  .segment button[aria-pressed="true"]{background:var(--ink);color:var(--night)}
+  .segment button:focus-visible{outline:2px solid var(--lilac);outline-offset:2px}
+  .status{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--muted)}
+  .status i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+  .status[data-s="ok"] i{background:var(--ok);box-shadow:0 0 0 4px rgba(52,211,153,.15)}
+  .status[data-s="fehlt"] i{background:var(--warn);box-shadow:0 0 0 4px rgba(251,191,36,.15)}
+  .status[data-s="fehlt"]{color:#FDE68A}
+
+  /* Karten mit Mail-Vorschau */
+  .karten{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;margin-top:20px}
+  @media (max-width:860px){.karten{grid-template-columns:1fr}}
+  .karte{border:1px solid var(--line);border-radius:22px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column}
+  .karte-kopf{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:20px 22px 16px}
+  .karte-kopf h2{margin:0;font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;letter-spacing:-.01em}
+  .karte-kopf p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+  .karte-kopf .nr{font-family:'Space Grotesk',system-ui,sans-serif;font-size:12px;color:var(--lilac);font-weight:700;white-space:nowrap}
+
+  .mail{margin:0 14px;border-radius:14px;background:#fff;color:#1C1B22;flex:1;
+        box-shadow:0 1px 0 rgba(255,255,255,.06) inset}
+  .mail-meta{display:flex;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid #EEECF3;
+             font:12px/1.4 'Segoe UI',Arial,sans-serif;color:#77768A}
+  .mail-meta b{color:#1C1B22;font-weight:600}
+  .mail-body{padding:18px 20px 22px;font:14px/20px 'Segoe UI',Arial,sans-serif}
+  .platzhalter{margin:0 0 18px}
+  .platzhalter span{display:block;height:8px;border-radius:4px;background:#EEECF3;margin:0 0 8px}
+
+  .aktionen{display:flex;flex-wrap:wrap;gap:10px;padding:16px 14px 16px}
+  .btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:9px;border-radius:999px;
+       padding:12px 20px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+       transition:transform .2s,background-color .2s,color .2s,border-color .2s}
+  .btn svg{width:15px;height:15px}
+  .btn-voll{background:var(--lilac);color:#fff}
+  .btn-voll:hover{background:var(--lavend);color:var(--night);transform:translateY(-1px)}
+  .btn-rand{border:1px solid var(--line);color:var(--ink)}
+  .btn-rand:hover{border-color:var(--lilac);color:var(--lavend)}
+  .btn:focus-visible{outline:2px solid var(--lilac);outline-offset:3px}
+  .btn[data-done="1"]{background:var(--ok);color:var(--night);border-color:transparent}
+
+  /* Anleitung */
+  .reiter{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .reiter button{all:unset;cursor:pointer;padding:10px 16px;border-radius:12px;border:1px solid var(--line);
+                 font-size:14px;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s,background-color .2s}
+  .reiter button:hover{color:var(--ink)}
+  .reiter button[aria-selected="true"]{color:var(--ink);border-color:var(--lilac);background:rgba(139,124,246,.12)}
+  .reiter button:focus-visible{outline:2px solid var(--lilac);outline-offset:2px}
+  .schritte{list-style:none;margin:22px 0 0;padding:0;border-top:1px solid var(--line);counter-reset:s}
+  .schritte li{counter-increment:s;display:grid;grid-template-columns:56px 1fr;gap:8px;padding:18px 0;
+               border-bottom:1px solid var(--line);font-size:16px}
+  .schritte li::before{content:counter(s,decimal-leading-zero);font-family:'Space Grotesk',system-ui,sans-serif;
+                       font-weight:700;color:var(--lilac);font-size:15px;padding-top:1px}
+  .schritte b{color:var(--ink)}
+  .schritte span{color:var(--muted)}
+  kbd{font:600 12px/1 Inter,system-ui,sans-serif;padding:4px 7px;border-radius:6px;border:1px solid var(--line);
+      background:var(--panel);color:var(--ink)}
+  .pfad{color:var(--lavend);font-weight:600}
+
+  .hinweise{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+  @media (max-width:860px){.hinweise{grid-template-columns:1fr}}
+  .hinweis{border-top:1px solid var(--line);padding-top:16px}
+  .hinweis h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .hinweis p{margin:8px 0 0;font-size:14px;color:var(--muted)}
+  .hinweis code{font-size:12.5px;color:var(--lavend)}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+         background:var(--ink);color:var(--night);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;
+         transition:opacity .25s,transform .25s}
+  .toast.an{opacity:1;transform:translate(-50%,0)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="kopf">
+    <a class="marke" href="../../index.html">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 42 V21 a10 10 0 0 1 20 0 V42" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><circle cx="24" cy="21" r="3.6" fill="#8B7CF6"/></svg>
+      <span><b>TechSaar</b><small>Web · Apps · KI</small></span>
+    </a>
+    <span class="intern">Intern · nicht online</span>
+  </header>
+
+  <p class="label">E-Mail-Signatur</p>
+  <h1>Einmal einrichten.<br><span>Unter jeder Mail.</span></h1>
+  <p class="lead">Variante wählen, kopieren, in Outlook einfügen. Danach hängt Outlook die Signatur automatisch an jede neue Mail, die Kurzfassung an Antworten.</p>
+
+  <div class="steuer">
+    <div class="segment" role="group" aria-label="Wer unterschreibt">
+      <button type="button" data-v="gemeinsam" aria-pressed="true">Leon &amp; Jakob</button>
+      <button type="button" data-v="leon" aria-pressed="false">Nur Leon</button>
+      <button type="button" data-v="jakob" aria-pressed="false">Nur Jakob</button>
+    </div>
+    <span class="status" id="logo-status" data-s="pruefe"><i></i><span>Prüfe, ob das Logo auf tech-saar.de online ist …</span></span>
+  </div>
+
+  <section class="karten">
+    <article class="karte">
+      <div class="karte-kopf">
+        <div><h2>Neue E-Mails</h2><p>Komplette Signatur mit Logo und Firmenangaben</p></div>
+        <span class="nr">TechSaar</span>
+      </div>
+      <div class="mail">
+        <div class="mail-meta"><b>An</b> kunde@beispiel.de</div>
+        <div class="mail-body">
+          <div class="platzhalter" aria-hidden="true"><span style="width:38%"></span><span style="width:92%"></span><span style="width:80%"></span><span style="width:56%"></span></div>
+          <div id="vorschau-voll"></div>
+        </div>
+      </div>
+      <div class="aktionen">
+        <button class="btn btn-voll" type="button" data-kopie="voll">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span>Signatur kopieren</span>
+        </button>
+        <button class="btn btn-rand" type="button" data-kopie="voll-text"><span>Als reiner Text</span></button>
+      </div>
+    </article>
+
+    <article class="karte">
+      <div class="karte-kopf">
+        <div><h2>Antworten</h2><p>Kurzfassung für Antworten und Weiterleitungen</p></div>
+        <span class="nr">TechSaar kurz</span>
+      </div>
+      <div class="mail">
+        <div class="mail-meta"><b>AW</b> Ihre Anfrage</div>
+        <div class="mail-body">
+          <div class="platzhalter" aria-hidden="true"><span style="width:34%"></span><span style="width:88%"></span><span style="width:62%"></span></div>
+          <div id="vorschau-kurz"></div>
+        </div>
+      </div>
+      <div class="aktionen">
+        <button class="btn btn-voll" type="button" data-kopie="kurz">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span>Kurzfassung kopieren</span>
+        </button>
+        <button class="btn btn-rand" type="button" data-kopie="kurz-text"><span>Als reiner Text</span></button>
+      </div>
+    </article>
+  </section>
+
+  <p class="label">So kommt sie in Outlook</p>
+  <div class="reiter" role="tablist" aria-label="Outlook-Version">
+    <button type="button" role="tab" aria-selected="true" aria-controls="t-neu" id="r-neu">Neues Outlook &amp; Outlook im Web</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="t-klassisch" id="r-klassisch" tabindex="-1">Klassisches Outlook</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="t-handy" id="r-handy" tabindex="-1">Outlook-App am Handy</button>
+  </div>
+
+  <div role="tabpanel" id="t-neu" aria-labelledby="r-neu">
+    <ol class="schritte">
+      <li><div><b>Einstellungen öffnen.</b> <span>Oben rechts auf das Zahnrad, dann</span> <span class="pfad">Konten › Signaturen</span><span>.</span></div></li>
+      <li><div><b>Neue Signatur anlegen</b> <span>und als Namen</span> <b>TechSaar</b> <span>eintragen.</span></div></li>
+      <li><div><b>Hier oben „Signatur kopieren“ klicken</b><span>, ins Signaturfeld klicken und mit</span> <kbd>Strg</kbd> <kbd>V</kbd> <span>einfügen. Speichern.</span></div></li>
+      <li><div><b>Zweite Signatur</b> <span>mit dem Namen</span> <b>TechSaar kurz</b> <span>anlegen und die Kurzfassung genauso einfügen. Speichern.</span></div></li>
+      <li><div><b>Standard festlegen.</b> <span>Weiter unten bei „Standardsignaturen auswählen“ für neue Nachrichten</span> <b>TechSaar</b> <span>und für Antworten und Weiterleitungen</span> <b>TechSaar kurz</b> <span>wählen. Speichern, fertig.</span></div></li>
+    </ol>
+  </div>
+
+  <div role="tabpanel" id="t-klassisch" aria-labelledby="r-klassisch" hidden>
+    <ol class="schritte">
+      <li><div><b>Signaturen öffnen.</b> <span class="pfad">Datei › Optionen › E-Mail › Signaturen …</span></div></li>
+      <li><div><b>Neu</b> <span>klicken, Namen</span> <b>TechSaar</b> <span>eingeben, OK.</span></div></li>
+      <li><div><b>Hier oben „Signatur kopieren“ klicken</b><span>, ins große Feld unten klicken und mit</span> <kbd>Strg</kbd> <kbd>V</kbd> <span>einfügen. Speichern.</span></div></li>
+      <li><div><b>Noch einmal Neu</b><span>, Name</span> <b>TechSaar kurz</b><span>, Kurzfassung einfügen, speichern.</span></div></li>
+      <li><div><b>Standard festlegen.</b> <span>Rechts oben das Konto</span> <b>info@tech-saar.de</b> <span>wählen. Neue Nachrichten</span> <b>TechSaar</b><span>, Antworten/Weiterleitungen</span> <b>TechSaar kurz</b><span>. Mit OK schließen.</span></div></li>
+    </ol>
+  </div>
+
+  <div role="tabpanel" id="t-handy" aria-labelledby="r-handy" hidden>
+    <ol class="schritte">
+      <li><div><b>Outlook-App öffnen</b><span>, oben links auf das Profilbild, dann auf das Zahnrad.</span></div></li>
+      <li><div><b>Signatur</b> <span>antippen und das Konto</span> <b>info@tech-saar.de</b> <span>wählen.</span></div></li>
+      <li><div><b>Kurzfassung als reinen Text einfügen.</b> <span>Die App zeigt Logos und Tabellen nicht zuverlässig an, deshalb am Handy lieber die schlichte Variante. Den Text am PC mit „Als reiner Text“ kopieren und euch selbst schicken.</span></div></li>
+    </ol>
+  </div>
+
+  <div class="hinweise">
+    <div class="hinweis">
+      <h3>Logo muss online sein</h3>
+      <p>Die Mail lädt das Logo von <code>tech-saar.de/mail/signatur-logo-v1.png</code>. Die Datei liegt im Repo und geht mit dem nächsten Push live. Erst danach kopieren, sonst sehen Empfänger ein leeres Kästchen.</p>
+    </div>
+    <div class="hinweis">
+      <h3>Jeder richtet es selbst ein</h3>
+      <p>Signaturen hängen am Gerät oder Konto. Leon und Jakob machen das also je einmal bei sich. Danach eine Testmail an eine private Adresse schicken und auch am Handy anschauen.</p>
+    </div>
+    <div class="hinweis">
+      <h3>Daten ändern</h3>
+      <p>Alle Angaben stehen unten im Skript dieser Datei in <code>FIRMA</code> und stammen aus <code>legal-data.json</code>. Ändert sich etwas, dort anpassen, neu kopieren und in Outlook ersetzen.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== Firmendaten (Stand legal-data.json) ===== */
+const FIRMA = {
+  name:        'TechSaar',
+  rechtsform:  'GbR',
+  slogan:      'Web · Apps · KI aus dem Saarland',
+  strasse:     'Hochstattstraße 12',
+  ort:         '66640 Namborn',
+  telefon:     '0157 71232099',
+  telefonLink: '+4915771232099',
+  email:       'info@tech-saar.de',
+  web:         'tech-saar.de',
+  webUrl:      'https://tech-saar.de',
+  inhaber:     'Jakob Elias Kunz und Leon Merlin Thies',
+  ustId:       'DE465081301',
+  logoOnline:  'https://tech-saar.de/mail/signatur-logo-v1.png',
+  logoLokal:   '../../mail/signatur-logo-v1.png'
+};
+
+const VARIANTEN = {
+  gemeinsam: { name: 'Leon Thies & Jakob Kunz', rolle: 'Gründer von TechSaar',            kurz: 'Leon & Jakob' },
+  leon:      { name: 'Leon Thies',              rolle: 'Mitgründer · Technik & Umsetzung', kurz: 'Leon Thies' },
+  jakob:     { name: 'Jakob Kunz',              rolle: 'Mitgründer · Recht & Struktur',    kurz: 'Jakob Kunz' }
+};
+/* =============================================== */
+
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+// Mail-taugliches HTML: nur Tabellen und Inline-Styles, Systemschrift,
+// keine Klassen, kein Flexbox. So bleibt es in Outlook (Word-Engine),
+// Outlook im Web, Gmail und Apple Mail gleich.
+const FONT = "font-family:'Segoe UI',Arial,Helvetica,sans-serif;";
+const C = { text:'#1C1B22', name:'#0F0F14', grau:'#5E5D6B', fuss:'#74737F', lila:'#8B7CF6', lilaText:'#6B5CE7', linie:'#E4E2EC' };
+const punkt = `<span style="color:${C.lila};">&nbsp;&middot;&nbsp;</span>`;
+
+function signaturVoll(v, logo){
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;${FONT}color:${C.text};">
+<tr><td style="${FONT}padding:0 0 14px 0;font-size:14px;line-height:20px;color:${C.text};">Mit freundlichen Grüßen</td></tr>
+<tr><td style="${FONT}padding:0;font-size:15px;line-height:21px;font-weight:bold;color:${C.name};">${esc(v.name)}</td></tr>
+<tr><td style="${FONT}padding:0 0 16px 0;font-size:13px;line-height:19px;color:${C.grau};">${esc(v.rolle)}</td></tr>
+<tr><td style="padding:0;">
+  <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
+  <tr>
+    <td valign="middle" width="44" style="padding:0 14px 0 0;width:44px;">
+      <a href="${FIRMA.webUrl}" style="text-decoration:none;"><img src="${logo}" width="44" height="44" alt="${FIRMA.name}" style="display:block;width:44px;height:44px;border:0;outline:none;text-decoration:none;"></a>
+    </td>
+    <td valign="middle" style="${FONT}padding:0 0 0 14px;border-left:2px solid ${C.lila};">
+      <div style="${FONT}font-size:16px;line-height:20px;font-weight:bold;color:${C.name};">${FIRMA.name}</div>
+      <div style="${FONT}font-size:10px;line-height:16px;font-weight:bold;letter-spacing:1.5px;color:${C.lilaText};">${esc(FIRMA.slogan.toUpperCase())}</div>
+      <div style="${FONT}font-size:13px;line-height:20px;color:${C.grau};padding-top:4px;"><a href="tel:${FIRMA.telefonLink}" style="color:${C.grau};text-decoration:none;">${FIRMA.telefon}</a>${punkt}<a href="mailto:${FIRMA.email}" style="color:${C.grau};text-decoration:none;">${FIRMA.email}</a>${punkt}<a href="${FIRMA.webUrl}" style="color:${C.lilaText};text-decoration:none;font-weight:bold;">${FIRMA.web}</a></div>
+    </td>
+  </tr>
+  </table>
+</td></tr>
+<tr><td style="${FONT}padding:16px 0 0 0;">
+  <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;"><tr>
+  <td style="${FONT}padding:10px 0 0 0;border-top:1px solid ${C.linie};font-size:11px;line-height:16px;color:${C.fuss};">${FIRMA.name} ${FIRMA.rechtsform}&nbsp;&middot; ${esc(FIRMA.strasse)}&nbsp;&middot; ${FIRMA.ort}<br>Inhaber ${esc(FIRMA.inhaber)}&nbsp;&middot; USt-IdNr. ${FIRMA.ustId}</td>
+  </tr></table>
+</td></tr>
+</table>`;
+}
+
+function signaturKurz(v){
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;${FONT}color:${C.text};">
+<tr><td style="${FONT}padding:0 0 10px 0;font-size:14px;line-height:20px;color:${C.text};">Viele Grüße</td></tr>
+<tr><td style="${FONT}padding:0 0 4px 0;font-size:14px;line-height:20px;font-weight:bold;color:${C.name};">${esc(v.kurz)}</td></tr>
+<tr><td style="${FONT}padding:0 0 0 10px;border-left:2px solid ${C.lila};font-size:12px;line-height:18px;color:${C.grau};"><b style="color:${C.name};">${FIRMA.name}</b>${punkt}<a href="tel:${FIRMA.telefonLink}" style="color:${C.grau};text-decoration:none;">${FIRMA.telefon}</a>${punkt}<a href="${FIRMA.webUrl}" style="color:${C.lilaText};text-decoration:none;font-weight:bold;">${FIRMA.web}</a></td></tr>
+</table>`;
+}
+
+function textVoll(v){
+  return [
+    'Mit freundlichen Grüßen', '',
+    v.name, v.rolle, '',
+    `${FIRMA.name} · ${FIRMA.slogan}`,
+    `Tel. ${FIRMA.telefon} · ${FIRMA.email} · ${FIRMA.web}`, '',
+    `${FIRMA.name} ${FIRMA.rechtsform} · ${FIRMA.strasse} · ${FIRMA.ort}`,
+    `Inhaber ${FIRMA.inhaber} · USt-IdNr. ${FIRMA.ustId}`
+  ].join('\n');
+}
+function textKurz(v){
+  return ['Viele Grüße', v.kurz, `${FIRMA.name} · ${FIRMA.telefon} · ${FIRMA.web}`].join('\n');
+}
+
+/* ---- Zustand & Vorschau ---- */
+let aktiv = 'gemeinsam';
+function zeichne(){
+  const v = VARIANTEN[aktiv];
+  document.getElementById('vorschau-voll').innerHTML = signaturVoll(v, FIRMA.logoLokal);
+  document.getElementById('vorschau-kurz').innerHTML = signaturKurz(v);
+}
+document.querySelectorAll('.segment button').forEach(b => b.addEventListener('click', () => {
+  aktiv = b.dataset.v;
+  document.querySelectorAll('.segment button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  zeichne();
+}));
+zeichne();
+
+/* ---- Kopieren ---- */
+const toast = document.getElementById('toast');
+let toastTimer;
+function melde(t){ toast.textContent = t; toast.classList.add('an'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('an'), 2600); }
+
+async function inZwischenablage(html, text){
+  if (html && navigator.clipboard && window.ClipboardItem) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html':  new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([text], { type: 'text/plain' })
+      })]);
+      return true;
+    } catch (e) { /* Fallback unten */ }
+  }
+  if (!html && navigator.clipboard) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+  }
+  // Fallback: gerenderten Block markieren und klassisch kopieren
+  const box = document.createElement(html ? 'div' : 'textarea');
+  box.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;';
+  if (html) { box.contentEditable = 'true'; box.innerHTML = html; } else { box.value = text; }
+  document.body.appendChild(box);
+  if (html) { const r = document.createRange(); r.selectNodeContents(box); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  else box.select();
+  const ok = document.execCommand('copy');
+  getSelection().removeAllRanges(); box.remove();
+  return ok;
+}
+
+document.querySelectorAll('[data-kopie]').forEach(btn => btn.addEventListener('click', async () => {
+  const v = VARIANTEN[aktiv], art = btn.dataset.kopie;
+  const html = art === 'voll' ? signaturVoll(v, FIRMA.logoOnline) : art === 'kurz' ? signaturKurz(v) : null;
+  const text = art.startsWith('voll') ? textVoll(v) : textKurz(v);
+  const ok = await inZwischenablage(html, text);
+  const label = btn.querySelector('span'), alt = label.textContent;
+  if (ok) {
+    btn.dataset.done = '1'; label.textContent = 'Kopiert';
+    melde(html ? 'Kopiert. Jetzt in Outlook mit Strg + V einfügen.' : 'Text kopiert.');
+    setTimeout(() => { delete btn.dataset.done; label.textContent = alt; }, 1800);
+  } else {
+    melde('Kopieren hat nicht geklappt. Vorschau markieren und Strg + C drücken.');
+  }
+}));
+
+/* ---- Ist das Logo schon auf tech-saar.de? ---- */
+(function pruefeLogo(){
+  const el = document.getElementById('logo-status'), txt = el.querySelector('span');
+  const img = new Image();
+  img.onload  = () => { el.dataset.s = 'ok';    txt.textContent = 'Logo ist auf tech-saar.de online'; };
+  img.onerror = () => { el.dataset.s = 'fehlt'; txt.textContent = 'Logo noch nicht online. Erst pushen, dann kopieren.'; };
+  img.src = FIRMA.logoOnline + '?pruefung=' + Date.now();
+})();
+
+/* ---- Reiter der Anleitung ---- */
+const reiter = [...document.querySelectorAll('[role="tab"]')];
+function waehle(t){
+  reiter.forEach(r => {
+    const an = r === t;
+    r.setAttribute('aria-selected', String(an)); r.tabIndex = an ? 0 : -1;
+    document.getElementById(r.getAttribute('aria-controls')).hidden = !an;
+  });
+}
+reiter.forEach((r, i) => {
+  r.addEventListener('click', () => waehle(r));
+  r.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const n = reiter[(i + (e.key === 'ArrowRight' ? 1 : -1) + reiter.length) % reiter.length];
+    waehle(n); n.focus();
+  });
+});
+</script>
+</body>
+</html>
