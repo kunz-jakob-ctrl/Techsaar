@@ -201,9 +201,9 @@
     <ol class="schritte">
       <li><div><b>Einstellungen öffnen.</b> <span>Oben rechts auf das Zahnrad, dann</span> <span class="pfad">Konten › Signaturen</span><span>.</span></div></li>
       <li><div><b>Neue Signatur anlegen</b> <span>und als Namen</span> <b>TechSaar</b> <span>eintragen.</span></div></li>
-      <li><div><b>Hier oben „Signatur kopieren“ klicken</b><span>, ins Signaturfeld klicken und mit</span> <kbd>Strg</kbd> <kbd>V</kbd> <span>einfügen. Speichern.</span></div></li>
-      <li><div><b>Zweite Signatur</b> <span>mit dem Namen</span> <b>TechSaar kurz</b> <span>anlegen und die Kurzfassung genauso einfügen. Speichern.</span></div></li>
-      <li><div><b>Standard festlegen.</b> <span>Weiter unten bei „Standardsignaturen auswählen“ für neue Nachrichten</span> <b>TechSaar</b> <span>und für Antworten und Weiterleitungen</span> <b>TechSaar kurz</b> <span>wählen. Speichern, fertig.</span></div></li>
+      <li><div><b>Hier oben „Signatur kopieren“ klicken</b><span>, ins Signaturfeld klicken und mit</span> <kbd>Strg</kbd> <kbd>V</kbd> <span>einfügen. Darunter das Häkchen bei</span> <b>„Standardeinstellungen für neue Nachrichten festlegen“</b> <span>setzen. Speichern.</span></div></li>
+      <li><div><b>Zweite Signatur</b> <span>mit dem Namen</span> <b>TechSaar kurz</b> <span>anlegen, die Kurzfassung genauso einfügen und das Häkchen bei</span> <b>„Standard für Antworten und Weiterleitungen festlegen“</b> <span>setzen. Speichern, fertig.</span></div></li>
+      <li><div><b>Ältere Version ohne Häkchen?</b> <span>Dann weiter unten bei „Standardsignaturen auswählen“ für neue Nachrichten</span> <b>TechSaar</b> <span>und für Antworten</span> <b>TechSaar kurz</b> <span>wählen.</span></div></li>
     </ol>
   </div>
 
@@ -213,14 +213,14 @@
       <li><div><b>Neu</b> <span>klicken, Namen</span> <b>TechSaar</b> <span>eingeben, OK.</span></div></li>
       <li><div><b>Hier oben „Signatur kopieren“ klicken</b><span>, ins große Feld unten klicken und mit</span> <kbd>Strg</kbd> <kbd>V</kbd> <span>einfügen. Speichern.</span></div></li>
       <li><div><b>Noch einmal Neu</b><span>, Name</span> <b>TechSaar kurz</b><span>, Kurzfassung einfügen, speichern.</span></div></li>
-      <li><div><b>Standard festlegen.</b> <span>Rechts oben das Konto</span> <b>info@tech-saar.de</b> <span>wählen. Neue Nachrichten</span> <b>TechSaar</b><span>, Antworten/Weiterleitungen</span> <b>TechSaar kurz</b><span>. Mit OK schließen.</span></div></li>
+      <li><div><b>Standard festlegen.</b> <span>Rechts oben euer TechSaar-Konto wählen.</span> <span>Neue Nachrichten</span> <b>TechSaar</b><span>, Antworten/Weiterleitungen</span> <b>TechSaar kurz</b><span>. Mit OK schließen.</span></div></li>
     </ol>
   </div>
 
   <div role="tabpanel" id="t-handy" aria-labelledby="r-handy" hidden>
     <ol class="schritte">
       <li><div><b>Outlook-App öffnen</b><span>, oben links auf das Profilbild, dann auf das Zahnrad.</span></div></li>
-      <li><div><b>Signatur</b> <span>antippen und das Konto</span> <b>info@tech-saar.de</b> <span>wählen.</span></div></li>
+      <li><div><b>Signatur</b> <span>antippen und euer TechSaar-Konto wählen.</span></div></li>
       <li><div><b>Kurzfassung als reinen Text einfügen.</b> <span>Die App zeigt Logos und Tabellen nicht zuverlässig an, deshalb am Handy lieber die schlichte Variante. Den Text am PC mit „Als reiner Text“ kopieren und euch selbst schicken.</span></div></li>
     </ol>
   </div>
@@ -274,42 +274,67 @@ const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;
 // Mail-taugliches HTML: nur Tabellen und Inline-Styles, Systemschrift,
 // keine Klassen, kein Flexbox. So bleibt es in Outlook (Word-Engine),
 // Outlook im Web, Gmail und Apple Mail gleich.
+//
+// WICHTIG: Das neue Outlook (und Outlook im Web) verwirft beim Einfügen
+// Schriftgröße und Farbe, die an <td> oder <div> hängen. Was an <span>
+// und <a> hängt, bleibt erhalten. Deshalb trägt JEDER Text seine
+// komplette Formatierung selbst (Funktionen T und L), die Zellen nur
+// Abstände und Linien.
 const FONT = "font-family:'Segoe UI',Arial,Helvetica,sans-serif;";
 const C = { text:'#1C1B22', name:'#0F0F14', grau:'#5E5D6B', fuss:'#74737F', lila:'#8B7CF6', lilaText:'#6B5CE7', linie:'#E4E2EC' };
-const punkt = `<span style="color:${C.lila};">&nbsp;&middot;&nbsp;</span>`;
+
+// Text mit eigener Formatierung
+const T = (txt, css) => `<span style="${FONT}${css}">${txt}</span>`;
+// Link ohne Unterstrich, Formatierung an <a> UND am inneren <span>
+const L = (href, txt, css) => `<a href="${href}" style="${FONT}${css}text-decoration:none;">${T(txt, css + 'text-decoration:none;')}</a>`;
+
+const s = {
+  gruss:  `font-size:14px;line-height:20px;color:${C.text};`,
+  name:   `font-size:15px;line-height:21px;font-weight:bold;color:${C.name};`,
+  rolle:  `font-size:13px;line-height:19px;color:${C.grau};`,
+  firma:  `font-size:16px;line-height:20px;font-weight:bold;color:${C.name};`,
+  slogan: `font-size:10px;line-height:16px;font-weight:bold;letter-spacing:1.5px;color:${C.lilaText};`,
+  info:   `font-size:13px;line-height:20px;color:${C.grau};`,
+  web:    `font-size:13px;line-height:20px;font-weight:bold;color:${C.lilaText};`,
+  fuss:   `font-size:11px;line-height:16px;color:${C.fuss};`,
+  kurz:   `font-size:12px;line-height:18px;color:${C.grau};`,
+  kurzF:  `font-size:12px;line-height:18px;font-weight:bold;color:${C.name};`,
+  kurzW:  `font-size:12px;line-height:18px;font-weight:bold;color:${C.lilaText};`
+};
+const punkt = (groesse) => T('&nbsp;&middot;&nbsp;', `font-size:${groesse}px;color:${C.lila};`);
 
 function signaturVoll(v, logo){
-  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;${FONT}color:${C.text};">
-<tr><td style="${FONT}padding:0 0 14px 0;font-size:14px;line-height:20px;color:${C.text};">Mit freundlichen Grüßen</td></tr>
-<tr><td style="${FONT}padding:0;font-size:15px;line-height:21px;font-weight:bold;color:${C.name};">${esc(v.name)}</td></tr>
-<tr><td style="${FONT}padding:0 0 16px 0;font-size:13px;line-height:19px;color:${C.grau};">${esc(v.rolle)}</td></tr>
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
+<tr><td style="padding:0 0 14px 0;">${T('Mit freundlichen Grüßen', s.gruss)}</td></tr>
+<tr><td style="padding:0;">${T(esc(v.name), s.name)}</td></tr>
+<tr><td style="padding:0 0 16px 0;">${T(esc(v.rolle), s.rolle)}</td></tr>
 <tr><td style="padding:0;">
   <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
   <tr>
     <td valign="middle" width="44" style="padding:0 14px 0 0;width:44px;">
       <a href="${FIRMA.webUrl}" style="text-decoration:none;"><img src="${logo}" width="44" height="44" alt="${FIRMA.name}" style="display:block;width:44px;height:44px;border:0;outline:none;text-decoration:none;"></a>
     </td>
-    <td valign="middle" style="${FONT}padding:0 0 0 14px;border-left:2px solid ${C.lila};">
-      <div style="${FONT}font-size:16px;line-height:20px;font-weight:bold;color:${C.name};">${FIRMA.name}</div>
-      <div style="${FONT}font-size:10px;line-height:16px;font-weight:bold;letter-spacing:1.5px;color:${C.lilaText};">${esc(FIRMA.slogan.toUpperCase())}</div>
-      <div style="${FONT}font-size:13px;line-height:20px;color:${C.grau};padding-top:4px;"><a href="tel:${FIRMA.telefonLink}" style="color:${C.grau};text-decoration:none;">${FIRMA.telefon}</a>${punkt}<a href="mailto:${FIRMA.email}" style="color:${C.grau};text-decoration:none;">${FIRMA.email}</a>${punkt}<a href="${FIRMA.webUrl}" style="color:${C.lilaText};text-decoration:none;font-weight:bold;">${FIRMA.web}</a></div>
+    <td valign="middle" style="padding:0 0 0 14px;border-left:2px solid ${C.lila};">
+      <div>${T(FIRMA.name, s.firma)}</div>
+      <div>${T(esc(FIRMA.slogan.toUpperCase()), s.slogan)}</div>
+      <div style="padding-top:4px;">${L('tel:' + FIRMA.telefonLink, FIRMA.telefon, s.info)}${punkt(13)}${L('mailto:' + FIRMA.email, FIRMA.email, s.info)}${punkt(13)}${L(FIRMA.webUrl, FIRMA.web, s.web)}</div>
     </td>
   </tr>
   </table>
 </td></tr>
-<tr><td style="${FONT}padding:16px 0 0 0;">
+<tr><td style="padding:16px 0 0 0;">
   <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;"><tr>
-  <td style="${FONT}padding:10px 0 0 0;border-top:1px solid ${C.linie};font-size:11px;line-height:16px;color:${C.fuss};">${FIRMA.name} ${FIRMA.rechtsform}&nbsp;&middot; ${esc(FIRMA.strasse)}&nbsp;&middot; ${FIRMA.ort}<br>Inhaber ${esc(FIRMA.inhaber)}&nbsp;&middot; USt-IdNr. ${FIRMA.ustId}</td>
+  <td style="padding:10px 0 0 0;border-top:1px solid ${C.linie};">${T(`${FIRMA.name} ${FIRMA.rechtsform}&nbsp;&middot; ${esc(FIRMA.strasse)}&nbsp;&middot; ${FIRMA.ort}`, s.fuss)}<br>${T(`Inhaber ${esc(FIRMA.inhaber)}&nbsp;&middot; USt-IdNr. ${FIRMA.ustId}`, s.fuss)}</td>
   </tr></table>
 </td></tr>
 </table>`;
 }
 
 function signaturKurz(v){
-  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;${FONT}color:${C.text};">
-<tr><td style="${FONT}padding:0 0 10px 0;font-size:14px;line-height:20px;color:${C.text};">Viele Grüße</td></tr>
-<tr><td style="${FONT}padding:0 0 4px 0;font-size:14px;line-height:20px;font-weight:bold;color:${C.name};">${esc(v.kurz)}</td></tr>
-<tr><td style="${FONT}padding:0 0 0 10px;border-left:2px solid ${C.lila};font-size:12px;line-height:18px;color:${C.grau};"><b style="color:${C.name};">${FIRMA.name}</b>${punkt}<a href="tel:${FIRMA.telefonLink}" style="color:${C.grau};text-decoration:none;">${FIRMA.telefon}</a>${punkt}<a href="${FIRMA.webUrl}" style="color:${C.lilaText};text-decoration:none;font-weight:bold;">${FIRMA.web}</a></td></tr>
+  return `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
+<tr><td style="padding:0 0 10px 0;">${T('Viele Grüße', s.gruss)}</td></tr>
+<tr><td style="padding:0 0 4px 0;">${T(esc(v.kurz), s.name.replace('15px', '14px').replace('21px', '20px'))}</td></tr>
+<tr><td style="padding:0 0 0 10px;border-left:2px solid ${C.lila};">${T(FIRMA.name, s.kurzF)}${punkt(12)}${L('tel:' + FIRMA.telefonLink, FIRMA.telefon, s.kurz)}${punkt(12)}${L(FIRMA.webUrl, FIRMA.web, s.kurzW)}</td></tr>
 </table>`;
 }
 
